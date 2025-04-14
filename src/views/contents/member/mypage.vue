@@ -58,7 +58,7 @@
               <td>{{passkey.createdAt}}</td>
               <td>{{passkey.lastUsedAt ? passkey.lastUsedAt : 'Not used'}}</td>
               <td>
-                <button data-name="<%=passkey.name%>" class="delete-passkey-button thetree-square-button thetree-danger-button" type="button">삭제</button>
+                <SeedButton type="button" danger>삭제</SeedButton>
               </td>
             </tr>
           </template>
