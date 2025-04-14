@@ -7,6 +7,12 @@ import router from './router'
 import { useStateStore } from '~/stores/state'
 import GlobalMixin from './mixins/global'
 
+let store
+
+export function useStore() {
+    return store
+}
+
 export function createApp(url, initialData = {}) {
     const app = import.meta.env.SSR
         ? createSSRApp(App)
@@ -16,7 +22,7 @@ export function createApp(url, initialData = {}) {
     app.use(pinia)
     app.use(router)
 
-    const store = app.config.globalProperties.$store = {
+    store = app.config.globalProperties.$store = {
         state: useStateStore(),
         commit(action, value) {
             switch(action) {

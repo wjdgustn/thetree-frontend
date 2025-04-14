@@ -45,7 +45,9 @@ export default defineConfig(({ isSsrBuild }) => ({
       // vue: 'vue/dist/vue.esm-bundler.js',
       '@': srcPath,
       '~': srcPath,
-      'skin': path.resolve('./skins', skin)
+      'skin': path.resolve('./skins', skin),
+
+      'vuex': path.resolve(srcPath, 'main'),
     },
   },
   server: {
