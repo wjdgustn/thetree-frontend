@@ -55,8 +55,11 @@
           <template v-if="data.passkeys.length" v-for="passkey in data.passkeys">
             <tr>
               <td>{{passkey.name}}</td>
-              <td>{{passkey.createdAt}}</td>
-              <td>{{passkey.lastUsedAt ? passkey.lastUsedAt : 'Not used'}}</td>
+              <td><LocalDate :date="passkey.createdAt"/></td>
+              <td>
+                <LocalDate v-if="passkey.lastUsedAt" :date="passkey.lastUsedAt"/>
+                <template v-else>Not used</template>
+              </td>
               <td>
                 <SeedButton type="button" danger>삭제</SeedButton>
               </td>
@@ -89,11 +92,13 @@
 <script>
 import SeedButton from '@/components/seedButton.vue';
 import SeedLinkButton from '@/components/seedLinkButton.vue'
+import LocalDate from '@/components/localDate.vue';
 
 export default {
   components: {
     SeedButton,
-    SeedLinkButton
+    SeedLinkButton,
+    LocalDate
   },
   computed: {
     data() {
