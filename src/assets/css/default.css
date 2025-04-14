@@ -1,7 +1,3 @@
-[role=button], a, area, button, input, label, select, summary, textarea {
-    touch-action: manipulation;
-}
-
 textarea {
     border: 1px solid #e1e8ed;
     padding: .5rem;
@@ -16,35 +12,8 @@ label {
     margin-bottom: .5rem;
 }
 
-input[type=checkbox], input[type=radio] {
-    box-sizing: border-box;
-    padding: 0;
-}
-
-input[type=password] {
-    font-family: sans-serif;
-}
-
 address, dl, ol, ul {
     margin-bottom: 1rem;
-}
-
-dl, ol, ul {
-    margin-top: 0;
-}
-
-b, strong {
-    font-weight: 700;
-}
-
-b, h1, h2, h3, h4, h5, h6 {
-    font-family: "Noto Sans Korean", "Noto Sans", "Nanum Gothic", "KoPubDotum B", "Malgun Gothic", "맑은 고딕", sans-serif;
-}
-
-a {
-    background-color: transparent;
-    color: #0275d8;
-    text-decoration: none;
 }
 
 .theseed-dark-mode a {
