@@ -34,8 +34,9 @@ export const useStateStore = defineStore('state', {
         })
       }
 
+      const statePatches = {}
       if(json.page) {
-        this.$patch({
+        Object.assign(statePatches, {
           page: {
             ...json.page,
             data: json.data.publicData
@@ -46,10 +47,19 @@ export const useStateStore = defineStore('state', {
           }
         })
       }
+
+      return statePatches
     },
-    async updateView() {
-      const contentName = this.page.contentName
+    patchPageData(statePatches) {
+      this.$patch(state => {
+        state.page = statePatches.page
+        state.viewData = statePatches.viewData
+      })
+    },
+    async updateView(statePatches = {}) {
+      const contentName = statePatches.page.contentName || this.page.contentName
       if(!contentName) {
+        this.patchPageData(statePatches)
         this.viewData.viewComponent = null
         return
       }
@@ -68,6 +78,7 @@ export const useStateStore = defineStore('state', {
         this.page.contentName = null
         return
       }
+      this.patchPageData(statePatches)
       this.viewData.viewComponent = markRaw(view.default)
       this.page.contentHtml = null
     },

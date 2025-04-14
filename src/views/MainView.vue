@@ -21,13 +21,13 @@ export default {
     }
   },
   async serverPrefetch() {
-    this.$store.state.parseResponse(this.initialData)
+    const statePatches = this.$store.state.parseResponse(this.initialData)
     delete this.initialData
 
     const page = this.$store.state.page
     if(!page.contentName && !page.contentHtml) return
 
-    await this.$store.state.updateView()
+    await this.$store.state.updateView(statePatches)
     this.skin ??= markRaw(Skin)
   },
   async created() {
@@ -91,7 +91,7 @@ export default {
 
       this.$refs.progressBar?.finish()
 
-      this.$store.state.parseResponse(json)
+      const statePatches = this.$store.state.parseResponse(json)
 
       const strCode = json.code?.toString() || ''
       if(strCode.startsWith('3')) {
@@ -100,7 +100,7 @@ export default {
       }
 
       if(json.page) {
-        await this.$store.state.updateView()
+        await this.$store.state.updateView(statePatches)
         this.skin ??= markRaw(Skin)
       }
     }
