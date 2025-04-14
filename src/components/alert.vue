@@ -50,7 +50,7 @@ export default {
   color: #0b3574
 }
 
-.thetree-dark-mode .thetree-alert-primary {
+.theseed-dark-mode .thetree-alert-primary {
   background-color: #05234f;
   border-color: #052e6d;
   color: #c0d2ee
@@ -62,7 +62,7 @@ export default {
   color: #3f0404;
 }
 
-.thetree-dark-mode .thetree-alert-danger {
+.theseed-dark-mode .thetree-alert-danger {
   background-color: #3d050b;
   border-color: #861520;
   color: #eec0c0;

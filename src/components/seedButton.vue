@@ -1,12 +1,12 @@
 <template>
-  <NuxtLink :to="$props.to" :disabled="disabled || null" :class="{
+  <button v-bind="$attrs" :disabled="disabled" :class="{
     large: $props.large,
     green: $props.green,
     submit: $props.submit,
     info: $props.info,
     danger: $props.danger,
     block: $props.block
-  }"><slot/></NuxtLink>
+  }"><slot/></button>
 </template>
 <script>
 import NuxtLink from '@/components/global/nuxtLink.vue'
@@ -16,10 +16,6 @@ export default {
     NuxtLink
   },
   props: {
-    to: {
-      type: String,
-      required: true
-    },
     disabled: Boolean,
     large: Boolean,
     green: Boolean,
@@ -31,96 +27,96 @@ export default {
 }
 </script>
 <style scoped>
-a {
+button {
   background-color: #fff;
   border: .0625rem solid #ccc;
-  color: #373a3c!important;
+  color: #373a3c;
   cursor: pointer;
   display: inline-block;
   font-size: .9rem;
   font-weight: 400;
   line-height: 1.5;
+  margin: 0;
   padding: .2rem .7rem;
   text-align: center;
-  text-decoration: none!important;
   touch-action: manipulation;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  vertical-align: middle;
-  white-space: nowrap;
+  white-space: nowrap
 }
 
-a:not([disabled]):active, a:not([disabled]):hover {
+button:not([disabled]):active, button:not([disabled]):hover {
   background-color: #e6e6e6;
   border-color: #adadad;
+  text-decoration: none;
 }
 
-.theseed-dark-mode a {
+.theseed-dark-mode button {
   background-color: #27292d;
   border-color: #383b40;
-  color: #ddd !important;
+  color: #ddd;
 }
 
-.theseed-dark-mode a:not([disabled]):active, .theseed-dark-mode a:not([disabled]):hover {
+.theseed-dark-mode button:not([disabled]):active, .theseed-dark-mode button:not([disabled]):hover {
   background-color: #2d2f34;
   border-color: #383b40;
 }
 
-a[disabled] {
+button[disabled] {
   cursor: not-allowed;
   opacity: .65;
 }
 
-a.large {
+button.large {
   padding: .75rem 1.25rem;
 }
 
-a.green {
+button.green {
   background-color: #5cb85c;
   border-color: #5cb85c;
-  color: #fff !important;
+  color: #fff;
 }
 
-a.green:not([disabled]):active, a.green:not([disabled]):hover {
+button.green:not([disabled]):active, button.green:not([disabled]):hover {
   background-color: #449d44;
   border-color: #419641;
 }
 
-a.submit {
+button.submit {
   background-color: #0275d8;
   border-color: #0275d8;
-  color: #fff !important;
+  color: #fff;
 }
 
-a.submit:not([disabled]):active,a.submit:not([disabled]):hover {
+button.submit:not([disabled]):active, button.submit:not([disabled]):hover {
   background-color: #025aa5;
   border-color: #01549b;
 }
 
-a.info {
+button.info {
   background-color: #5bc0de;
   border-color: #5bc0de;
-  color: #fff !important;
+  color: #fff;
 }
 
-a.info:not([disabled]):active,a.info:not([disabled]):hover {
+button.info:not([disabled]):active,button.info:not([disabled]):hover {
   background-color: #31b0d5;
   border-color: #2aabd2;
 }
 
-a.danger {
+button.danger {
   background-color: #d9534f;
   border-color: #d9534f;
-  color: #fff !important;
+  color: #fff;
 }
 
-a.danger:not([disabled]):active, a.danger:not([disabled]):hover {
+button.danger:not([disabled]):active, button.danger:not([disabled]):hover {
   background-color: #c9302c;
   border-color: #c12e2a;
 }
 
-a.block {
-  display: block;
+button.block {
+  display: block
 }
 </style>

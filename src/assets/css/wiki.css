@@ -119,7 +119,7 @@
         padding: 7px;
     }
 
-    .thetree-dark-mode pre {
+    .theseed-dark-mode pre {
         background-color: #2d2f34;
         border-color: #383b40;
         color: #ddd;
@@ -137,7 +137,7 @@
         text-decoration: none;
     }
 
-    .thetree-dark-mode a {
+    .theseed-dark-mode a {
         color: #e69720;
     }
 
@@ -145,7 +145,7 @@
         color: red;
     }
 
-    .thetree-dark-mode .not-exist {
+    .theseed-dark-mode .not-exist {
         color: #dc4343 !important;
     }
 
@@ -240,11 +240,11 @@
         display: none;
     }
 
-    .thetree-dark-mode .wiki-theme-dark {
+    .theseed-dark-mode .wiki-theme-dark {
         display: inline-block;
     }
 
-    .thetree-dark-mode .wiki-theme-light {
+    .theseed-dark-mode .wiki-theme-light {
         display: none;
     }
 
@@ -311,12 +311,12 @@
         padding-bottom: 5px;
     }
 
-    .thetree-dark-mode h1.wiki-heading,
-    .thetree-dark-mode h2.wiki-heading,
-    .thetree-dark-mode h3.wiki-heading,
-    .thetree-dark-mode h4.wiki-heading,
-    .thetree-dark-mode h5.wiki-heading,
-    .thetree-dark-mode h6.wiki-heading {
+    .theseed-dark-mode h1.wiki-heading,
+    .theseed-dark-mode h2.wiki-heading,
+    .theseed-dark-mode h3.wiki-heading,
+    .theseed-dark-mode h4.wiki-heading,
+    .theseed-dark-mode h5.wiki-heading,
+    .theseed-dark-mode h6.wiki-heading {
         border-bottom-color: #383b40;
     }
 
@@ -358,7 +358,7 @@
         margin: .5em 0;
     }
 
-    .thetree-dark-mode hr {
+    .theseed-dark-mode hr {
         border-top-color: #383b40;
     }
 
@@ -405,7 +405,7 @@
         padding: 1em;
     }
 
-    .thetree-dark-mode .wiki-quote {
+    .theseed-dark-mode .wiki-quote {
         background-color: #2d2f34;
         border-color: #383b40 #383b40 #383b40 #666c75;
         color: #ddd;
@@ -427,7 +427,7 @@
         border-collapse: collapse;
     }
 
-    .thetree-dark-mode .wiki-table {
+    .theseed-dark-mode .wiki-table {
         background-color: #2d2f34;
     }
 
@@ -440,7 +440,7 @@
         padding: 5px 10px;
     }
 
-    .thetree-dark-mode .wiki-table td {
+    .theseed-dark-mode .wiki-table td {
         border: 1px solid #383b40;
     }
 
@@ -514,7 +514,7 @@
         padding: 12px 20px 18px 0;
     }
 
-    .thetree-dark-mode .wiki-macro-toc {
+    .theseed-dark-mode .wiki-macro-toc {
         border-color: #383b40;
     }
 
