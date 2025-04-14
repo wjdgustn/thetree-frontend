@@ -1,4 +1,4 @@
-import { library, config } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
     faXmark
@@ -6,7 +6,7 @@ import {
 
 export default {
     created() {
-        config.autoAddCss = false
+        // config.autoAddCss = false
 
         library.add(
             faXmark

@@ -19,3 +19,7 @@ address, dl, ol, ul {
 .theseed-dark-mode a {
     color: #e69720;
 }
+
+.svg-inline--fa {
+    vertical-align: 0;
+}
