@@ -6,6 +6,7 @@
 <script>
 import { markRaw } from 'vue'
 import { isNavigationFailure, NavigationFailureType } from 'vue-router';
+import { decode } from '@msgpack/msgpack'
 
 import Common from '@/mixins/common';
 import ProgressBar from '@/components/progressBar';
@@ -152,7 +153,8 @@ export default {
       if(res.status !== 200)
         return location.reload()
 
-      const json = await res.json()
+      const buffer = await res.arrayBuffer()
+      const json = decode(buffer)
 
       this.$refs.progressBar?.finish()
 
