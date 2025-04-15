@@ -1,5 +1,6 @@
 import { createApp as createCSRApp, createSSRApp } from 'vue'
 import { createPinia } from 'pinia'
+import { VueHeadMixin } from '@unhead/vue'
 
 import App from './App.vue'
 import router from './router'
@@ -13,7 +14,7 @@ export function useStore() {
     return store
 }
 
-export function createApp(url, initialData = {}) {
+export function createApp() {
     const app = import.meta.env.SSR
         ? createSSRApp(App)
         : createCSRApp(App)
@@ -54,11 +55,7 @@ export function createApp(url, initialData = {}) {
     }
 
     app.mixin(GlobalMixin)
-
-    if(import.meta.env.SSR) {
-        app.config.globalProperties.initialData = initialData
-        router.push(url).then()
-    }
+    app.mixin(VueHeadMixin)
 
     return { app, router, pinia }
 }
