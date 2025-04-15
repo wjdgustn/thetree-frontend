@@ -86,6 +86,8 @@ export default {
   async created() {
     if(import.meta.env.SSR) return
 
+    this.updateThemeClass()
+
     this.$store.state.components.mainView = this
 
     if(!this.$store.state.localConfigInitialized) {
@@ -111,9 +113,19 @@ export default {
   watch: {
     $route() {
       this.processNextUrl()
+    },
+    '$store.state.currentTheme'() {
+      this.updateThemeClass()
     }
   },
   methods: {
+    updateThemeClass() {
+      const theme = this.$store.state.currentTheme
+      const className = `theseed-${theme}-mode`
+      const otherClassName = `theseed-${theme === 'dark' ? 'light' : 'dark'}-mode`
+      document.body.classList.add(className)
+      document.body.classList.remove(otherClassName)
+    },
     processNextUrl() {
       if(this.nextUrl) {
         this.$router.replace(this.nextUrl)

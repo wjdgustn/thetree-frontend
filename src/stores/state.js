@@ -92,7 +92,10 @@ export const useStateStore = defineStore('state', {
   },
   getters: {
     currentTheme() {
-
+      const theme = this.localConfig['wiki.theme']
+      if(!theme || theme === 'auto')
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      return theme
     }
   }
 })
