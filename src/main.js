@@ -50,7 +50,8 @@ export function createApp() {
         eager: true
     })
     for(let [path, def] of Object.entries(globalComponents)) {
-        const name = path.split('/').pop().replace('.vue', '')
+        let name = path.split('/').pop().replace('.vue', '')
+        name = name[0].toUpperCase() + name.slice(1)
         app.component(name, def.default)
     }
 
