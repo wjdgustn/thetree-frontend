@@ -58,10 +58,10 @@ export const useStateStore = defineStore('state', {
         state.viewData = statePatches.viewData
       })
     },
-    async updateView(statePatches = {}) {
-      const contentName = statePatches.page.contentName || this.page.contentName
+    async updateView(statePatches) {
+      const contentName = statePatches?.page.contentName || this.page.contentName
       if(!contentName) {
-        this.patchPageData(statePatches)
+        if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = null
         return
       }
