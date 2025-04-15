@@ -22,15 +22,15 @@ export const useStateStore = defineStore('state', {
   actions: {
     parseResponse(json) {
       if(json.config) {
-        this.$patch({
-          config: json.config,
-          configHash: json.configHash
+        this.$patch(state => {
+          state.config = json.config
+          state.configHash = json.configHash
         })
       }
       if(json.session) {
-        this.$patch({
-          session: json.session,
-          sessionHash: json.sessionHash
+        this.$patch(state => {
+          state.session = json.session
+          state.sessionHash = json.sessionHash
         })
       }
 
