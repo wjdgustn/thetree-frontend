@@ -15,7 +15,9 @@ export const useStateStore = defineStore('state', {
 
       localConfig: {},
       localConfigInitialized: false,
-      page: {},
+      page: {
+        data: {}
+      },
       viewData: {}
     }
   },
