@@ -1,5 +1,5 @@
 <template>
-  <button v-bind="$attrs" :disabled="disabled" :class="{
+  <button v-bind="$attrs" :disabled="disabled || submittingSeedForm" :class="{
     large: $props.large,
     green: $props.green,
     submit: $props.submit,
@@ -12,6 +12,7 @@
 import NuxtLink from '@/components/global/nuxtLink.vue'
 
 export default {
+  inject: ['submittingSeedForm'],
   components: {
     NuxtLink
   },

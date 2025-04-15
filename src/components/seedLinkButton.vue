@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="$props.to" :disabled="disabled || null" :class="{
+  <NuxtLink :to="$props.to" :disabled="disable || null" @click.capture="clickBlocker" :class="{
     large: $props.large,
     green: $props.green,
     submit: $props.submit,
@@ -12,6 +12,7 @@
 import NuxtLink from '@/components/global/nuxtLink.vue'
 
 export default {
+  inject: ['submittingSeedForm'],
   components: {
     NuxtLink
   },
@@ -27,6 +28,19 @@ export default {
     info: Boolean,
     danger: Boolean,
     block: Boolean
+  },
+  computed: {
+    disable() {
+      return this.disabled || this.submittingSeedForm
+    }
+  },
+  methods: {
+    clickBlocker(e) {
+      if(this.disable) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
   }
 }
 </script>

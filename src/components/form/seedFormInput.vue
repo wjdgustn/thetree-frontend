@@ -1,10 +1,11 @@
 <template>
-  <component class="seed-form-input" :is="tag" v-bind="$attrs">
+  <component class="seed-form-input" :is="tag" v-bind="$attrs" :disabled="submittingSeedForm">
     <slot/>
   </component>
 </template>
 <script>
 export default {
+  inject: ['submittingSeedForm'],
   props: {
     tag: {
       type: String,
