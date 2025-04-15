@@ -1,45 +1,39 @@
 <template>
-  <form method="post">
-    <div class="form-block">
-      <label for="usernameInput">사용자 이름</label>
+  <SeedForm method="post">
+    <SeedFormBlock label="사용자 이름">
       <p>{{data.user.name}}</p>
       <SeedLinkButton to="/member/change_name" info>이름 변경</SeedLinkButton>
-    </div>
+    </SeedFormBlock>
 
-    <div class="form-block">
-      <label for="emailInput">이메일</label>
+    <SeedFormBlock label="이메일">
       <p>
         {{data.user.email}}
         <SeedLinkButton to="/member/change_email" info>이메일 변경</SeedLinkButton>
       </p>
-    </div>
+    </SeedFormBlock>
 
-    <div class="form-block">
-      <label for="permInput">권한</label>
+    <SeedFormBlock label="권한">
       <p>{{data.permissions.join(', ')}}</p>
-    </div>
+    </SeedFormBlock>
 
-    <div class="form-block">
-      <label for="passwordInput">비밀번호</label>
+    <SeedFormBlock label="비밀번호">
       <SeedLinkButton to="/member/change_password" info>비밀번호 변경</SeedLinkButton>
-    </div>
+    </SeedFormBlock>
 
-    <div class="form-block">
-      <label for="skinInput">스킨</label>
-      <select id="skinInput" name="skin">
+    <SeedFormBlock label="스킨" for="skinInput">
+      <SeedFormInput tag="select" id="skinInput" name="skin">
         <option value="default" :selected="data.user.skin === 'default'">기본 스킨</option>
         <template v-for="skin in data.skins">
           <option :selected="data.user.skin === skin">{{skin}}</option>
         </template>
-      </select>
-    </div>
+      </SeedFormInput>
+    </SeedFormBlock>
 
-    <div class="form-block">
-      <label>이중인증</label>
+    <SeedFormBlock label="이중인증">
       <template v-if="data.hasTotp">
         <SeedLinkButton to="/member/deactivate_otp" danger>TOTP 비활성화</SeedLinkButton>
         <div class="new-passkey-block">
-          <input id="passkey-name-input" type="text" placeholder="Passkey Name">
+          <SeedFormInput type="text" placeholder="Passkey Name"/>
           <SeedButton id="add-passkey-button" type="button" submit>Passkey 추가</SeedButton>
         </div>
         <table>
@@ -76,26 +70,31 @@
       <template v-else>
         <SeedLinkButton to="/member/activate_otp" info>TOTP 활성화</SeedLinkButton>
       </template>
-    </div>
+    </SeedFormBlock>
 
-    <div class="form-block">
-      <label for="passwordInput">API Token</label>
+    <SeedFormBlock label="API Token">
       <SeedButton type="button" danger>발급</SeedButton>
-    </div>
+    </SeedFormBlock>
 
     <div class="button-block">
       <SeedLinkButton v-if="data.canWithdraw" to="/member/withdraw" danger>계정 삭제</SeedLinkButton>
       <SeedButton submit>변경</SeedButton>
     </div>
-  </form>
+  </SeedForm>
 </template>
 <script>
-import SeedButton from '@/components/seedButton.vue';
+import SeedForm from '@/components/form/seedForm.vue'
+import SeedFormBlock from '@/components/form/seedFormBlock.vue'
+import SeedFormInput from '@/components/form/seedFormInput.vue'
+import SeedButton from '@/components/seedButton.vue'
 import SeedLinkButton from '@/components/seedLinkButton.vue'
-import LocalDate from '@/components/localDate.vue';
+import LocalDate from '@/components/localDate.vue'
 
 export default {
   components: {
+    SeedForm,
+    SeedFormBlock,
+    SeedFormInput,
     SeedButton,
     SeedLinkButton,
     LocalDate
@@ -108,31 +107,7 @@ export default {
 }
 </script>
 <style scoped>
-form div.form-block {
-  margin-bottom: 15px;
-}
-
-@media screen and (min-width: 34rem) {
-  form label {
-    display: block;
-  }
-}
-
-form label {
-  margin-bottom: .5rem;
-}
-
-form input,form select {
-  background-color: #fff;
-  background-image: none;
-  border: .0625rem solid #ccc;
-  border-radius: 0;
-  color: #55595c;
-  display: inline-block;
-  font-size: .9rem;
-  line-height: 1.5;
-  margin: 0 0 0 .7rem;
-  padding: .25rem .5rem;
+.seed-form-input {
   width: calc(100% - .7rem);
 }
 
@@ -141,12 +116,6 @@ form div.button-block {
   display: flex;
   justify-content: flex-end;
   margin-top: 2rem;
-}
-
-.theseed-dark-mode form input, .theseed-dark-mode form select {
-  background-color: #27292d;
-  border-color: #383b40;
-  color: #ddd;
 }
 
 table {
