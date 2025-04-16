@@ -1,6 +1,8 @@
 import { markRaw } from 'vue';
 import { defineStore } from 'pinia'
 
+import Skin from 'skin/layout'
+
 export const useStateStore = defineStore('state', {
   state() {
     return {
@@ -23,19 +25,6 @@ export const useStateStore = defineStore('state', {
   },
   actions: {
     parseResponse(json) {
-      if(json.config) {
-        this.$patch(state => {
-          state.config = json.config
-          state.configHash = json.configHash
-        })
-      }
-      if(json.session) {
-        this.$patch(state => {
-          state.session = json.session
-          state.sessionHash = json.sessionHash
-        })
-      }
-
       const statePatches = {}
       if(json.page) {
         Object.assign(statePatches, {
@@ -74,15 +63,17 @@ export const useStateStore = defineStore('state', {
           view = await import(`@/views/contents/${dir}/${name}.vue`)
         }
         else view = await import(`@/views/contents/${contentName}.vue`)
-      } catch (e) {
+      } catch(e) {}
+      if(view) {
+        this.patchPageData(statePatches)
+        this.viewData.viewComponent = markRaw(view.default)
+      }
+      else {
         this.page.title = '오류'
         this.page.contentHtml = `missing view ${contentName}`
-        this.page.contentName = null
-        return
       }
-      this.patchPageData(statePatches)
-      this.viewData.viewComponent = markRaw(view.default)
       this.page.contentHtml = null
+      this.components.mainView.skin = markRaw(Skin)
     },
     localConfigGetValue(key) {
 

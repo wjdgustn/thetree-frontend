@@ -4,13 +4,10 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
 import { isNavigationFailure, NavigationFailureType } from 'vue-router';
-import { decode } from '@msgpack/msgpack'
 
 import Common from '@/mixins/common';
 import ProgressBar from '@/components/progressBar';
-import Skin from 'skin/layout'
 
 export default {
   mixins: [Common],
@@ -82,7 +79,6 @@ export default {
     if(!page.contentName && !page.contentHtml) return
 
     await this.$store.state.updateView(statePatches)
-    this.skin ??= markRaw(Skin)
   },
   async created() {
     if(import.meta.env.SSR) return
@@ -104,7 +100,6 @@ export default {
     }
     else {
       await this.$store.state.updateView()
-      this.skin ??= markRaw(Skin)
     }
   },
   async beforeRouteUpdate(to, from, next) {
@@ -141,29 +136,9 @@ export default {
     },
     async loadView(url) {
       url ||= this.$route.fullPath
+
       this.$refs.progressBar?.start()
-      const res = await fetch('/internal' + url, {
-        headers: {
-          'X-Chika': import.meta.env.DEV ? 'bypass' : __THETREE_VERSION_HEADER__,
-          'X-Riko': this.$store.state.sessionHash,
-          'X-You': this.$store.state.configHash
-        }
-      })
-
-      if(res.status !== 200) {
-        if(!this.$store.state.page.contentHtml && !this.$store.state.viewData.viewComponent) {
-          this.$store.state.page.title = '오류'
-          this.$store.state.page.contentHtml = `API 요청 실패: ${res.status}`
-          await this.$store.state.updateView()
-          this.skin ??= markRaw(Skin)
-        }
-        else location.reload()
-        return
-      }
-
-      const buffer = await res.arrayBuffer()
-      const json = decode(buffer)
-
+      const json = await this.internalRequest(url)
       this.$refs.progressBar?.finish()
 
       const statePatches = this.$store.state.parseResponse(json)
@@ -176,7 +151,6 @@ export default {
 
       if(json.page) {
         await this.$store.state.updateView(statePatches)
-        this.skin ??= markRaw(Skin)
       }
     }
   }

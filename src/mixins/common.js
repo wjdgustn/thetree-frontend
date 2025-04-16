@@ -1,9 +1,6 @@
-export default {
-    data() {
-        return {
+import { decode } from '@msgpack/msgpack';
 
-        }
-    },
+export default {
     methods: {
         doc_fulltitle(document) {
             const type = typeof document;
@@ -78,6 +75,45 @@ export default {
         },
         removeHtmlTags(text) {
             return text.replaceAll(/<[^>]+>/g, '');
+        },
+        async internalRequest(url, options) {
+            const res = await fetch('/internal' + url, {
+                ...options,
+                headers: {
+                    ...(options?.headers || {}),
+                    'X-Chika': import.meta.env.DEV ? 'bypass' : __THETREE_VERSION_HEADER__,
+                    'X-Riko': this.$store.state.sessionHash,
+                    'X-You': this.$store.state.configHash
+                }
+            })
+
+            if(res.status !== 200) {
+                if(!this.$store.state.page.contentHtml && !this.$store.state.viewData.viewComponent) {
+                    this.$store.state.page.title = '오류'
+                    this.$store.state.page.contentHtml = `API 요청 실패: ${res.status}`
+                    await this.$store.state.updateView()
+                }
+                else location.reload()
+                return
+            }
+
+            const buffer = await res.arrayBuffer()
+            const json = decode(buffer)
+
+            if(json.config) {
+                this.$store.state.$patch(state => {
+                    state.config = json.config
+                    state.configHash = json.configHash
+                })
+            }
+            if(json.session) {
+                this.$store.state.$patch(state => {
+                    state.session = json.session
+                    state.sessionHash = json.sessionHash
+                })
+            }
+
+            return json
         }
     }
 }
