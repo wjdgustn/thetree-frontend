@@ -20,7 +20,7 @@
       <SeedLinkButton to="/member/change_password" info>비밀번호 변경</SeedLinkButton>
     </SeedFormBlock>
 
-    <SeedFormBlock label="스킨" for="skinInput">
+    <SeedFormBlock label="스킨" for="skinInput" name="skin">
       <SeedFormInput tag="select" id="skinInput" name="skin">
         <option value="default" :selected="data.user.skin === 'default'">기본 스킨</option>
         <template v-for="skin in data.skins">

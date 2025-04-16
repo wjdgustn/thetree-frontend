@@ -67,13 +67,19 @@ export const useStateStore = defineStore('state', {
       if(view) {
         this.patchPageData(statePatches)
         this.viewData.viewComponent = markRaw(view.default)
+        this.page.contentHtml = null
       }
       else {
         this.page.title = '오류'
         this.page.contentHtml = `missing view ${contentName}`
       }
-      this.page.contentHtml = null
       this.components.mainView.skin = markRaw(Skin)
+
+      this.cleanTempState()
+    },
+    cleanTempState() {
+      this.viewData.errorAlert = null
+      this.viewData.fieldErrors = null
     },
     localConfigGetValue(key) {
 

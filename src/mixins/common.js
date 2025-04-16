@@ -77,7 +77,11 @@ export default {
             return text.replaceAll(/<[^>]+>/g, '');
         },
         async internalRequest(url, options) {
-            const res = await fetch('/internal' + url, {
+            const mainView = this.$store.state.components.mainView
+            const progressBar = mainView.$refs.progressBar
+            progressBar?.start()
+
+            const res = await fetch(typeof url === 'string' ? '/internal' + url : url, {
                 ...options,
                 headers: {
                     ...(options?.headers || {}),
@@ -94,11 +98,13 @@ export default {
                     await this.$store.state.updateView()
                 }
                 else location.reload()
+                progressBar?.finish()
                 return
             }
 
             const buffer = await res.arrayBuffer()
             const json = decode(buffer)
+            if(import.meta.env.DEV) console.log(json)
 
             if(json.config) {
                 this.$store.state.$patch(state => {
@@ -113,6 +119,14 @@ export default {
                 })
             }
 
+            const strCode = json.code?.toString() || ''
+            if(strCode.startsWith('3')) {
+                mainView.nextUrl = json.url
+                progressBar?.finish()
+                return
+            }
+
+            progressBar?.finish()
             return json
         }
     }

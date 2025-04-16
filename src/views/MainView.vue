@@ -93,8 +93,7 @@ export default {
     }
 
     const page = this.$store.state.page
-    if(!page.contentName && !page.contentHtml)
-    {
+    if(!page.contentName && !page.contentHtml) {
       await this.loadView()
       this.processNextUrl()
     }
@@ -137,17 +136,9 @@ export default {
     async loadView(url) {
       url ||= this.$route.fullPath
 
-      this.$refs.progressBar?.start()
       const json = await this.internalRequest(url)
-      this.$refs.progressBar?.finish()
-
+      if(!json) return
       const statePatches = this.$store.state.parseResponse(json)
-
-      const strCode = json.code?.toString() || ''
-      if(strCode.startsWith('3')) {
-        this.nextUrl = json.url
-        return
-      }
 
       if(json.page) {
         await this.$store.state.updateView(statePatches)
