@@ -72,20 +72,20 @@ export default {
     }
   },
   async serverPrefetch() {
+    this.afterInternalRequest(this.initialData)
     const statePatches = this.$store.state.parseResponse(this.initialData)
     delete this.initialData
 
-    const page = this.$store.state.page
+    const page = statePatches.page
     if(!page.contentName && !page.contentHtml) return
 
     await this.$store.state.updateView(statePatches)
   },
   async created() {
+    this.$store.state.components.mainView = this
     if(import.meta.env.SSR) return
 
     this.updateThemeClass()
-
-    this.$store.state.components.mainView = this
 
     if(!this.$store.state.localConfigInitialized) {
       this.$store.state.localConfig = JSON.parse(localStorage.getItem('thetree_settings')) || {}

@@ -65,7 +65,7 @@ export const useStateStore = defineStore('state', {
         else view = await import(`@/views/contents/${contentName}.vue`)
       } catch(e) {}
       if(view) {
-        this.patchPageData(statePatches)
+        if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = markRaw(view.default)
         this.page.contentHtml = null
       }
@@ -91,6 +91,9 @@ export const useStateStore = defineStore('state', {
   },
   getters: {
     currentTheme() {
+      if(import.meta.env.SSR)
+        return 'light'
+
       const theme = this.localConfig['wiki.theme']
       if(!theme || theme === 'auto')
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'

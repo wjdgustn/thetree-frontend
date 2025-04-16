@@ -104,6 +104,11 @@ export default {
 
             const buffer = await res.arrayBuffer()
             const json = decode(buffer)
+            this.afterInternalRequest(json, progressBar)
+
+            return json
+        },
+        afterInternalRequest(json, progressBar) {
             if(import.meta.env.DEV) console.log(json)
 
             if(json.config) {
@@ -121,13 +126,12 @@ export default {
 
             const strCode = json.code?.toString() || ''
             if(strCode.startsWith('3')) {
-                mainView.nextUrl = json.url
+                this.$store.state.components.mainView.nextUrl = json.url
                 progressBar?.finish()
                 return
             }
 
             progressBar?.finish()
-            return json
         }
     }
 }

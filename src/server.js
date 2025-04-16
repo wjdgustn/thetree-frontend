@@ -15,8 +15,13 @@ export async function render(url, data) {
     const html = await renderToString(app)
     const head = await renderSSRHead(unhead)
 
+    const state = pinia.state.value['state']
+    state.components = {}
+    state.viewData.viewComponent = null
+
     return {
         head,
         html,
-        state: pinia.state.value['state'] }
+        state
+    }
 }
