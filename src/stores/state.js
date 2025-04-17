@@ -83,9 +83,6 @@ export const useStateStore = defineStore('state', {
       this.viewData.errorAlert = null
       this.viewData.fieldErrors = null
     },
-    localConfigGetValue(key) {
-
-    },
     localConfigSetValue(key, value) {
       this.localConfig[key] = value
       localStorage.setItem('thetree_settings', JSON.stringify(this.localConfig))

@@ -1,5 +1,6 @@
 <template>
   <RouterView/>
+  <ModalsContainer/>
 </template>
 <style>
 @import '@/assets/css/ionicons.min.css';

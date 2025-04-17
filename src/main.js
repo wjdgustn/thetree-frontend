@@ -1,6 +1,7 @@
 import { createApp as createCSRApp, createSSRApp } from 'vue'
 import { createPinia } from 'pinia'
 import { VueHeadMixin } from '@unhead/vue'
+import { vfmPlugin } from 'vue-final-modal'
 import { decode } from '@msgpack/msgpack'
 
 import App from './App.vue'
@@ -33,6 +34,7 @@ export function createApp() {
     const pinia = createPinia()
     app.use(pinia)
     app.use(router)
+    app.use(vfmPlugin)
 
     if(!import.meta.env.SSR && window.INITIAL_STATE) {
         pinia.state.value['state'] = decode(base64ToUint8Array(window.INITIAL_STATE));

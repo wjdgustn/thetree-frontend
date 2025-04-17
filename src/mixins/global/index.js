@@ -1,4 +1,4 @@
-import FontAwesomeIcon from '@/mixins/global/fontAwesomeIcon.js'
+import FontAwesomeIcon from '@/mixins/global/fontAwesomeIcon'
 
 export default {
     mixins: [
