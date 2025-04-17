@@ -72,7 +72,14 @@ export default {
       }
 
       if(json.data) {
-        this.$store.state.viewData.fieldErrors = json.data.fieldErrors
+        if(typeof json.data === 'string') {
+          this.$store.state.viewData.errorAlert = json.data
+          this.$store.state.viewData.errorAlertExists = false
+          await this.$nextTick()
+          if(!this.$store.state.viewData.errorAlertExists)
+            alert(json.data)
+        }
+        else this.$store.state.viewData.fieldErrors = json.data.fieldErrors
       }
     }
   }

@@ -12,18 +12,9 @@
 <script>
 export default {
   props: {
-    theme: {
-      type: String,
-      default: ''
-    },
-    error: {
-      type: Boolean,
-      default: false
-    },
-    closable: {
-      type: Boolean,
-      default: false
-    }
+    theme: String,
+    error: Boolean,
+    closable: Boolean
   },
   methods: {
     close() {
