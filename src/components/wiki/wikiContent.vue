@@ -1,4 +1,12 @@
 <template>
+  <WikiCategory v-if="categories.length" :categories="categories"/>
+  <Alert v-else>
+    이 문서는 분류가 되어 있지 않습니다. <NuxtLink :to="doc_action_link({
+      namespace: '분류',
+      title: '분류'
+    }, 'w')">분류:분류</NuxtLink>에서 적절한 분류를 찾아 문서를 분류해주세요!
+  </Alert>
+
   <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" :class="{ 'wiki-thread-content': discuss }"></div>
 
   <div ref="popover" v-show="popover.show" id="tooltip" class="popper">
@@ -13,10 +21,19 @@
 <script>
 import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/vue'
 
+import NuxtLink from '@/components/global/nuxtLink'
+import Alert from '@/components/alert'
+import WikiCategory from '@/components/wiki/wikiCategory'
+
 import Common from '@/mixins/common'
 import { isMobile } from '@/utils'
 
 export default {
+  components: {
+    NuxtLink,
+    Alert,
+    WikiCategory
+  },
   mixins: [Common],
   props: {
     discuss: {
@@ -168,6 +185,9 @@ export default {
   computed: {
     footnotes() {
       return document.getElementsByClassName('wiki-fn-content')
+    },
+    categories() {
+      return this.$store.state.viewData.categories
     }
   },
   data() {
