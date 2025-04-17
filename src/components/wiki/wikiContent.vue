@@ -7,6 +7,23 @@
     }, 'w')">분류:분류</NuxtLink>에서 적절한 분류를 찾아 문서를 분류해주세요!
   </Alert>
 
+  <div v-if="userbox.admin" class="user-box admin-box">
+    이 사용자는 특수 권한을 가지고 있습니다.
+  </div>
+  <div v-if="userbox.blocked" class="user-box banned-box">
+    이 사용자는 차단된 사용자입니다. (#{{userbox.blocked.id}})<br><br>
+
+    이 사용자는 <LocalDate :date="userbox.blocked.createdAt"/>에
+    <template v-if="userbox.blocked.expiresAt">
+      <LocalDate :date="userbox.blocked.expiresAt"/> 까지
+    </template>
+    <template v-else>
+      영구적으로
+    </template>
+    차단되었습니다.<br>
+    차단 사유: {{userbox.blocked.note ?? '없음'}}
+  </div>
+
   <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" :class="{ 'wiki-thread-content': discuss }"></div>
 
   <div ref="popover" v-show="popover.show" id="tooltip" class="popper">
@@ -24,6 +41,7 @@ import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/v
 import NuxtLink from '@/components/global/nuxtLink'
 import Alert from '@/components/alert'
 import WikiCategory from '@/components/wiki/wikiCategory'
+import LocalDate from '@/components/localDate'
 
 import Common from '@/mixins/common'
 import { isMobile } from '@/utils'
@@ -32,7 +50,8 @@ export default {
   components: {
     NuxtLink,
     Alert,
-    WikiCategory
+    WikiCategory,
+    LocalDate
   },
   mixins: [Common],
   props: {
@@ -45,149 +64,15 @@ export default {
       default: ''
     }
   },
-  mounted() {
-    const div = this.$refs.div;
-
-    const headings = div.getElementsByClassName('wiki-heading');
-    for(let heading of headings) {
-      heading.addEventListener('click', e => {
-        if(e.target.tagName === 'A') return;
-
-        const heading = e.currentTarget;
-        const content = heading.nextElementSibling;
-        const prevClosed = heading.classList.contains('wiki-heading-folded');
-        if(prevClosed) {
-          heading.classList.remove('wiki-heading-folded');
-          content.classList.remove('wiki-heading-content-folded');
-        }
-        else {
-          heading.classList.add('wiki-heading-folded');
-          content.classList.add('wiki-heading-content-folded');
-        }
-      });
-
-      if(this.$store.state.localConfig['wiki.hide_heading_content']) {
-        heading.classList.add('wiki-heading-folded');
-        heading.nextElementSibling.classList.add('wiki-heading-content-folded');
-      }
-    }
-
-    const foldings = div.getElementsByClassName('wiki-folding');
-    for(let folding of foldings) {
-      const foldingText = folding.firstElementChild;
-      const foldingContent = foldingText.nextElementSibling;
-
-      let offsetWidth;
-      let offsetHeight;
-      const resizeObserver = new ResizeObserver(([entry]) => {
-        if(!entry.contentRect.height) return;
-
-        const openedBefore = foldingContent.classList.contains('wiki-folding-opened');
-
-        if(!openedBefore) foldingContent.classList.add('wiki-folding-opened');
-        offsetWidth = foldingContent.offsetWidth;
-        offsetHeight = foldingContent.offsetHeight;
-        if(!openedBefore) foldingContent.classList.remove('wiki-folding-opened');
-
-        resizeObserver.disconnect();
-      });
-      resizeObserver.observe(foldingText);
-
-      let transitionCount = 0;
-      const transitioning = () => transitionCount !== 0;
-
-      foldingContent.addEventListener('transitionstart', _ => transitionCount++);
-      foldingContent.addEventListener('transitionend', _ => transitionCount--);
-      foldingContent.addEventListener('transitioncancel', _ => transitionCount--);
-
-      const setSizeToOffsetSize = () => {
-        foldingContent.style.maxWidth = offsetWidth + 'px';
-        foldingContent.style.maxHeight = offsetHeight + 'px';
-      }
-      const removeSize = () => {
-        foldingContent.style.maxWidth = '';
-        foldingContent.style.maxHeight = '';
-      }
-      const finishOpen = () => {
-        if(transitioning()) return;
-
-        removeSize();
-        foldingContent.classList.add('wiki-folding-opened');
-
-        foldingContent.removeEventListener('transitionend', finishOpen);
-      }
-
-      if(this.$store.state.localConfig['wiki.show_folding'])
-        foldingContent.classList.add('wiki-folding-open-anim', 'wiki-folding-opened');
-
-      foldingText.addEventListener('click', e => {
-        const foldingText = e.currentTarget;
-        const foldingContent = foldingText.nextElementSibling;
-
-        const opened = foldingContent.classList.contains('wiki-folding-open-anim');
-
-        if(opened) {
-          setSizeToOffsetSize();
-
-          requestAnimationFrame(_ => {
-            foldingContent.classList.remove('wiki-folding-open-anim');
-            foldingContent.classList.remove('wiki-folding-opened');
-
-            removeSize();
-          });
-        }
-        else {
-          foldingContent.classList.add('wiki-folding-open-anim');
-          setSizeToOffsetSize();
-
-          foldingContent.addEventListener('transitionend', finishOpen);
-        }
-      });
-    }
-
-    let footnoteType = this.$store.state.localConfig['wiki.footnote_type'];
-    footnoteType ??= isMobile ? 'popup' : 'popover';
-
-    if(footnoteType === 'popover') this.setupFootnoteTooltip();
-    else if(footnoteType === 'popup') this.setupFootnoteModal();
-
-    const oldDarkStyle = document.getElementById('darkStyle');
-    if(oldDarkStyle) oldDarkStyle.remove();
-
-    const darkStyleElements = document.querySelectorAll('*[data-dark-style]');
-    const darkStyles = [];
-    for(let element of darkStyleElements) {
-      const styleData = element.dataset.darkStyle.split(';').map(a => a.trim()).filter(a => a);
-      let style = '';
-      for(let stylePart of styleData) {
-        const [key, value] = stylePart.split(':').map(a => a.trim());
-        style += `${key}:${value} !important;`;
-      }
-
-      let darkStyle = darkStyles.find(a => a.style === style);
-      if(!darkStyle) {
-        darkStyle = {
-          style,
-          class: '_' + crypto.randomUUID().replaceAll('-', '')
-        }
-        darkStyles.push(darkStyle);
-      }
-      element.classList.add(darkStyle.class);
-    }
-
-    if(darkStyles.length) {
-      const newDarkStyle = document.createElement('style');
-      newDarkStyle.id = 'darkStyle';
-      newDarkStyle.innerHTML = darkStyles.map(a => `.theseed-dark-mode .${a.class}{${a.style}}`).join('');
-      document.body.appendChild(newDarkStyle);
-    }
-  },
   computed: {
     footnotes() {
       return document.getElementsByClassName('wiki-fn-content')
     },
     categories() {
       return this.$store.state.viewData.categories
+    },
+    userbox() {
+      return this.$store.state.viewData.userboxData ?? {}
     }
   },
   data() {
@@ -202,7 +87,147 @@ export default {
       }
     }
   },
+  mounted() {
+    this.setupWikiContent()
+  },
   methods: {
+    setupWikiContent() {
+      const div = this.$refs.div;
+
+      const headings = div.getElementsByClassName('wiki-heading');
+      for(let heading of headings) {
+        heading.addEventListener('click', e => {
+          if(e.target.tagName === 'A') return;
+
+          const heading = e.currentTarget;
+          const content = heading.nextElementSibling;
+          const prevClosed = heading.classList.contains('wiki-heading-folded');
+          if(prevClosed) {
+            heading.classList.remove('wiki-heading-folded');
+            content.classList.remove('wiki-heading-content-folded');
+          }
+          else {
+            heading.classList.add('wiki-heading-folded');
+            content.classList.add('wiki-heading-content-folded');
+          }
+        });
+
+        if(this.$store.state.localConfig['wiki.hide_heading_content']) {
+          heading.classList.add('wiki-heading-folded');
+          heading.nextElementSibling.classList.add('wiki-heading-content-folded');
+        }
+      }
+
+      const foldings = div.getElementsByClassName('wiki-folding');
+      for(let folding of foldings) {
+        const foldingText = folding.firstElementChild;
+        const foldingContent = foldingText.nextElementSibling;
+
+        let offsetWidth;
+        let offsetHeight;
+        const resizeObserver = new ResizeObserver(([entry]) => {
+          if(!entry.contentRect.height) return;
+
+          const openedBefore = foldingContent.classList.contains('wiki-folding-opened');
+
+          if(!openedBefore) foldingContent.classList.add('wiki-folding-opened');
+          offsetWidth = foldingContent.offsetWidth;
+          offsetHeight = foldingContent.offsetHeight;
+          if(!openedBefore) foldingContent.classList.remove('wiki-folding-opened');
+
+          resizeObserver.disconnect();
+        });
+        resizeObserver.observe(foldingText);
+
+        let transitionCount = 0;
+        const transitioning = () => transitionCount !== 0;
+
+        foldingContent.addEventListener('transitionstart', _ => transitionCount++);
+        foldingContent.addEventListener('transitionend', _ => transitionCount--);
+        foldingContent.addEventListener('transitioncancel', _ => transitionCount--);
+
+        const setSizeToOffsetSize = () => {
+          foldingContent.style.maxWidth = offsetWidth + 'px';
+          foldingContent.style.maxHeight = offsetHeight + 'px';
+        }
+        const removeSize = () => {
+          foldingContent.style.maxWidth = '';
+          foldingContent.style.maxHeight = '';
+        }
+        const finishOpen = () => {
+          if(transitioning()) return;
+
+          removeSize();
+          foldingContent.classList.add('wiki-folding-opened');
+
+          foldingContent.removeEventListener('transitionend', finishOpen);
+        }
+
+        if(this.$store.state.localConfig['wiki.show_folding'])
+          foldingContent.classList.add('wiki-folding-open-anim', 'wiki-folding-opened');
+
+        foldingText.addEventListener('click', e => {
+          const foldingText = e.currentTarget;
+          const foldingContent = foldingText.nextElementSibling;
+
+          const opened = foldingContent.classList.contains('wiki-folding-open-anim');
+
+          if(opened) {
+            setSizeToOffsetSize();
+
+            requestAnimationFrame(_ => {
+              foldingContent.classList.remove('wiki-folding-open-anim');
+              foldingContent.classList.remove('wiki-folding-opened');
+
+              removeSize();
+            });
+          }
+          else {
+            foldingContent.classList.add('wiki-folding-open-anim');
+            setSizeToOffsetSize();
+
+            foldingContent.addEventListener('transitionend', finishOpen);
+          }
+        });
+      }
+
+      let footnoteType = this.$store.state.localConfig['wiki.footnote_type'];
+      footnoteType ??= isMobile ? 'popup' : 'popover';
+
+      if(footnoteType === 'popover') this.setupFootnoteTooltip();
+      else if(footnoteType === 'popup') this.setupFootnoteModal();
+
+      const oldDarkStyle = document.getElementById('darkStyle');
+      if(oldDarkStyle) oldDarkStyle.remove();
+
+      const darkStyleElements = document.querySelectorAll('*[data-dark-style]');
+      const darkStyles = [];
+      for(let element of darkStyleElements) {
+        const styleData = element.dataset.darkStyle.split(';').map(a => a.trim()).filter(a => a);
+        let style = '';
+        for(let stylePart of styleData) {
+          const [key, value] = stylePart.split(':').map(a => a.trim());
+          style += `${key}:${value} !important;`;
+        }
+
+        let darkStyle = darkStyles.find(a => a.style === style);
+        if(!darkStyle) {
+          darkStyle = {
+            style,
+            class: '_' + crypto.randomUUID().replaceAll('-', '')
+          }
+          darkStyles.push(darkStyle);
+        }
+        element.classList.add(darkStyle.class);
+      }
+
+      if(darkStyles.length) {
+        const newDarkStyle = document.createElement('style');
+        newDarkStyle.id = 'darkStyle';
+        newDarkStyle.innerHTML = darkStyles.map(a => `.theseed-dark-mode .${a.class}{${a.style}}`).join('');
+        document.body.appendChild(newDarkStyle);
+      }
+    },
     setupFootnoteTooltip() {
       let cleanup;
       let hovering = 0;
@@ -389,5 +414,29 @@ export default {
   outline: none;
   padding: 10px;
   width: 100%;
+}
+
+.user-box {
+  border-width: 5px 1px 1px;
+  border-style: solid;
+  border-image: initial;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-box {
+  border-color: orange gray gray;
+}
+
+.admin-box:hover {
+  border-color: red gray gray;
+}
+
+.banned-box {
+  border-color: red gray gray;
+}
+
+.banned-box:hover {
+  border-color: blue gray gray;
 }
 </style>
