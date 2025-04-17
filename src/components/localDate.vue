@@ -15,6 +15,10 @@ export default {
     relative: {
       type: Boolean,
       default: false
+    },
+    forceRelative: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -30,7 +34,7 @@ export default {
               : this.date * 1000);
     },
     isRelative() {
-      return this.relative && !this.$store.state.localConfig['wiki.no_relative_date'];
+      return this.forceRelative || (this.relative && !this.$store.state.localConfig['wiki.no_relative_date']);
     },
     relativeDate() {
       const diff = this.currDate - this.dateObject;

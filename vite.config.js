@@ -6,6 +6,7 @@ import { fileURLToPath, URL } from 'url'
 import path from 'path'
 import fs from 'fs'
 import crypto from 'crypto'
+import { execSync } from 'child_process'
 
 import skinRawLoaderPlugin from './plugins/skinRawLoader'
 import metadata from './plugins/metadata'
@@ -17,10 +18,13 @@ export default defineConfig(({ mode, isSsrBuild }) => {
   const skin = env.SKIN_NAME || fs.readdirSync('./skins')[0]
 
   const srcPath = fileURLToPath(new URL('./src', import.meta.url))
+  const skinPath = path.resolve('./skins', skin)
 
   const commitIds = {
-    frontend: 'fedummy',
-    skin: 'skindummy'
+    frontend: execSync('git rev-parse --short HEAD').toString().trim(),
+    skin: execSync('git rev-parse --short HEAD', {
+      cwd: skinPath
+    }).toString().trim()
   }
   const versionHeader = crypto.createHash('md5')
       .update(skin + JSON.stringify(commitIds))
@@ -48,7 +52,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         // vue: 'vue/dist/vue.esm-bundler.js',
         '@': srcPath,
         '~': srcPath,
-        'skin': path.resolve('./skins', skin),
+        'skin': skinPath,
 
         'vuex': path.resolve(srcPath, 'main'),
       },
