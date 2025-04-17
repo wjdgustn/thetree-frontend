@@ -34,7 +34,7 @@ export default {
                 '\\'
             ];
 
-            const title = this.doc_fulltitle(document);
+            const title = typeof document === 'string' ? document : this.doc_fulltitle(document);
             let str;
             if(specialUrls.includes(title) || route.startsWith('a/')) {
                 query.doc = encodeURIComponent(title);
@@ -77,8 +77,11 @@ export default {
             return text.replaceAll(/<[^>]+>/g, '');
         },
         async internalRequest(url, options) {
+            const noProgress = options.noProgress ?? false
+            delete options.noProgress
+
             const mainView = this.$store.state.components.mainView
-            const progressBar = mainView.$refs.progressBar
+            const progressBar = noProgress ? null : mainView.$refs.progressBar
             progressBar?.start()
 
             const userUrl = options?.userUrl
