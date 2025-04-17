@@ -90,6 +90,11 @@ export default {
   mounted() {
     this.setupWikiContent()
   },
+  watch: {
+    $route() {
+      this.setupWikiContent()
+    }
+  },
   methods: {
     setupWikiContent() {
       const div = this.$refs.div;
