@@ -81,6 +81,9 @@ export default {
             const progressBar = mainView.$refs.progressBar
             progressBar?.start()
 
+            const userUrl = options?.userUrl
+            delete options?.userUrl
+
             const res = await fetch(typeof url === 'string' ? '/internal' + url : url, {
                 ...options,
                 headers: {
@@ -97,7 +100,10 @@ export default {
                     this.$store.state.page.contentHtml = `API 요청 실패: ${res.status}`
                     await this.$store.state.updateView()
                 }
-                else location.reload()
+                else {
+                    if(userUrl) location.href = userUrl
+                    else location.reload()
+                }
                 progressBar?.finish()
                 return
             }

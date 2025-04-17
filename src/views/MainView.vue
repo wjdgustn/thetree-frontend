@@ -143,7 +143,7 @@ export default {
     async loadView(url) {
       url ||= this.$route.fullPath
 
-      const json = await this.internalRequest(url)
+      const json = await this.internalRequest(url, { userUrl: url })
       if(!json) return
       const statePatches = this.$store.state.parseResponse(json)
 
