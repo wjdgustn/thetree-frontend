@@ -9,13 +9,8 @@
   }"><slot/></button>
 </template>
 <script>
-import NuxtLink from '@/components/global/nuxtLink.vue'
-
 export default {
   inject: ['submittingSeedForm'],
-  components: {
-    NuxtLink
-  },
   props: {
     disabled: Boolean,
     large: Boolean,

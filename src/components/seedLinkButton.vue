@@ -9,7 +9,7 @@
   }"><slot/></NuxtLink>
 </template>
 <script>
-import NuxtLink from '@/components/global/nuxtLink.vue'
+import NuxtLink from '@/components/global/nuxtLink'
 
 export default {
   inject: ['submittingSeedForm'],
