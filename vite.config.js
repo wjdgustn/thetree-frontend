@@ -31,6 +31,11 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       .digest('hex')
       .slice(0, 17)
 
+  const apiProxy = {
+    target: env.API_HOST || 'http://localhost:3000',
+    changeOrigin: true
+  }
+
   return defineConfig({
     plugins: [
       vue(),
@@ -59,10 +64,8 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     server: {
       proxy: {
-        '/internal': {
-          target: env.API_HOST || 'http://localhost:3000',
-          changeOrigin: true
-        }
+        '/internal': apiProxy,
+        '/sidebar.json': apiProxy
       }
     },
     build: {
