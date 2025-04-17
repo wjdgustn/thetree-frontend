@@ -7,7 +7,8 @@ const router = createRouter({
     if(to.hash) return {
       el: to.hash
     }
-    else return savedPosition
+    else if(savedPosition) return savedPosition
+    else return { left: 0, top: 0 }
   },
 
   routes: [
