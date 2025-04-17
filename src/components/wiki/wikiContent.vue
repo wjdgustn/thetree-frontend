@@ -1,6 +1,6 @@
 <template>
   <WikiCategory v-if="categories.length" :categories="categories"/>
-  <Alert v-else>
+  <Alert v-else-if="$store.state.page.data.document.namespace !== '사용자'">
     이 문서는 분류가 되어 있지 않습니다. <NuxtLink :to="doc_action_link({
       namespace: '분류',
       title: '분류'
