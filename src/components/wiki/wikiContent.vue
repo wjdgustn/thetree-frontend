@@ -1,6 +1,10 @@
 <template>
+  <Alert v-if="data.rev" error>
+    <b>[주의!]</b> 문서의 이전 버전(<LocalDate :date="data.date"/>에 수정)을 보고 있습니다. <NuxtLink :to="doc_action_link(data.document, 'w')">최신 버전으로 이동</NuxtLink>
+  </Alert>
+
   <WikiCategory v-if="categories.length" :categories="categories"/>
-  <Alert v-else-if="$store.state.page.data.document.namespace !== '사용자'">
+  <Alert v-else-if="data.document.namespace !== '사용자'">
     이 문서는 분류가 되어 있지 않습니다. <NuxtLink :to="doc_action_link({
       namespace: '분류',
       title: '분류'
@@ -67,6 +71,9 @@ export default {
   computed: {
     footnotes() {
       return document.getElementsByClassName('wiki-fn-content')
+    },
+    data() {
+      return this.$store.state.page.data
     },
     categories() {
       return this.$store.state.viewData.categories
