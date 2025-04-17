@@ -23,3 +23,24 @@ address, dl, ol, ul {
 .svg-inline--fa {
     vertical-align: 0;
 }
+
+.thetree-modal-content {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: .25rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 600px;
+    position: relative;
+}
+
+.theseed-dark-mode .thetree-modal-content {
+    background-color: #2d2f34;
+    border-color: #2d3748;
+}
+
+.thetree-modal-container {
+    overflow-y: scroll;
+    padding: 1rem .5rem;
+}

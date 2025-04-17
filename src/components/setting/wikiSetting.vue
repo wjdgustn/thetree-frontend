@@ -27,7 +27,8 @@
 <script>
 import SettingItemCheckbox from '@/components/settingItemCheckbox';
 import SettingItemSelect from '@/components/settingItemSelect';
-import {isMobile} from '@/utils/index.js'
+
+import { isMobile } from '@/utils'
 
 export default {
   components: {

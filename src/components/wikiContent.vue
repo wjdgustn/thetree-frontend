@@ -1,8 +1,20 @@
 <template>
   <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" :class="{ 'wiki-thread-content': discuss }"></div>
+
+  <div ref="popover" v-show="popover.show" id="tooltip" class="popper">
+    <div ref="popoverArrow" id="tooltip-arrow" class="popper__arrow"></div>
+    <div id="tooltip-content" class="wiki-content" v-html="popover.content"></div>
+  </div>
+  <VueFinalModal v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content" v-model="modal.show">
+    <div class="wiki-content" v-html="modal.content"></div>
+    <button @click="close">닫기</button>
+  </VueFinalModal>
 </template>
 <script>
+import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/vue'
+
 import Common from '@/mixins/common'
+import { isMobile } from '@/utils'
 
 export default {
   mixins: [Common],
@@ -15,6 +27,347 @@ export default {
       type: String,
       default: ''
     }
+  },
+  mounted() {
+    const div = this.$refs.div;
+
+    const headings = div.getElementsByClassName('wiki-heading');
+    for(let heading of headings) {
+      heading.addEventListener('click', e => {
+        if(e.target.tagName === 'A') return;
+
+        const heading = e.currentTarget;
+        const content = heading.nextElementSibling;
+        const prevClosed = heading.classList.contains('wiki-heading-folded');
+        if(prevClosed) {
+          heading.classList.remove('wiki-heading-folded');
+          content.classList.remove('wiki-heading-content-folded');
+        }
+        else {
+          heading.classList.add('wiki-heading-folded');
+          content.classList.add('wiki-heading-content-folded');
+        }
+      });
+
+      if(this.$store.state.localConfig['wiki.hide_heading_content']) {
+        heading.classList.add('wiki-heading-folded');
+        heading.nextElementSibling.classList.add('wiki-heading-content-folded');
+      }
+    }
+
+    const foldings = div.getElementsByClassName('wiki-folding');
+    for(let folding of foldings) {
+      const foldingText = folding.firstElementChild;
+      const foldingContent = foldingText.nextElementSibling;
+
+      let offsetWidth;
+      let offsetHeight;
+      const resizeObserver = new ResizeObserver(([entry]) => {
+        if(!entry.contentRect.height) return;
+
+        const openedBefore = foldingContent.classList.contains('wiki-folding-opened');
+
+        if(!openedBefore) foldingContent.classList.add('wiki-folding-opened');
+        offsetWidth = foldingContent.offsetWidth;
+        offsetHeight = foldingContent.offsetHeight;
+        if(!openedBefore) foldingContent.classList.remove('wiki-folding-opened');
+
+        resizeObserver.disconnect();
+      });
+      resizeObserver.observe(foldingText);
+
+      let transitionCount = 0;
+      const transitioning = () => transitionCount !== 0;
+
+      foldingContent.addEventListener('transitionstart', _ => transitionCount++);
+      foldingContent.addEventListener('transitionend', _ => transitionCount--);
+      foldingContent.addEventListener('transitioncancel', _ => transitionCount--);
+
+      const setSizeToOffsetSize = () => {
+        foldingContent.style.maxWidth = offsetWidth + 'px';
+        foldingContent.style.maxHeight = offsetHeight + 'px';
+      }
+      const removeSize = () => {
+        foldingContent.style.maxWidth = '';
+        foldingContent.style.maxHeight = '';
+      }
+      const finishOpen = () => {
+        if(transitioning()) return;
+
+        removeSize();
+        foldingContent.classList.add('wiki-folding-opened');
+
+        foldingContent.removeEventListener('transitionend', finishOpen);
+      }
+
+      if(this.$store.state.localConfig['wiki.show_folding'])
+        foldingContent.classList.add('wiki-folding-open-anim', 'wiki-folding-opened');
+
+      foldingText.addEventListener('click', e => {
+        const foldingText = e.currentTarget;
+        const foldingContent = foldingText.nextElementSibling;
+
+        const opened = foldingContent.classList.contains('wiki-folding-open-anim');
+
+        if(opened) {
+          setSizeToOffsetSize();
+
+          requestAnimationFrame(_ => {
+            foldingContent.classList.remove('wiki-folding-open-anim');
+            foldingContent.classList.remove('wiki-folding-opened');
+
+            removeSize();
+          });
+        }
+        else {
+          foldingContent.classList.add('wiki-folding-open-anim');
+          setSizeToOffsetSize();
+
+          foldingContent.addEventListener('transitionend', finishOpen);
+        }
+      });
+    }
+
+    let footnoteType = this.$store.state.localConfig['wiki.footnote_type'];
+    footnoteType ??= isMobile ? 'popup' : 'popover';
+
+    if(footnoteType === 'popover') this.setupFootnoteTooltip();
+    else if(footnoteType === 'popup') this.setupFootnoteModal();
+
+    const oldDarkStyle = document.getElementById('darkStyle');
+    if(oldDarkStyle) oldDarkStyle.remove();
+
+    const darkStyleElements = document.querySelectorAll('*[data-dark-style]');
+    const darkStyles = [];
+    for(let element of darkStyleElements) {
+      const styleData = element.dataset.darkStyle.split(';').map(a => a.trim()).filter(a => a);
+      let style = '';
+      for(let stylePart of styleData) {
+        const [key, value] = stylePart.split(':').map(a => a.trim());
+        style += `${key}:${value} !important;`;
+      }
+
+      let darkStyle = darkStyles.find(a => a.style === style);
+      if(!darkStyle) {
+        darkStyle = {
+          style,
+          class: '_' + crypto.randomUUID().replaceAll('-', '')
+        }
+        darkStyles.push(darkStyle);
+      }
+      element.classList.add(darkStyle.class);
+    }
+
+    if(darkStyles.length) {
+      const newDarkStyle = document.createElement('style');
+      newDarkStyle.id = 'darkStyle';
+      newDarkStyle.innerHTML = darkStyles.map(a => `.theseed-dark-mode .${a.class}{${a.style}}`).join('');
+      document.body.appendChild(newDarkStyle);
+    }
+  },
+  computed: {
+    footnotes() {
+      return document.getElementsByClassName('wiki-fn-content')
+    }
+  },
+  data() {
+    return {
+      popover: {
+        show: false,
+        content: ''
+      },
+      modal: {
+        show: false,
+        content: ''
+      }
+    }
+  },
+  methods: {
+    setupFootnoteTooltip() {
+      let cleanup;
+      let hovering = 0;
+      const mouseLeaveHandler = _ => {
+        requestAnimationFrame(() => requestAnimationFrame( () =>{
+          hovering--;
+
+          if(!hovering) {
+            this.popover.show = false;
+            if (cleanup) cleanup();
+          }
+        }));
+      }
+
+      const popover = this.$refs.popover;
+      popover.addEventListener('mouseenter', _ => {
+        hovering++;
+      });
+      popover.addEventListener('mouseleave', mouseLeaveHandler);
+
+      for(let footnote of this.footnotes) {
+        const targetId = footnote.getAttribute('href').slice(1);
+        const contentElement = document.getElementById(targetId).parentElement;
+
+        footnote.title = '';
+
+        const update = () => computePosition(footnote, popover, {
+          placement: 'top',
+          middleware: [
+            offset(5),
+            flip(),
+            shift()
+          ]
+        }).then(({x, y, placement, middlewareData}) => {
+          popover.setAttribute('x-placement', placement);
+          Object.assign(popover.style, {
+            left: `${x}px`,
+            top: `${y}px`,
+          });
+
+          this.$refs.popoverArrow.style.left = `calc(50% - 10px - ${middlewareData.shift.x}px)`;
+        });
+
+        footnote.addEventListener('mouseenter', async _ => {
+          hovering++;
+
+          this.popover.show = true;
+          this.popover.content = contentElement.innerHTML;
+          cleanup = autoUpdate(footnote, popover, update);
+        });
+
+        footnote.addEventListener('mouseleave', mouseLeaveHandler);
+      }
+    },
+    setupFootnoteModal() {
+      for(let footnote of this.footnotes) {
+        const targetId = footnote.getAttribute('href').slice(1);
+        const contentElement = document.getElementById(targetId).parentElement;
+
+        footnote.title = '';
+
+        footnote.addEventListener('click', e => {
+          e.preventDefault();
+
+          this.modal.content = contentElement.innerHTML;
+          this.modal.show = true;
+        });
+      }
+    }
   }
 }
 </script>
+<style scoped>
+.popper {
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 2px rgba(0,0,0,.5);
+  max-width: 50%;
+  padding: 15px;
+  position: absolute;
+  word-break: break-all;
+  z-index: 1;
+}
+
+.theseed-dark-mode .popper {
+  background: #383b40;
+  box-shadow: 0 0 2px hsla(0,0%,100%,.5);
+}
+
+.popper .popper__arrow {
+  border-color: #ddd;
+  border-style: solid;
+  height: 0;
+  margin: 5px;
+  position: absolute;
+  width: 0;
+}
+
+.theseed-dark-mode .popper .popper__arrow {
+  border-color: #ccc;
+}
+
+.popper[x-placement^=top] {
+  margin-bottom: 5px;
+}
+
+.popper[x-placement^=top] .popper__arrow {
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-width: 5px 5px 0;
+  bottom: -5px;
+  left: calc(50% - 10px);
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.popper[x-placement^=bottom] {
+  margin-top: 5px
+}
+
+.popper[x-placement^=bottom] .popper__arrow {
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  border-width: 0 5px 5px;
+  left: calc(50% - 10px);
+  margin-bottom: 0;
+  margin-top: 0;
+  top: -5px;
+}
+
+.popper[x-placement^=right] {
+  margin-left: 5px
+}
+
+.popper[x-placement^=right] .popper__arrow {
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-width: 5px 5px 5px 0;
+  left: -5px;
+  margin-left: 0;
+  margin-right: 0;
+  top: calc(50% - 10px);
+}
+
+.popper[x-placement^=left] {
+  margin-right: 5px;
+}
+
+.popper[x-placement^=left] .popper__arrow {
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  border-width: 5px 0 5px 5px;
+  margin-left: 0;
+  margin-right: 0;
+  right: -5px;
+  top: calc(50% - 10px);
+}
+
+:deep(.thetree-modal-container) {
+  padding-top: 10rem;
+}
+
+:deep(.thetree-modal-container):focus {
+  outline: 0 !important;
+}
+
+:deep(.thetree-modal-content) .wiki-content {
+  padding: 1rem;
+}
+
+:deep(.thetree-modal-content) button {
+  background-color: #fafafa;
+  border: 0;
+  border-top: 1px solid #eee;
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px !important;
+  font: inherit;
+  margin: 2px 0 0;
+  outline: none;
+  padding: 10px;
+  width: 100%;
+}
+</style>

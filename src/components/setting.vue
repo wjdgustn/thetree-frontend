@@ -1,7 +1,7 @@
 <template>
-  <VueFinalModal classes="vfm-padding" content-class="vfm-content">
+  <VueFinalModal v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content">
     <div class="setting-block">
-      <button>×</button>
+      <button @click="close">×</button>
       <h1>설정</h1>
       <header>
         <ul>
@@ -60,28 +60,6 @@ export default {
   }
 }
 </script>
-<style>
-.vfm-padding {
-  overflow-y: scroll;
-  padding: 1rem .5rem;
-}
-
-.vfm-content {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: .25rem;
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  max-width: 600px;
-  position: relative;
-}
-
-.theseed-dark-mode .vfm-content {
-  background-color: #2d2f34;
-  border-color: #2d3748;
-}
-</style>
 <style scoped>
 button {
   background: 0 0;
