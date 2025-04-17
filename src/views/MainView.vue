@@ -102,7 +102,14 @@ export default {
     }
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.loadView(to.fullPath)
+    let prevPath = from.fullPath
+    if(prevPath.includes('#'))
+        prevPath = prevPath.slice(0, from.fullPath.lastIndexOf('#'))
+    let nextPath = to.fullPath
+    if(nextPath.includes('#'))
+        nextPath = nextPath.slice(0, to.fullPath.lastIndexOf('#'))
+    if(prevPath !== nextPath)
+      await this.loadView(to.fullPath)
     next()
   },
   watch: {

@@ -132,6 +132,39 @@ export default {
             }
 
             progressBar?.finish()
+        },
+        onDynamicContentClick(e) {
+            if(e.metaKey || e.ctrlKey || e.defaultPrevented) return
+
+            const container = this.$refs.div
+            if(!container) return
+            let link = null
+            for(let el = e.target; el && el !== container; el = el.parentNode) {
+                if(el.tagName === 'BUTTON') return
+                if(el.tagName === 'A') {
+                    link = el
+                    break
+                }
+            }
+            if(!link || link.getAttribute('target')) return
+
+            const href = link.getAttribute('href')
+            if(href
+                && !(href.startsWith('//') || href.startsWith("http://") || href.startsWith("https://"))) {
+                e.preventDefault()
+
+                let path = href
+                if(href.startsWith('#')) {
+                    const fullPath = this.$route.fullPath
+                    const hashIndex = fullPath.lastIndexOf('#')
+                    const basePath = hashIndex === -1
+                        ? fullPath
+                        : fullPath.slice(0, hashIndex)
+                    path = basePath + href
+                }
+
+                this.$router.push(path)
+            }
         }
     }
 }

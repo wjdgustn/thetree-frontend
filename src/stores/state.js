@@ -63,7 +63,9 @@ export const useStateStore = defineStore('state', {
           view = await import(`@/views/contents/${dir}/${name}.vue`)
         }
         else view = await import(`@/views/contents/${contentName}.vue`)
-      } catch(e) {}
+      } catch(e) {
+        if(import.meta.env.DEV) console.error(e);
+      }
       if(view) {
         if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = markRaw(view.default)
