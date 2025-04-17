@@ -71,7 +71,9 @@ export default {
         }
       }
 
-      this.$store.state.viewData.fieldErrors = json.data.fieldErrors;
+      if(json.data) {
+        this.$store.state.viewData.fieldErrors = json.data.fieldErrors
+      }
     }
   }
 }
