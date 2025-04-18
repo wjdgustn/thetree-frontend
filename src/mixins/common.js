@@ -112,8 +112,8 @@ export default {
             }
 
             const buffer = await res.arrayBuffer()
-            const json = decode(buffer)
-            this.afterInternalRequest(json, progressBar)
+            let json = decode(buffer)
+            json = this.afterInternalRequest(json, progressBar)
 
             return json
         },
@@ -141,6 +141,8 @@ export default {
             }
 
             progressBar?.finish()
+
+            return json
         },
         onDynamicContentClick(e) {
             if(e.metaKey || e.ctrlKey || e.defaultPrevented) return
