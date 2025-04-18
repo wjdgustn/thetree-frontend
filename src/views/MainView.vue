@@ -130,7 +130,8 @@ export default {
     },
     processNextUrl() {
       if(this.nextUrl) {
-        this.$router.replace(this.nextUrl)
+        if(this.$route.fullPath === this.nextUrl) this.loadView()
+        else this.$router.replace(this.nextUrl)
         this.nextUrl = null
       }
     },

@@ -33,8 +33,8 @@
       <template v-if="data.hasTotp">
         <SeedLinkButton to="/member/deactivate_otp" danger>TOTP 비활성화</SeedLinkButton>
         <div class="new-passkey-block">
-          <SeedFormInput type="text" placeholder="Passkey Name"/>
-          <SeedButton id="add-passkey-button" type="button" submit>Passkey 추가</SeedButton>
+          <SeedFormInput ref="passkeyName" type="text" placeholder="Passkey Name"/>
+          <SeedButton type="button" submit @click="addPasskey">Passkey 추가</SeedButton>
         </div>
         <table>
           <thead>
@@ -55,7 +55,7 @@
                 <template v-else>Not used</template>
               </td>
               <td>
-                <SeedButton type="button" danger>삭제</SeedButton>
+                <SeedButton type="button" danger @click="deletePasskey(passkey.name)">삭제</SeedButton>
               </td>
             </tr>
           </template>
@@ -83,6 +83,9 @@
   </SeedForm>
 </template>
 <script>
+import { startRegistration } from '@simplewebauthn/browser'
+
+import Common from '@/mixins/common'
 import SeedForm from '@/components/form/seedForm.vue'
 import SeedFormBlock from '@/components/form/seedFormBlock.vue'
 import SeedFormInput from '@/components/form/seedFormInput.vue'
@@ -91,6 +94,7 @@ import SeedLinkButton from '@/components/seedLinkButton.vue'
 import LocalDate from '@/components/localDate.vue'
 
 export default {
+  mixins: [Common],
   components: {
     SeedForm,
     SeedFormBlock,
@@ -102,6 +106,50 @@ export default {
   computed: {
     data() {
       return this.$store.state.viewData;
+    }
+  },
+  methods: {
+    async addPasskey() {
+      const optionsJSON = await this.internalRequest('/member/register_webauthn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: this.$refs.passkeyName.$el.value
+        })
+      })
+      if(!optionsJSON) return
+
+      let attResp
+      try {
+        attResp = await startRegistration({ optionsJSON })
+      } catch(e) {
+        console.error(e)
+        alert(e.toString())
+        return
+      }
+
+      const res = await this.internalRequest('/member/register_webauthn/challenge', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(attResp)
+      })
+      await this.processInternalResponse(res)
+    },
+    async deletePasskey(name) {
+      const res = await this.internalRequest('/member/delete_webauthn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name
+        })
+      })
+      await this.processInternalResponse(res)
     }
   }
 }

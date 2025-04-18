@@ -132,7 +132,7 @@ export default {
 
       await this.processInternalResponse(json, this.$refs.form)
 
-      if(typeof json.data === 'string') {
+      if(typeof json?.data === 'string') {
         if(json.data.includes('캡챠')) {
           this.useCaptcha = true
         }
