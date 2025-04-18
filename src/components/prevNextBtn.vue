@@ -1,0 +1,97 @@
+<template>
+  <div class="page-group" :class="{
+    'page-flex': flex,
+    'page-nomargin': nomargin
+  }">
+    <GeneralButton v-if="start !== undefined" :disabled="!start" class="page-button" :href="start ?? undefined">
+      <FontAwesomeIcon icon="angles-left"/>
+    </GeneralButton>
+    <GeneralButton v-if="prev !== undefined" :disabled="!prev" class="page-button" :href="prev ?? undefined">
+      <FontAwesomeIcon icon="chevron-left"/>
+      <span>이전</span>
+    </GeneralButton>
+    <GeneralButton v-if="next !== undefined" :disabled="!next" class="page-button" :href="next ?? undefined">
+      <span>다음</span>
+      <FontAwesomeIcon icon="chevron-right"/>
+    </GeneralButton>
+    <GeneralButton v-if="end !== undefined" :disabled="!end" class="page-button" :href="end ?? undefined">
+      <FontAwesomeIcon icon="angles-right"/>
+    </GeneralButton>
+  </div>
+</template>
+<script>
+import GeneralButton from '@/components/generalButton'
+
+export default {
+  components: {
+    GeneralButton
+  },
+  props: {
+    start: {
+      type: [String, JSON, null]
+    },
+    prev: {
+      type: [String, JSON, null]
+    },
+    next: {
+      type: [String, JSON, null]
+    },
+    end: {
+      type: [String, JSON, null]
+    },
+    flex: {
+      type: Boolean
+    },
+    nomargin: {
+      type: Boolean
+    }
+  }
+}
+</script>
+<style scoped>
+.page-group {
+  display: inline-flex
+}
+
+.page-group> *:first-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.page-group> *:last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.page-group> *:not(:last-child) {
+  border-right-width: 0;
+}
+
+.page-group> *:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.page-group> *:focus {
+  z-index: 200;
+}
+
+.page-flex {
+  display: flex;
+  margin: 1rem 0;
+}
+
+.page-nomargin {
+  flex: 1;
+  margin: 0;
+}
+
+.page-button {
+  column-gap: .4rem;
+}
+
+@media screen and (max-width: 727.98px) {
+  .page-button {
+    flex: 1;
+  }
+}
+</style>
