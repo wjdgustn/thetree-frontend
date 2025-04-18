@@ -1,6 +1,13 @@
 <template>
   <div v-for="(category, name) in categories" :id="'category-' + name">
     <h2 v-text="name"></h2>
+
+    <PrevNextBtn flex
+        v-if="category.prevItem || category.nextItem"
+        :prev="category.prevItem ? { query: { namespace: name, cuntil: category.prevItem } } : null"
+        :next="category.nextItem ? { query: { namespace: name, cfrom: category.nextItem } } : null"
+    />
+
     <div>
       <div>전체 {{category.count}}개 문서</div>
       <div :class="{ 'many-wrapper': Object.keys(category.categoriesPerChar).length >= 3 }">
@@ -19,11 +26,13 @@
 <script>
 import Common from '@/mixins/common'
 import NuxtLink from '@/components/global/nuxtLink'
+import PrevNextBtn from '@/components/prevNextBtn'
 
 export default {
   mixins: [Common],
   components: {
-    NuxtLink
+    NuxtLink,
+    PrevNextBtn
   },
   props: {
     categories: JSON
