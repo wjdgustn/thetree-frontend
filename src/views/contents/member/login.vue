@@ -17,6 +17,8 @@
         <GeneralButton type="submit" theme="primary">로그인</GeneralButton>
       </template>
     </FlexFormBlock>
+
+    <input type="hidden" name="redirect" :value="$route.query.redirect">
   </SeedForm>
 </template>
 <script>
