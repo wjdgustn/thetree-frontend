@@ -77,9 +77,9 @@ export const useStateStore = defineStore('state', {
       }
       this.components.mainView.skin = markRaw(Skin)
 
-      this.cleanTempState()
+      this.clearFormErrors()
     },
-    cleanTempState() {
+    clearFormErrors() {
       this.viewData.errorAlert = null
       this.viewData.fieldErrors = null
     },

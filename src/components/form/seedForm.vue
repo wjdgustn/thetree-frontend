@@ -145,6 +145,7 @@ export default {
       }
 
       if(json.data) {
+        this.$store.state.clearFormErrors()
         if(typeof json.data === 'string') {
           this.$store.state.viewData.errorAlert = json.data
           this.$store.state.viewData.errorAlertExists = false
@@ -152,7 +153,13 @@ export default {
           if(!this.$store.state.viewData.errorAlertExists)
             alert(json.data)
         }
-        else this.$store.state.viewData.fieldErrors = json.data.fieldErrors
+        else {
+          this.$store.state.viewData.fieldErrors = json.data.fieldErrors
+          const firstInputName = Object.keys(json.data.fieldErrors)[0]
+          const firstInput = this.$refs.form.querySelector(`[name="${firstInputName}"]`)
+          await this.$nextTick()
+          firstInput?.focus()
+        }
       }
     }
   }

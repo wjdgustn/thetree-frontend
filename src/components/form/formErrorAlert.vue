@@ -1,5 +1,5 @@
 <template>
-  <Alert v-if="errorAlert" error>{{errorAlert}}</Alert>
+  <Alert v-if="errorAlert" error><b>[오류!]</b> {{errorAlert}}</Alert>
 </template>
 <script>
 import Alert from '@/components/alert'
