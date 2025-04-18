@@ -1,5 +1,5 @@
 <template>
-  <VueFinalModal v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content">
+  <VueFinalModal v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content" escToClose>
     <div class="setting-block">
       <button @click="close">×</button>
       <h1>설정</h1>
