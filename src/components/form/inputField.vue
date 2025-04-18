@@ -7,9 +7,9 @@
       error
     }"
     @input="onInput"
+    @change="onChange"
     @keydown="whenKeyDown"
     @paste="whenPaste"
-    v-model="text"
     :disabled="submittingSeedForm"
     :name="name"
     v-bind="$attrs"
@@ -20,7 +20,10 @@
 export default {
   inject: ['submittingSeedForm'],
   props: {
-    modelValue: String,
+    modelValue: {
+      type: String,
+      default: ''
+    },
     hasError: Boolean,
     multiline: Boolean,
     whenInput: Function,
@@ -28,10 +31,14 @@ export default {
     whenPaste: Function,
     name: String
   },
-  emits: ['update:modelValue'],
   data() {
     return {
-      text: this.modelValue
+      value: this.modelValue
+    }
+  },
+  watch: {
+    value(newValue) {
+      this.$refs.input.value = newValue
     }
   },
   computed: {
@@ -44,8 +51,10 @@ export default {
   },
   methods: {
     onInput(e) {
-      this.$emit('update:modelValue', this.modelValue)
       this.whenInput?.(e)
+    },
+    onChange() {
+      this.value = this.$refs.input.value
     }
   }
 }

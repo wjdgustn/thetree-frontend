@@ -1,11 +1,11 @@
 <template>
-  <label :class="{ disabled }">
+  <label :class="{ disable }">
     <input
       type="checkbox"
       v-bind="$attrs"
-      v-model="modelValue"
+      v-model="value"
       @change="onInput"
-      :disabled="submittingSeedForm">
+      :disabled="disable">
     <slot/>
   </label>
 </template>
@@ -13,14 +13,17 @@
 export default {
   inject: ['submittingSeedForm'],
   props: {
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
     disabled: Boolean,
     checked: Boolean,
     whenChange: Function
   },
-  emits: ['update:modelValue'],
   data() {
     return {
-      modelValue: this.checked
+      value: this.modelValue
     }
   },
   computed: {
@@ -29,11 +32,13 @@ export default {
     },
     error() {
       return !!(this.hasError || this.fieldError || this.$store.state.viewData.errorAlert)
+    },
+    disable() {
+      return this.disabled || this.submittingSeedForm
     }
   },
   methods: {
     onInput(e) {
-      this.$emit('update:modelValue', this.modelValue)
       this.whenInput?.(e)
     }
   }
@@ -45,7 +50,7 @@ label {
   display: inline-flex;
 }
 
-.disabled {
+.disable {
   cursor: not-allowed;
   opacity: .5;
 }
