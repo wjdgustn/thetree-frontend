@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
     faXmark,
     faKey,
+    faChevronLeft,
     faChevronRight,
-    faMobileScreen
+    faMobileScreen,
+    faAnglesLeft,
+    faAnglesRight
 } from '@fortawesome/free-solid-svg-icons'
 
 export default {
@@ -14,8 +17,11 @@ export default {
         library.add(
             faXmark,
             faKey,
+            faChevronLeft,
             faChevronRight,
-            faMobileScreen
+            faMobileScreen,
+            faAnglesLeft,
+            faAnglesRight
         )
     },
     components: {

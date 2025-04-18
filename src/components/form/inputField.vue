@@ -18,7 +18,11 @@
 </template>
 <script>
 export default {
-  inject: ['submittingSeedForm'],
+  inject: {
+    submittingSeedForm: {
+      default: false
+    }
+  },
   props: {
     modelValue: {
       type: String,

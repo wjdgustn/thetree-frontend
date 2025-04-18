@@ -10,7 +10,11 @@
 </template>
 <script>
 export default {
-  inject: ['submittingSeedForm'],
+  inject: {
+    submittingSeedForm: {
+      default: false
+    }
+  },
   props: {
     disabled: Boolean,
     large: Boolean,

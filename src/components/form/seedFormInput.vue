@@ -5,7 +5,11 @@
 </template>
 <script>
 export default {
-  inject: ['submittingSeedForm'],
+  inject: {
+    submittingSeedForm: {
+      default: false
+    }
+  },
   props: {
     tag: {
       type: String,

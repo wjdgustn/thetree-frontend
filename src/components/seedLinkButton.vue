@@ -12,7 +12,11 @@
 import NuxtLink from '@/components/global/nuxtLink'
 
 export default {
-  inject: ['submittingSeedForm'],
+  inject: {
+    submittingSeedForm: {
+      default: false
+    }
+  },
   components: {
     NuxtLink
   },
