@@ -8,9 +8,9 @@
   <button v-else-if="type === 'submit' || type === 'reset'" :type="type" :class="buttonClass">
     <slot/>
   </button>
-  <RouterLink v-else :to="href" :rel="nofollow ? 'nofollow' : null" role="button" :class="buttonClass">
+  <NuxtLink v-else :to="href" :rel="nofollow ? 'nofollow' : null" role="button" :class="buttonClass">
     <slot/>
-  </RouterLink>
+  </NuxtLink>
 </template>
 <script>
 import NuxtLink from '@/components/global/nuxtLink'
