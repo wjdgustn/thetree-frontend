@@ -144,6 +144,46 @@ export default {
 
             return json
         },
+        async processInternalResponse(json, form) {
+            if(!json) {
+                this.$store.state.components.mainView.processNextUrl()
+                return
+            }
+            const statePatches = this.$store.state.parseResponse(json)
+
+            if(json.page) {
+                await this.$store.state.updateView(statePatches)
+            }
+
+            if(json.data) {
+                const prevErrorAlert = this.$store.state.viewData.errorAlert
+                this.$store.state.clearFormErrors()
+
+                if(typeof json.data === 'string') {
+                    this.$store.state.viewData.errorAlert = json.data
+
+                    const firstInput = form?.querySelector('input, select, textarea')
+                    if(firstInput) this.$nextTick().then(() => firstInput.focus())
+
+                    if(json.data === prevErrorAlert) return
+
+                    this.$store.state.viewData.errorAlertExists = false
+                    await this.$nextTick()
+                    if(!this.$store.state.viewData.errorAlertExists)
+                        alert(json.data)
+                }
+                else {
+                    const fieldErrors = json.data.fieldErrors
+                    this.$store.state.viewData.fieldErrors = fieldErrors
+                    if(fieldErrors) {
+                        const firstInputName = Object.keys(json.data.fieldErrors)[0]
+                        const firstInput = form?.querySelector(`[name="${firstInputName}"]`)
+                        await this.$nextTick()
+                        firstInput?.focus()
+                    }
+                }
+            }
+        },
         onDynamicContentClick(e) {
             if(e.metaKey || e.ctrlKey || e.defaultPrevented) return
 

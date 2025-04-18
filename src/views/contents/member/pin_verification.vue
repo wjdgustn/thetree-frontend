@@ -68,6 +68,9 @@
   </SeedForm>
 </template>
 <script>
+import { startAuthentication } from '@simplewebauthn/browser'
+
+import Common from '@/mixins/common'
 import SeedForm from '@/components/form/seedForm'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 import FlexFormBlock from '@/components/form/flexFormBlock'
@@ -76,6 +79,7 @@ import GeneralButton from '@/components/generalButton'
 import PinInput from '@/components/form/pinInput'
 
 export default {
+  mixins: [Common],
   components: {
     SeedForm,
     FormErrorAlert,
@@ -108,7 +112,28 @@ export default {
       this.passkey = !this.passkey
     },
     async passkeyLogin() {
-      // this.$refs.form.submitting = true
+      this.$refs.form.submitting = true
+
+      let asseResp
+      try {
+        asseResp = await startAuthentication({ optionsJSON: this.$store.state.page.data.passkeyData })
+      } catch (e) {
+        console.error(e)
+        alert(e.toString())
+        this.$refs.form.submitting = false
+        return
+      }
+
+      const json = await this.internalRequest('/member/login/pin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          challenge: asseResp
+        })
+      })
+      await this.processInternalResponse(json)
     }
   }
 }
