@@ -249,6 +249,33 @@ export default {
         newDarkStyle.innerHTML = darkStyles.map(a => `.theseed-dark-mode .${a.class}{${a.style}}`).join('');
         document.body.appendChild(newDarkStyle);
       }
+
+      const times = div.querySelectorAll('time[data-type=timezone]')
+      for(let time of times) {
+        const type = time.dataset.type;
+        const date = new Date(time.dateTime);
+
+        const dateStr = [
+          date.getFullYear(),
+          date.getMonth() + 1,
+          date.getDate()
+        ].map(num => num.toString().padStart(2, '0')).join('-');
+
+        const timeStr = [
+          date.getHours(),
+          date.getMinutes(),
+          date.getSeconds()
+        ].map(num => num.toString().padStart(2, '0')).join(':');
+
+        let result = dateStr + ' ' + timeStr;
+
+        if(type === 'timezone') {
+          const offset = -(date.getTimezoneOffset() / 60);
+          result += (offset > 0 ? '+' : '-') + (offset * 100).toString().padStart(4, '0');
+        }
+
+        time.textContent = result;
+      }
     },
     setupFootnoteTooltip() {
       let cleanup;
