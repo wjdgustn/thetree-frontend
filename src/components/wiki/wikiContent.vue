@@ -33,6 +33,8 @@
 
   <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" :class="{ 'wiki-thread-content': discuss }"></div>
 
+  <WikiCategoryDocs v-if="data.document.namespace === '분류'" :categories="categoriesData"/>
+
   <div ref="popover" v-show="popover.show" id="tooltip" class="popper">
     <div ref="popoverArrow" id="tooltip-arrow" class="popper__arrow"></div>
     <div id="tooltip-content" class="wiki-content" v-html="popover.content"></div>
@@ -48,6 +50,7 @@ import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/v
 import NuxtLink from '@/components/global/nuxtLink'
 import Alert from '@/components/alert'
 import WikiCategory from '@/components/wiki/wikiCategory'
+import WikiCategoryDocs from '@/components/wiki/wikiCategoryDocs'
 import LocalDate from '@/components/localDate'
 
 import Common from '@/mixins/common'
@@ -58,6 +61,7 @@ export default {
     NuxtLink,
     Alert,
     WikiCategory,
+    WikiCategoryDocs,
     LocalDate
   },
   mixins: [Common],
@@ -80,6 +84,9 @@ export default {
     },
     categories() {
       return this.$store.state.viewData.categories
+    },
+    categoriesData() {
+      return this.$store.state.viewData.categoriesData
     },
     userbox() {
       return this.$store.state.viewData.userboxData ?? {}
