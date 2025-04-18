@@ -1,5 +1,9 @@
 <template>
-  <div class="form-block">
+  <div class="form-block" :class="{
+    'flex-start': flexStart,
+    buttons,
+    padding
+  }">
     <label v-if="label" :for="inputId" v-text="label"></label>
     <slot/>
     <p v-if="fieldError" v-text="fieldError.msg"></p>
@@ -13,7 +17,10 @@ export default {
   props: {
     inputId: String,
     name: String,
-    label: String
+    label: String,
+    flexStart: Boolean,
+    buttons: Boolean,
+    padding: Boolean
   },
   computed: {
     fieldError() {

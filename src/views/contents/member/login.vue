@@ -7,10 +7,10 @@
     <FlexFormBlock label="Password" name="password" inputId="passwordInput">
       <InputField id="passwordInput" name="password" type="password"/>
     </FlexFormBlock>
-    <FlexFormBlock class="flex-start">
+    <FlexFormBlock flexStart>
       <NuxtLink to="/member/recover_password">비밀번호를 잊으셨나요?</NuxtLink>
     </FlexFormBlock>
-    <FlexFormBlock class="buttons padding">
+    <FlexFormBlock buttons padding>
       <CheckBox name="autologin">자동 로그인</CheckBox>
       <template #buttons>
         <GeneralButton href="/member/signup">계정 만들기</GeneralButton>

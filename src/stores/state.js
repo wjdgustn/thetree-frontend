@@ -52,6 +52,7 @@ export const useStateStore = defineStore('state', {
       if(!contentName) {
         if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = null
+        this.components.mainView.skin ??= markRaw(Skin)
         return
       }
       let view
@@ -75,7 +76,7 @@ export const useStateStore = defineStore('state', {
         this.page.title = '오류'
         this.page.contentHtml = `missing view ${contentName}`
       }
-      this.components.mainView.skin = markRaw(Skin)
+      this.components.mainView.skin ??= markRaw(Skin)
 
       this.clearFormErrors()
     },
