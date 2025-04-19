@@ -47,6 +47,20 @@ export const useStateStore = defineStore('state', {
         state.viewData = statePatches.viewData
       })
     },
+    patchPartialPageData(json) {
+      this.clearFormErrors()
+
+      this.$patch(state => {
+        state.page.data = {
+          ...state.page,
+          ...json.publicData
+        }
+        state.viewData = {
+          ...state.viewData,
+          ...json.viewData
+        }
+      })
+    },
     async updateView(statePatches) {
       const contentName = statePatches?.page.contentName || this.page.contentName
       if(!contentName) {

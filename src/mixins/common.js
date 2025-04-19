@@ -122,8 +122,8 @@ export default {
             return strs.join(' ');
         },
         async internalRequest(url, options) {
-            const noProgress = options.noProgress ?? false
-            delete options.noProgress
+            const noProgress = options?.noProgress ?? false
+            delete options?.noProgress
 
             const mainView = this.$store.state.components.mainView
             const progressBar = noProgress ? null : mainView.$refs.progressBar
@@ -177,6 +177,8 @@ export default {
                     state.sessionHash = json.sessionHash
                 })
             }
+            if(json.partialData)
+                this.$store.state.patchPartialPageData(json.partialData)
 
             const strCode = json.code?.toString() || ''
             if(strCode.startsWith('3')) {

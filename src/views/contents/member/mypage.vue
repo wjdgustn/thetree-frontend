@@ -73,7 +73,7 @@
     </SeedFormBlock>
 
     <SeedFormBlock label="API Token">
-      <SeedButton type="button" danger>발급</SeedButton>
+      <SeedButton type="button" danger @click="showTokenModal">발급</SeedButton>
     </SeedFormBlock>
 
     <div class="button-block">
@@ -92,6 +92,7 @@ import SeedFormInput from '@/components/form/seedFormInput.vue'
 import SeedButton from '@/components/seedButton.vue'
 import SeedLinkButton from '@/components/seedLinkButton.vue'
 import LocalDate from '@/components/localDate.vue'
+import ApiTokenModal from '@/components/apiTokenModal'
 
 export default {
   mixins: [Common],
@@ -109,6 +110,9 @@ export default {
     }
   },
   methods: {
+    showTokenModal() {
+      this.$vfm.show({ component: ApiTokenModal })
+    },
     async addPasskey() {
       const optionsJSON = await this.internalRequest('/member/register_webauthn', {
         method: 'POST',
