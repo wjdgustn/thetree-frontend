@@ -1,5 +1,5 @@
 <template>
-  <SeedForm method="POST">
+  <SeedForm method="post">
     <FormErrorAlert/>
     <p>새로운 비밀번호를 입력해주세요</p>
     <SeedFormBlock label="비밀번호" inputId="passwordInput" name="password">

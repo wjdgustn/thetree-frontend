@@ -1,6 +1,6 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm method="POST">
+  <SeedForm method="post">
     <SeedFormBlock label="비밀번호" inputId="passwordInput" name="password">
       <SeedFormInput type="password" id="passwordInput" name="password"/>
     </SeedFormBlock>

@@ -1,5 +1,5 @@
 <template>
-  <SeedForm method="POST">
+  <SeedForm method="post">
     <SeedFormBlock label="이메일" inputId="emailInput" name="email">
       <SeedFormInput id="emailInput" name="email" readonly :value="$store.state.viewData.email"/>
     </SeedFormBlock>

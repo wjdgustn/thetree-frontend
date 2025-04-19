@@ -1,6 +1,6 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm method="POST">
+  <SeedForm method="post">
     <SeedFormBlock label="PIN" inputId="pinInput" name="pin">
       <SeedFormInput type="text" id="pinInput" name="pin" maxlength="6"/>
     </SeedFormBlock>

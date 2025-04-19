@@ -15,7 +15,7 @@
       표시되는 코드를 아래에 입력해서 활성화 합니다.
     </li>
   </ol>
-  <SeedForm method="POST">
+  <SeedForm method="post">
     <SeedFormBlock label="PIN" inputId="pinInput" name="pin">
       <SeedFormInput type="text" id="pinInput" name="pin" maxlength="6"/>
     </SeedFormBlock>
