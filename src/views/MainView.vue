@@ -68,7 +68,8 @@ export default {
   data() {
     return {
       skin: null,
-      nextUrl: null
+      nextUrl: null,
+      beforeLeave: null
     }
   },
   async serverPrefetch() {
@@ -100,6 +101,17 @@ export default {
     else {
       await this.$store.state.updateView()
     }
+
+    const canMove = (to, from) => {
+      if(!this.beforeLeave || this.nextUrl) return true
+      const result = this.beforeLeave(to, from)
+      if(result) this.beforeLeave = null
+      return result
+    }
+    this.$router.beforeEach(canMove)
+    window.addEventListener('beforeunload', e => {
+      if(!canMove()) e.preventDefault()
+    })
   },
   async beforeRouteUpdate(to, from, next) {
     let prevPath = from.fullPath

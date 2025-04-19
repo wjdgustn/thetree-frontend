@@ -92,7 +92,11 @@ export const useStateStore = defineStore('state', {
       }
       this.components.mainView.skin ??= markRaw(Skin)
 
+      this.cleanViewData()
+    },
+    cleanViewData() {
       this.clearFormErrors()
+      this.components.mainView.beforeLeave = this.viewData.viewComponent?.beforeLeave
     },
     clearFormErrors() {
       this.viewData.errorAlert = this.viewData.alert ?? null
