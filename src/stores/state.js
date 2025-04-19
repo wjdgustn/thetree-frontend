@@ -81,7 +81,7 @@ export const useStateStore = defineStore('state', {
       this.clearFormErrors()
     },
     clearFormErrors() {
-      this.viewData.errorAlert = null
+      this.viewData.errorAlert = this.viewData.alert ?? null
       this.viewData.fieldErrors = null
     },
     localConfigSetValue(key, value) {

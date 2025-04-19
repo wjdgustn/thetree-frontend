@@ -76,6 +76,51 @@ export default {
         removeHtmlTags(text) {
             return text.replaceAll(/<[^>]+>/g, '');
         },
+        durationToExactString(duration) {
+            const strs = [];
+
+            let weeks = 0;
+            const week = 1000 * 60 * 60 * 24 * 7;
+            while(duration >= week) {
+                duration -= week;
+                weeks++;
+            }
+            if(weeks) strs.push(`${weeks}주`);
+
+            let days = 0;
+            const day = 1000 * 60 * 60 * 24;
+            while(duration >= day) {
+                duration -= day;
+                days++;
+            }
+            if(days) strs.push(`${days}일`);
+
+            let hours = 0;
+            const hour = 1000 * 60 * 60;
+            while(duration >= hour) {
+                duration -= hour;
+                hours++;
+            }
+            if(hours) strs.push(`${hours}시간`);
+
+            let minutes = 0;
+            const minute = 1000 * 60;
+            while(duration >= minute) {
+                duration -= minute;
+                minutes++;
+            }
+            if(minutes) strs.push(`${minutes}분`);
+
+            let seconds = 0;
+            const second = 1000;
+            while(duration >= second) {
+                duration -= second;
+                seconds++;
+            }
+            if(seconds) strs.push(`${seconds}초`);
+
+            return strs.join(' ');
+        },
         async internalRequest(url, options) {
             const noProgress = options.noProgress ?? false
             delete options.noProgress

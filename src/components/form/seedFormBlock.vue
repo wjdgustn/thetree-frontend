@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label :for="inputId" v-text="label"></label>
+    <label v-if="label" :for="inputId" v-text="label"></label>
     <slot/>
     <p v-if="fieldError" v-text="fieldError.msg"></p>
   </div>
@@ -10,10 +10,7 @@ export default {
   props: {
     inputId: String,
     name: String,
-    label: {
-      type: String,
-      required: true
-    }
+    label: String
   },
   computed: {
     fieldError() {
