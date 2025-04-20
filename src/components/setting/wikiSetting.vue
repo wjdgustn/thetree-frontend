@@ -40,12 +40,13 @@ export default {
       return isMobile ? 'popup' : 'popover'
     },
     editModes() {
-      const result = []
-      result.push({
-        name: 'raw',
-        label: 'RAW 편집'
-      })
-      return result
+      return [
+        ...this.thetreePlugins.editor.map(a => a.pluginInfo),
+        {
+          name: 'raw',
+          label: 'RAW 편집'
+        }
+      ]
     },
     defaultEditMode() {
       return isMobile ? 'raw' : this.editModes[0].name

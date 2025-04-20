@@ -52,7 +52,7 @@ export const useStateStore = defineStore('state', {
 
       this.$patch(state => {
         state.page.data = {
-          ...state.page,
+          ...state.page.data,
           ...json.publicData
         }
         state.viewData = {
@@ -96,7 +96,7 @@ export const useStateStore = defineStore('state', {
     },
     cleanViewData() {
       this.clearFormErrors()
-      this.components.mainView.beforeLeave = this.viewData.viewComponent?.beforeLeave
+      this.components.mainView.beforeLeave = null
     },
     clearFormErrors() {
       this.viewData.errorAlert = this.viewData.alert ?? null

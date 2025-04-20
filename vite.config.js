@@ -8,8 +8,8 @@ import fs from 'fs'
 import crypto from 'crypto'
 import { execSync } from 'child_process'
 
-import skinRawLoaderPlugin from './plugins/skinRawLoader'
-import metadata from './plugins/metadata'
+import skinRawLoaderPlugin from './vitePlugins/skinRawLoader'
+import metadata from './vitePlugins/metadata'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode, isSsrBuild }) => {

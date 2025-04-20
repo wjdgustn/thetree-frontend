@@ -28,7 +28,8 @@ export default {
     }
   },
   props: {
-    captcha: Boolean
+    captcha: Boolean,
+    beforeSubmit: Function
   },
   computed: {
     captchaConfig() {
@@ -86,6 +87,8 @@ export default {
       e.preventDefault()
       if(this.submitting) return
 
+      if((await this.beforeSubmit?.(e)) === false) return
+
       if(this.captchaId) {
         for(let { reject } of this.captchaLock) reject()
         this.captchaLock.length = 0
@@ -129,6 +132,8 @@ export default {
         })
       })
       this.submitting = false
+
+      this.$store.state.components.mainView.beforeLeave = null
 
       await this.processInternalResponse(json, this.$refs.form)
 

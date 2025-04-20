@@ -30,7 +30,7 @@
     차단 사유: {{userbox.blocked.note ?? '없음'}}
   </div>
 
-  <WikiContent :content="content" :categories="categories"></WikiContent>
+  <WikiContent :content="content" :categories="categories"/>
 
   <WikiCategoryDocs v-if="data.document.namespace === '분류'" :categories="categoriesData"/>
 </template>
