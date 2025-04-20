@@ -6,11 +6,11 @@
     <GeneralButton v-if="start !== undefined" :disabled="!start" class="page-button" :href="start ?? undefined">
       <FontAwesomeIcon icon="angles-left"/>
     </GeneralButton>
-    <GeneralButton v-if="prev !== undefined" :disabled="!prev" class="page-button" :href="prev ?? undefined">
+    <GeneralButton v-if="prev !== undefined" :disabled="!prev" class="page-button" :href="actualPrev ?? undefined">
       <FontAwesomeIcon icon="chevron-left"/>
       <span>이전</span>
     </GeneralButton>
-    <GeneralButton v-if="next !== undefined" :disabled="!next" class="page-button" :href="next ?? undefined">
+    <GeneralButton v-if="next !== undefined" :disabled="!next" class="page-button" :href="actualNext ?? undefined">
       <span>다음</span>
       <FontAwesomeIcon icon="chevron-right"/>
     </GeneralButton>
@@ -44,6 +44,28 @@ export default {
     },
     nomargin: {
       type: Boolean
+    }
+  },
+  computed: {
+    actualPrev() {
+      return {
+        ...this.prev,
+        query: {
+          ...this.$route.query,
+          ...this.prev?.query,
+          from: null
+        }
+      }
+    },
+    actualNext() {
+      return {
+        ...this.next,
+        query: {
+          ...this.$route.query,
+          ...this.next?.query,
+          until: null
+        }
+      }
     }
   }
 }
