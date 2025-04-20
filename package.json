@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --outDir dist/server --ssr src/server.js && vite build --outDir dist/client",
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "vite build --outDir dist/server --ssr src/server.js",
+    "build:client": "vite build --outDir dist/client",
     "preview": "vite preview"
   },
   "dependencies": {
