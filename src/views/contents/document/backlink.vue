@@ -40,9 +40,6 @@ export default {
     NuxtLink
   },
   computed: {
-    viewData() {
-      return this.$store.state.viewData
-    },
     pageProps() {
       const prevItem = this.viewData.prevItem
       const nextItem = this.viewData.nextItem
