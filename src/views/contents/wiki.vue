@@ -35,6 +35,7 @@
   <WikiCategoryDocs v-if="data.document.namespace === '분류'" :categories="categoriesData"/>
 </template>
 <script>
+import Common from '@/mixins/common'
 import WikiContent from '@/components/wiki/wikiContent';
 import NuxtLink from '@/components/global/nuxtLink'
 import Alert from '@/components/alert'
@@ -42,6 +43,7 @@ import LocalDate from '@/components/localDate'
 import WikiCategoryDocs from '@/components/wiki/wikiCategoryDocs'
 
 export default {
+  mixins: [Common],
   components: {
     WikiCategoryDocs,
     LocalDate, Alert, NuxtLink,
