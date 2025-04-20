@@ -3,7 +3,7 @@
 
   <PrevNextBtn flex v-bind="pageProps"/>
 
-  <div :class="{ 'many-wrapper': Object.keys(viewData.backlinksPerChar).length >= 3 }">
+  <div v-if="Object.keys(viewData.backlinksPerChar).length" :class="{ 'many-wrapper': Object.keys(viewData.backlinksPerChar).length >= 3 }">
     <div v-for="(documents, char) in viewData.backlinksPerChar">
       <h3 v-text="char"/>
       <ul>
@@ -13,6 +13,9 @@
         </li>
       </ul>
     </div>
+  </div>
+  <div v-else>
+    해당 문서의 역링크가 존재하지 않습니다.
   </div>
 
   <PrevNextBtn flex v-bind="pageProps"/>
