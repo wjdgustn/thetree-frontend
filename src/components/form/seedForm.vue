@@ -1,5 +1,5 @@
 <template>
-  <form ref="form" v-bind="$attrs" @submit="submit">
+  <form ref="form" v-bind="$attrs" @submit="submit" :class="{ flex, box }">
     <slot/>
     <div ref="captcha" v-if="useCaptcha" class="captcha"></div>
   </form>
@@ -29,7 +29,9 @@ export default {
   },
   props: {
     captcha: Boolean,
-    beforeSubmit: Function
+    beforeSubmit: Function,
+    flex: Boolean,
+    box: Boolean
   },
   computed: {
     captchaConfig() {
@@ -88,6 +90,14 @@ export default {
       if(this.submitting) return
 
       if((await this.beforeSubmit?.(e)) === false) return
+
+      if(this.$refs.form.method === 'get') {
+        const url = new URL(this.$refs.form.action)
+        url.search = new URLSearchParams(new FormData(this.$refs.form)).toString()
+        const finalUrl = url.pathname + url.search
+        await this.$store.state.components.mainView.routerPush(finalUrl)
+        return
+      }
 
       if(this.captchaId) {
         for(let { reject } of this.captchaLock) reject()
@@ -149,5 +159,21 @@ export default {
 <style scoped>
 .captcha {
   clear: both;
+}
+
+.flex {
+  align-items: center;
+  display: flex;
+  gap: .5rem;
+}
+
+.box {
+  border: 1px solid #d5d5d5;
+  border-radius: 6px;
+  padding: .75rem 1rem;
+}
+
+.theseed-dark-mode .box {
+  border-color: #484848;
 }
 </style>
