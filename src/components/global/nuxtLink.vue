@@ -16,17 +16,25 @@ export default {
     }
   },
   created() {
-    if(typeof this.actualTo === 'string') return
-
-    // vue-router 자체 router.resolve는 path를 이상하게 encode하는 듯
-    const url = new URL(this.actualTo.path || this.$route.fullPath, 'https://example.com')
-    for(let [key, value] of Object.entries(this.actualTo.query)) {
-      if(value === null) url.searchParams.delete(key)
-      else url.searchParams.set(key, value)
+    this.calculateActualTo()
+  },
+  watch: {
+    to() {
+      this.calculateActualTo()
     }
-    this.actualTo = url.pathname + url.search
   },
   methods: {
+    calculateActualTo() {
+      if(typeof this.to === 'string') return
+
+      // vue-router 자체 router.resolve는 path를 이상하게 encode하는 듯
+      const url = new URL(this.to.path || this.$route.fullPath, 'https://example.com')
+      for(let [key, value] of Object.entries(this.to.query)) {
+        if(value === null) url.searchParams.delete(key)
+        else url.searchParams.set(key, value)
+      }
+      this.actualTo = url.pathname + url.search
+    },
     click(e) {
       if(e.metaKey || e.ctrlKey || e.defaultPrevented) return
 
