@@ -1,12 +1,8 @@
 <template>
   <div v-for="(category, name) in categories" :id="'category-' + name">
-    <h2 v-text="name"></h2>
+    <h2 v-text="name === '분류' ? '하위 분류' : name"></h2>
 
-    <PrevNextBtn flex
-        v-if="category.prevItem || category.nextItem"
-        :prev="category.prevItem ? { query: { namespace: name, cuntil: category.prevItem } } : null"
-        :next="category.nextItem ? { query: { namespace: name, cfrom: category.nextItem } } : null"
-    />
+    <PrevNextBtn flex v-if="category.prevItem || category.nextItem" v-bind="pageProps(name, category)"/>
 
     <div>
       <div>전체 {{category.count}}개 문서</div>
@@ -21,6 +17,8 @@
         </div>
       </div>
     </div>
+
+    <PrevNextBtn flex v-if="category.prevItem || category.nextItem" v-bind="pageProps(name, category)"/>
   </div>
 </template>
 <script>
@@ -36,6 +34,14 @@ export default {
   },
   props: {
     categories: JSON
+  },
+  methods: {
+    pageProps(name, category) {
+      return {
+        prev: category.prevItem ? { query: { namespace: name, cuntil: category.prevItem } } : null,
+        next: category.nextItem ? { query: { namespace: name, cfrom: category.nextItem } } : null
+      }
+    }
   }
 }
 </script>
