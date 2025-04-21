@@ -19,7 +19,7 @@
 
     <ul>
       <li v-for="tab in tabs">
-        <button @click="activeTab = tab" type="button" :class="{ active: this.activeTab === tab }" v-text="tab.label"/>
+        <button @click="activeTab = tab" type="button" :class="{ active: activeTab === tab }" v-text="tab.label"/>
       </li>
 
       <li v-if="activeTab.buttons?.length" class="editor-buttons">
@@ -30,13 +30,13 @@
     </ul>
 
     <div class="tabs">
-      <div v-for="tab in tabs.filter(a => a.component)" :class="{ active: this.activeTab === tab }">
+      <div v-for="tab in tabs.filter(a => a.component)" :class="{ active: activeTab === tab }">
         <component :ref="'pluginTab_' + tab.name" v-if="tab.component" :is="tab.component"/>
       </div>
-      <div :class="{ active: this.activeTab.name === 'raw' }">
+      <div :class="{ active: activeTab.name === 'raw' }">
         <textarea ref="textInput" name="text" wrap="soft" :value="viewData.content"/>
       </div>
-      <div class="preview" :class="{ active: this.activeTab.name === 'preview', loading: !preview.content }">
+      <div class="preview" :class="{ active: activeTab.name === 'preview', loading: !preview.content }">
         <WikiContent v-if="preview.content" :content="preview.content" :categories="preview.categories"/>
         <Loading v-else/>
       </div>
