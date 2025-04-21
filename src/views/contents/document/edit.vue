@@ -15,7 +15,7 @@
   </template>
 
   <SeedForm :beforeSubmit="beforeSubmit" method="post" :captcha="viewData.useCaptcha">
-    <input type="hidden" v-for="(value, name) in data.body" :name="name" :value="value">
+    <input type="hidden" v-for="(value, name) in viewData.body" :name="name" :value="value">
 
     <ul>
       <li v-for="tab in tabs">
