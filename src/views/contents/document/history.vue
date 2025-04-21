@@ -27,7 +27,7 @@
           />
           </template>)
         </span>
-        <span>
+        <span v-if="!rev.troll">
           <input type="radio"
                  name="olduuid"
                  :value=rev.uuid
