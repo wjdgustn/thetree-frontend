@@ -134,6 +134,8 @@ export default {
         })
       })
       await this.processInternalResponse(json)
+
+      this.$refs.form.submitting = false
     }
   }
 }
