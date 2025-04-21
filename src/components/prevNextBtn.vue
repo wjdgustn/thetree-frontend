@@ -1,7 +1,6 @@
 <template>
   <div class="page-group" :class="{
-    'page-flex': flex,
-    'page-nomargin': nomargin
+    'page-flex': flex
   }">
     <GeneralButton v-if="start !== undefined" :disabled="!start" class="page-button" :href="start ?? undefined">
       <FontAwesomeIcon icon="angles-left"/>
@@ -41,9 +40,6 @@ export default {
     },
     flex: {
       type: Boolean
-    },
-    nomargin: {
-      type: Boolean
     }
   },
   computed: {
@@ -72,7 +68,7 @@ export default {
 </script>
 <style scoped>
 .page-group {
-  display: inline-flex
+  display: inline-flex;
 }
 
 .page-group> *:first-child {
@@ -100,11 +96,6 @@ export default {
 .page-flex {
   display: flex;
   margin: 1rem 0;
-}
-
-.page-nomargin {
-  flex: 1;
-  margin: 0;
 }
 
 .page-button {

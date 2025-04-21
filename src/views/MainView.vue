@@ -1,18 +1,21 @@
 <template>
   <ProgressBar ref="progressBar"/>
   <component :is="skin"/>
+  <Toaster :theme="$store.state.currentTheme" :richColors="true"/>
 </template>
 
 <script>
-import { isNavigationFailure, NavigationFailureType } from 'vue-router';
+import { isNavigationFailure, NavigationFailureType } from 'vue-router'
+import { Toaster } from 'vue-sonner'
 
-import Common from '@/mixins/common';
-import ProgressBar from '@/components/progressBar';
+import Common from '@/mixins/common'
+import ProgressBar from '@/components/progressBar'
 
 export default {
   mixins: [Common],
   components: {
-    ProgressBar
+    ProgressBar,
+    Toaster
   },
   computed: {
     pageTitle() {

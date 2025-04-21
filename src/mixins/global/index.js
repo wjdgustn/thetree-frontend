@@ -20,14 +20,11 @@ export default {
         })).map(a => markRaw(a))
     },
     computed: {
-        data() {
-            return this.$store.state.page.data
-        },
         viewData() {
             return this.$store.state.viewData
         },
         session() {
             return this.$store.state.session
-        },
+        }
     }
 }

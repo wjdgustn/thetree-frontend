@@ -6,8 +6,8 @@
       multiline,
       error
     }"
+    :value="modelValue"
     @input="onInput"
-    @change="onChange"
     @keydown="whenKeyDown"
     @paste="whenPaste"
     :disabled="submittingSeedForm"
@@ -24,10 +24,7 @@ export default {
     }
   },
   props: {
-    modelValue: {
-      type: String,
-      default: ''
-    },
+    modelValue: String,
     hasError: Boolean,
     multiline: Boolean,
     whenInput: Function,
@@ -35,16 +32,7 @@ export default {
     whenPaste: Function,
     name: String
   },
-  data() {
-    return {
-      value: this.modelValue
-    }
-  },
-  watch: {
-    value(newValue) {
-      this.$refs.input.value = newValue
-    }
-  },
+  emits: ['update:modelValue'],
   computed: {
     fieldError() {
       return this.name && this.$store.state.viewData.fieldErrors?.[this.name]
@@ -56,9 +44,10 @@ export default {
   methods: {
     onInput(e) {
       this.whenInput?.(e)
+      this.$emit('update:modelValue', e.target.value)
     },
-    onChange() {
-      this.value = this.$refs.input.value
+    focus() {
+      this.$refs.input.focus()
     }
   }
 }

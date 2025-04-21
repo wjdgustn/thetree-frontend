@@ -17,10 +17,7 @@ export default {
     }
   },
   props: {
-    modelValue: {
-      type: Boolean,
-      default: false
-    },
+    modelValue: Boolean,
     disabled: Boolean,
     checked: Boolean,
     whenChange: Function
@@ -30,6 +27,7 @@ export default {
       value: this.modelValue
     }
   },
+  emits: ['update:modelValue'],
   computed: {
     fieldError() {
       return this.name && this.$store.state.viewData.fieldErrors?.[this.name]
@@ -44,6 +42,7 @@ export default {
   methods: {
     onInput(e) {
       this.whenInput?.(e)
+      this.$emit('update:modelValue', e.target.checked)
     }
   }
 }

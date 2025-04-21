@@ -7,7 +7,9 @@ import {
     faChevronRight,
     faMobileScreen,
     faAnglesLeft,
-    faAnglesRight
+    faAnglesRight,
+    faShare,
+    faCircleXmark
 } from '@fortawesome/free-solid-svg-icons'
 
 export default {
@@ -21,7 +23,9 @@ export default {
             faChevronRight,
             faMobileScreen,
             faAnglesLeft,
-            faAnglesRight
+            faAnglesRight,
+            faShare,
+            faCircleXmark
         )
     },
     components: {

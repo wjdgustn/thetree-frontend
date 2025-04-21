@@ -24,6 +24,11 @@ address, dl, ol, ul {
     vertical-align: 0;
 }
 
+.button svg {
+    height: .85rem;
+    fill: currentColor;
+}
+
 .thetree-modal-content {
     background: #fff;
     border: 1px solid #e2e8f0;
@@ -45,12 +50,12 @@ address, dl, ol, ul {
     padding: 1rem .5rem;
 }
 
- .v-popper__popper {
-     left: 0;
-     outline: none;
-     top: 0;
-     z-index: 10000
- }
+.v-popper__popper {
+    left: 0;
+    outline: none;
+    top: 0;
+    z-index: 10000
+}
 
 .v-popper__popper.v-popper__popper--hidden {
     opacity: 0;
