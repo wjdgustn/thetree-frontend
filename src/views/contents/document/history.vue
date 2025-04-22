@@ -177,8 +177,9 @@ export default {
       navigator.clipboard.writeText(rev.uuid)
       toast(`r${rev.rev}의 UUID가 복사되었습니다.`)
     },
-    adminAction(rev, action) {
-      console.log(action, rev)
+    async adminAction(rev, action) {
+      const res = await this.internalRequest(this.doc_action_link(this.viewData.document, 'a/' + action, { uuid: rev.uuid }))
+      await this.processInternalResponse(res)
     }
   }
 }
