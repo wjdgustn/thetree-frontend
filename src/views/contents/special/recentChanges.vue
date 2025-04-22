@@ -57,8 +57,8 @@
         <LocalDate :date="rev.createdAt" relative/>
       </div>
       <div v-if="rev.infoText || rev.log" class="table-item history-log">
-        <span v-if="rev.infoText" v-text="rev.infoText"/>
-        <i v-if="rev.log">&nbsp;({{rev.log}})</i>
+        <span v-if="rev.log" v-text="rev.log"/>
+        <i v-if="rev.infoText" v-html="' (' + rev.infoText + ')'"/>
       </div>
     </div>
   </div>
