@@ -116,6 +116,9 @@ export default {
       previewComment: {}
     }
   },
+  created() {
+    this.$store.state.components.mainView.beforeLeave = this.beforeLeave
+  },
   mounted() {
     this.setScrollTimer()
     window.addEventListener('scroll', this.scrollHandler)
@@ -158,6 +161,11 @@ export default {
     }
   },
   methods: {
+    beforeLeave() {
+      if(this.$refs.commentInput.value)
+        return confirm('변경된 사항이 저장되지 않았습니다.')
+      return true
+    },
     setScrollTimer() {
       this.scrollTimer = setTimeout(async () => {
         if(this.fetchingComments) await this.waitUntil(new Promise(resolve => {
