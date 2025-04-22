@@ -85,7 +85,7 @@ export default {
       return this.account.type === 2
     },
     accountName() {
-      return this.isDeleted ? '(삭제된 사용자)' : this.account.name
+      return this.isDeleted ? '(삭제된 사용자)' : (this.account.name || this.account.ip)
     },
     nameStyle() {
       if(!this.isDeleted) return this.account.userCSS
