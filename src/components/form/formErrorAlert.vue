@@ -16,6 +16,9 @@ export default {
   watch: {
     errorAlert() {
       this.$store.state.viewData.errorAlertExists = true
+    },
+    errorAlertExists() {
+      this.$store.state.viewData.errorAlertExists = true
     }
   }
 }
