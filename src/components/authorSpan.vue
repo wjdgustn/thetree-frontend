@@ -1,17 +1,43 @@
 <template>
   <ContextMenu class="author-span">
-    <a :class="{
+    <component :class="{
       'name-bold': isBold,
       'name-deleted': isDeleted,
+      'name-deleted-span': !nameLink,
       'name-migrated': isMigrated
     }"
+       :is="nameLink ? 'a' : 'span'"
        :href="nameLink"
        :style="nameStyle"
        v-text="accountName"
        @click.prevent
     />
     <template #menu>
-      todo
+      <div class="account-info">
+        <div class="account-type" v-text="accountType"/>
+        <div class="account-name" v-text="accountName"/>
+      </div>
+      <hr>
+      <template v-if="isDeleted && !account.uuid">
+        <GeneralButton disabled>(없음)</GeneralButton>
+      </template>
+      <template v-if="account.type === 1">
+        <GeneralButton :href="nameLink">사용자 문서</GeneralButton>
+        <hr>
+      </template>
+      <template v-if="account.uuid">
+        <GeneralButton :href="contribution_link(account.uuid)">문서 기여 내역</GeneralButton>
+        <GeneralButton :href="contribution_link_discuss(account.uuid)">토론 기여 내역</GeneralButton>
+        <template v-if="session.quick_block">
+          <hr>
+          <GeneralButton v-close-popover :whenClick="copyUuid">UUID 복사</GeneralButton>
+          <GeneralButton :href="{ path: '/BlockHistory', query: { query: account.uuid, target: 'text' } }">차단 내역 조회</GeneralButton>
+          <template v-if="isBlockable">
+            <hr>
+            <GeneralButton theme="danger" :whenClick="onBlockButtonClick">차단</GeneralButton>
+          </template>
+        </template>
+      </template>
     </template>
   </ContextMenu>
 </template>
@@ -72,6 +98,9 @@ export default {
       else if(this.discussAdmin) str += ' (전 관리자)'
 
       return str
+    },
+    isBlockable() {
+      return [0, 1].includes(this.account.type)
     }
   },
   methods: {
@@ -91,6 +120,7 @@ export default {
       if(!this.account.uuid) return
       navigator.clipboard.writeText(this.account.uuid)
       toast(`사용자 ${this.account.name}의 UUID가 복사되었습니다.`)
+
     }
   }
 }
@@ -118,15 +148,15 @@ span.name-deleted-span {
   cursor: pointer;
 }
 
-.ubbqzKtB {
+.account-info {
   padding: .25rem 1rem;
 }
 
-.fHLdjObB {
+.account-type {
   font-size: .8rem;
 }
 
-._4j\+uispq {
+.account-name {
   font-size: .95rem;
   font-weight: 600;
   line-height: 1;
