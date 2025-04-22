@@ -216,7 +216,8 @@ export default {
 
                     this.$store.state.viewData.errorAlertExists = false
                     await this.$nextTick()
-                    if(!this.$store.state.viewData.errorAlertExists)
+                    const alertExists = this.$store.state.viewData.errorAlertExists
+                    if(!alertExists)
                         alert(json.data)
                 }
                 else {
@@ -230,12 +231,17 @@ export default {
                     }
                 }
             }
+
+            if(json.action) switch(json.action) {
+                case 'reloadView':
+                    await this.$store.state.components.mainView.loadView()
+                    break
+            }
         },
         onDynamicContentClick(e) {
             if(e.metaKey || e.ctrlKey || e.defaultPrevented) return
 
             const container = this.$refs.div
-            if(!container) return
             let link = null
             for(let el = e.target; el && el !== container; el = el.parentNode) {
                 if(el.tagName === 'BUTTON') return
