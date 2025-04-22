@@ -36,6 +36,7 @@
   </div>
 
   <h3>댓글 달기</h3>
+  <FormErrorAlert/>
   <SeedForm v-if="viewData.permissions.status" method="post" :action="'/admin/thread/' + viewData.thread.url + '/status'">
     [ADMIN] 스레드 상태 변경
     <select name="status">
@@ -56,14 +57,15 @@
     <SeedButton type="submit">변경</SeedButton>
   </SeedForm>
 
-  <SeedForm method="post" class="comment-form">
+  <SeedForm method="post" class="comment-form" :afterSubmit="afterSubmit">
     <ul>
       <li><button type="button" class="tab-button active">RAW 편집</button></li>
       <li><button type="button" class="tab-button">미리보기</button></li>
     </ul>
     <div class="tabs">
       <div class="active">
-        <textarea rows="5" name="text"/>
+        <textarea v-if="viewData.thread.status === 0" ref="commentInput" rows="5" name="text"/>
+        <textarea v-else rows="5" disabled v-text="['', 'pause 상태입니다.', '닫힌 토론입니다.'][viewData.thread.status]"/>
       </div>
       <div class="preview-tab">
         im preview
@@ -74,6 +76,8 @@
   </SeedForm>
 </template>
 <script>
+import { io } from 'socket.io-client'
+
 import Common from '@/mixins/common'
 import ButtonBadge from '@/components/buttonBadge'
 import ContextMenu from '@/components/contextMenu'
@@ -83,10 +87,12 @@ import BlinkRedWarn from '@/components/blinkRedWarn'
 import Comment from '@/components/comment'
 import CheckBox from '@/components/form/checkBox'
 import GeneralButton from '@/components/generalButton'
+import FormErrorAlert from '@/components/form/formErrorAlert'
 
 export default {
   mixins: [Common],
   components: {
+    FormErrorAlert,
     GeneralButton,
     CheckBox,
     Comment,
@@ -101,18 +107,41 @@ export default {
       locks: [],
       fetchingComments: false,
       scrollTimer: null,
-      hideHidden: true
+      hideHidden: true,
+      socket: null
     }
   },
   mounted() {
     this.setScrollTimer()
     window.addEventListener('scroll', this.scrollHandler)
+
+    this.socket = io('/thread', {
+      query: {
+        thread: this.viewData.thread.url
+      }
+    })
+
+    this.socket.on('comment', comment => {
+      const commentIndex = this.viewData.comments.findIndex(a => a.id === comment.id)
+      const prevComment = this.viewData.comments[commentIndex]
+      if(commentIndex !== -1) this.viewData.comments[commentIndex] = comment
+      else this.viewData.comments.push(comment)
+
+      if(!comment.contentHtml && prevComment?.contentHtml)
+        comment.contentHtml = prevComment.contentHtml
+    })
+    this.socket.on('updateThread', thread => {
+      this.viewData.thread = {
+        ...this.viewData.thread,
+        ...thread
+      }
+    })
   },
   beforeUnmount() {
     if(this.scrollTimer != null) clearTimeout(this.scrollTimer)
     window.removeEventListener('scroll', this.scrollHandler)
 
-    // TODO: socket disconnect here
+    this.socket.disconnect()
   },
   watch: {
     hideHidden() {
@@ -164,6 +193,9 @@ export default {
     scrollHandler() {
       if(this.scrollTimer != null) clearTimeout(this.scrollTimer)
       this.setScrollTimer()
+    },
+    afterSubmit() {
+      this.$refs.commentInput.value = ''
     }
   }
 }

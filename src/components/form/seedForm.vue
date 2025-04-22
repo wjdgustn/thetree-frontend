@@ -31,7 +31,8 @@ export default {
     captcha: Boolean,
     beforeSubmit: Function,
     flex: Boolean,
-    box: Boolean
+    box: Boolean,
+    afterSubmit: Function
   },
   computed: {
     captchaConfig() {
@@ -153,6 +154,12 @@ export default {
           this.useCaptcha = true
         }
       }
+
+      if(json.code === 204) {
+        this.$store.state.clearFormErrors()
+      }
+
+      this.afterSubmit?.()
     }
   }
 }
