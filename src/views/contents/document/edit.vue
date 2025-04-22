@@ -104,7 +104,7 @@ export default {
     }
   },
   created() {
-    this.tabs.unshift(...this.thetreePlugins.editor.map(a => ({
+    this.tabs.unshift(...this.$store.state.thetreePlugins.editor.map(a => ({
       ...a.pluginInfo,
       component: a
     })))

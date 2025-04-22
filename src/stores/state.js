@@ -9,6 +9,9 @@ export const useStateStore = defineStore('state', {
       components: {
         mainView: null
       },
+      thetreePlugins: {
+        editor: []
+      },
 
       config: {},
       configHash: '',

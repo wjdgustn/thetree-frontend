@@ -1,4 +1,4 @@
-import { createApp as createCSRApp, createSSRApp } from 'vue'
+import {createApp as createCSRApp, createSSRApp, markRaw} from 'vue'
 import { createPinia } from 'pinia'
 import { VueHeadMixin } from '@unhead/vue'
 import { vfmPlugin } from 'vue-final-modal'
@@ -59,6 +59,13 @@ export function createApp() {
         let name = path.split('/').pop().replace('.vue', '')
         name = name[0].toUpperCase() + name.slice(1)
         app.component(name, def.default)
+    }
+
+    if(!import.meta.env.SSR) {
+        store.state.thetreePlugins.editor = Object.values(import.meta.glob('/plugins/editor/*/layout.vue', {
+            eager: true,
+            import: 'default'
+        })).map(a => markRaw(a))
     }
 
     app.mixin(GlobalMixin)

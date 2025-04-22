@@ -41,7 +41,7 @@ export default {
     },
     editModes() {
       return [
-        ...this.thetreePlugins.editor.map(a => a.pluginInfo),
+        ...this.$store.state.thetreePlugins.editor.map(a => a.pluginInfo),
         {
           name: 'raw',
           label: 'RAW 편집'
