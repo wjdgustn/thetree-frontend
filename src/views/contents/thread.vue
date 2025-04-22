@@ -26,11 +26,11 @@
   <div>
     <template v-for="comment in viewData.comments">
       <Comment
+          previewMode
           ref="comments"
           v-if="!comment.hidden || !hideHidden"
           :slug="viewData.thread.url"
           :data="comment"
-          :hideThreadComment="comment.hidden"
       />
     </template>
   </div>

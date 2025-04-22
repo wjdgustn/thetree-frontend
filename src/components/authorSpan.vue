@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     onBlockButtonClick() {
-      console.log('TODO: QuickACLGroup')
+      console.log('TODO: QuickACLGroup', this.pos)
       const note = `${this.pos ? this.pos + ' ' : ''}긴급차단`
       // this.openQuickACLGroup({
       //   ...(this.account.type === 0 ? {

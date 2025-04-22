@@ -22,11 +22,19 @@
   </p>
 
   <div v-for="(item, index) in viewData.openThreads">
+    <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'">
+      <SeedButton type="submit" danger>[ADMIN] 스레드 삭제</SeedButton>
+    </SeedForm>
     <h2>{{index + 1}}. <NuxtLink :to="'/thread/' + item.url" :id="'s-' + index" v-text="item.topic"/></h2>
     <div class="preview-group">
-      <div>
-        <NuxtLink :to="'/thread/' + item.url" class="comment-more">more...</NuxtLink>
-        todo
+      <div v-for="(comment, index) in item.recentComments">
+        <NuxtLink v-if="index === 1 && comment.id !== 2" :to="'/thread/' + item.url" class="comment-more">more...</NuxtLink>
+        <Comment
+            previewMode
+            :thread="item"
+            :slug="item.url"
+            :data="comment"
+        />
       </div>
     </div>
   </div>
@@ -53,10 +61,12 @@ import SeedForm from '@/components/form/seedForm'
 import BlinkRedWarn from '@/components/blinkRedWarn'
 import SeedButton from '@/components/seedButton'
 import SeedFormBlock from '@/components/form/seedFormBlock'
+import Comment from '@/components/comment'
 
 export default {
   mixins: [Common],
   components: {
+    Comment,
     SeedFormBlock,
     SeedButton,
     BlinkRedWarn,

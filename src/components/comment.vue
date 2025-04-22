@@ -5,7 +5,7 @@
     'tooltip-mode': tooltipMode
   }">
     <div class="comment-inside" :class="{ 'tooltip-mode': tooltipMode }">
-      <div class="user-block" :class="{ 'user-starter': data.user?.uuid === viewData.thread.createdUser }">
+      <div class="user-block" :class="{ 'user-starter': data.user?.uuid === viewData.thread?.createdUser }">
         <span class="num-text">
           <a :id="data.id">#{{data.id}}</a>
         </span>
@@ -13,7 +13,7 @@
           <AuthorSpan :account="data.user" :pos="pos"/>
           <span class="time-block">
             <LocalDate :date="data.createdAt"/>
-            <ContextMenu class="menu-block" placement="bottom-end">
+            <ContextMenu v-if="!previewMode" class="menu-block" placement="bottom-end">
               <span role="button" class="button menu-button">
                 <FontAwesomeIcon icon="caret-down" />
               </span>
@@ -68,13 +68,13 @@ export default {
       type: JSON,
       required: true
     },
-    hideThreadComment: Boolean,
     slug: {
       type: String,
       required: true
     },
     previewMode: Boolean,
-    tooltipMode: Boolean
+    tooltipMode: Boolean,
+    thread: JSON
   },
   data() {
     return {
@@ -115,7 +115,10 @@ export default {
       return this.data.user
     },
     pos() {
-      return '토론 ' + this.viewData.thread.url + ' #' + this.data.id
+      return '토론 ' + this.url + ' #' + this.data.id
+    },
+    url() {
+      return (this.thread || this.viewData.thread).url
     }
   },
   methods: {
@@ -124,7 +127,7 @@ export default {
 
       this.loadingRaw = true
       try {
-        const res = await this.internalRequest(`/thread/${this.viewData.thread.url}/${this.data.id}/raw`)
+        const res = await this.internalRequest(`/thread/${this.url}/${this.data.id}/raw`)
 
         if(res.code) {
           alert(res.data)
@@ -147,7 +150,7 @@ export default {
       }
     },
     async toggleHide() {
-      const res = await this.internalRequest(`/admin/thread/${this.viewData.thread.url}/${this.data.id}/${this.data.hidden ? 'show' : 'hide'}`, {
+      const res = await this.internalRequest(`/admin/thread/${this.url}/${this.data.id}/${this.data.hidden ? 'show' : 'hide'}`, {
         method: 'POST'
       })
       await this.processInternalResponse(res)
