@@ -49,7 +49,7 @@
           <a class="rev-text" href="#" @click="copyUuid(rev)">r{{rev.rev}}</a>
         </strong>
         <span>
-          (<DiffCount :count="rev.diffLength || 0"/>)
+          (<DiffCount :count="rev.diffLength"/>)
         </span>
         <AuthorSpan :account="rev.user" :pos="`${doc_fulltitle(viewData.document)} r${rev.rev}`"/>
 

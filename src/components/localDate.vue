@@ -31,23 +31,24 @@ export default {
       return new Date(
           typeof this.date === 'string' || this.date * 1000 > Date.now()
               ? this.date
-              : this.date * 1000);
+              : this.date * 1000)
     },
     isRelative() {
-      return this.forceRelative || (this.relative && !this.$store.state.localConfig['wiki.no_relative_date']);
+      return (this.forceRelative || (this.relative && !this.$store.state.localConfig['wiki.no_relative_date']))
+          && this.relativeDate
     },
     relativeDate() {
-      const diff = this.currDate - this.dateObject;
-      const relative = new Intl.RelativeTimeFormat('ko');
+      const diff = this.currDate - this.dateObject
+      const relative = new Intl.RelativeTimeFormat('ko')
 
-      let text;
-      if(diff < 1000 * 10) text = '방금 전';
-      else if(diff < 1000 * 60) text = relative.format(-Math.floor(diff / 1000), 'second');
-      else if(diff < 1000 * 60 * 60) text = relative.format(-Math.floor(diff / 1000 / 60), 'minute');
-      else if(diff < 1000 * 60 * 60 * 24) text = relative.format(-Math.floor(diff / 1000 / 60 / 60), 'hour');
-      else if(diff < 1000 * 60 * 60 * 24 * 30) text = relative.format(-Math.floor(diff / 1000 / 60 / 60 / 24), 'day');
+      let text
+      if(diff < 1000 * 10) text = '방금 전'
+      else if(diff < 1000 * 60) text = relative.format(-Math.floor(diff / 1000), 'second')
+      else if(diff < 1000 * 60 * 60) text = relative.format(-Math.floor(diff / 1000 / 60), 'minute')
+      else if(diff < 1000 * 60 * 60 * 24) text = relative.format(-Math.floor(diff / 1000 / 60 / 60), 'hour')
+      else if(diff < 1000 * 60 * 60 * 24 * 30) text = relative.format(-Math.floor(diff / 1000 / 60 / 60 / 24), 'day')
 
-      return text;
+      return text
     },
     formattedDate() {
       const strs = {
@@ -58,14 +59,14 @@ export default {
         i: this.dateObject.getMinutes(),
         s: this.dateObject.getSeconds()
       }
-      let result = this.format;
+      let result = this.format
       for(let [key, value] of Object.entries(strs)) {
-        result = result.replaceAll(key, value.toString().padStart(2, '0'));
+        result = result.replaceAll(key, value.toString().padStart(2, '0'))
       }
-      return result;
+      return result
     },
     dateString() {
-      return this.isRelative ? this.relativeDate : this.formattedDate;
+      return this.isRelative ? this.relativeDate : this.formattedDate
     }
   }
 }
