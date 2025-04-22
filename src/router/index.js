@@ -4,7 +4,9 @@ import MainView from '../views/MainView.vue'
 const router = createRouter({
   history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
   scrollBehavior(to, from, savedPosition) {
-    if(savedPosition) return savedPosition
+    if(savedPosition
+        && savedPosition.left > 0
+        && savedPosition.top > 0) return savedPosition
     else if(to.hash) return {
       el: to.hash
     }
