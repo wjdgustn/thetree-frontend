@@ -2,13 +2,13 @@
     overflow: hidden;
 }
 
+.wiki-thread-content .wiki-paragraph:last-of-type {
+    margin-bottom: 0;
+}
+
 .wiki-content {
     .wiki-paragraph {
         margin-bottom: 1rem;
-    }
-
-    .wiki-thread-content .wiki-paragraph:last-of-type {
-        margin-bottom: 0;
     }
 
     .wiki-list li .wiki-paragraph {

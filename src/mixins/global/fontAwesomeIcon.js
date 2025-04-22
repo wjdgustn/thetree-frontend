@@ -9,7 +9,12 @@ import {
     faAnglesLeft,
     faAnglesRight,
     faShare,
-    faCircleXmark
+    faCircleXmark,
+    faEllipsisVertical,
+    faDoorOpen,
+    faDoorClosed,
+    faPause,
+    faCaretDown
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faFileLines
@@ -29,7 +34,12 @@ export default {
             faAnglesRight,
             faShare,
             faCircleXmark,
-            faFileLines
+            faFileLines,
+            faEllipsisVertical,
+            faDoorOpen,
+            faDoorClosed,
+            faPause,
+            faCaretDown
         )
     },
     components: {

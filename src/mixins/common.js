@@ -275,6 +275,31 @@ export default {
         },
         snakeToCamelCase(str) {
             return str.toLowerCase().replace(/(?:^|_)(\w)/g, (_, c) => c.toUpperCase());
+        },
+        async waitUntil(promise, timeout = -1) {
+            let resolved = false;
+
+            return new Promise((resolve, reject) => {
+                let timeoutId;
+                if(timeout >= 0) {
+                    timeoutId = setTimeout(() => {
+                        resolve('timeout');
+                        resolved = true;
+                    }, timeout);
+                }
+
+                promise.then(result => {
+                    if(resolved) return;
+
+                    if(timeoutId) clearTimeout(timeoutId);
+                    resolve(result);
+                }).catch(error => {
+                    if(resolved) return;
+
+                    if(timeoutId) clearTimeout(timeoutId);
+                    reject(error);
+                });
+            });
         }
     }
 }
