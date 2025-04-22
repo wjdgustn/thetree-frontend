@@ -26,7 +26,6 @@
   <div>
     <template v-for="comment in viewData.comments">
       <Comment
-          previewMode
           ref="comments"
           v-if="!comment.hidden || !hideHidden"
           :slug="viewData.thread.url"
@@ -59,16 +58,20 @@
 
   <SeedForm method="post" class="comment-form" :afterSubmit="afterSubmit">
     <ul>
-      <li><button type="button" class="tab-button active">RAW 편집</button></li>
-      <li><button type="button" class="tab-button">미리보기</button></li>
+      <li><button type="button" class="tab-button" :class="{ active: activeTab === 'raw' }" @click="activeTab = 'raw'">RAW 편집</button></li>
+      <li><button type="button" class="tab-button" :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">미리보기</button></li>
     </ul>
     <div class="tabs">
-      <div class="active">
+      <div :class="{ active: activeTab === 'raw' }">
         <textarea v-if="viewData.thread.status === 0" ref="commentInput" rows="5" name="text"/>
         <textarea v-else rows="5" disabled v-text="['', 'pause 상태입니다.', '닫힌 토론입니다.'][viewData.thread.status]"/>
       </div>
-      <div class="preview-tab">
-        im preview
+      <div class="preview-tab" :class="{ active: activeTab === 'preview' }">
+        <Comment
+            previewMode
+            :slug="viewData.thread.url"
+            :data="previewComment"
+        />
       </div>
     </div>
     <BlinkRedWarn v-if="session.account.type !== 1">비로그인 상태로 토론에 참여합니다. 토론 내역에 IP({{session.account.name}}) 주소 전체가 영구히 기록됩니다.</BlinkRedWarn>
@@ -108,7 +111,9 @@ export default {
       fetchingComments: false,
       scrollTimer: null,
       hideHidden: true,
-      socket: null
+      socket: null,
+      activeTab: 'raw',
+      previewComment: {}
     }
   },
   mounted() {
@@ -146,6 +151,10 @@ export default {
   watch: {
     hideHidden() {
       this.setScrollTimer()
+    },
+    activeTab(newValue) {
+      if(newValue === 'preview')
+        this.loadPreview()
     }
   },
   methods: {
@@ -196,6 +205,33 @@ export default {
     },
     afterSubmit() {
       this.$refs.commentInput.value = ''
+      this.activeTab = 'raw'
+    },
+    async loadPreview() {
+      this.previewComment = {
+        type: 0,
+        id: this.viewData.comments.at(-1).id + 1,
+        createdAt: new Date().toISOString(),
+        user: {
+          uuid: this.session.account.uuid,
+          name: this.session.account.name,
+          type: this.session.account.type
+        }
+      }
+
+      const json = await this.internalRequest(this.doc_action_link(this.viewData.document, 'preview'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          content: this.$refs.commentInput.value,
+          mode: 'thread'
+        }).toString(),
+        noProgress: true
+      })
+
+      this.previewComment.contentHtml = json.contentHtml
     }
   }
 }
