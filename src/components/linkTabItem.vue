@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li ref="item">
     <NuxtLink :to="href" class="item" :class="{ active }">
       <slot/>
     </NuxtLink>
