@@ -54,29 +54,9 @@ export default {
       }[this.captchaConfig.type]
     },
     async loadCaptcha() {
-      if(this.getCaptchaLib()) return
+      if(this.getCaptchaLib()) return this.captchaOnLoad()
 
-      window.captchaOnLoad = async () => {
-        delete window.captchaOnLoad
-
-        this.captchaId = this.getCaptchaLib().render(this.$refs.captcha, {
-          sitekey: this.captchaConfig.site_key,
-          theme: this.$store.state.currentTheme,
-          callback: () => {
-            for(let { resolve } of this.captchaLock) resolve()
-            this.captchaLock.length = 0
-          },
-          ...{
-            recaptcha: {
-              badge: 'inline',
-              size: 'invisible'
-            },
-            turnstile: {
-              execution: 'execute'
-            }
-          }[this.captchaConfig.type]
-        })
-      }
+      window.captchaOnLoad = this.captchaOnLoad
 
       const script = document.createElement('script')
       script.src = {
@@ -84,6 +64,27 @@ export default {
         turnstile: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=captchaOnLoad'
       }[this.captchaConfig.type]
       document.head.appendChild(script)
+    },
+    captchaOnLoad() {
+      delete window.captchaOnLoad
+
+      this.captchaId = this.getCaptchaLib().render(this.$refs.captcha, {
+        sitekey: this.captchaConfig.site_key,
+        theme: this.$store.state.currentTheme,
+        callback: () => {
+          for(let { resolve } of this.captchaLock) resolve()
+          this.captchaLock.length = 0
+        },
+        ...{
+          recaptcha: {
+            badge: 'inline',
+            size: 'invisible'
+          },
+          turnstile: {
+            execution: 'execute'
+          }
+        }[this.captchaConfig.type]
+      })
     },
     async submit(e) {
       e.preventDefault()
