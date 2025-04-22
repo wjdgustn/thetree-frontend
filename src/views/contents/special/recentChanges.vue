@@ -183,23 +183,13 @@ export default {
   vertical-align: bottom;
 }
 
-.q-g9h9Vz {
-  color: #212529;
-  color: var(--light-text-color,var(--text-color,#212529))
-}
-
-.theseed-dark-mode .q-g9h9Vz {
-  color: #e0e0e0;
-  color: var(--dark-text-color,var(--text-color,#e0e0e0))
-}
-
 .table-row {
   grid-template-columns: 1fr 10rem 11rem 13rem;
 }
 
 @media screen and (max-width: 1399.98px) {
   .table-row {
-    grid-template-columns:1fr 10rem 9rem 12rem;
+    grid-template-columns: 1fr 10rem 9rem 12rem;
   }
 }
 

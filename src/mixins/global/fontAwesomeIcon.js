@@ -11,6 +11,9 @@ import {
     faShare,
     faCircleXmark
 } from '@fortawesome/free-solid-svg-icons'
+import {
+    faFileLines
+} from '@fortawesome/free-regular-svg-icons'
 
 export default {
     created() {
@@ -25,7 +28,8 @@ export default {
             faAnglesLeft,
             faAnglesRight,
             faShare,
-            faCircleXmark
+            faCircleXmark,
+            faFileLines
         )
     },
     components: {
