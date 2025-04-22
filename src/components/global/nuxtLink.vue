@@ -25,7 +25,10 @@ export default {
   },
   methods: {
     calculateActualTo() {
-      if(typeof this.to === 'string') return
+      if(typeof this.to === 'string') {
+        this.actualTo = this.to
+        return
+      }
 
       // vue-router 자체 router.resolve는 path를 이상하게 encode하는 듯
       const url = new URL(this.to.path || this.$route.fullPath, 'https://example.com')
