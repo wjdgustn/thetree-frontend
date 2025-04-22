@@ -9,7 +9,8 @@ export default {
   props: {
     count: {
       type: Number,
-      required: true
+      required: true,
+      default: 0
     }
   },
   computed: {
