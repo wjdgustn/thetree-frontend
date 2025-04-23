@@ -65,7 +65,7 @@ export const useStateStore = defineStore('state', {
       })
     },
     async updateView(statePatches) {
-      const contentName = statePatches?.page.contentName || this.page.contentName
+      const contentName = statePatches ? statePatches.page.contentName : this.page.contentName
       if(!contentName) {
         if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = null
