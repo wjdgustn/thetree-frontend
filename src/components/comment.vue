@@ -35,7 +35,7 @@
       }">
         <template v-if="!fetched || !data.hidden || forceShow">
           <span v-if="showRaw" v-text="rawContent"/>
-          <WikiContent v-else discuss :content="data.contentHtml"/>
+          <WikiContent v-else-if="data.contentHtml" discuss :content="data.contentHtml"/>
         </template>
         <template v-else>
           [<AuthorSpan :account="data.hideUser" :pos="pos" discuss :discussAdmin="data.hideUser.admin"/>에 의해 숨겨진 글입니다.]
