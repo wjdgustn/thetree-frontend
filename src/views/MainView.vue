@@ -146,6 +146,7 @@ export default {
   watch: {
     $route() {
       this.processNextUrl()
+      document.activeElement?.blur()
     },
     '$store.state.currentTheme'() {
       this.updateThemeClass()
