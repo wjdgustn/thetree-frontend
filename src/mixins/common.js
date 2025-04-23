@@ -203,7 +203,6 @@ export default {
             }
 
             if(json.data) {
-                const prevErrorAlert = this.$store.state.viewData.errorAlert
                 this.$store.state.clearFormErrors()
 
                 if(typeof json.data === 'string') {
@@ -298,6 +297,10 @@ export default {
                     reject(error);
                 });
             });
+        },
+        async openQuickACLGroup(data) {
+            const QuickACLGroupModal = (await import('@/components/QuickACLGroupModal')).default
+            await this.$vfm.show({ component: QuickACLGroupModal }, data)
         }
     }
 }

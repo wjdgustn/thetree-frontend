@@ -34,7 +34,7 @@
           <GeneralButton :href="{ path: '/BlockHistory', query: { query: account.uuid, target: 'text' } }">차단 내역 조회</GeneralButton>
           <template v-if="isBlockable">
             <hr>
-            <GeneralButton theme="danger" :whenClick="onBlockButtonClick">차단</GeneralButton>
+            <GeneralButton v-close-popover theme="danger" :whenClick="onBlockButtonClick">차단</GeneralButton>
           </template>
         </template>
       </template>
@@ -107,14 +107,14 @@ export default {
     onBlockButtonClick() {
       console.log('TODO: QuickACLGroup', this.pos)
       const note = `${this.pos ? this.pos + ' ' : ''}긴급차단`
-      // this.openQuickACLGroup({
-      //   ...(this.account.type === 0 ? {
-      //     ip: this.account.name
-      //   } : {
-      //     username: this.account.name
-      //   }),
-      //   note
-      // })
+      this.openQuickACLGroup({
+        ...(this.account.type === 0 ? {
+          ip: this.account.name
+        } : {
+          username: this.account.name
+        }),
+        note
+      })
     },
     copyUuid() {
       if(!this.account.uuid) return
