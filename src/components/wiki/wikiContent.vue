@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     footnotes() {
-      return document.getElementsByClassName('wiki-fn-content')
+      return this.$refs.div.getElementsByClassName('wiki-fn-content')
     }
   },
   data() {
