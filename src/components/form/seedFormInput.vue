@@ -17,7 +17,10 @@ export default {
     }
   },
   props: {
-    modelValue: [String, Boolean],
+    modelValue: {
+      type: [String, Boolean],
+      default: ''
+    },
     tag: {
       type: String,
       default: 'input'
