@@ -6,14 +6,19 @@
   }">
     <label v-if="label" :for="inputId" v-text="label"></label>
     <slot/>
-    <p v-if="fieldError" v-text="fieldError.msg"></p>
+    <ShowError :tag="name"/>
     <div v-if="$slots.buttons" class="buttons-group">
       <slot name="buttons"/>
     </div>
   </div>
 </template>
 <script>
+import ShowError from '@/components/showError'
+
 export default {
+  components: {
+    ShowError
+  },
   props: {
     inputId: String,
     name: String,
@@ -21,11 +26,6 @@ export default {
     flexStart: Boolean,
     buttons: Boolean,
     padding: Boolean
-  },
-  computed: {
-    fieldError() {
-      return this.name && this.$store.state.viewData.fieldErrors?.[this.name]
-    }
   }
 }
 </script>
@@ -39,7 +39,6 @@ export default {
 }
 
 p {
-  color: red;
   margin: 0;
 }
 

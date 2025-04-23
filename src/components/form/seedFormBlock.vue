@@ -2,20 +2,20 @@
   <div>
     <label v-if="label" :for="inputId" v-text="label"></label>
     <slot/>
-    <p v-if="fieldError" v-text="fieldError.msg"></p>
+    <ShowError :tag="name"/>
   </div>
 </template>
 <script>
+import ShowError from '@/components/showError'
+
 export default {
+  components: {
+    ShowError
+  },
   props: {
     inputId: String,
     name: String,
     label: String
-  },
-  computed: {
-    fieldError() {
-      return this.name && this.$store.state.viewData.fieldErrors?.[this.name]
-    }
   }
 }
 </script>
@@ -32,9 +32,5 @@ div {
 
 div label {
   margin-bottom: .5rem;
-}
-
-p {
-  color: red;
 }
 </style>
