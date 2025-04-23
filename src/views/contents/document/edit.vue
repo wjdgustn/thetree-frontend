@@ -43,8 +43,8 @@
     </div>
 
     <div class="log-block">
-      <label for="logInput">요약</label>
-      <SeedFormInput id="logInput" name="log"/>
+      <label for="logInput" v-text="logLabel"/>
+      <SeedFormInput v-model="log" id="logInput" name="log"/>
     </div>
 
     <label>
@@ -100,7 +100,8 @@ export default {
       preview: {
         content: null,
         categories: null
-      }
+      },
+      log: ''
     }
   },
   created() {
@@ -125,6 +126,14 @@ export default {
 
       if(newValue.name === 'preview')
         this.loadPreview()
+    }
+  },
+  computed: {
+    logLabel() {
+      let result = '요약'
+      if(this.log)
+        result += ` (${this.log.length}/255)`
+      return result
     }
   },
   methods: {

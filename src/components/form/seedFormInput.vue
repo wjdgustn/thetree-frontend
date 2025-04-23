@@ -1,5 +1,11 @@
 <template>
-  <component class="seed-form-input" :is="tag" v-bind="$attrs" :disabled="submittingSeedForm">
+  <component
+      class="seed-form-input"
+      :is="tag"
+      v-bind="$attrs"
+      :disabled="submittingSeedForm"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)">
     <slot/>
   </component>
 </template>
@@ -11,11 +17,13 @@ export default {
     }
   },
   props: {
+    modelValue: [String, Boolean],
     tag: {
       type: String,
       default: 'input'
     }
-  }
+  },
+  emits: ['update:modelValue']
 }
 </script>
 <style scoped>
