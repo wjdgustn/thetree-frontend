@@ -21,10 +21,10 @@
     </SeedFormBlock>
 
     <SeedFormBlock label="스킨" for="skinInput" name="skin">
-      <SeedFormInput tag="select" id="skinInput" name="skin">
-        <option value="default" :selected="data.user.skin === 'default'">기본 스킨</option>
+      <SeedFormInput tag="select" id="skinInput" name="skin" v-model="data.user.skin">
+        <option value="default">기본 스킨</option>
         <template v-for="skin in data.skins">
-          <option :selected="data.user.skin === skin">{{skin}}</option>
+          <option>{{skin}}</option>
         </template>
       </SeedFormInput>
     </SeedFormBlock>
