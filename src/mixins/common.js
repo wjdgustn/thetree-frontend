@@ -212,8 +212,6 @@ export default {
                     const firstInput = form?.querySelector('input, select, textarea')
                     if(firstInput) this.$nextTick().then(() => firstInput.focus())
 
-                    if(json.data === prevErrorAlert) return
-
                     this.$store.state.viewData.errorAlertExists = false
                     await this.$nextTick()
                     const alertExists = this.$store.state.viewData.errorAlertExists
