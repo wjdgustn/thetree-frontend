@@ -159,7 +159,7 @@ export default {
         this.$store.state.clearFormErrors()
       }
 
-      if(typeof json.data !== 'string' && !json.data?.fieldErrors)
+      if(typeof json?.data !== 'string' && !json?.data?.fieldErrors)
         this.afterSubmit?.()
     }
   }
