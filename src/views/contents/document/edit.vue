@@ -162,7 +162,7 @@ export default {
       this.preview.content = null
       this.preview.categories = null
 
-      const json = await this.internalRequest(this.doc_action_link(this.data.document, 'preview'), {
+      const json = await this.internalRequest(this.doc_action_link(this.viewData.document, 'preview'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
