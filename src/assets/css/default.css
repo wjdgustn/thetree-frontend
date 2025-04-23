@@ -510,7 +510,7 @@ address, dl, ol, ul {
     padding: .75rem 1.25rem;
 }
 
-.button-block {
+.button--block {
     display: flex;
     width: 100%;
 }

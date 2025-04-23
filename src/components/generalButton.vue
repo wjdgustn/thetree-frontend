@@ -60,7 +60,7 @@ export default {
       if(this.size === 'small') result.push('button-small-size')
       else if(this.size === 'big') result.push('button-big-size')
 
-      if(this.block) result.push('button-block')
+      if(this.block) result.push('button--block')
 
       return result
     }
