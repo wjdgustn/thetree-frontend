@@ -21,7 +21,7 @@
               v-text="action.text"/>
           <NuxtLink
               v-else
-              :to="doc_action_link(viewData.document, action.action)"
+              :to="doc_action_link(viewData.document, action.action, { uuid: rev.uuid })"
               :rel="action.follow ? null : 'nofollow'"
               v-text="action.text"
           />
