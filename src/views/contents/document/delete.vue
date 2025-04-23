@@ -12,6 +12,7 @@
       문서의 제목을 변경하려는 경우 <NuxtLink :to="doc_action_link(viewData.document, 'move')">문서 이동</NuxtLink> 기능을 사용해 주세요.
       문서 이동 기능을 사용할 수 없는 경우 토론 기능이나 게시판을 통해 대행 요청을 해주세요.
     </p>
+    <BlinkRedWarn v-if="session.account.type !== 1">비로그인 상태로 편집합니다. 로그인하지 않은 상태로 문서 편집을 저장하면, 편집 역사에 본인이 사용하는 IP({{session.account.name}}) 주소 전체가 영구히 기록됩니다.</BlinkRedWarn>
     <div class="button-block">
       <SeedButton danger>삭제</SeedButton>
     </div>
@@ -23,10 +24,12 @@ import SeedForm from '@/components/form/seedForm'
 import SeedFormBlock from '@/components/form/seedFormBlock'
 import NuxtLink from '@/components/global/nuxtLink'
 import SeedButton from '@/components/seedButton'
+import BlinkRedWarn from '@/components/blinkRedWarn'
 
 export default {
   mixins: [Common],
   components: {
+    BlinkRedWarn,
     SeedButton,
     NuxtLink,
     SeedFormBlock,
