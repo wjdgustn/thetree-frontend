@@ -127,6 +127,22 @@ export default {
       await this.loadView(to.fullPath)
     next()
   },
+  mounted() {
+    window.addEventListener('keypress', async e => {
+      if([
+        'INPUT', 'TEXTAREA'
+      ].includes(document.activeElement.tagName)) return
+
+      if(e.key === 'c') await this.routerPush('/RecentChanges')
+      if(e.key === 'd') await this.routerPush('/RecentDiscuss')
+      if(e.key === 'a') await this.routerPush('/random')
+      if(e.key === 'f') await this.routerPush(this.doc_action_link(this.$store.state.config['wiki.front_page'], 'w'))
+      if(e.key === 'e') {
+        const doc = this.$store.state.page.data.document
+        if(doc) await this.routerPush(this.doc_action_link(doc, 'edit'))
+      }
+    })
+  },
   watch: {
     $route() {
       this.processNextUrl()
