@@ -162,7 +162,7 @@ export default {
   },
   methods: {
     beforeLeave() {
-      if(this.$refs.commentInput.value)
+      if(this.$refs.commentInput?.value)
         return confirm('변경된 사항이 저장되지 않았습니다.')
       return true
     },
