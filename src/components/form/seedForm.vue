@@ -155,7 +155,7 @@ export default {
         }
       }
 
-      if(json.code === 204) {
+      if(json?.code === 204) {
         this.$store.state.clearFormErrors()
       }
 
