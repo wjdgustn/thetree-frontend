@@ -145,7 +145,8 @@ export default {
       })
       this.submitting = false
 
-      this.$store.state.components.mainView.beforeLeave = null
+      const noError = typeof json?.data !== 'string' && !json?.data?.fieldErrors
+      if(noError) this.$store.state.components.mainView.beforeLeave = null
 
       await this.processInternalResponse(json, this.$refs.form)
 
@@ -159,7 +160,7 @@ export default {
         this.$store.state.clearFormErrors()
       }
 
-      if(typeof json?.data !== 'string' && !json?.data?.fieldErrors)
+      if(noError)
         this.afterSubmit?.()
     }
   }
