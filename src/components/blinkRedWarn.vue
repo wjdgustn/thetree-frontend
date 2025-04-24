@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <p><slot/></p>
-  </div>
+  <p><slot/></p>
 </template>
 <style scoped>
 @keyframes blinkWhite {
@@ -31,3 +29,5 @@ div>p {
   margin-top: 0;
 }
 </style>
+<script setup lang="ts">
+</script>

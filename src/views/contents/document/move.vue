@@ -10,7 +10,7 @@
       <input type="checkbox" name="mode" value="swap">
       문서를 서로 맞바꾸기
     </label>
-    <BlinkRedWarn v-if="session.account.type !== 1">비로그인 상태로 편집합니다. 로그인하지 않은 상태로 문서 편집을 저장하면, 편집 역사에 본인이 사용하는 IP({{session.account.name}}) 주소 전체가 영구히 기록됩니다.</BlinkRedWarn>
+    <IpWarn/>
     <div v-else/>
     <div class="button-block">
       <SeedButton submit>이동</SeedButton>
@@ -20,13 +20,13 @@
 <script>
 import SeedForm from '@/components/form/seedForm'
 import SeedFormBlock from '@/components/form/seedFormBlock'
-import BlinkRedWarn from '@/components/blinkRedWarn'
 import SeedButton from '@/components/seedButton'
+import IpWarn from '@/components/ipWarn'
 
 export default {
   components: {
+    IpWarn,
     SeedButton,
-    BlinkRedWarn,
     SeedFormBlock,
     SeedForm
   },

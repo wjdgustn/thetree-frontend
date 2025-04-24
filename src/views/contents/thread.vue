@@ -74,7 +74,7 @@
         />
       </div>
     </div>
-    <BlinkRedWarn v-if="session.account.type !== 1">비로그인 상태로 토론에 참여합니다. 토론 내역에 IP({{session.account.name}}) 주소 전체가 영구히 기록됩니다.</BlinkRedWarn>
+    <IpWarn discuss/>
     <SeedButton type="submit" submit>전송</SeedButton>
   </SeedForm>
 </template>
@@ -86,20 +86,20 @@ import ButtonBadge from '@/components/buttonBadge'
 import ContextMenu from '@/components/contextMenu'
 import SeedForm from '@/components/form/seedForm'
 import SeedButton from '@/components/seedButton'
-import BlinkRedWarn from '@/components/blinkRedWarn'
 import Comment from '@/components/comment'
 import CheckBox from '@/components/form/checkBox'
 import GeneralButton from '@/components/generalButton'
 import FormErrorAlert from '@/components/form/formErrorAlert'
+import IpWarn from '@/components/ipWarn'
 
 export default {
   mixins: [Common],
   components: {
+    IpWarn,
     FormErrorAlert,
     GeneralButton,
     CheckBox,
     Comment,
-    BlinkRedWarn,
     SeedButton,
     SeedForm,
     ContextMenu,

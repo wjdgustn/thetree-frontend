@@ -48,9 +48,7 @@
     <SeedFormBlock label="내용 :" inputId="contentInput" name="text">
       <textarea id="contentInput" name="text" rows="5"/>
     </SeedFormBlock>
-    <div>
-      <BlinkRedWarn v-if="session.account.type !== 1">비로그인 상태로 토론에 참여합니다. 토론 내역에 IP({{session.account.name}}) 주소 전체가 영구히 기록됩니다.</BlinkRedWarn>
-    </div>
+    <IpWarn discuss/>
     <SeedButton class="submit-button" submit>전송</SeedButton>
   </SeedForm>
 </template>
@@ -58,18 +56,18 @@
 import Common from '@/mixins/common'
 import NuxtLink from '@/components/global/nuxtLink'
 import SeedForm from '@/components/form/seedForm'
-import BlinkRedWarn from '@/components/blinkRedWarn'
 import SeedButton from '@/components/seedButton'
 import SeedFormBlock from '@/components/form/seedFormBlock'
 import Comment from '@/components/comment'
+import IpWarn from '@/components/ipWarn'
 
 export default {
   mixins: [Common],
   components: {
+    IpWarn,
     Comment,
     SeedFormBlock,
     SeedButton,
-    BlinkRedWarn,
     SeedForm,
     NuxtLink
   }
