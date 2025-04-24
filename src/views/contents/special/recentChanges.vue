@@ -29,7 +29,7 @@
           }
       ]"
   />
-  <div class="table">
+  <div class="list-table">
     <div class="table-row table-heading">
       <div class="table-item">문서</div>
       <div class="table-item">기능</div>
@@ -100,7 +100,7 @@ export default {
   margin-top: 1rem;
 }
 
-.table {
+.list-table {
   display: flex;
   flex-direction: column;
 }

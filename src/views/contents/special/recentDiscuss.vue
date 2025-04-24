@@ -44,7 +44,7 @@
           }
       ]"
   />
-  <div class="table">
+  <div class="list-table">
     <div class="table-row table-heading">
       <div class="table-item">제목</div>
       <div class="table-item">수정자</div>
@@ -107,7 +107,7 @@ export default {
   margin-top: 1rem;
 }
 
-.table {
+.list-table {
   display: flex;
   flex-direction: column;
 }
