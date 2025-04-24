@@ -236,7 +236,7 @@ export default {
             }
         },
         onDynamicContentClick(e) {
-            if(e.metaKey || e.ctrlKey || e.defaultPrevented) return
+            if(e.metaKey || e.ctrlKey || e.shiftKey || e.defaultPrevented) return
 
             const container = this.$refs.div
             let link = null

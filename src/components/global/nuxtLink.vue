@@ -39,7 +39,7 @@ export default {
       this.actualTo = url.pathname + url.search
     },
     click(e) {
-      if(e.metaKey || e.ctrlKey || e.defaultPrevented) return
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.defaultPrevented) return
 
       this.$store.state.components.mainView.routerPush(this.$refs.link.getAttribute('href')).then()
       e.preventDefault()
