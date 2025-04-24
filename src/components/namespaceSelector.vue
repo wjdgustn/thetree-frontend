@@ -1,15 +1,8 @@
 <template>
   <SeedForm flex box>
-    <label for="namespaceSelect">이름공간:</label>
-    <SelectMenu id="namespaceSelect" name="namespace" :value="$route.query.namespace || namespaces[0]?.namespace">
-      <option v-for="ns in namespaces" :value="ns.namespace">{{ns.namespace}} ({{ns.count}})</option>
-    </SelectMenu>
-    <SelectMenu name="flag" :value="$route.query.flag || 0">
-      <option value="0">(전체)</option>
-      <option value="1">link</option>
-      <option value="2">file</option>
-      <option value="4">include</option>
-      <option value="8">redirect</option>
+    <label for="namespaceSelect">이름공간</label>
+    <SelectMenu id="namespaceSelect" name="namespace" :value="selected || $route.query.namespace || namespaces[0]">
+      <option v-for="item in namespaces">{{item}}</option>
     </SelectMenu>
     <GeneralButton type="submit" theme="primary">제출</GeneralButton>
   </SeedForm>
@@ -29,7 +22,8 @@ export default {
     namespaces: {
       type: Array,
       required: true
-    }
+    },
+    selected: String
   }
 }
 </script>
