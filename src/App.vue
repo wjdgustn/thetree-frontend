@@ -9,4 +9,6 @@
 @import '@/assets/css/github.min.css';
 @import '@/assets/css/github-dark-dimmed.min.css';
 @import '@/assets/css/katex.min.css';
+
+@import 'vue-select/dist/vue-select.css';
 </style>
