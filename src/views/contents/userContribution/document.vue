@@ -1,59 +1,72 @@
 <template>
+  <ContributionTab/>
   <HistoryTypeTab/>
+  <div>전체 {{data.total}}회</div>
+  <div style="margin-bottom:1rem">
+    <PrevNextBtn flex v-bind="pageProps"/>
+  </div>
   <div class="list-table">
     <div class="table-row table-heading">
       <div class="table-item">문서</div>
       <div class="table-item">기능</div>
-      <div class="table-item">수정자</div>
       <div class="table-item">수정 시간</div>
     </div>
-    <div v-for="rev in data.revs" class="table-row">
+    <div v-for="item in data.revs" class="table-row">
       <div class="table-item">
-        <NuxtLink :to="doc_action_link(rev.document.parsedName, 'w')" v-text="doc_fulltitle(rev.document.parsedName)"/>
-        <DiffCount :count="rev.diffLength" class="history-diff-count"/>
+        <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')" v-text="doc_fulltitle(item.document.parsedName)"/>
+        <span class="history-rev">(<NuxtLink class="history-rev-link" :to="doc_action_link(item.document.parsedName, 'w', { uuid: item.uuid })" v-text="'r' + item.rev"/>)</span>
+        <DiffCount class="history-diff-count" :count="item.diffLength"/>
       </div>
       <div class="table-item table-buttons">
         <div class="table-buttons-wrap">
-          <GeneralButton size="small" :to="doc_action_link(rev.document.parsedName, 'history')">역사</GeneralButton>
-          <GeneralButton size="small" :disabled="rev.rev === 1" :to="doc_action_link(rev.document.parsedName, 'diff', { uuid: rev.uuid })">비교</GeneralButton>
-          <GeneralButton size="small" :to="doc_action_link(rev.document.parsedName, 'discuss')">토론</GeneralButton>
+          <GeneralButton size="small" :to="doc_action_link(item.document.parsedName, 'history')">역사</GeneralButton>
+          <GeneralButton size="small" :disabled="item.rev === 1" :to="doc_action_link(item.document.parsedName, 'diff', { uuid: item.uuid })">비교</GeneralButton>
+          <GeneralButton size="small" :to="doc_action_link(item.document.parsedName, 'discuss')">토론</GeneralButton>
         </div>
       </div>
       <div class="table-item">
-        <span>
-          <AuthorSpan :account="rev.user"/>
-        </span>
+        <LocalDate :date="item.createdAt" relative/>
       </div>
-      <div class="table-item">
-        <LocalDate :date="rev.createdAt" relative/>
-      </div>
-      <div v-if="rev.infoText || rev.log" class="table-item history-log">
-        <span v-if="rev.log" v-text="rev.log"/>
-        <i v-if="rev.infoText" v-html="' (' + rev.infoText + ')'"/>
+      <div v-if="item.infoText || item.log" class="table-item history-log">
+        <span v-if="item.log" v-text="item.log"/>
+        <i v-if="item.infoText" v-html="' (' + item.infoText + ')'"/>
       </div>
     </div>
+  </div>
+  <div style="margin-top:1rem">
+    <PrevNextBtn flex v-bind="pageProps"/>
   </div>
 </template>
 <script>
 import Common from '@/mixins/common'
-import LinkTab from '@/components/linkTab'
+import ContributionTab from '@/components/contributionTab'
+import HistoryTypeTab from '@/components/historyTypeTab'
+import PrevNextBtn from '@/components/prevNextBtn'
 import NuxtLink from '@/components/global/nuxtLink'
 import DiffCount from '@/components/diffCount'
 import GeneralButton from '@/components/generalButton'
-import AuthorSpan from '@/components/authorSpan'
 import LocalDate from '@/components/localDate'
-import HistoryTypeTab from '@/components/historyTypeTab'
 
 export default {
   mixins: [Common],
   components: {
-    HistoryTypeTab,
-    LinkTab,
-    NuxtLink,
-    DiffCount,
+    LocalDate,
     GeneralButton,
-    AuthorSpan,
-    LocalDate
+    DiffCount,
+    NuxtLink,
+    PrevNextBtn,
+    HistoryTypeTab,
+    ContributionTab
+  },
+  computed: {
+    pageProps() {
+      const prevItem = this.data.prevItem
+      const nextItem = this.data.nextItem
+      return {
+        prev: prevItem ? { query: { until: prevItem.uuid } } : null,
+        next: nextItem ? { query: { from: nextItem.uuid } } : null
+      }
+    }
   }
 }
 </script>
@@ -156,28 +169,35 @@ export default {
   vertical-align: bottom;
 }
 
+.history-rev {
+  font-size: .85rem;
+  margin: 0 0 0 .35rem;
+}
+
 .table-row {
-  grid-template-columns: 1fr 10rem 11rem 13rem;
+  grid-template-columns: 1fr 10rem 13rem;
 }
 
 @media screen and (max-width: 1399.98px) {
   .table-row {
-    grid-template-columns: 1fr 10rem 9rem 12rem;
+    grid-template-columns: 1fr 10rem 12rem;
   }
 }
 
 @media screen and (max-width: 1023.98px) {
   .table-row {
     gap: .1rem;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     padding: .5rem;
   }
 }
 
-@media screen and (max-width: 371.98px) {
-  .table-row {
-    grid-template-columns: 1fr;
-  }
+.troll {
+  text-decoration: line-through;
+}
+
+.history-rev-link {
+  color: inherit;
 }
 
 @media screen and (max-width: 1023.98px) {
@@ -186,53 +206,24 @@ export default {
     padding: 0 !important;
   }
 
-  .table-item:first-child,.table-item:nth-child(4),.table-item:nth-child(5) {
-    grid-column: 1/3;
-  }
-}
-
-@media screen and (max-width: 371.98px) {
-  .table-item:first-child,.table-item:nth-child(4),.table-item:nth-child(5) {
-    grid-column:1;
-  }
-}
-
-@media screen and (max-width: 1023.98px) {
   .table-item:first-child {
-    font-size:1.05rem;
+    font-size: 1.05rem;
     margin-bottom: .15rem !important;
   }
-}
 
-@media screen and (max-width: 371.98px) {
-  .table-item:first-child {
-    margin-bottom:0 !important;
-  }
-}
-
-@media screen and (max-width: 1023.98px) {
   .table-item:nth-child(3) {
-    align-items: center;
-    display: flex;
-    text-align: right;
-  }
-
-  .table-item:nth-child(3)>* {
-    flex: 1;
-  }
-}
-
-@media screen and (max-width: 371.98px) {
-  .table-item:nth-child(3) {
-    text-align: initial;
-  }
-}
-
-@media screen and (max-width: 1023.98px) {
-  .table-item:nth-child(4) {
     color: #888;
     font-size: .85rem;
     order: -1;
   }
+
+  .table-item:nth-child(4) {
+    grid-column: auto !important;
+    margin-top: .15rem !important;
+  }
+}
+
+.history-log {
+  grid-column: 1/4;
 }
 </style>
