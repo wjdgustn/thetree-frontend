@@ -29,34 +29,34 @@
           }
       ]"
   />
-  <div class="list-table">
+  <div class="table">
     <div class="table-row table-heading">
-      <div class="table-row">문서</div>
-      <div class="table-row">기능</div>
-      <div class="table-row">수정자</div>
-      <div class="table-row">수정 시간</div>
+      <div class="table-item">문서</div>
+      <div class="table-item">기능</div>
+      <div class="table-item">수정자</div>
+      <div class="table-item">수정 시간</div>
     </div>
     <div v-for="rev in viewData.revs" class="table-row">
-      <div class="table-row">
+      <div class="table-item">
         <NuxtLink :to="doc_action_link(rev.document.parsedName, 'w')" v-text="doc_fulltitle(rev.document.parsedName)"/>
         <DiffCount :count="rev.diffLength" class="history-diff-count"/>
       </div>
-      <div class="table-row table-buttons">
+      <div class="table-item table-buttons">
         <div class="table-buttons-wrap">
           <GeneralButton size="small" :to="doc_action_link(rev.document.parsedName, 'history')">역사</GeneralButton>
           <GeneralButton size="small" :to="doc_action_link(rev.document.parsedName, 'diff', { uuid: rev.uuid })">비교</GeneralButton>
           <GeneralButton size="small" :to="doc_action_link(rev.document.parsedName, 'discuss')">토론</GeneralButton>
         </div>
       </div>
-      <div class="table-row">
+      <div class="table-item">
         <span>
           <AuthorSpan :account="rev.user"/>
         </span>
       </div>
-      <div class="table-row">
+      <div class="table-item">
         <LocalDate :date="rev.createdAt" relative/>
       </div>
-      <div v-if="rev.infoText || rev.log" class="table-row history-log">
+      <div v-if="rev.infoText || rev.log" class="table-item history-log">
         <span v-if="rev.log" v-text="rev.log"/>
         <i v-if="rev.infoText" v-html="' (' + rev.infoText + ')'"/>
       </div>
@@ -100,7 +100,7 @@ export default {
   margin-top: 1rem;
 }
 
-.list-table {
+.table {
   display: flex;
   flex-direction: column;
 }
@@ -137,7 +137,7 @@ export default {
   }
 }
 
-.table-row {
+.table-item {
   padding: .5rem .75rem;
 }
 
@@ -158,14 +158,14 @@ export default {
   grid-column: 1/5;
 }
 
-.table-row+.history-log {
+.table-item+.history-log {
   color: #777;
   font-size: .9rem;
   margin: -.25rem 0 0;
   padding: 0 .75rem .5rem 1.5rem;
 }
 
-.theseed-dark-mode .table-row+.history-log {
+.theseed-dark-mode .table-item+.history-log {
   color: #bbb;
 }
 
@@ -208,55 +208,55 @@ export default {
 }
 
 @media screen and (max-width: 1023.98px) {
-  .table-row {
+  .table-item {
     margin:0 !important;
     padding: 0 !important;
   }
 
-  .table-row:first-child,.table-row:nth-child(4),.table-row:nth-child(5) {
+  .table-item:first-child,.table-item:nth-child(4),.table-item:nth-child(5) {
     grid-column: 1/3;
   }
 }
 
 @media screen and (max-width: 371.98px) {
-  .table-row:first-child,.table-row:nth-child(4),.table-row:nth-child(5) {
+  .table-item:first-child,.table-item:nth-child(4),.table-item:nth-child(5) {
     grid-column:1;
   }
 }
 
 @media screen and (max-width: 1023.98px) {
-  .table-row:first-child {
+  .table-item:first-child {
     font-size:1.05rem;
     margin-bottom: .15rem !important;
   }
 }
 
 @media screen and (max-width: 371.98px) {
-  .table-row:first-child {
+  .table-item:first-child {
     margin-bottom:0 !important;
   }
 }
 
 @media screen and (max-width: 1023.98px) {
-  .table-row:nth-child(3) {
+  .table-item:nth-child(3) {
     align-items: center;
     display: flex;
     text-align: right;
   }
 
-  .table-row:nth-child(3)>* {
+  .table-item:nth-child(3)>* {
     flex: 1;
   }
 }
 
 @media screen and (max-width: 371.98px) {
-  .table-row:nth-child(3) {
+  .table-item:nth-child(3) {
     text-align: initial;
   }
 }
 
 @media screen and (max-width: 1023.98px) {
-  .table-row:nth-child(4) {
+  .table-item:nth-child(4) {
     color: #888;
     font-size: .85rem;
     order: -1;
