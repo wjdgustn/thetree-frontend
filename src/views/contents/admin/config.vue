@@ -1,6 +1,6 @@
 <template>
   <Heading title="설정">
-    <Heading v-for="item in viewData.jsonConfigs" :level="3" :title="item.name">
+    <Heading v-for="item in data.jsonConfigs" :level="3" :title="item.name">
       <SeedForm method="post" action="/admin/config/configjson">
         <input type="hidden" name="config" :value="item.name">
         <textarea name="content" rows="15" :value="item.content"/>
@@ -15,7 +15,7 @@
         <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/fixstringconfig')">stringConfig.example.json 필드 추가</GeneralButton>
       </SeedForm>
 
-      <SeedForm v-for="(value, key) in viewData.stringConfig" method="post" action="/admin/config/stringconfig">
+      <SeedForm v-for="(value, key) in data.stringConfig" method="post" action="/admin/config/stringconfig">
         <input type="hidden" name="key" :value="key">
         <Heading :title="key" :level="4" folded>
           <textarea name="value" rows="10" :value="value"/>
@@ -40,7 +40,7 @@
             <td>Action</td>
           </tr>
           
-          <tr v-for="(item, index) in viewData.disabledFeatures">
+          <tr v-for="(item, index) in data.disabledFeatures">
             <td style="min-width: 100px;">{{item.method}}</td>
             <td style="min-width: 100px;">{{item.type}}</td>
             <td style="max-width: 300px; white-space: nowrap; overflow-x: auto;">{{item.condition}}</td>
@@ -57,7 +57,7 @@
 
     <SeedForm method="post" action="/admin/config/disabledfeatures">
       <select v-model="disabledFeature.template">
-        <option v-for="(item, index) in viewData.disabledFeaturesTemplates" :value="index">{{item.name}}</option>
+        <option v-for="(item, index) in data.disabledFeaturesTemplates" :value="index">{{item.name}}</option>
       </select>
       <select name="methodField" v-model="disabledFeature.method">
         <option>ALL</option>
@@ -118,7 +118,7 @@ export default {
   },
   watch: {
     'disabledFeature.template'() {
-      const template = this.viewData.disabledFeaturesTemplates[this.disabledFeature.template]
+      const template = this.data.disabledFeaturesTemplates[this.disabledFeature.template]
       Object.assign(this.disabledFeature, template)
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <textarea readonly :value="viewData.content"/>
+  <textarea readonly :value="data.content"/>
 </template>
 <style scoped>
 textarea {

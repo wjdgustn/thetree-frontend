@@ -4,13 +4,13 @@
     <tr>
       <th></th>
       <th></th>
-      <th class="texttitle">r{{viewData.rev}}</th>
+      <th class="texttitle">r{{data.rev}}</th>
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(item, index) in viewData.blameLines">
+    <tr v-for="(item, index) in data.blameLines">
       <th v-if="item.diff" :rowspan="item.diff.count" :style="{ 'background-color': item.diff.user.color }">
-        <NuxtLink v-if="item.diff.rev !== 1" :to="doc_action_link(viewData.document, 'diff', { uuid: item.diff.uuid })">
+        <NuxtLink v-if="item.diff.rev !== 1" :to="doc_action_link(data.document, 'diff', { uuid: item.diff.uuid })">
           r{{item.diff.history.rev}}
         </NuxtLink>
         <template v-else>r{{item.diff.history.rev}}</template>
@@ -21,7 +21,7 @@
           <i>
             <NuxtLink
                 v-if="item.diff.history.type === 5"
-                :to="doc_action_link(viewData.document, 'blame', { uuid: item.diff.uuid })">
+                :to="doc_action_link(data.document, 'blame', { uuid: item.diff.uuid })">
               ({{item.diff.history.infoText}})
             </NuxtLink>
             <template v-else>

@@ -7,7 +7,7 @@ export default {
         FontAwesomeIcon
     ],
     computed: {
-        viewData() {
+        data() {
             return this.$store.state.viewData
         },
         session() {

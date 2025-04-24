@@ -1,10 +1,10 @@
 <template>
-  <BacklinkNamespaceSelector :namespaces="viewData.namespaceCounts"/>
+  <BacklinkNamespaceSelector :namespaces="data.namespaceCounts"/>
 
   <PrevNextBtn flex v-bind="pageProps"/>
 
-  <div v-if="Object.keys(viewData.backlinksPerChar).length" :class="{ 'many-wrapper': Object.keys(viewData.backlinksPerChar).length >= 3 }">
-    <div v-for="(documents, char) in viewData.backlinksPerChar">
+  <div v-if="Object.keys(data.backlinksPerChar).length" :class="{ 'many-wrapper': Object.keys(data.backlinksPerChar).length >= 3 }">
+    <div v-for="(documents, char) in data.backlinksPerChar">
       <h3 v-text="char"/>
       <ul>
         <li v-for="doc in documents">
@@ -41,8 +41,8 @@ export default {
   },
   computed: {
     pageProps() {
-      const prevItem = this.viewData.prevItem
-      const nextItem = this.viewData.nextItem
+      const prevItem = this.data.prevItem
+      const nextItem = this.data.nextItem
       return {
         prev: prevItem ? { query: { until: prevItem.title } } : null,
         next: nextItem ? { query: { from: nextItem.title } } : null

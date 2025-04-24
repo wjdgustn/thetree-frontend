@@ -1,10 +1,10 @@
 <template>
   <div class="title-group">
-    <h2 class="topic">{{viewData.thread.topic}}</h2>
+    <h2 class="topic">{{data.thread.topic}}</h2>
     <div class="title-group-right">
-      <ButtonBadge round :theme="['', 'secondary', 'super'][viewData.thread.status]">
-        <FontAwesomeIcon class="status-icon" :icon="['door-open', 'pause', 'door-closed'][viewData.thread.status]" />
-        <span v-text="['열림', '중지됨', '닫힘'][viewData.thread.status]"/>
+      <ButtonBadge round :theme="['', 'secondary', 'super'][data.thread.status]">
+        <FontAwesomeIcon class="status-icon" :icon="['door-open', 'pause', 'door-closed'][data.thread.status]" />
+        <span v-text="['열림', '중지됨', '닫힘'][data.thread.status]"/>
       </ButtonBadge>
       <ContextMenu placement="bottom-end">
       <span role="button" class="button more-button">
@@ -12,9 +12,9 @@
       </span>
         <template #menu>
           <CheckBox v-model="hideHidden">숨겨진 댓글 보이지 않기</CheckBox>
-          <template v-if="viewData.permissions.delete">
+          <template v-if="data.permissions.delete">
             <hr>
-            <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + viewData.thread.url + '/delete'">
+            <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + data.thread.url + '/delete'">
               <GeneralButton theme="danger" type="submit">[ADMIN] 스레드 삭제</GeneralButton>
             </SeedForm>
           </template>
@@ -24,11 +24,11 @@
   </div>
 
   <div>
-    <template v-for="comment in viewData.comments">
+    <template v-for="comment in data.comments">
       <Comment
           ref="comments"
           v-if="!comment.hidden || !hideHidden"
-          :slug="viewData.thread.url"
+          :slug="data.thread.url"
           :data="comment"
       />
     </template>
@@ -36,23 +36,23 @@
 
   <h3>댓글 달기</h3>
   <FormErrorAlert/>
-  <SeedForm v-if="viewData.permissions.status" method="post" :action="'/admin/thread/' + viewData.thread.url + '/status'">
+  <SeedForm v-if="data.permissions.status" method="post" :action="'/admin/thread/' + data.thread.url + '/status'">
     [ADMIN] 스레드 상태 변경
     <select name="status">
-      <option v-if="viewData.thread.status !== 0" value="Normal">normal</option>
-      <option v-if="viewData.thread.status !== 1" value="Pause">pause</option>
-      <option v-if="viewData.thread.status !== 2" value="Close">close</option>
+      <option v-if="data.thread.status !== 0" value="Normal">normal</option>
+      <option v-if="data.thread.status !== 1" value="Pause">pause</option>
+      <option v-if="data.thread.status !== 2" value="Close">close</option>
     </select>
     <SeedButton type="submit">변경</SeedButton>
   </SeedForm>
-  <SeedForm v-if="viewData.permissions.document" method="post" :action="'/admin/thread/' + viewData.thread.url + '/document'">
+  <SeedForm v-if="data.permissions.document" method="post" :action="'/admin/thread/' + data.thread.url + '/document'">
     [ADMIN] 스레드 이동
-    <input name="document" :value="doc_fulltitle(viewData.document)">
+    <input name="document" :value="doc_fulltitle(data.document)">
     <SeedButton type="submit">변경</SeedButton>
   </SeedForm>
-  <SeedForm v-if="viewData.permissions.document" method="post" :action="'/admin/thread/' + viewData.thread.url + '/topic'">
+  <SeedForm v-if="data.permissions.document" method="post" :action="'/admin/thread/' + data.thread.url + '/topic'">
     [ADMIN] 스레드 주제 변경
-    <input name="topic" :value="viewData.thread.topic">
+    <input name="topic" :value="data.thread.topic">
     <SeedButton type="submit">변경</SeedButton>
   </SeedForm>
 
@@ -63,13 +63,13 @@
     </ul>
     <div class="tabs">
       <div :class="{ active: activeTab === 'raw' }">
-        <textarea v-if="viewData.thread.status === 0" ref="commentInput" rows="5" name="text"/>
-        <textarea v-else rows="5" disabled v-text="['', 'pause 상태입니다.', '닫힌 토론입니다.'][viewData.thread.status]"/>
+        <textarea v-if="data.thread.status === 0" ref="commentInput" rows="5" name="text"/>
+        <textarea v-else rows="5" disabled v-text="['', 'pause 상태입니다.', '닫힌 토론입니다.'][data.thread.status]"/>
       </div>
       <div class="preview-tab" :class="{ active: activeTab === 'preview' }">
         <Comment
             previewMode
-            :slug="viewData.thread.url"
+            :slug="data.thread.url"
             :data="previewComment"
         />
       </div>
@@ -125,22 +125,22 @@ export default {
 
     this.socket = io('/thread', {
       query: {
-        thread: this.viewData.thread.url
+        thread: this.data.thread.url
       }
     })
 
     this.socket.on('comment', comment => {
-      const commentIndex = this.viewData.comments.findIndex(a => a.id === comment.id)
-      const prevComment = this.viewData.comments[commentIndex]
-      if(commentIndex !== -1) this.viewData.comments[commentIndex] = comment
-      else this.viewData.comments.push(comment)
+      const commentIndex = this.data.comments.findIndex(a => a.id === comment.id)
+      const prevComment = this.data.comments[commentIndex]
+      if(commentIndex !== -1) this.data.comments[commentIndex] = comment
+      else this.data.comments.push(comment)
 
       if(!comment.contentHtml && prevComment?.contentHtml)
         comment.contentHtml = prevComment.contentHtml
     })
     this.socket.on('updateThread', thread => {
-      this.viewData.thread = {
-        ...this.viewData.thread,
+      this.data.thread = {
+        ...this.data.thread,
         ...thread
       }
     })
@@ -179,22 +179,22 @@ export default {
         this.fetchingComments = true
 
         const firstIndex = firstUnfetchedComment.data.id - 1
-        const firstComment = this.viewData.comments[firstIndex]
+        const firstComment = this.data.comments[firstIndex]
 
         let commentOffset = 0
-        const firstFetchedBelowComment = this.viewData.comments.find(a => a.id > firstComment.id && a.user)
-        const lastComment = this.viewData.comments[this.viewData.comments.length - 1]
+        const firstFetchedBelowComment = this.data.comments.find(a => a.id > firstComment.id && a.user)
+        const lastComment = this.data.comments[this.data.comments.length - 1]
 
         let belowCommentAmount = (firstFetchedBelowComment ?? lastComment).id - firstComment.id + (firstFetchedBelowComment ? -1 : 1)
-        commentOffset += this.viewData.commentLoadAmount - Math.min(this.viewData.commentLoadAmount, belowCommentAmount)
+        commentOffset += this.data.commentLoadAmount - Math.min(this.data.commentLoadAmount, belowCommentAmount)
 
-        const comment = this.viewData.comments.find(a => !a.user && a.id >= firstComment.id - commentOffset)
+        const comment = this.data.comments.find(a => !a.user && a.id >= firstComment.id - commentOffset)
 
-        const comments = await this.internalRequest(`/thread/${this.viewData.thread.url}/${comment.id}`)
+        const comments = await this.internalRequest(`/thread/${this.data.thread.url}/${comment.id}`)
         for(let comment of Object.values(comments)) {
-          const commentIndex = this.viewData.comments.findIndex(a => a.id === comment.id)
-          if(commentIndex !== -1) this.viewData.comments[commentIndex] = comment
-          else this.viewData.comments.push(comment)
+          const commentIndex = this.data.comments.findIndex(a => a.id === comment.id)
+          if(commentIndex !== -1) this.data.comments[commentIndex] = comment
+          else this.data.comments.push(comment)
         }
 
         this.fetchingComments = false
@@ -218,7 +218,7 @@ export default {
     async loadPreview() {
       this.previewComment = {
         type: 0,
-        id: this.viewData.comments.at(-1).id + 1,
+        id: this.data.comments.at(-1).id + 1,
         createdAt: new Date().toISOString(),
         user: {
           uuid: this.session.account.uuid,
@@ -227,7 +227,7 @@ export default {
         }
       }
 
-      const json = await this.internalRequest(this.doc_action_link(this.viewData.document, 'preview'), {
+      const json = await this.internalRequest(this.doc_action_link(this.data.document, 'preview'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'

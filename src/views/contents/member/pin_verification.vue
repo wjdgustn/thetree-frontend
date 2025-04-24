@@ -91,8 +91,8 @@ export default {
   data() {
     const viewData = this.$store.state.viewData
     return {
-      ...viewData,
-      passkey: viewData.hasPasskey
+      ...data,
+      passkey: data.hasPasskey
     }
   },
   mounted() {

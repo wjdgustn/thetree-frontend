@@ -6,7 +6,7 @@
   <hr>
   <div class="margin-block">
     <label>기준 판</label>
-    r{{viewData.baseRev.rev}}
+    r{{data.baseRev.rev}}
     <DiffCount :count="editRequest.diffLength"/>
   </div>
   <div class="margin-block">
@@ -31,7 +31,7 @@
     </SeedForm>
   </VueFinalModal>
 
-  <WikiContent :content="viewData.contentHtml"/>
+  <WikiContent :content="data.contentHtml"/>
 
   <div class="action-block">
     <div v-if="editRequest.status === 0">
@@ -41,10 +41,10 @@
       </div>
       <div class="button-block">
         <SeedForm method="post" :action="'/edit_request/' + editRequest.url + '/accept'">
-          <SeedButton green large :disabled="viewData.conflict || !viewData.editable" v-tooltip="acceptTooltip">Accept</SeedButton>
+          <SeedButton green large :disabled="data.conflict || !data.editable" v-tooltip="acceptTooltip">Accept</SeedButton>
         </SeedForm>
-        <SeedButton @click="showCloseModal = true" large :disabled="!viewData.editable" v-tooltip="closeTooltip">Close</SeedButton>
-        <SeedLinkButton info large :to="'/edit_request/' + editRequest.url + '/edit'" :disabled="!viewData.editable" v-tooltip="editTooltip">Edit</SeedLinkButton>
+        <SeedButton @click="showCloseModal = true" large :disabled="!data.editable" v-tooltip="closeTooltip">Close</SeedButton>
+        <SeedLinkButton info large :to="'/edit_request/' + editRequest.url + '/edit'" :disabled="!data.editable" v-tooltip="editTooltip">Edit</SeedLinkButton>
       </div>
     </div>
     <div v-else-if="editRequest.status === 1">
@@ -54,9 +54,9 @@
         <AuthorSpan :account="editRequest.lastUpdateUser" :pos="pos"/>가
         r{{editRequest.acceptedRev.rev}}
         <span class="history-action">
-          (<NuxtLink :to="doc_action_link(viewData.document, 'w', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">보기</NuxtLink>
-          | <NuxtLink :to="doc_action_link(viewData.document, 'raw', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">RAW</NuxtLink>
-          | <NuxtLink :to="doc_action_link(viewData.document, 'diff', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">비교</NuxtLink>)
+          (<NuxtLink :to="doc_action_link(data.document, 'w', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">보기</NuxtLink>
+          | <NuxtLink :to="doc_action_link(data.document, 'raw', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">RAW</NuxtLink>
+          | <NuxtLink :to="doc_action_link(data.document, 'diff', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">비교</NuxtLink>)
         </span>
         으로 승인함.
       </div>
@@ -79,14 +79,14 @@
     </div>
   </div>
 
-  <template v-if="viewData.showContent">
+  <template v-if="data.showContent">
     <ul>
       <li><button :class="{ active: activeTab === 'compare' }" @click="activeTab = 'compare'">비교</button></li>
       <li><button :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">미리보기</button></li>
     </ul>
     <div class="tabs">
       <div :class="{ active: activeTab === 'compare' }">
-        <Diff :title="`편집 요청 ${editRequest.url}`" :diffHtml="viewData.diff.diffHtml"/>
+        <Diff :title="`편집 요청 ${editRequest.url}`" :diffHtml="data.diff.diffHtml"/>
       </div>
       <div class="preview-tab" :class="{ active: activeTab === 'preview', loading: !preview.content }">
         <WikiContent v-if="preview.content" :content="preview.content" :categories="preview.categories"/>
@@ -140,23 +140,23 @@ export default {
   },
   computed: {
     editRequest() {
-      return this.viewData.editRequest
+      return this.data.editRequest
     },
     pos() {
       return '편집 요청' + this.editRequest.url
     },
     acceptTooltip() {
-      return this.viewData.conflict
+      return this.data.conflict
           ? '이 편집 요청은 충돌된 상태입니다. 요청자가 수정해야 합니다.'
-          : (this.viewData.editable ? '이 편집 요청을 문서에 적용합니다.' : '이 문서를 편집할 수 있는 권한이 없습니다.')
+          : (this.data.editable ? '이 편집 요청을 문서에 적용합니다.' : '이 문서를 편집할 수 있는 권한이 없습니다.')
     },
     closeTooltip() {
-      return this.viewData.selfCreated || this.viewData.editable
+      return this.data.selfCreated || this.data.editable
           ? '이 편집 요청을 닫습니다.'
           : '편집 요청을 닫기 위해서는 요청자 본인이거나 문서를 편집할 수 있는 권한이 있어야 합니다.'
     },
     editTooltip() {
-      return this.viewData.selfCreated
+      return this.data.selfCreated
           ? '편집 요청을 수정합니다.'
           : '요청자 본인만 수정할 수 있습니다.'
     },
@@ -164,7 +164,7 @@ export default {
       let disabled = false
       let tooltip = '이 편집 요청을 다시 엽니다.'
 
-      const updateThreadStatusPerm = this.viewData.permissions.status
+      const updateThreadStatusPerm = this.data.permissions.status
 
       if(this.editRequest.status === 3) {
         if(!updateThreadStatusPerm) {
@@ -173,7 +173,7 @@ export default {
         }
       }
       else {
-        if(!this.viewData.selfCreated && !updateThreadStatusPerm) {
+        if(!this.data.selfCreated && !updateThreadStatusPerm) {
           disabled = true
           tooltip = '편집 요청을 다시 열기 위해서는 요청자 본인이거나 권한이 있어야 합니다.'
         }
@@ -193,7 +193,7 @@ export default {
       this.preview.content = null
       this.preview.categories = null
 
-      const res = await this.internalRequest(this.doc_action_link(this.viewData.document, 'preview'), {
+      const res = await this.internalRequest(this.doc_action_link(this.data.document, 'preview'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'

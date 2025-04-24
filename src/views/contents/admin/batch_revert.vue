@@ -26,21 +26,21 @@
     </div>
   </SeedForm>
 
-  <div v-if="viewData.result">
+  <div v-if="data.result">
     <p>작업 결과</p>
     <ul>
-      <li v-for="item in viewData.result.resultText">{{item}}</li>
+      <li v-for="item in data.result.resultText">{{item}}</li>
     </ul>
 
-    <template v-if="viewData.result.failResultText.length">
+    <template v-if="data.result.failResultText.length">
       <p>실패 작업 목록</p>
       <ul style="color: red">
-        <li v-for="item in viewData.result.failResultText">{{item}}</li>
+        <li v-for="item in data.result.failResultText">{{item}}</li>
       </ul>
     </template>
 
     <div>
-      <SeedButton @click="viewData.result = null">확인</SeedButton>
+      <SeedButton @click="data.result = null">확인</SeedButton>
     </div>
   </div>
 </template>

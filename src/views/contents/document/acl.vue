@@ -160,7 +160,7 @@ export default {
   methods: {
     updateRules() {
       const isNS = this.$route.hash.startsWith('#namespace')
-      this.rules = this.viewData[isNS ? 'namespaceACL' : 'acl'][this.activeAclTypeIndex]
+      this.rules = this.data[isNS ? 'namespaceACL' : 'acl'][this.activeAclTypeIndex]
     },
     async dragEnd() {
       const res = await this.internalRequest('/action/acl/reorder', {
@@ -248,7 +248,7 @@ export default {
       return (this.$route.hash || '').split('.')[1] || (this.aclCategory === 'document' ? 'edit' : 'read')
     },
     editable() {
-      return this.viewData[this.aclCategory === 'document' ? 'editableACL' : 'editableNSACL']
+      return this.data[this.aclCategory === 'document' ? 'editableACL' : 'editableNSACL']
     }
   }
 }

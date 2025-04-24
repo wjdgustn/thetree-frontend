@@ -1,27 +1,27 @@
 <template>
   <h3>편집 요청</h3>
   <ul>
-    <li v-for="item in viewData.openEditRequests">
+    <li v-for="item in data.openEditRequests">
       <NuxtLink :to="'/edit_request/' + item.url">편집 요청 {{item.url}}</NuxtLink>
     </li>
   </ul>
   <p>
-    <NuxtLink :to="doc_action_link(viewData.document, 'discuss', { state: 'closed_edit_requests' })">[닫힌 편집 요청 보기]</NuxtLink>
+    <NuxtLink :to="doc_action_link(data.document, 'discuss', { state: 'closed_edit_requests' })">[닫힌 편집 요청 보기]</NuxtLink>
   </p>
 
   <h3>토론</h3>
   <ul>
-    <li v-for="(item, index) in viewData.openThreads">
+    <li v-for="(item, index) in data.openThreads">
       <NuxtLink :to="'#s-' + index + 1" v-text="index + 1"/>
       <span>.&nbsp;</span>
       <NuxtLink :to="'/thread/' + item.url" v-text="item.topic"/>
     </li>
   </ul>
   <p>
-    <NuxtLink :to="doc_action_link(viewData.document, 'discuss', { state: 'close' })">[닫힌 토론 목록 보기]</NuxtLink>
+    <NuxtLink :to="doc_action_link(data.document, 'discuss', { state: 'close' })">[닫힌 토론 목록 보기]</NuxtLink>
   </p>
 
-  <div v-for="(item, index) in viewData.openThreads">
+  <div v-for="(item, index) in data.openThreads">
     <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'">
       <SeedButton type="submit" danger>[ADMIN] 스레드 삭제</SeedButton>
     </SeedForm>

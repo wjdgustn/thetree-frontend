@@ -1,21 +1,21 @@
 <template>
   <FormErrorAlert/>
 
-  <Alert v-if="$route.query.redirected === '1' && viewData.isEditRequest && viewData.aclMessage">
+  <Alert v-if="$route.query.redirected === '1' && data.isEditRequest && data.aclMessage">
     <strong>[알림]</strong>
     문서를 편집할 권한이 없기 때문에 편집 요청으로 이동되었습니다.
-    <div v-html="viewData.aclMessage"></div>
+    <div v-html="data.aclMessage"></div>
   </Alert>
 
-  <WikiContent :content="viewData.contentHtml"/>
+  <WikiContent :content="data.contentHtml"/>
 
-  <template v-if="viewData.conflict">
-    <Diff :title="`r${viewData.conflict.editedRev} vs 사용자 입력`" :diffHtml="viewData.conflict.diff.diffHtml"/>
+  <template v-if="data.conflict">
+    <Diff :title="`r${viewData.conflict.editedRev} vs 사용자 입력`" :diffHtml="data.conflict.diff.diffHtml"/>
     <span class="conflict-error">자동 병합에 실패했습니다! 수동으로 수정된 내역을 아래 텍스트 박스에 다시 입력해주세요.</span>
   </template>
 
-  <SeedForm :beforeSubmit="beforeSubmit" method="post" :captcha="viewData.useCaptcha">
-    <input type="hidden" v-for="(value, name) in viewData.body" :name="name" :value="value">
+  <SeedForm :beforeSubmit="beforeSubmit" method="post" :captcha="data.useCaptcha">
+    <input type="hidden" v-for="(value, name) in data.body" :name="name" :value="value">
 
     <ul>
       <li v-for="tab in tabs">
@@ -34,7 +34,7 @@
         <component :ref="'pluginTab_' + tab.name" v-if="tab.component" :is="tab.component"/>
       </div>
       <div :class="{ active: activeTab.name === 'raw' }">
-        <textarea ref="textInput" name="text" wrap="soft" :value="viewData.content"/>
+        <textarea ref="textInput" name="text" wrap="soft" :value="data.content"/>
       </div>
       <div class="preview" :class="{ active: activeTab.name === 'preview', loading: !preview.content }">
         <WikiContent v-if="preview.content" :content="preview.content" :categories="preview.categories"/>
@@ -48,8 +48,8 @@
     </div>
 
     <label>
-      <input ref="agreeCheckbox" type="checkbox" name="agree" value="Y" :checked="viewData.editagreeAgreed">
-      <span v-html="viewData.editagree_text"/>
+      <input ref="agreeCheckbox" type="checkbox" name="agree" value="Y" :checked="data.editagreeAgreed">
+      <span v-html="data.editagree_text"/>
     </label>
 
     <BlinkRedWarn v-if="session.account.type !== 1">비로그인 상태로 편집합니다. 로그인하지 않은 상태로 문서 편집을 저장하면, 편집 역사에 본인이 사용하는 IP({{session.account.name}}) 주소 전체가 영구히 기록됩니다.</BlinkRedWarn>
@@ -114,7 +114,7 @@ export default {
     activeTabName ??= isMobile ? 'raw' : this.tabs[0].name
     this.activeTab = this.tabs.find(a => a.name === activeTabName)
 
-    this.initialContent = this.viewData.content
+    this.initialContent = this.data.content
 
     this.$store.state.components.mainView.beforeLeave = this.beforeLeave
   },
@@ -139,7 +139,7 @@ export default {
   methods: {
     beforeLeave() {
       this.updateContent()
-      if(this.viewData.content !== this.initialContent)
+      if(this.data.content !== this.initialContent)
         return confirm('변경된 사항이 저장되지 않았습니다.')
       return true
     },
@@ -150,13 +150,13 @@ export default {
       from ??= this.activeTab
 
       if(from.name === 'raw')
-        this.viewData.content = this.$refs.textInput.value
+        this.data.content = this.$refs.textInput.value
 
       const fromComponent = this.getTabComponent(from.name)
       const activeComponent = this.getTabComponent(this.activeTab.name)
 
-      if(fromComponent) this.viewData.content = fromComponent.getValue()
-      activeComponent?.setValue(this.viewData.content)
+      if(fromComponent) this.data.content = fromComponent.getValue()
+      activeComponent?.setValue(this.data.content)
     },
     async beforeSubmit() {
       if(!this.$refs.agreeCheckbox.checked) {
@@ -171,13 +171,13 @@ export default {
       this.preview.content = null
       this.preview.categories = null
 
-      const json = await this.internalRequest(this.doc_action_link(this.viewData.document, 'preview'), {
+      const json = await this.internalRequest(this.doc_action_link(this.data.document, 'preview'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
-          content: this.viewData.content
+          content: this.data.content
         }).toString(),
         noProgress: true
       })

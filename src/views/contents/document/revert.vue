@@ -1,8 +1,8 @@
 <template>
   <SeedForm method="post">
-    <input type="hidden" name="uuid" :value="viewData.uuid">
-    <WikiContent :content="viewData.contentHtml"/>
-    <textarea readonly :value="viewData.content"/>
+    <input type="hidden" name="uuid" :value="data.uuid">
+    <WikiContent :content="data.contentHtml"/>
+    <textarea readonly :value="data.content"/>
     <SeedFormBlock label="요약" inputId="logInput" name="log">
       <input type="text" id="logInput" name="log">
     </SeedFormBlock>

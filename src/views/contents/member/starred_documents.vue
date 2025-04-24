@@ -5,7 +5,7 @@
       <div class="table-item">문서 수정 시각</div>
       <div class="table-item"></div>
     </div>
-    <div v-for="item in viewData.stars" class="table-row">
+    <div v-for="item in data.stars" class="table-row">
       <div class="table-item">
         <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')" v-text="doc_fulltitle(item.document.parsedName)"/>
       </div>

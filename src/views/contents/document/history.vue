@@ -3,12 +3,12 @@
     <PrevNextBtn class="top-page top-page-item" flex v-bind="pageProps"/>
     <RevInput blockClass="top-page-item"/>
   </div>
-  <SeedForm :action="doc_action_link(viewData.document, 'diff')">
+  <SeedForm :action="doc_action_link(data.document, 'diff')">
     <p>
       <GeneralButton type="submit">선택 리비전 비교</GeneralButton>
     </p>
     <ul>
-      <li v-for="rev in viewData.revs" :class="{ troll: rev.troll }" :key="rev.uuid">
+      <li v-for="rev in data.revs" :class="{ troll: rev.troll }" :key="rev.uuid">
         <span>
           <LocalDate :date="rev.createdAt"/>
         </span>
@@ -21,7 +21,7 @@
               v-text="action.text"/>
           <NuxtLink
               v-else
-              :to="doc_action_link(viewData.document, action.action, { uuid: rev.uuid })"
+              :to="doc_action_link(data.document, action.action, { uuid: rev.uuid })"
               :rel="action.follow ? null : 'nofollow'"
               v-text="action.text"
           />
@@ -51,7 +51,7 @@
         <span>
           (<DiffCount :count="rev.diffLength"/>)
         </span>
-        <AuthorSpan :account="rev.user" :pos="`${doc_fulltitle(viewData.document)} r${rev.rev}`"/>
+        <AuthorSpan :account="rev.user" :pos="`${doc_fulltitle(data.document)} r${rev.rev}`"/>
 
         <template v-if="rev.troll">
           [<AuthorSpan :account="rev.trollBy"/> 사용자에 의해 반달로 표시됨]
@@ -106,10 +106,10 @@ export default {
   },
   computed: {
     pageProps() {
-      const revs = this.viewData.revs
+      const revs = this.data.revs
       const lastRev = revs[revs.length - 1]
       return {
-        prev: revs[0].uuid !== this.viewData.latestRev.uuid ? { query: { until: revs[0].rev + 1 } } : null,
+        prev: revs[0].uuid !== this.data.latestRev.uuid ? { query: { until: revs[0].rev + 1 } } : null,
         next: lastRev.rev > 1 ? { query: { from: lastRev.rev - 1 } } : null
       }
     }
@@ -140,7 +140,7 @@ export default {
         }] : [])
       ]
 
-      const permissions = this.viewData.permissions
+      const permissions = this.data.permissions
       if(permissions.troll) actions.push(rev.troll ? {
         action: 'unmark_troll',
         text: '[A]반달표시 해제',
@@ -178,7 +178,7 @@ export default {
       toast(`r${rev.rev}의 UUID가 복사되었습니다.`)
     },
     async adminAction(rev, action) {
-      const res = await this.internalRequest(this.doc_action_link(this.viewData.document, 'a/' + action, { uuid: rev.uuid }))
+      const res = await this.internalRequest(this.doc_action_link(this.data.document, 'a/' + action, { uuid: rev.uuid }))
       await this.processInternalResponse(res)
     }
   }
