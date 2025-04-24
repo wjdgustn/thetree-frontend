@@ -14,7 +14,9 @@ import {
     faDoorOpen,
     faDoorClosed,
     faPause,
-    faCaretDown
+    faCaretDown,
+    faPlus,
+    faTrashCan
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faFileLines
@@ -39,7 +41,9 @@ export default {
             faDoorOpen,
             faDoorClosed,
             faPause,
-            faCaretDown
+            faCaretDown,
+            faPlus,
+            faTrashCan
         )
     },
     components: {

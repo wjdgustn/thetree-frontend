@@ -2,7 +2,7 @@
   <component :is="block ? 'div' : 'span'" v-if="disable" role="button" :class="buttonClass">
     <slot/>
   </component>
-  <a v-else-if="whenClick" href="#" role="button" :class="buttonClass" @click.prevent="click">
+  <a v-else-if="whenClick || type === 'event'" href="#" role="button" :class="buttonClass" @click.prevent="click">
     <slot/>
   </a>
   <button v-else-if="type === 'submit' || type === 'reset'" :type="type" :class="buttonClass">
@@ -35,9 +35,11 @@ export default {
     value: String,
     whenClick: Function
   },
+  emits: ['click'],
   methods: {
     click(e) {
       this.whenClick?.(e)
+      this.$emit('click', e)
     }
   },
   computed: {
