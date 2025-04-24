@@ -10,7 +10,6 @@
     @input="onInput"
     @keydown="whenKeyDown"
     @paste="whenPaste"
-    :disabled="submittingSeedForm"
     :name="name"
     v-bind="$attrs"
     ref="input"
@@ -33,6 +32,11 @@ export default {
     name: String
   },
   emits: ['update:modelValue'],
+  watch: {
+    submittingSeedForm(newValue) {
+      this.$refs.input.disabled = newValue
+    }
+  },
   computed: {
     fieldError() {
       return this.name && this.$store.state.viewData.fieldErrors?.[this.name]

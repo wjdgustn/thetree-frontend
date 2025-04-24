@@ -3,9 +3,10 @@
       class="seed-form-input"
       :is="tag"
       v-bind="$attrs"
-      :disabled="submittingSeedForm"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)">
+      @input="$emit('update:modelValue', $event.target.value)"
+      ref="input"
+  >
     <slot/>
   </component>
 </template>
@@ -26,7 +27,12 @@ export default {
       default: 'input'
     }
   },
-  emits: ['update:modelValue']
+  emits: ['update:modelValue'],
+  watch: {
+    submittingSeedForm(newValue) {
+      this.$refs.input.disabled = newValue
+    }
+  }
 }
 </script>
 <style scoped>
