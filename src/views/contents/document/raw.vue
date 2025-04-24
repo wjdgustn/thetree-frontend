@@ -13,16 +13,16 @@ textarea {
   margin: 0;
   overflow: auto;
   padding: .25rem .5rem;
-  width: 100%
+  width: 100%;
 }
 
 textarea[readonly] {
   background-color: #eceeef;
-  opacity: 1
+  opacity: 1;
 }
 
 .theseed-dark-mode textarea {
   background-color: #000;
-  color: #ddd
+  color: #ddd;
 }
 </style>
