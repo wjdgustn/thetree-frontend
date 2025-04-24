@@ -44,14 +44,14 @@
           }
       ]"
   />
-  <div class="table">
+  <div class="list-table">
     <div class="table-row table-heading">
-      <div class="table-item">제목</div>
-      <div class="table-item">수정자</div>
-      <div class="table-item">시간</div>
+      <div class="table-row">제목</div>
+      <div class="table-row">수정자</div>
+      <div class="table-row">시간</div>
     </div>
     <div v-for="item in [...viewData.threads, ...viewData.editRequests]" class="table-row">
-      <div class="table-item">
+      <div class="table-row">
         <NuxtLink :to="(item.topic ? '/thread/' : '/edit_request/') + item.url" v-text="item.topic || `편집 요청 ${item.url}`"/>
         <DiffCount class="diff-count" v-if="item.diffLength" :count="item.diffLength"/>
         <span class="document-group">
@@ -61,10 +61,10 @@
           <NuxtLink :to="doc_action_link(item.document.parsedName, 'discuss')" class="document-link" v-text="doc_fulltitle(item.document.parsedName)"/>
         </span>
       </div>
-      <div class="table-item">
+      <div class="table-row">
         <AuthorSpan :account="item.lastUpdateUser || item.createdUser" :pos="(item.lastUpdateUser ? '토론' : '편집 요청') + ' ' + (item.url)"/>
       </div>
-      <div class="table-item">
+      <div class="table-row">
         <LocalDate :date="item.lastUpdatedAt" relative/>
       </div>
     </div>
@@ -107,7 +107,7 @@ export default {
   margin-top: 1rem;
 }
 
-.table {
+.list-table {
   display: flex;
   flex-direction: column;
 }
@@ -144,7 +144,7 @@ export default {
   }
 }
 
-.table-item {
+.table-row {
   padding: .5rem .75rem;
 }
 
@@ -159,16 +159,16 @@ export default {
     padding: .5rem
   }
 
-  .table-item {
+  .table-row {
     margin: 0!important;
     padding: 0!important
   }
 
-  .table-item:first-child {
+  .table-row:first-child {
     font-size: 1.05rem
   }
 
-  .table-item:nth-child(3) {
+  .table-row:nth-child(3) {
     color: #888;
     font-size: .85rem;
     order: -1
