@@ -4,7 +4,6 @@
       <NuxtLink :to="'/edit_request/' + item.url">편집 요청 {{item.url}}</NuxtLink>
     </li>
   </ul>
-  <pre>{{viewData}}</pre>
 </template>
 <script>
 import NuxtLink from '@/components/global/nuxtLink'
