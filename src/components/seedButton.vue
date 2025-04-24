@@ -43,7 +43,7 @@ button {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 button:not([disabled]):active, button:not([disabled]):hover {
@@ -117,6 +117,6 @@ button.danger:not([disabled]):active, button.danger:not([disabled]):hover {
 }
 
 button.block {
-  display: block
+  display: block;
 }
 </style>
