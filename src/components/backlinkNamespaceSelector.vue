@@ -16,7 +16,7 @@
 </template>
 <script>
 import SeedForm from '@/components/form/seedForm'
-import SelectMenu from '@/components/SelectMenu'
+import SelectMenu from '@/components/selectMenu'
 import GeneralButton from '@/components/generalButton'
 
 export default {
