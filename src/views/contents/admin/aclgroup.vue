@@ -97,7 +97,7 @@
       <input type="checkbox" id="hidelogInput" name="hidelog" value="Y">
       <ShowError tag="hidelog"/>
     </div>
-    <SeedButton submit>추가</SeedButton>
+    <SeedButton v-if="data.addable" submit>추가</SeedButton>
   </SeedForm>
 
   <PrevNextBtn flex v-bind="pageProps"/>
@@ -144,7 +144,7 @@
         <template v-else>영구</template>
       </td>
       <td>
-        <SeedButton danger @click="openRemoveModal(item)">삭제</SeedButton>
+        <SeedButton v-if="data.removable" danger @click="openRemoveModal(item)">삭제</SeedButton>
       </td>
     </tr>
     </tbody>
