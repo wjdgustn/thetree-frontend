@@ -42,7 +42,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       vueDevTools(),
       skinRawLoaderPlugin(skin),
       ...(isSsrBuild ? [] : [
-        metadata({ skin, versionHeader, commitIds })
+        metadata({ name: skin, versionHeader, commitIds })
       ])
     ],
     define: {
