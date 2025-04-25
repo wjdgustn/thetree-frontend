@@ -28,6 +28,9 @@ export default {
     }
   },
   emits: ['update:modelValue'],
+  created() {
+    if(this.checked) this.value = true
+  },
   computed: {
     fieldError() {
       return this.name && this.$store.state.viewData.fieldErrors?.[this.name]
