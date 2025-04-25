@@ -119,12 +119,6 @@
         padding: 7px;
     }
 
-    .theseed-dark-mode pre {
-        background-color: #2d2f34;
-        border-color: #383b40;
-        color: #ddd;
-    }
-
     pre code {
         background: none;
         border: none;
@@ -137,16 +131,8 @@
         text-decoration: none;
     }
 
-    .theseed-dark-mode a {
-        color: #e69720;
-    }
-
     .not-exist {
         color: red;
-    }
-
-    .theseed-dark-mode .not-exist {
-        color: #dc4343 !important;
     }
 
     .wiki-image-align,
@@ -240,14 +226,6 @@
         display: none;
     }
 
-    .theseed-dark-mode .wiki-theme-dark {
-        display: inline-block;
-    }
-
-    .theseed-dark-mode .wiki-theme-light {
-        display: none;
-    }
-
     .wiki-self-link {
         font-weight: 700;
     }
@@ -311,15 +289,6 @@
         padding-bottom: 5px;
     }
 
-    .theseed-dark-mode h1.wiki-heading,
-    .theseed-dark-mode h2.wiki-heading,
-    .theseed-dark-mode h3.wiki-heading,
-    .theseed-dark-mode h4.wiki-heading,
-    .theseed-dark-mode h5.wiki-heading,
-    .theseed-dark-mode h6.wiki-heading {
-        border-bottom-color: #383b40;
-    }
-
     .wiki-heading:before {
         color: #666;
         content: "";
@@ -356,10 +325,6 @@
         box-sizing: content-box;
         height: 0;
         margin: .5em 0;
-    }
-
-    .theseed-dark-mode hr {
-        border-top-color: #383b40;
     }
 
     .wiki-indent {
@@ -405,12 +370,6 @@
         padding: 1em;
     }
 
-    .theseed-dark-mode .wiki-quote {
-        background-color: #2d2f34;
-        border-color: #383b40 #383b40 #383b40 #666c75;
-        color: #ddd;
-    }
-
     .wiki-quote .wiki-paragraph {
         margin-bottom: 0;
     }
@@ -427,10 +386,6 @@
         border-collapse: collapse;
     }
 
-    .theseed-dark-mode .wiki-table {
-        background-color: #2d2f34;
-    }
-
     .nowrap-wiki-table.wiki-table {
         white-space: nowrap;
     }
@@ -438,10 +393,6 @@
     .wiki-table td {
         border: 1px solid #ddd;
         padding: 5px 10px;
-    }
-
-    .theseed-dark-mode .wiki-table td {
-        border: 1px solid #383b40;
     }
 
     .wiki-table td .wiki-paragraph {
@@ -514,10 +465,6 @@
         padding: 12px 20px 18px 0;
     }
 
-    .theseed-dark-mode .wiki-macro-toc {
-        border-color: #383b40;
-    }
-
     .wiki-macro-toc:before {
         content: "목차";
         font-size: 1.25em;
@@ -566,5 +513,60 @@
 
     .wiki-macro-vote legend {
         all: revert;
+    }
+}
+
+.theseed-dark-mode .wiki-content {
+    pre {
+        background-color: #2d2f34;
+        border-color: #383b40;
+        color: #ddd;
+    }
+
+    a {
+        color: #e69720;
+    }
+
+    .not-exist {
+        color: #dc4343 !important;
+    }
+
+    .wiki-theme-dark {
+        display: inline-block;
+    }
+
+    .wiki-theme-light {
+        display: none;
+    }
+
+    h1.wiki-heading,
+    h2.wiki-heading,
+    h3.wiki-heading,
+    h4.wiki-heading,
+    h5.wiki-heading,
+    h6.wiki-heading {
+        border-bottom-color: #383b40;
+    }
+
+    hr {
+        border-top-color: #383b40;
+    }
+
+    .wiki-quote {
+        background-color: #2d2f34;
+        border-color: #383b40 #383b40 #383b40 #666c75;
+        color: #ddd;
+    }
+
+    .wiki-table {
+        background-color: #2d2f34;
+    }
+
+    .wiki-table td {
+        border: 1px solid #383b40;
+    }
+
+    .wiki-macro-toc {
+        border-color: #383b40;
     }
 }
