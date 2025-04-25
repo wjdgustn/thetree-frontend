@@ -5,10 +5,10 @@
 
   <div ref="popover" v-show="popover.show" id="tooltip" class="popper">
     <div ref="popoverArrow" id="tooltip-arrow" class="popper__arrow"></div>
-    <div id="tooltip-content" class="wiki-content" v-html="popover.content"></div>
+    <div id="tooltip-content" class="wiki-content" v-html="popover.content" @click="onDynamicContentClick"></div>
   </div>
   <VueFinalModal v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content" v-model="modal.show" escToClose>
-    <div class="wiki-content" v-html="modal.content"></div>
+    <div class="wiki-content" v-html="modal.content" @click="onDynamicContentClick"></div>
     <button @click="close">닫기</button>
   </VueFinalModal>
 </template>
