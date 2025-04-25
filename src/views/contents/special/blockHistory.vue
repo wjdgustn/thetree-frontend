@@ -1,5 +1,5 @@
 <template>
-  <SeedForm flex box>
+  <SeedForm flex box class="search-form">
     <SelectMenu name="target">
       <option value="text">내용</option>
       <option value="author">실행자</option>
@@ -180,6 +180,22 @@ export default {
 }
 </script>
 <style scoped>
+@media screen and (max-width: 1023.98px) {
+  .search-form {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 727.98px) {
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-form>* {
+    width: 100%;
+  }
+}
+
 .block-list {
   display: flex;
   flex-direction: column;
