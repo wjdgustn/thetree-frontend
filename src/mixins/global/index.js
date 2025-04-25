@@ -7,6 +7,9 @@ export default {
         FontAwesomeIcon
     ],
     computed: {
+        page() {
+            return this.$store.state.page
+        },
         data() {
             return this.$store.state.viewData
         },
