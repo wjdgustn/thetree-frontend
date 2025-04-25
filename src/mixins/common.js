@@ -183,7 +183,6 @@ export default {
             const strCode = json.code?.toString() || ''
             if(strCode.startsWith('3')) {
                 this.$store.state.components.mainView.nextUrl = json.url
-                progressBar?.finish()
                 return
             }
 

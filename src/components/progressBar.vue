@@ -31,7 +31,7 @@ export default {
     set(progress = 0) {
       const progressBar = this.$refs.progressBar
 
-      if(this.interval) clearInterval(this.interval)
+      if(this.interval) this.clearProgressInterval()
       this.done = false
 
       progressBar.style.width = progress + '%'
@@ -39,9 +39,11 @@ export default {
       if(progress === 100) this.done = true
     },
     start(progress = 100, during = 3000, interval = 100) {
+      if(this.interval) return
+
       const progressBar = this.$refs.progressBar
 
-      if(this.interval) clearInterval(interval)
+      if(this.interval) this.clearProgressInterval()
       this.done = false
 
       let currentProgress = parseFloat(progressBar.style.width) || 0
@@ -50,11 +52,15 @@ export default {
         currentProgress += increase
         progressBar.style.width = currentProgress + '%'
 
-        if(currentProgress >= progress) clearInterval(this.interval)
+        if(currentProgress >= progress) this.clearProgressInterval()
       }, interval)
     },
     finish() {
       this.set(100)
+    },
+    clearProgressInterval() {
+      if(this.interval) clearInterval(this.interval)
+      this.interval = null
     },
     onTransitionEnd(e) {
       const progressBar = this.$refs.progressBar
