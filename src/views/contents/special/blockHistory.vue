@@ -1,10 +1,10 @@
 <template>
   <SeedForm flex box class="search-form">
-    <SelectMenu name="target">
+    <SelectMenu name="target" :value="$route.query.target || 'text'">
       <option value="text">내용</option>
       <option value="author">실행자</option>
     </SelectMenu>
-    <InputField class="search-input" name="query" placeholder="검색"/>
+    <InputField class="search-input" name="query" placeholder="검색" v-model="$route.query.query"/>
     <div class="button-block">
       <GeneralButton type="submit" theme="primary" class="search-button">검색</GeneralButton>
       <GeneralButton :whenClick="reset">초기화</GeneralButton>
