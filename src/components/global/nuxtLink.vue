@@ -19,6 +19,9 @@ export default {
     this.calculateActualTo()
   },
   watch: {
+    $route() {
+      this.calculateActualTo()
+    },
     to() {
       this.calculateActualTo()
     }
