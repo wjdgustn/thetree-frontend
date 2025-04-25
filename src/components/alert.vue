@@ -35,6 +35,11 @@ export default {
   padding: .5rem .75rem;
 }
 
+.theseed-dark-mode .thetree-alert {
+  background-color: #2a2a2a;
+  border-color: #484848;
+}
+
 .thetree-alert-primary {
   background-color: #cee2fd;
   border-color: #7eaaed;
