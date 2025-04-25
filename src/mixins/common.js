@@ -302,7 +302,7 @@ export default {
             });
         },
         async openQuickACLGroup(data) {
-            const QuickACLGroupModal = (await import('@/components/QuickACLGroupModal')).default
+            const QuickACLGroupModal = (await import('@/components/quickACLGroupModal')).default
             await this.$vfm.show({ component: QuickACLGroupModal }, data)
         }
     }
