@@ -19,7 +19,7 @@
               </span>
               <template #menu>
                 <GeneralButton :whenClick="toggleRaw" v-text="showRaw ? '위키 보기' : '원문 보기'" v-close-popover/>
-                <template v-if="comment.permissions.hide">
+                <template v-if="data.permissions.hide">
                   <hr>
                   <GeneralButton theme="danger" :whenClick="toggleHide" v-text="comment.hidden ? '[ADMIN] 숨기기 해제' : '[ADMIN] 숨기기'" v-close-popover/>
                 </template>
@@ -39,7 +39,7 @@
         </template>
         <template v-else>
           [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>에 의해 숨겨진 글입니다.]
-          <SeedButton @click="forceShow = true" v-if="comment.permissions.hide" danger>[ADMIN] SHOW</SeedButton>
+          <SeedButton @click="forceShow = true" v-if="data.permissions.hide" danger>[ADMIN] SHOW</SeedButton>
         </template>
       </div>
     </div>
