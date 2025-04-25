@@ -124,7 +124,7 @@ export default {
         return
       }
 
-      const json = await this.internalRequest('/member/login/pin', {
+      await this.internalRequestAndProcess('/member/login/pin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -133,7 +133,6 @@ export default {
           challenge: asseResp
         })
       })
-      await this.processInternalResponse(json)
 
       this.$refs.form.submitting = false
     }

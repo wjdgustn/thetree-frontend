@@ -163,7 +163,7 @@ export default {
       this.rules = this.data[isNS ? 'namespaceACL' : 'acl'][this.activeAclTypeIndex]
     },
     async dragEnd() {
-      const res = await this.internalRequest('/action/acl/reorder', {
+      await this.internalRequestAndProcess('/action/acl/reorder', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -172,11 +172,9 @@ export default {
           acls: JSON.stringify(this.rules.map(a => a.uuid))
         }).toString()
       })
-      await this.processInternalResponse(res)
     },
     async deleteRule(rule) {
-      const res = await this.internalRequest('/action/acl/delete?acl=' + rule.uuid)
-      await this.processInternalResponse(res)
+      await this.internalRequestAndProcess('/action/acl/delete?acl=' + rule.uuid)
     }
   },
   mounted() {

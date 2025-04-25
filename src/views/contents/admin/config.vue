@@ -124,8 +124,7 @@ export default {
   },
   methods: {
     async internalGet(url) {
-      const res = await this.internalRequest(url)
-      await this.processInternalResponse(res)
+      await this.internalRequestAndProcess(url)
     }
   }
 }

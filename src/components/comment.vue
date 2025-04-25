@@ -147,10 +147,9 @@ export default {
       }
     },
     async toggleHide() {
-      const res = await this.internalRequest(`/admin/thread/${this.slug}/${this.data.id}/${this.data.hidden ? 'show' : 'hide'}`, {
+      await this.internalRequestAndProcess(`/admin/thread/${this.slug}/${this.data.id}/${this.data.hidden ? 'show' : 'hide'}`, {
         method: 'POST'
       })
-      await this.processInternalResponse(res)
     }
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <SeedForm flex box>
-    <label for="namespaceSelect">이름공간</label>
-    <SelectMenu id="namespaceSelect" name="namespace" :value="selected || $route.query.namespace || namespaces[0]">
-      <option v-for="item in namespaces">{{item}}</option>
+    <label for="namespaceSelect">이름공간:</label>
+    <SelectMenu id="namespaceSelect" name="namespace" :value="selected || $route.query.namespace || actualNamespaces[0]">
+      <option v-for="item in actualNamespaces">{{item}}</option>
     </SelectMenu>
     <GeneralButton type="submit" theme="primary">제출</GeneralButton>
   </SeedForm>
@@ -19,11 +19,13 @@ export default {
     GeneralButton
   },
   props: {
-    namespaces: {
-      type: Array,
-      required: true
-    },
+    namespaces: Array,
     selected: String
+  },
+  computed: {
+    actualNamespaces() {
+      return this.namespaces || this.data.namespaces
+    }
   }
 }
 </script>

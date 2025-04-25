@@ -178,8 +178,7 @@ export default {
       toast(`r${rev.rev}의 UUID가 복사되었습니다.`)
     },
     async adminAction(rev, action) {
-      const res = await this.internalRequest(this.doc_action_link(this.data.document, 'a/' + action, { uuid: rev.uuid }))
-      await this.processInternalResponse(res)
+      await this.internalRequestAndProcess(this.doc_action_link(this.data.document, 'a/' + action, { uuid: rev.uuid }))
     }
   }
 }

@@ -134,17 +134,16 @@ export default {
         return
       }
 
-      const res = await this.internalRequest('/member/register_webauthn/challenge', {
+      await this.internalRequestAndProcess('/member/register_webauthn/challenge', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(attResp)
       })
-      await this.processInternalResponse(res)
     },
     async deletePasskey(name) {
-      const res = await this.internalRequest('/member/delete_webauthn', {
+      await this.internalRequestAndProcess('/member/delete_webauthn', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -153,7 +152,6 @@ export default {
           name
         })
       })
-      await this.processInternalResponse(res)
     }
   }
 }

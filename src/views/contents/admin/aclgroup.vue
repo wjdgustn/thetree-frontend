@@ -247,7 +247,7 @@ export default {
     async deleteGroup(item) {
       if(!confirm(`${item.name} 그룹을 삭제하겠습니까?`)) return
 
-      const res = await this.internalRequest('/aclgroup/group_remove', {
+      await this.internalRequestAndProcess('/aclgroup/group_remove', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -256,7 +256,6 @@ export default {
           uuid: item.uuid
         }).toString()
       })
-      await this.processInternalResponse(res)
     }
   }
 }

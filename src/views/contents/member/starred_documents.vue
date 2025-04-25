@@ -65,10 +65,9 @@ export default {
     async toggleStar(item) {
       this.disableButton = true
 
-      const res = await this.internalRequest(
+      const res = await this.internalRequestAndProcess(
           this.doc_action_link(item.document.parsedName, 'member/' + (item.removed ? 'star' : 'unstar'))
       )
-      await this.processInternalResponse(res)
       if(res?.code === 204) item.removed = !item.removed
       this.disableButton = false
     }
