@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "vite",
     "dev": "vite",
     "build": "npm run build:server && npm run build:client",
     "build:server": "vite build --outDir dist/server --ssr src/server.js",
