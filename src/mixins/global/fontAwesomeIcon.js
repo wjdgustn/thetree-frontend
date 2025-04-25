@@ -16,7 +16,12 @@ import {
     faPause,
     faCaretDown,
     faPlus,
-    faTrashCan
+    faTrashCan,
+    faUserPlus,
+    faUserMinus,
+    faUserCheck,
+    faClockRotateLeft,
+    faUser
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faFileLines
@@ -43,7 +48,12 @@ export default {
             faPause,
             faCaretDown,
             faPlus,
-            faTrashCan
+            faTrashCan,
+            faUserPlus,
+            faUserMinus,
+            faUserCheck,
+            faClockRotateLeft,
+            faUser
         )
     },
     components: {

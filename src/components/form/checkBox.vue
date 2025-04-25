@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     onInput(e) {
-      this.whenInput?.(e)
+      this.whenChange?.(e)
       this.$emit('update:modelValue', e.target.checked)
     }
   }
