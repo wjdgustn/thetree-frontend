@@ -45,7 +45,7 @@
             <tr>
               <td>{{index + 1}}</td>
               <td>{{element.condition}}</td>
-              <td>{{element.action}}</td>
+              <td v-html="element.action"/>
               <td>
                 <LocalDate v-if="element.expiresAt" :date="element.expiresAt"/>
                 <template v-else>영구</template>
