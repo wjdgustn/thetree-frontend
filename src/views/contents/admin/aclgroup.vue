@@ -144,7 +144,7 @@
         <template v-else>영구</template>
       </td>
       <td>
-        <SeedButton :disabled="data.removable" danger @click="openRemoveModal(item)">삭제</SeedButton>
+        <SeedButton :disabled="!data.removable" danger @click="openRemoveModal(item)">삭제</SeedButton>
       </td>
     </tr>
     </tbody>
