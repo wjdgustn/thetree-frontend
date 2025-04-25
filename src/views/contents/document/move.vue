@@ -11,7 +11,6 @@
       문서를 서로 맞바꾸기
     </label>
     <IpWarn/>
-    <div v-else/>
     <div class="button-block">
       <SeedButton submit>이동</SeedButton>
     </div>
