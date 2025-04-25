@@ -2,7 +2,7 @@
   <div>
     <label v-if="label" :for="inputId" v-text="label"></label>
     <slot/>
-    <ShowError :tag="name"/>
+    <ShowError v-if="name" :tag="name"/>
   </div>
 </template>
 <script>
