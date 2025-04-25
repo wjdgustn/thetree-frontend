@@ -5,23 +5,23 @@
     'tooltip-mode': tooltipMode
   }">
     <div class="comment-inside" :class="{ 'tooltip-mode': tooltipMode }">
-      <div class="user-block" :class="{ 'user-starter': !previewMode && (data.user?.uuid === data.thread?.createdUser) }">
+      <div class="user-block" :class="{ 'user-starter': !previewMode && (comment.user && comment.user?.uuid === data.thread?.createdUser) }">
         <span class="num-text">
-          <a :id="data.id">#{{data.id}}</a>
+          <a :id="comment.id">#{{comment.id}}</a>
         </span>
         <template v-if="fetched">
-          <AuthorSpan :account="data.user" :pos="pos" discuss :discussAdmin="data.user.admin"/>
+          <AuthorSpan :account="comment.user" :pos="pos" discuss :discussAdmin="comment.user.admin"/>
           <span class="time-block">
-            <LocalDate :date="data.createdAt"/>
+            <LocalDate :date="comment.createdAt"/>
             <ContextMenu v-if="!previewMode" class="menu-block" placement="bottom-end">
               <span role="button" class="button menu-button">
                 <FontAwesomeIcon icon="caret-down" />
               </span>
               <template #menu>
                 <GeneralButton :whenClick="toggleRaw" v-text="showRaw ? '위키 보기' : '원문 보기'" v-close-popover/>
-                <template v-if="data.permissions.hide">
+                <template v-if="comment.permissions.hide">
                   <hr>
-                  <GeneralButton theme="danger" :whenClick="toggleHide" v-text="data.hidden ? '[ADMIN] 숨기기 해제' : '[ADMIN] 숨기기'" v-close-popover/>
+                  <GeneralButton theme="danger" :whenClick="toggleHide" v-text="comment.hidden ? '[ADMIN] 숨기기 해제' : '[ADMIN] 숨기기'" v-close-popover/>
                 </template>
               </template>
             </ContextMenu>
@@ -30,16 +30,16 @@
         </template>
       </div>
       <div class="content-block" :class="{
-        'special-comment': fetched && data.type !== 0,
-        'hidden-comment': data.hidden && !forceShow
+        'special-comment': fetched && comment.type !== 0,
+        'hidden-comment': comment.hidden && !forceShow
       }">
-        <template v-if="!fetched || !data.hidden || forceShow">
+        <template v-if="!fetched || !comment.hidden || forceShow">
           <span v-if="showRaw" v-text="rawContent"/>
-          <WikiContent v-else-if="data.contentHtml" discuss :content="data.contentHtml"/>
+          <WikiContent v-else-if="comment.contentHtml" discuss :content="comment.contentHtml"/>
         </template>
         <template v-else>
-          [<AuthorSpan :account="data.hideUser" :pos="pos" discuss :discussAdmin="data.hideUser.admin"/>에 의해 숨겨진 글입니다.]
-          <SeedButton @click="forceShow = true" v-if="data.permissions.hide" danger>[ADMIN] SHOW</SeedButton>
+          [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>에 의해 숨겨진 글입니다.]
+          <SeedButton @click="forceShow = true" v-if="comment.permissions.hide" danger>[ADMIN] SHOW</SeedButton>
         </template>
       </div>
     </div>
@@ -57,14 +57,21 @@ import GeneralButton from '@/components/generalButton'
 import SeedButton from '@/components/seedButton'
 
 export default {
-  components: {SeedButton, GeneralButton, WikiContent, ContextMenu, LocalDate, AuthorSpan},
+  components: {
+    SeedButton,
+    GeneralButton,
+    WikiContent,
+    ContextMenu,
+    LocalDate,
+    AuthorSpan
+  },
   mixins: [Common],
   emits: ['updateShow', 'updateHide', 'show', 'hide'],
   directives: {
     closePopover: vClosePopper
   },
   props: {
-    data: {
+    comment: {
       type: JSON,
       required: true
     },
@@ -112,10 +119,10 @@ export default {
   },
   computed: {
     fetched() {
-      return this.data.user
+      return this.comment.user
     },
     pos() {
-      return '토론 ' + this.slug + ' #' + this.data.id
+      return '토론 ' + this.slug + ' #' + this.comment.id
     }
   },
   methods: {
@@ -124,7 +131,7 @@ export default {
 
       this.loadingRaw = true
       try {
-        const res = await this.internalRequest(`/thread/${this.slug}/${this.data.id}/raw`)
+        const res = await this.internalRequest(`/thread/${this.slug}/${this.comment.id}/raw`)
 
         if(res.code) {
           alert(res.data)
@@ -147,7 +154,7 @@ export default {
       }
     },
     async toggleHide() {
-      await this.internalRequestAndProcess(`/admin/thread/${this.slug}/${this.data.id}/${this.data.hidden ? 'show' : 'hide'}`, {
+      await this.internalRequestAndProcess(`/admin/thread/${this.slug}/${this.comment.id}/${this.comment.hidden ? 'show' : 'hide'}`, {
         method: 'POST'
       })
     }

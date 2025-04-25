@@ -33,7 +33,7 @@
             previewMode
             :thread="item"
             :slug="item.url"
-            :data="comment"
+            :comment="comment"
         />
       </div>
     </div>

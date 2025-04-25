@@ -29,7 +29,7 @@
           ref="comments"
           v-if="!comment.hidden || !hideHidden"
           :slug="data.thread.url"
-          :data="comment"
+          :comment="comment"
       />
     </template>
   </div>
@@ -70,7 +70,7 @@
         <Comment
             previewMode
             :slug="data.thread.url"
-            :data="previewComment"
+            :comment="previewComment"
         />
       </div>
     </div>
@@ -178,7 +178,7 @@ export default {
 
         this.fetchingComments = true
 
-        const firstIndex = firstUnfetchedComment.data.id - 1
+        const firstIndex = firstUnfetchedComment.comment.id - 1
         const firstComment = this.data.comments[firstIndex]
 
         let commentOffset = 0
