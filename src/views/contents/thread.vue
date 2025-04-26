@@ -190,7 +190,9 @@ export default {
 
         const comment = this.data.comments.find(a => !a.user && a.id >= firstComment.id - commentOffset)
 
-        const comments = await this.internalRequest(`/thread/${this.data.thread.url}/${comment.id}`)
+        const comments = await this.internalRequest(`/thread/${this.data.thread.url}/${comment.id}`, {
+          noProgress: true
+        })
         for(let comment of Object.values(comments)) {
           const commentIndex = this.data.comments.findIndex(a => a.id === comment.id)
           if(commentIndex !== -1) this.data.comments[commentIndex] = comment
