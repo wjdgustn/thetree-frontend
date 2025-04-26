@@ -1,14 +1,17 @@
 <template>
-  <RouterLink v-bind="$props" :to="actualTo" custom v-slot="{ href }">
+  <VueRouterLink v-bind="$props" :to="actualTo" custom v-slot="{ href }">
     <a ref="link" v-bind="$attrs" :href="href" @click="click"><slot/></a>
-  </RouterLink>
+  </VueRouterLink>
 </template>
 <script>
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'
 
 export default {
   props: {
     ...RouterLink.props
+  },
+  components: {
+    VueRouterLink: RouterLink
   },
   data() {
     return {

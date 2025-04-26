@@ -1,7 +1,16 @@
 <template>
-  <RouterView/>
+  <VueRouterView/>
   <ModalsContainer/>
 </template>
+<script>
+import { RouterView } from 'vue-router'
+
+export default {
+  components: {
+    VueRouterView: RouterView
+  }
+}
+</script>
 <style>
 @import '@/assets/css/ionicons.min.css';
 @import '@/assets/css/default.css';
