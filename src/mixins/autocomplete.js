@@ -73,10 +73,10 @@ export default {
             this.controller = new AbortController()
 
             try {
-                this.items = await this.internalRequest(`/Complete?q=${encodeURIComponent(this.searchText)}`, {
+                this.items = Object.values(await this.internalRequest(`/Complete?q=${encodeURIComponent(this.searchText)}`, {
                     signal: this.controller.signal,
                     noProgress: true
-                })
+                }))
             } catch(e) {
             } finally {
                 this.controller = null
