@@ -407,11 +407,11 @@ export default {
   outline: 0 !important;
 }
 
-:deep(.thetree-modal-content) .wiki-content {
+.thetree-modal-content .wiki-content {
   padding: 1rem;
 }
 
-:deep(.thetree-modal-content) button {
+.thetree-modal-content button {
   background-color: #fafafa;
   border: 0;
   border-top: 1px solid #eee;
@@ -423,5 +423,10 @@ export default {
   outline: none;
   padding: 10px;
   width: 100%;
+}
+
+.theseed-dark-mode .thetree-modal-content button {
+  background-color: #383b40;
+  border-top: 1px solid #111;
 }
 </style>
