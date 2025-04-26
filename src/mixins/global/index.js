@@ -1,5 +1,3 @@
-import { markRaw } from 'vue'
-
 import FontAwesomeIcon from '@/mixins/global/fontAwesomeIcon'
 
 export default {
