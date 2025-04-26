@@ -83,7 +83,9 @@ export default {
       this.note = params.note
     },
     async loadACLGroups() {
-      const res = await this.internalRequest('/aclgroup/groups')
+      const res = await this.internalRequest('/aclgroup/groups', {
+        noProgress: true
+      })
       this.groups = Object.values(res)
     },
     afterSubmit() {
