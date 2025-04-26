@@ -174,6 +174,12 @@ export default {
   resize: vertical;
 }
 
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
 .static-file {
   width: 50%;
 }
