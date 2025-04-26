@@ -7,10 +7,10 @@
     <div ref="popoverArrow" id="tooltip-arrow" class="popper__arrow"></div>
     <div id="tooltip-content" class="wiki-content" v-html="popover.content" @click="onDynamicContentClick"></div>
   </div>
-  <VueFinalModal v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content" v-model="modal.show" escToClose>
+  <Modal v-model="modal.show" v-slot="props">
     <div class="wiki-content" v-html="modal.content" @click="onDynamicContentClick"></div>
-    <button @click="close">닫기</button>
-  </VueFinalModal>
+    <button @click="props.close">닫기</button>
+  </Modal>
 </template>
 <script>
 import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/vue'
@@ -23,10 +23,12 @@ import LocalDate from '@/components/localDate'
 
 import Common from '@/mixins/common'
 import { isMobile } from '@/utils'
+import Modal from '@/components/modal'
 
 export default {
   mixins: [Common],
   components: {
+    Modal,
     NuxtLink,
     Alert,
     WikiCategory,

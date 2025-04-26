@@ -1,5 +1,5 @@
 <template>
-  <VueFinalModal @closed="closed" v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content" escToClose>
+  <Modal @closed="closed" v-slot="props">
     <SeedForm method="post" action="/member/generate_api_token">
       <h4>API Token 발급</h4>
       <FormErrorAlert/>
@@ -19,10 +19,10 @@
 
       <div class="modal-button-block">
         <SeedButton v-if="!apiToken" danger large>생성</SeedButton>
-        <SeedButton type="button" large @click="close" v-text="apiToken ? '닫기' : '취소'"/>
+        <SeedButton type="button" large @click="props.close" v-text="apiToken ? '닫기' : '취소'"/>
       </div>
     </SeedForm>
-  </VueFinalModal>
+  </Modal>
 </template>
 <script>
 import FormErrorAlert from '@/components/form/formErrorAlert'
@@ -30,9 +30,11 @@ import SeedButton from '@/components/seedButton'
 import SeedForm from '@/components/form/seedForm'
 import SeedFormBlock from '@/components/form/seedFormBlock'
 import SeedFormInput from '@/components/form/seedFormInput'
+import Modal from '@/components/modal'
 
 export default {
   components: {
+    Modal,
     FormErrorAlert,
     SeedButton,
     SeedForm,

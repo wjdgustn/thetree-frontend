@@ -1,5 +1,5 @@
 <template>
-  <VueFinalModal @beforeOpen="beforeOpen" v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content" escToClose>
+  <Modal @beforeOpen="beforeOpen" v-slot="props">
     <SeedForm :afterSubmit="afterSubmit" method="post" action="/aclgroup">
       <h4>빠른 ACLGroup</h4>
       <FormErrorAlert/>
@@ -34,10 +34,10 @@
       </div>
       <div class="button-block">
         <SeedButton large danger>추가</SeedButton>
-        <SeedButton type="button" large @click="close">취소</SeedButton>
+        <SeedButton type="button" large @click="props.close">취소</SeedButton>
       </div>
     </SeedForm>
-  </VueFinalModal>
+  </Modal>
 </template>
 <script>
 import Common from '@/mixins/common'
@@ -47,10 +47,12 @@ import Loading from '@/components/loading'
 import DurationSelector from '@/components/durationSelector'
 import SeedButton from '@/components/seedButton'
 import FormErrorAlert from '@/components/form/formErrorAlert'
+import Modal from '@/components/modal'
 
 export default {
   mixins: [Common],
   components: {
+    Modal,
     FormErrorAlert,
     SeedButton,
     DurationSelector,

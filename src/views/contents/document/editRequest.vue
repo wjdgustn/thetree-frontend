@@ -13,7 +13,7 @@
     <label>편집 요약</label>
     {{editRequest.log}}
   </div>
-  <VueFinalModal v-if="editRequest.status === 0" v-slot="{ close }" classes="thetree-modal-container close-modal" content-class="thetree-modal-content" v-model="showCloseModal" escToClose>
+  <Modal v-if="editRequest.status === 0" v-model="showCloseModal" v-slot="props" classes="close-modal">
     <SeedForm method="post" :action="'/edit_request/' + editRequest.url + '/close'" :afterSubmit="afterCloseSubmit">
       <h4>편집 요청 닫기</h4>
       <div>
@@ -26,10 +26,10 @@
       </div>
       <div class="button-block">
         <SeedButton submit large>닫기</SeedButton>
-        <SeedButton type="button" large @click="close">취소</SeedButton>
+        <SeedButton type="button" large @click="props.close">취소</SeedButton>
       </div>
     </SeedForm>
-  </VueFinalModal>
+  </Modal>
 
   <WikiContent :content="data.contentHtml"/>
 
@@ -109,6 +109,7 @@ import SeedLinkButton from '@/components/seedLinkButton'
 import Loading from '@/components/loading'
 import Diff from '@/components/diff'
 import NuxtLink from '@/components/global/nuxtLink'
+import Modal from '@/components/modal'
 
 export default {
   mixins: [Common],
@@ -116,6 +117,7 @@ export default {
     tooltip: vTooltip
   },
   components: {
+    Modal,
     NuxtLink,
     Diff,
     Loading,

@@ -1,7 +1,7 @@
 <template>
-  <VueFinalModal v-slot="{ close }" classes="thetree-modal-container" content-class="thetree-modal-content" escToClose>
+  <Modal v-slot="props">
     <div class="setting-block">
-      <button @click="close">×</button>
+      <button @click="props.close">×</button>
       <h1>설정</h1>
       <header>
         <ul>
@@ -18,7 +18,7 @@
         </template>
       </TransitionGroup>
     </div>
-  </VueFinalModal>
+  </Modal>
 </template>
 <script>
 import { markRaw } from 'vue'
@@ -26,8 +26,10 @@ import { markRaw } from 'vue'
 import WikiSetting from '@/components/setting/wikiSetting'
 import DiscussSetting from '@/components/setting/discussSetting.vue'
 import SkinSetting from 'skin/components/settingModal'
+import Modal from '@/components/modal'
 
 export default {
+  components: {Modal},
   data() {
     return {
       tabs: [

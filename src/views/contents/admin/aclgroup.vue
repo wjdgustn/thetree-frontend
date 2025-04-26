@@ -152,7 +152,7 @@
 
   <PrevNextBtn flex v-bind="pageProps"/>
 
-  <VueFinalModal v-model="showCreateModal" v-slot="{ close }" class="aclgroup-modal" classes="thetree-modal-container" content-class="thetree-modal-content" escToClose>
+  <Modal v-model="showCreateModal" v-slot="props">
     <SeedForm :beforeSubmit="goConfirm" :afterSubmit="close" method="post" action="/aclgroup/group_add">
       <h4>ACL그룹 생성</h4>
       <div>
@@ -162,11 +162,11 @@
       </div>
       <div class="button-block">
         <SeedButton large submit>생성</SeedButton>
-        <SeedButton large type="button" @click="close">취소</SeedButton>
+        <SeedButton large type="button" @click="props.close">취소</SeedButton>
       </div>
     </SeedForm>
-  </VueFinalModal>
-  <VueFinalModal v-model="removeModal.show" v-slot="{ close }" class="aclgroup-modal" classes="thetree-modal-container" content-class="thetree-modal-content" escToClose>
+  </Modal>
+  <Modal v-model="removeModal.show" v-slot="props">
     <SeedForm :afterSubmit="close" method="post" action="/aclgroup/remove">
       <input type="hidden" name="uuid" :value="removeModal.uuid">
       <input type="hidden" name="group" :value="data.selectedGroup.uuid">
@@ -183,10 +183,10 @@
       </div>
       <div class="button-block">
         <SeedButton large submit>삭제</SeedButton>
-        <SeedButton large type="button" @click="close">취소</SeedButton>
+        <SeedButton large type="button" @click="props.close">취소</SeedButton>
       </div>
     </SeedForm>
-  </VueFinalModal>
+  </Modal>
 </template>
 <script>
 import Common from '@/mixins/common'
@@ -198,10 +198,12 @@ import SeedButton from '@/components/seedButton'
 import PrevNextBtn from '@/components/prevNextBtn'
 import LocalDate from '@/components/localDate'
 import Heading from '@/components/heading'
+import Modal from '@/components/modal'
 
 export default {
   mixins: [Common],
   components: {
+    Modal,
     Heading,
     LocalDate,
     PrevNextBtn,
