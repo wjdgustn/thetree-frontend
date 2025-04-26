@@ -75,8 +75,6 @@ export default {
       this.loadACLGroups()
 
       const params = e.ref.params._rawValue
-      console.log(params);
-      console.log(params.note);
       this.mode = params.ip ? 'ip' : 'username'
       this.ip = params.ip
       this.username = params.username
