@@ -49,7 +49,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       __THETREE_COMMIT_IDS__: JSON.stringify(commitIds),
       __THETREE_VERSION_HEADER__: JSON.stringify(versionHeader)
     },
-    base: process.env.NODE_ENV === 'production' ? `/skins/${skin}` : '/',
+    base: (process.env.NODE_ENV === 'production' || env.METADATA_PATH) ? `/skins/${skin}` : '/',
     publicDir: isSsrBuild ? false : 'public',
     resolve: {
       extensions: ['.js', '.vue'],
