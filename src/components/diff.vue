@@ -40,7 +40,7 @@ table thead {
   font-family: Verdana;
 }
 
-.thetree-dark-mode table thead {
+.theseed-dark-mode table thead {
   background: #2d2f34;
   border-bottom: 1px solid #383b40;
 }
@@ -63,12 +63,6 @@ table :deep(tbody) {
     word-break: normal;
   }
 
-  .thetree-dark-mode th {
-    background: #27292d;
-    border: 1px solid #383b40;
-    color: #8a8a8a;
-  }
-
   td {
     padding: .4em .4em 0;
     vertical-align: top;
@@ -80,11 +74,6 @@ table :deep(tbody) {
     border-right-color: #bbc;
   }
 
-  .thetree-dark-mode .skip {
-    background-color: #2d2f34;
-    border: 1px solid #383b40;
-  }
-
   div {
     word-wrap: break-word;
     word-break: break-all;
@@ -94,16 +83,8 @@ table :deep(tbody) {
     background-color: #fdd;
   }
 
-  .thetree-dark-mode .delete {
-    background-color: #943838;
-  }
-
   .insert {
     background-color: #cfc;
-  }
-
-  .thetree-dark-mode .insert {
-    background-color: #3b5a3b;
   }
 
   del.diff {
@@ -112,17 +93,38 @@ table :deep(tbody) {
     text-decoration: line-through;
   }
 
-  .thetree-dark-mode del.diff {
+  ins.diff {
+    background-color: #50ff50;
+    text-decoration: none;
+  }
+}
+
+.theseed-dark-mode table :deep(tbody) {
+  th {
+    background: #27292d;
+    border: 1px solid #383b40;
+    color: #8a8a8a;
+  }
+
+  .skip {
+    background-color: #2d2f34;
+    border: 1px solid #383b40;
+  }
+
+  .delete {
+    background-color: #943838;
+  }
+
+  .insert {
+    background-color: #3b5a3b;
+  }
+
+  del.diff {
     background-color: #d05d5d;
     color: #ddd;
   }
 
   ins.diff {
-    background-color: #50ff50;
-    text-decoration: none;
-  }
-
-  .thetree-dark-mode ins.diff {
     background-color: #1c751c;
   }
 }
