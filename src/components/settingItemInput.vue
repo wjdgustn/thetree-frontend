@@ -1,5 +1,5 @@
 <template>
-  <SettingItem>
+  <SettingItem :="$props">
     <input v-model="value" :id="ckey" @change="changed" :type="type" placeholder="입력">
   </SettingItem>
 </template>
