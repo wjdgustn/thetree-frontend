@@ -21,6 +21,24 @@
       <template v-else>
         없음
       </template>
+      <template v-if="hasBEUpdate">
+        <p>Backend 업데이트 내역</p>
+        <ul>
+          <li v-for="item in data.newCommits">
+            <a :href="item.html_url" target="_blank" v-text="item.sha.slice(0, 7)"/>
+            {{item.commit.message.split('\n')[0]}} - <a :href="item.author.html_url" target="_blank" v-text="item.commit.author.name"/>
+          </li>
+        </ul>
+      </template>
+      <template v-if="hasFEUpdate">
+        <p>Frontend 업데이트 내역</p>
+        <ul>
+          <li v-for="item in data.newFECommits">
+            <a :href="item.html_url" target="_blank" v-text="item.sha.slice(0, 7)"/>
+            {{item.commit.message.split('\n')[0]}} - <a :href="item.author.html_url" target="_blank" v-text="item.commit.author.name"/>
+          </li>
+        </ul>
+      </template>
     </p>
     <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/checkupdate')">업데이트 확인</GeneralButton>
     <GeneralButton :disabled="!hasUpdate" theme="danger" type="event" @click="internalGet('/admin/config/tools/update')">업데이트</GeneralButton>
@@ -132,9 +150,14 @@ export default {
     }
   },
   computed: {
-    hasUpdate() {
+    hasBEUpdate() {
       return this.data.versionInfo.commitId !== this.data.newVersionInfo.commitId
-          || this.data.versionInfo.feCommitId !== this.data.newVersionInfo.feCommitId
+    },
+    hasFEUpdate() {
+      return this.data.versionInfo.feCommitId !== this.data.newVersionInfo.feCommitId
+    },
+    hasUpdate() {
+      return this.hasBEUpdate || this.hasFEUpdate
     }
   },
   methods: {
