@@ -1,7 +1,7 @@
 <template>
   <Heading
       title="업데이트"
-      :folded="!data.check_update && !hasUpdate">
+      :folded="!data.checkUpdate && !hasUpdate">
     <p v-if="data.versionInfo.branch !== 'master'">브랜치: {{data.versionInfo.branch}}</p>
     <p>현재 버전: {{data.versionInfo.versionData.version}}</p>
     <ul>
