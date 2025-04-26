@@ -34,7 +34,21 @@ select {
   min-width: 12rem;
 }
 
+@media screen and (max-width: 1023.98px) {
+  form {
+    width: 100%;
+  }
+}
+
 @media screen and (max-width: 727.98px) {
+  form {
+    flex-direction: column;
+  }
+
+  form>* {
+    width: 100%;
+  }
+
   select {
     min-width: 10rem;
   }
