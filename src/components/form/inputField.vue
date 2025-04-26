@@ -2,10 +2,7 @@
   <component
     :is="multiline ? 'textarea' : 'input'"
     class="input"
-    :class="{
-      multiline,
-      error
-    }"
+    :class="{ multiline }"
     :value="modelValue"
     @input="onInput"
     @keydown="whenKeyDown"
@@ -32,9 +29,15 @@ export default {
     name: String
   },
   emits: ['update:modelValue'],
+  mounted() {
+    this.updateError()
+  },
   watch: {
     submittingSeedForm(newValue) {
       this.$refs.input.disabled = newValue
+    },
+    error() {
+      this.updateError()
     }
   },
   computed: {
@@ -52,6 +55,11 @@ export default {
     },
     focus() {
       this.$refs.input.focus()
+    },
+    updateError() {
+      const classList = this.$refs.input.classList
+      if(this.error) classList.add('error')
+      else classList.remove('error')
     }
   }
 }
