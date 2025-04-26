@@ -134,7 +134,7 @@
     <tbody>
     <tr v-for="item in data.groupItems">
       <td>{{item.id}}</td>
-      <td>{{item.user?.name || item.ip}}</td>
+      <td>{{item.user?.name || item.ip || item.user.uuid}}</td>
       <td>{{item.note}}</td>
       <td>
         <LocalDate :date="item.createdAt"/>
