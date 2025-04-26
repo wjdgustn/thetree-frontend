@@ -23,7 +23,9 @@ export const useStateStore = defineStore('state', {
       page: {
         data: {}
       },
-      viewData: {}
+      viewData: {},
+
+      skin: {}
     }
   },
   actions: {
@@ -108,6 +110,9 @@ export const useStateStore = defineStore('state', {
     localConfigSetValue(key, value) {
       this.localConfig[key] = value
       localStorage.setItem('thetree_settings', JSON.stringify(this.localConfig))
+    },
+    skinSetValue(key, value) {
+      this.skin[key] = value
     }
   },
   getters: {

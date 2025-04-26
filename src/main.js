@@ -47,7 +47,10 @@ export function createApp() {
             switch(action) {
                 case 'localConfigSetValue':
                     this.state.localConfigSetValue(value.key, value.value)
-                    break;
+                    break
+                case 'skinSetValue':
+                    this.state.skinSetValue(value.key, value.value)
+                    break
             }
         }
     }
