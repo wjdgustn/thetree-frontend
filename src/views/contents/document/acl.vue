@@ -153,7 +153,7 @@ export default {
       form: {
         conditionType: 'Perm',
         permissionSelect: 'any',
-        actionType: 'Allow'
+        actionType: 'GotoNS'
       }
     }
   },
