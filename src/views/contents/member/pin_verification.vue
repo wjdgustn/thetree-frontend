@@ -33,7 +33,7 @@
       </template>
     </FlexFormBlock>
 
-    <FlexFormBlock class="other-method">
+    <FlexFormBlock v-if="data.hasPasskey" class="other-method">
       <div class="other-method-title">다른 인증 방법</div>
 
       <GeneralButton v-if="passkey" class="other-method-button" :whenClick="togglePasskey">
