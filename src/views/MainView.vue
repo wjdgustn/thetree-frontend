@@ -55,7 +55,8 @@ export default {
         { name: 'og:url', content: fullUrl },
         ...(state.config['embed_image'] ? [
           { name: 'og:image', content: state.config['embed_image'] }
-        ] : [])
+        ] : []),
+        { name: 'theme-color', content: state.config['theme_color'] }
       ],
       link: [
         { rel: 'canonical', content: fullUrl },
