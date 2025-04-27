@@ -186,7 +186,7 @@
         <input type="checkbox" name="hidelog" value="Y">
       </div>
       <div class="button-block">
-        <SeedButton large submit>삭제</SeedButton>
+        <SeedButton large submit @click="props.close">삭제</SeedButton>
         <SeedButton large type="button" @click="props.close">취소</SeedButton>
       </div>
     </SeedForm>
