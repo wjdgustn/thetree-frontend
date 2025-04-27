@@ -7,6 +7,11 @@
     <div v-html="data.aclMessage"></div>
   </Alert>
 
+  <Alert v-if="!editable" theme="danger">
+    <strong>[오류!] </strong>
+    <span v-html="data.aclMessage"/>
+  </Alert>
+
   <WikiContent :content="data.contentHtml"/>
 
   <template v-if="data.conflict">
@@ -34,7 +39,7 @@
         <component :ref="'pluginTab_' + tab.name" v-if="tab.component" :is="tab.component"/>
       </div>
       <div :class="{ active: activeTab.name === 'raw' }">
-        <textarea ref="textInput" name="text" wrap="soft" :value="data.content"/>
+        <textarea ref="textInput" name="text" wrap="soft" :value="data.content" :readonly="!editable"/>
       </div>
       <div class="preview" :class="{ active: activeTab.name === 'preview', loading: !preview.content }">
         <WikiContent v-if="preview.content" :content="preview.content" :categories="preview.categories"/>
@@ -42,19 +47,21 @@
       </div>
     </div>
 
-    <div class="log-block">
-      <label for="logInput" v-text="logLabel"/>
-      <SeedFormInput v-model="log" id="logInput" name="log"/>
-    </div>
+    <template v-if="editable">
+      <div class="log-block">
+        <label for="logInput" v-text="logLabel"/>
+        <SeedFormInput v-model="log" id="logInput" name="log"/>
+      </div>
 
-    <label>
-      <input ref="agreeCheckbox" type="checkbox" name="agree" value="Y" :checked="data.editagreeAgreed">
-      <span v-html="data.editagree_text"/>
-    </label>
+      <label>
+        <input ref="agreeCheckbox" type="checkbox" name="agree" value="Y" :checked="data.editagreeAgreed">
+        <span v-html="data.editagree_text"/>
+      </label>
 
-    <IpWarn/>
+      <IpWarn/>
 
-    <SeedButton submit>저장</SeedButton>
+      <SeedButton submit>저장</SeedButton>
+    </template>
   </SeedForm>
 </template>
 <script>
@@ -105,6 +112,12 @@ export default {
     }
   },
   created() {
+    if(!this.editable) {
+      this.tabs.length = 1
+      this.activeTab = this.tabs[0]
+      return
+    }
+
     this.tabs.unshift(...this.$store.state.thetreePlugins.editor.map(a => ({
       ...a.pluginInfo,
       component: a
@@ -134,6 +147,9 @@ export default {
       if(this.log)
         result += ` (${this.log.length}/255)`
       return result
+    },
+    editable() {
+      return this.data.isEditRequest || !this.data.aclMessage
     }
   },
   methods: {
@@ -315,6 +331,11 @@ form textarea {
   padding: .25rem .5rem;
   resize: vertical;
   width: 100%;
+}
+
+form textarea[readonly] {
+  background-color: #eceeef;
+  opacity: 1
 }
 
 .theseed-dark-mode form textarea {
