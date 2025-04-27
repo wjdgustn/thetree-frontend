@@ -125,12 +125,6 @@
         padding: 0;
     }
 
-    a {
-        background-color: transparent;
-        color: #0275d8;
-        text-decoration: none;
-    }
-
     .not-exist {
         color: red;
     }
