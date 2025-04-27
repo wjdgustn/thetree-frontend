@@ -1,7 +1,7 @@
 <template>
   <WikiCategory v-if="categories.length" :categories="categories"/>
 
-  <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" :class="{ 'wiki-thread-content': discuss }"></div>
+  <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" @submit.prevent="formSubmit" :class="{ 'wiki-thread-content': discuss }"></div>
 
   <div ref="popover" v-show="popover.show" id="tooltip" class="popper">
     <div ref="popoverArrow" id="tooltip-arrow" class="popper__arrow"></div>
@@ -306,6 +306,26 @@ export default {
           this.modal.content = contentElement.innerHTML;
           this.modal.show = true;
         });
+      }
+    },
+    async formSubmit(e) {
+      const el = e.target
+      const actionAttr = el.getAttribute('action')
+      const url = new URL(el.action)
+      const formData = new FormData(el)
+      await this.internalRequestAndProcess(url.pathname, {
+        method: el.method,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(formData).toString()
+      })
+
+      const newEl = this.$refs.div.querySelector(`form[action="${actionAttr}"]`)
+      for(let [key, value] of formData.entries()) {
+        const input = newEl.querySelector(`[type=radio][name="${key}"][value="${value}"]`)
+        console.log(input, value)
+        input.checked = true
       }
     }
   }
