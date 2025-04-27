@@ -11,7 +11,7 @@
       <NuxtLink to="/member/recover_password">비밀번호를 잊으셨나요?</NuxtLink>
     </FlexFormBlock>
     <FlexFormBlock buttons padding>
-      <CheckBox name="autologin">자동 로그인</CheckBox>
+      <CheckBox name="autologin" value="Y">자동 로그인</CheckBox>
       <template #buttons>
         <GeneralButton href="/member/signup">계정 만들기</GeneralButton>
         <GeneralButton type="submit" theme="primary">로그인</GeneralButton>
