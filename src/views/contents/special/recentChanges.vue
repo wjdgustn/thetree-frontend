@@ -1,5 +1,14 @@
 <template>
   <HistoryTypeTab/>
+  <template v-if="session.quick_block">
+    <CheckBox
+        :checked="$route.query.userDoc === '1'"
+        :whenChange="e => $router.push({ query: { userDoc: e.target.checked ? '1' : undefined } })"
+        style="float:right">
+      비공개 내역 보기
+    </CheckBox>
+    <div style="clear:both"/>
+  </template>
   <div class="list-table">
     <div class="table-row table-heading">
       <div class="table-item">문서</div>
@@ -43,10 +52,12 @@ import GeneralButton from '@/components/generalButton'
 import AuthorSpan from '@/components/authorSpan'
 import LocalDate from '@/components/localDate'
 import HistoryTypeTab from '@/components/historyTypeTab'
+import CheckBox from '@/components/form/checkBox'
 
 export default {
   mixins: [Common],
   components: {
+    CheckBox,
     HistoryTypeTab,
     LinkTab,
     NuxtLink,
