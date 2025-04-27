@@ -152,7 +152,7 @@
 
   <PrevNextBtn flex v-bind="pageProps"/>
 
-  <Modal v-model="showCreateModal" v-slot="props">
+  <Modal v-model="showCreateModal" v-slot="props" class="aclgroup-modal">
     <SeedForm :beforeSubmit="goConfirm" :afterSubmit="close" method="post" action="/aclgroup/group_add">
       <h4>ACL그룹 생성</h4>
       <div>
@@ -166,7 +166,7 @@
       </div>
     </SeedForm>
   </Modal>
-  <Modal v-model="removeModal.show" v-slot="props">
+  <Modal v-model="removeModal.show" v-slot="props" class="aclgroup-modal">
     <SeedForm :afterSubmit="close" method="post" action="/aclgroup/remove">
       <input type="hidden" name="uuid" :value="removeModal.uuid">
       <input type="hidden" name="group" :value="data.selectedGroup.uuid">
@@ -180,6 +180,10 @@
         <p>메모:</p>
         <input type="text" name="note">
         <ShowError tag="note"/>
+      </div>
+      <div v-if="data.permissions.hidelog" class="form-block">
+        <p>hidelog:</p>
+        <input type="checkbox" name="hidelog" value="Y">
       </div>
       <div class="button-block">
         <SeedButton large submit>삭제</SeedButton>
