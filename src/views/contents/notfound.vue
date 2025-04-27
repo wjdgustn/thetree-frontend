@@ -1,7 +1,7 @@
 <template>
   <p>해당 문서를 찾을 수 없습니다.</p>
   <p>
-    <NuxtLink :to="doc_action_link(data.document, 'edit')" rel="nofollow">[새 문서 만들기]</NuxtLink>
+    <NuxtLink :to="newLink" rel="nofollow">[새 문서 만들기]</NuxtLink>
   </p>
   <template v-if="data.revs.length">
     <div style="margin-top: 40px; margin-bottom: 15px;"/>
@@ -35,7 +35,15 @@ export default {
     AuthorSpan,
     DiffCount,
     LocalDate
-
+  },
+  computed: {
+    newLink() {
+      const document = this.data.document
+      if(document.namespace === '파일')
+        return { path: '/Upload', query: { document: this.doc_fulltitle(document) } }
+      else
+        return this.doc_action_link(document, 'edit')
+    }
   }
 }
 </script>

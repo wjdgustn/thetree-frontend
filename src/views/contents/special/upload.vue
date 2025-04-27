@@ -64,6 +64,11 @@ export default {
       log: ''
     }
   },
+  watch: {
+    '$route.query.document'(newValue) {
+      if(newValue) this.document = newValue
+    }
+  },
   computed: {
     documentLabel() {
       let result = '파일 이름'
@@ -81,7 +86,7 @@ export default {
   methods: {
     fileChange() {
       this.$refs.fakeFileInput.value = this.$refs.fileInput.value
-      this.document = '파일:' + this.$refs.fileInput.files[0].name
+      this.document ||= '파일:' + this.$refs.fileInput.files[0].name
     }
   }
 }
