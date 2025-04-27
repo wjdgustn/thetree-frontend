@@ -1,10 +1,14 @@
 <template>
   <SeedForm method="post">
     <SeedFormBlock label="이메일" inputId="emailInput" name="email">
-      <SeedFormInput id="emailInput" name="email" readonly :value="$store.state.viewData.email"/>
+      <SeedFormInput id="emailInput" name="email" readonly :value="data.email"/>
     </SeedFormBlock>
     <SeedFormBlock label="사용자 이름" inputId="usernameInput" name="username">
-      <SeedFormInput id="usernameInput" name="username"/>
+      <template v-if="data.name">
+        <SeedFormInput id="usernameInput" :value="data.name" readonly/>
+        <input type="hidden" name="username" value="special:bypass">
+      </template>
+      <SeedFormInput v-else id="usernameInput" name="username"/>
     </SeedFormBlock>
     <SeedFormBlock label="암호" inputId="passwordInput" name="password">
       <SeedFormInput id="passwordInput" name="password" type="password"/>

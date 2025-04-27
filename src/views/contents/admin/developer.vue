@@ -107,6 +107,17 @@
       </SeedForm>
     </Heading>
   </Heading>
+  <Heading title="계정 만들기">
+    <SeedForm method="post" action="/admin/developer/signup">
+      <SeedFormBlock label="이메일" inputId="emailInput" name="email">
+        <InputField id="emailInput" name="email" required/>
+      </SeedFormBlock>
+      <SeedFormBlock label="이름" inputId="nameInput" name="name">
+        <InputField id="nameInput" name="name"/>
+      </SeedFormBlock>
+      <GeneralButton theme="primary" type="submit">URL 생성</GeneralButton>
+    </SeedForm>
+  </Heading>
   <Heading title="정적 파일">
     <p v-for="item in data.customStaticFiles" class="static-file">
       <a :href="item" target="_blank" v-text="item"/>
@@ -130,6 +141,9 @@ import LocalDate from '@/components/localDate'
 import GeneralButton from '@/components/generalButton'
 import SeedForm from '@/components/form/seedForm'
 import SeedButton from '@/components/seedButton'
+import InputField from '@/components/form/inputField'
+import SeedFormBlock from '@/components/form/seedFormBlock'
+import CheckBox from '@/components/form/checkBox'
 
 export default {
   mixins: [Common],
@@ -139,6 +153,9 @@ export default {
     }
   },
   components: {
+    CheckBox,
+    SeedFormBlock,
+    InputField,
     SeedButton,
     SeedForm,
     GeneralButton,
