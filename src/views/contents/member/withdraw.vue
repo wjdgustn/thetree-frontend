@@ -9,7 +9,7 @@
         <span class="pledge pledge-correct" v-text="redPledge"/>
         <span class="pledge" v-text="normalPledge"/>
       </label>
-      <SeedFormInput @input="pledgeChange" type="text" id="pledgeInput" name="pledge" :placeholder="pledge" autocomplete="off"/>
+      <SeedFormInput @input="pledgeChange" @paste.prevent type="text" id="pledgeInput" name="pledge" :placeholder="pledge" autocomplete="off"/>
     </SeedFormBlock>
     <p>마지막 활동 후 {{durationToExactString(noActivityTime)}}이 지나야 삭제할 수 있습니다.</p>
     <p>계정 삭제 버튼을 누르면 모든 데이터가 즉시 삭제되며 복구가 불가능합니다.</p>
