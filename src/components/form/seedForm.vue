@@ -101,7 +101,7 @@ export default {
         return
       }
 
-      if(this.captchaId) {
+      if(this.captchaId != null) {
         for(let { reject } of this.captchaLock) reject()
         this.captchaLock.length = 0
 
@@ -185,5 +185,9 @@ export default {
 
 .theseed-dark-mode .box {
   border-color: #484848;
+}
+
+:global(.grecaptcha-badge) {
+  visibility: hidden;
 }
 </style>
