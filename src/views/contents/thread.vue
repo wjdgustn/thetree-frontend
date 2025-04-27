@@ -186,7 +186,7 @@ export default {
         const lastComment = this.data.comments[this.data.comments.length - 1]
 
         let belowCommentAmount = (firstFetchedBelowComment ?? lastComment).id - firstComment.id + (firstFetchedBelowComment ? -1 : 1)
-        commentOffset += this.data.commentLoadAmount - Math.min(this.data.commentLoadAmount, belowCommentAmount)
+        commentOffset += this.data.commentLoadAmount - Math.min(this.data.commentLoadAmount, belowCommentAmount + (firstFetchedBelowComment ? 1 : 0))
 
         const comment = this.data.comments.find(a => !a.user && a.id >= firstComment.id - commentOffset)
 
