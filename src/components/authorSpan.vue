@@ -108,7 +108,7 @@ export default {
       const note = `${this.pos ? this.pos + ' ' : ''}긴급차단`
       this.openQuickACLGroup({
         ...(this.account.type === 0 ? {
-          ip: this.account.name
+          ip: this.account.ip
         } : {
           username: this.account.name
         }),
