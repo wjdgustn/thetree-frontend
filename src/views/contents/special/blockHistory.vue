@@ -4,6 +4,10 @@
       <option value="text">내용</option>
       <option value="author">실행자</option>
     </SelectMenu>
+    <SelectMenu name="type" :value="$route.query.type || 'all'">
+      <option value="all">전체</option>
+      <option v-for="i in Object.values(BlockHistoryTypes)" :value="i">{{typeName(i)}}</option>
+    </SelectMenu>
     <InputField class="search-input" name="query" placeholder="검색" v-model="$route.query.query"/>
     <div class="button-block">
       <GeneralButton type="submit" theme="primary" class="search-button">검색</GeneralButton>
@@ -174,6 +178,15 @@ export default {
         [BlockHistoryTypes.Grant]: 'user-check',
         [BlockHistoryTypes.BatchRevert]: 'clock-rotate-left',
         [BlockHistoryTypes.LoginHistory]: 'user'
+      })[type]
+    },
+    typeName(type) {
+      return ({
+        [BlockHistoryTypes.ACLGroupAdd]: 'ACL그룹 등록',
+        [BlockHistoryTypes.ACLGroupRemove]: 'ACL그룹 제거',
+        [BlockHistoryTypes.Grant]: '권한 설정',
+        [BlockHistoryTypes.BatchRevert]: '일괄 되돌리기',
+        [BlockHistoryTypes.LoginHistory]: '로그인 기록 조회',
       })[type]
     }
   }
