@@ -49,6 +49,7 @@
       <input name="url" placeholder="URL" required style="width:40%">
       <GeneralButton theme="primary" type="submit">추가</GeneralButton>
     </SeedForm>
+    <GeneralButton theme="primary" type="event" @click="buildAllSkin">모두 빌드</GeneralButton>
     <Heading v-for="(commitId, name) in data.skinCommitIds" :title="name" :level="3">
       <template v-if="data.skinInfos[name]">
         <p>빌드 정보</p>
@@ -176,6 +177,11 @@ export default {
         body: new URLSearchParams(data).toString()
       })
       this.submitting = false
+    },
+    buildAllSkin() {
+      this.internalPost('/admin/developer/skin/build', {
+        name: Object.keys(this.data.skinCommitIds)
+      })
     },
     evalKeydown(e) {
       if(!e.shiftKey && e.key === 'Enter') {
