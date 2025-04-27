@@ -228,16 +228,16 @@ form li button {
   padding: .5em 1em;
 }
 
-.theseed-dark-mode form li button {
-  background-color: #27292d;
-  border-color: #383b40;
-  color: #ddd;
-}
-
 form li button.active {
   background-color: #fff;
   border-color: #ddd #ddd transparent;
   color: #55595c;
+}
+
+.theseed-dark-mode form li button {
+  background-color: #27292d;
+  border-color: #383b40;
+  color: #ddd;
 }
 
 .theseed-dark-mode form li button.active {
@@ -315,6 +315,12 @@ form textarea {
   padding: .25rem .5rem;
   resize: vertical;
   width: 100%;
+}
+
+.theseed-dark-mode form textarea {
+  background-color: #27292d;
+  border-color: #383b40;
+  color: #ddd;
 }
 
 form li.editor-buttons {
