@@ -108,7 +108,7 @@
             <option value="Allow">허용</option>
             <option value="Deny">거부</option>
             <option value="GotoNS" v-if="aclCategory === 'document'">이름공간ACL 실행</option>
-            <option value="GotoOtherNS">다른 이름공간 ACL 실행</option>
+            <option value="GotoOtherNS">다른 이름공간ACL 실행</option>
           </select>
           <input v-if="form.actionType === 'GotoOtherNS'" name="actionContent" placeholder="namespace">
         </div>
