@@ -51,6 +51,9 @@
         <span>
           (<DiffCount :count="rev.diffLength"/>)
         </span>
+        <NuxtLink v-if="rev.editRequest" :to="'/edit_request/' + rev.editRequest.url">
+          <i>(편집 요청)</i>&nbsp;
+        </NuxtLink>
         <AuthorSpan :account="rev.user" :pos="`${doc_fulltitle(data.document)} r${rev.rev}`"/>
 
         <template v-if="rev.troll">
