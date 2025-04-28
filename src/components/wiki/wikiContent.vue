@@ -70,7 +70,8 @@ export default {
     this.setupWikiContent()
   },
   watch: {
-    $route() {
+    async content() {
+      await this.$nextTick()
       this.setupWikiContent()
     }
   },
