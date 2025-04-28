@@ -31,6 +31,7 @@
       <div class="table-item">
         <span>
           <AuthorSpan :account="rev.user"/>
+          <template v-if="rev.api">(API)</template>
         </span>
       </div>
       <div class="table-item">
