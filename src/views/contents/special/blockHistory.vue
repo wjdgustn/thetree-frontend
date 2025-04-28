@@ -21,7 +21,7 @@
     </CheckBox>
   </SeedForm>
   <div class="top-page-block">
-    <PrevNextBtn class="top-page" v-bind="pageProps"/>
+    <PrevNextBtn flex class="top-page" v-bind="pageProps"/>
   </div>
 
   <ul class="block-list">
@@ -111,6 +111,8 @@
       </div>
     </li>
   </ul>
+
+  <PrevNextBtn flex v-bind="pageProps"/>
 </template>
 <script>
 import Common from '@/mixins/common'
