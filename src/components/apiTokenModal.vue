@@ -6,7 +6,7 @@
 
       <template v-if="apiToken">
         <SeedFormBlock label="토큰:">
-          <SeedFormInput readonly :value="apiToken"/>
+          <SeedFormInput readonly :value="apiToken" @click="selectAll"/>
         </SeedFormBlock>
         <ul>
           <li>발급된 토큰은 이 창을 닫으면 다시 확인할 수 없습니다.</li>
@@ -49,6 +49,9 @@ export default {
   methods: {
     closed() {
       this.$store.state.viewData.apiToken = null
+    },
+    selectAll(e) {
+      e.target.setSelectionRange(0, e.target.value.length)
     }
   }
 }
