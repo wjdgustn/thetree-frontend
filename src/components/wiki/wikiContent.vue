@@ -324,7 +324,6 @@ export default {
       const newEl = this.$refs.div.querySelector(`form[action="${actionAttr}"]`)
       for(let [key, value] of formData.entries()) {
         const input = newEl.querySelector(`[type=radio][name="${key}"][value="${value}"]`)
-        console.log(input, value)
         input.checked = true
       }
     }
