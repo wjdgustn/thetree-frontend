@@ -153,7 +153,7 @@ export default {
       form: {
         conditionType: 'Perm',
         permissionSelect: 'any',
-        actionType: 'GotoNS'
+        actionType: ''
       }
     }
   },
@@ -161,6 +161,8 @@ export default {
     updateRules() {
       const isNS = this.$route.hash.startsWith('#namespace')
       this.rules = this.data[isNS ? 'namespaceACL' : 'acl'][this.activeAclTypeIndex]
+
+      this.form.actionType = isNS ? 'Allow' : 'GotoNS'
     },
     async dragEnd() {
       await this.internalRequestAndProcess('/action/acl/reorder', {
