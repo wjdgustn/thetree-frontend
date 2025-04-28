@@ -10,7 +10,7 @@
           <a :id="comment.id">#{{comment.id}}</a>
         </span>
         <template v-if="fetched">
-          <AuthorSpan :account="comment.user" :pos="pos" discuss :discussAdmin="comment.user.admin"/>
+          <AuthorSpan :account="comment.user" :pos="pos" discuss :discussAdmin="comment.admin"/>
           <span class="time-block">
             <LocalDate :date="comment.createdAt"/>
             <ContextMenu v-if="!previewMode" class="menu-block" placement="bottom-end">
@@ -38,7 +38,7 @@
           <WikiContent v-else-if="comment.contentHtml" discuss :content="comment.contentHtml"/>
         </template>
         <template v-else>
-          [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>에 의해 숨겨진 글입니다.]
+          [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss/>에 의해 숨겨진 글입니다.]
           <SeedButton @click="forceShow = true" v-if="data.permissions.hide" danger>[ADMIN] SHOW</SeedButton>
         </template>
       </div>
