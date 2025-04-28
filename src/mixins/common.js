@@ -163,7 +163,7 @@ export default {
             return json
         },
         afterInternalRequest(json, progressBar) {
-            if(import.meta.env.DEV) console.log(json)
+            if(import.meta.env.DEV && !import.meta.env.SSR) console.log(json)
 
             if(json.config) {
                 this.$store.state.$patch(state => {
