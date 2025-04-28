@@ -72,7 +72,7 @@
     </div>
     <SeedForm v-if="editable" method="post">
       <input type="hidden" name="target" :value="aclCategory">
-      <input type="hidden" name="aclType" :value="snakeToCamelCase(aclType)">
+      <input type="hidden" name="aclType" :value="aclType === 'acl' ? 'ACL' : snakeToCamelCase(aclType)">
 
       <div class="acl-edit-group">
         <label>Condition</label>
