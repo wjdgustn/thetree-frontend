@@ -40,7 +40,7 @@
           <th></th>
         </tr>
         </thead>
-        <draggable v-if="rules.length" v-model="rules" tag="tbody" @end="dragEnd" itemKey="uuid" :disabled="!editable">
+        <draggable v-if="rules.length" v-model="rules" tag="tbody" @end="dragEnd" itemKey="uuid" :disabled="!editable" :delay="isMobile ? 100 : 0">
           <template #item="{element, index}">
             <tr>
               <td>{{index + 1}}</td>
@@ -135,6 +135,8 @@ import SeedForm from '@/components/form/seedForm'
 import DurationSelector from '@/components/durationSelector'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 
+import { isMobile } from '@/utils'
+
 export default {
   mixins: [Common],
   components: {
@@ -154,7 +156,8 @@ export default {
         conditionType: 'Perm',
         permissionSelect: 'any',
         actionType: ''
-      }
+      },
+      isMobile
     }
   },
   methods: {
