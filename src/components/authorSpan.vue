@@ -79,7 +79,7 @@ export default {
     },
     isBold() {
       const isAccount = this.account.type === 1
-      return this.discuss ? this.discussAdmin && isAccount : isAccount
+      return this.discuss ? this.discussAdmin : isAccount
     },
     isMigrated() {
       return this.account.type === 2
