@@ -38,7 +38,7 @@
           <WikiContent v-else-if="comment.contentHtml" discuss :content="comment.contentHtml"/>
         </template>
         <template v-else>
-          [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss/>에 의해 숨겨진 글입니다.]
+          [<AuthorSpan :account="comment.hideUser" :pos="pos"/>에 의해 숨겨진 글입니다.]
           <SeedButton @click="forceShow = true" v-if="data.permissions.hide" danger>[ADMIN] SHOW</SeedButton>
         </template>
       </div>
