@@ -47,7 +47,12 @@ export default {
     click(e) {
       if(e.metaKey || e.ctrlKey || e.shiftKey || e.defaultPrevented) return
 
-      this.$store.state.components.mainView.routerPush(this.$refs.link.getAttribute('href')).then()
+      let url = this.$refs.link.getAttribute('href')
+      if(this.actualTo.startsWith('#')) {
+        url = this.$router.resolve(url)
+        url.query = this.$route.query
+      }
+      this.$store.state.components.mainView.routerPush(url).then()
       e.preventDefault()
     }
   }
