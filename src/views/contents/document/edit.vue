@@ -39,7 +39,7 @@
         <component :ref="'pluginTab_' + tab.name" v-if="tab.component" :is="tab.component"/>
       </div>
       <div :class="{ active: activeTab.name === 'raw' }">
-        <textarea ref="textInput" name="text" wrap="soft" :value="data.content" :readonly="!editable"/>
+        <textarea ref="textInput" name="text" wrap="soft" v-model="data.content" :readonly="!editable"/>
       </div>
       <div class="preview" :class="{ active: activeTab.name === 'preview', loading: !preview.content }">
         <WikiContent v-if="preview.content" :content="preview.content" :categories="preview.categories"/>
@@ -164,9 +164,6 @@ export default {
     },
     updateContent(from) {
       from ??= this.activeTab
-
-      if(from.name === 'raw')
-        this.data.content = this.$refs.textInput.value
 
       const fromComponent = this.getTabComponent(from.name)
       const activeComponent = this.getTabComponent(this.activeTab.name)
