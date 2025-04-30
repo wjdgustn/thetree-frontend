@@ -55,13 +55,13 @@
         <p>빌드 정보</p>
         <ul>
           <li>
-            Frontend: {{data.skinInfos[name].commitIds.frontend}}
+            Frontend: {{data.skinInfos[name].commitIds.frontend}}(<LocalDate :date="data.skinInfos[name].commitDates?.frontend ?? 0"/>)
             <template v-if="data.skinInfos[name].commitIds.frontend !== data.versionInfo.feCommitId.slice(0, 7)">
               (업데이트 필요)
             </template>
           </li>
           <li>
-            Skin: {{data.skinInfos[name].commitIds.skin}}
+            Skin: {{data.skinInfos[name].commitIds.skin}}(<LocalDate :date="data.skinInfos[name].commitDates?.skin ?? 0"/>)
             <template v-if="commitId !== data.skinInfos[name].commitIds.skin">
               (업데이트 필요)
             </template>
