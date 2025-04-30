@@ -26,6 +26,12 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       cwd: skinPath
     }).toString().trim()
   }
+  const commitDates = {
+    frontend: new Date(Number(execSync('git log -1 --format="%at"').toString().trim()) * 1000),
+    skin: new Date(Number(execSync('git log -1 --format="%at"', {
+      cwd: skinPath
+    }).toString().trim()) * 1000)
+  }
   const versionHeader = crypto.createHash('md5')
       .update(skin + JSON.stringify(commitIds))
       .digest('hex')
@@ -42,12 +48,13 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       vueDevTools(),
       skinRawLoaderPlugin(skin),
       ...(isSsrBuild ? [] : [
-        metadata({ name: skin, versionHeader, commitIds }, env.METADATA_PATH || './dist')
+        metadata({ name: skin, versionHeader, commitIds, commitDates }, env.METADATA_PATH || './dist')
       ])
     ],
     define: {
       __THETREE_COMMIT_IDS__: JSON.stringify(commitIds),
-      __THETREE_VERSION_HEADER__: JSON.stringify(versionHeader)
+      __THETREE_VERSION_HEADER__: JSON.stringify(versionHeader),
+      __THETREE_COMMIT_DATES__: JSON.stringify(commitDates)
     },
     base: (process.env.NODE_ENV === 'production' || env.METADATA_PATH) ? `/skins/${skin}` : '/',
     publicDir: isSsrBuild ? false : 'public',

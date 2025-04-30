@@ -33,7 +33,8 @@ export default {
   data() {
     return {
       ...this.$store.state.viewData,
-      commitIds: __THETREE_COMMIT_IDS__
+      commitIds: __THETREE_COMMIT_IDS__,
+      commitDates: __THETREE_COMMIT_DATES__
     }
   }
 }
