@@ -8,7 +8,6 @@
     </li>
   </ul>
   <PrevNextBtn flex :="data.pageProps"/>
-  <pre>{{data}}</pre>
 </template>
 <script>
 import Common from '@/mixins/common'
