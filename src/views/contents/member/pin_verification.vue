@@ -1,6 +1,8 @@
 <template>
   <FormErrorAlert/>
   <SeedForm ref="form" method="post" action="/member/login/pin" captcha>
+    <input type="hidden" name="autologin" :value="autologin">
+
     <p>
       확인되지 않은 기기에서 로그인하셨습니다.<br>
       <template v-if="useTotp">
@@ -130,7 +132,8 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          challenge: asseResp
+          challenge: asseResp,
+          autologin: this.autologin
         })
       })
 
