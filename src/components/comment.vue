@@ -131,7 +131,9 @@ export default {
 
       this.loadingRaw = true
       try {
-        const res = await this.internalRequest(`/thread/${this.slug}/${this.comment.id}/raw`)
+        const res = await this.internalRequest(`/thread/${this.slug}/${this.comment.id}/raw`, {
+          noProgress: true
+        })
 
         if(res.code) {
           alert(res.data)
