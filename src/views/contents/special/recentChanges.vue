@@ -5,7 +5,7 @@
         :checked="$route.query.userDoc === '1'"
         :whenChange="e => $router.push({ query: { userDoc: e.target.checked ? '1' : undefined } })"
         style="float:right">
-      비공개 내역 보기
+      사용자 문서 보기
     </CheckBox>
     <div style="clear:both"/>
   </template>
