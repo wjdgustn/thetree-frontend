@@ -16,7 +16,10 @@
     <CheckBox
         v-if="data.permissions.dev"
         :checked="$route.query.showHidden === '1'"
-        :whenChange="e => $router.push({ query: { showHidden: e.target.checked ? '1' : undefined } })">
+        :whenChange="e => $router.push({ query: { showHidden: e.target.checked ? '1' : undefined } })"
+        name="showHidden"
+        value="1"
+    >
       비공개 내역 보기
     </CheckBox>
   </SeedForm>
