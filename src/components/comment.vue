@@ -34,7 +34,7 @@
         'hidden-comment': comment.hidden && !forceShow
       }">
         <template v-if="!fetched || !comment.hidden || forceShow">
-          <span v-if="showRaw" v-text="rawContent"/>
+          <div v-if="showRaw" v-text="rawContent" class="wiki-raw"/>
           <WikiContent v-else-if="comment.contentHtml" discuss :content="comment.contentHtml"/>
         </template>
         <template v-else>
@@ -324,5 +324,9 @@ div.comment div.user-block sub {
     min-width: 100%;
     width: 100%;
   }
+}
+
+.wiki-raw {
+  white-space: pre-wrap;
 }
 </style>
