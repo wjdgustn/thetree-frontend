@@ -18,7 +18,7 @@
   ]"/>
   <div class="top-button-group">
     <PrevNextBtn flex v-bind="data.pageProps"/>
-    <GeneralButton :whenClick="readAll">모두 읽음</GeneralButton>
+    <GeneralButton :whenClick="readAll" :disabled="!data.items.length">모두 읽음</GeneralButton>
   </div>
   <ul class="list">
     <li v-for="item in data.items" class="row-parent" :class="{ read: item.read }">
