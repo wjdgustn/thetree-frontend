@@ -9,7 +9,7 @@
       <div class="table-item">제목</div>
       <div class="table-item">시간</div>
     </div>
-    <div v-for="item in data.items" class="table-row">
+    <div v-if="data.items.length" v-for="item in data.items" class="table-row">
       <div class="table-item">
         <NuxtLink :to="'/thread/' + item.thread.url">#{{item.id}} {{item.thread.topic}}</NuxtLink>
         <span class="document-group">
@@ -21,6 +21,11 @@
       </div>
       <div class="table-item">
         <LocalDate :date="item.createdAt" relative/>
+      </div>
+    </div>
+    <div v-else class="table-row">
+      <div class="table-item no-item">
+        (기여 내역이 없습니다.)
       </div>
     </div>
   </div>
@@ -154,5 +159,11 @@ export default {
     font-size: .85rem;
     order: -1;
   }
+}
+
+.no-item {
+  color: #888;
+  grid-column: 1/4;
+  text-align: center;
 }
 </style>

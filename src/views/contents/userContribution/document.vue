@@ -11,7 +11,7 @@
       <div class="table-item">기능</div>
       <div class="table-item">수정 시간</div>
     </div>
-    <template v-for="item in data.revs">
+    <template v-if="data.revs.length" v-for="item in data.revs">
       <div class="table-row" :class="{ troll: item.troll }">
         <div class="table-item">
           <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')" v-text="doc_fulltitle(item.document.parsedName)"/>
@@ -34,6 +34,11 @@
         </div>
       </div>
     </template>
+    <div v-else class="table-row">
+      <div class="table-item no-item">
+        (기여 내역이 없습니다.)
+      </div>
+    </div>
   </div>
   <div style="margin-top:1rem">
     <PrevNextBtn flex v-bind="pageProps"/>
@@ -227,5 +232,11 @@ export default {
 
 .history-log {
   grid-column: 1/4;
+}
+
+.no-item {
+  color: #888;
+  grid-column: 1/4;
+  text-align: center;
 }
 </style>

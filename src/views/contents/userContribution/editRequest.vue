@@ -10,7 +10,7 @@
       <div class="table-item">상태</div>
       <div class="table-item">시간</div>
     </div>
-    <div v-for="item in data.items" class="table-row">
+    <div v-if="data.items.length" v-for="item in data.items" class="table-row">
       <div class="table-item">
         <NuxtLink :to="'/edit_request/' + item.url">편집요청 {{item.url}}</NuxtLink>
         <DiffCount class="diff-count" :count="item.diffLength"/>
@@ -24,6 +24,11 @@
       <div class="table-item" v-text="['OPEN', 'ACCEPTED', 'CLOSED', 'LOCKED'][item.status]"/>
       <div class="table-item">
         <LocalDate :date="item.lastUpdatedAt" relative/>
+      </div>
+    </div>
+    <div v-else class="table-row">
+      <div class="table-item no-item">
+        (기여 내역이 없습니다.)
       </div>
     </div>
   </div>
@@ -175,5 +180,11 @@ export default {
     font-size: .85rem;
     order: -1;
   }
+}
+
+.no-item {
+  color: #888;
+  grid-column: 1/4;
+  text-align: center;
 }
 </style>
