@@ -77,7 +77,7 @@
     </SeedFormBlock>
 
     <SeedFormBlock v-if="data.permissions.includes('engine_developer')" label="엔진 개발자">
-      <SeedLinkButton type="button" danger @click="getDeveloperPerm">개발자 권한 받기</SeedLinkButton>
+      <SeedButton type="button" danger @click="getDeveloperPerm">개발자 권한 받기</SeedButton>
     </SeedFormBlock>
 
     <div class="button-block">
