@@ -1,5 +1,5 @@
 <template>
-  <SeedForm method="post">
+  <SeedForm method="post" captcha>
     <FormErrorAlert/>
     <SeedFormBlock label="이메일" inputId="emailInput" name="email">
       <SeedFormInput type="email" id="emailInput" name="email"/>
