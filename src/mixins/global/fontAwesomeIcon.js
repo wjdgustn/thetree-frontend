@@ -21,7 +21,10 @@ import {
     faUserMinus,
     faUserCheck,
     faClockRotateLeft,
-    faUser
+    faUser,
+    faAt,
+    faComments,
+    faBullhorn
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faFileLines
@@ -53,7 +56,10 @@ export default {
             faUserMinus,
             faUserCheck,
             faClockRotateLeft,
-            faUser
+            faUser,
+            faAt,
+            faComments,
+            faBullhorn
         )
     },
     components: {
