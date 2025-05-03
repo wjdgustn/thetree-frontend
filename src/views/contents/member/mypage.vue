@@ -76,6 +76,10 @@
       <SeedButton type="button" danger @click="showTokenModal">발급</SeedButton>
     </SeedFormBlock>
 
+    <SeedFormBlock v-if="data.permissions.includes('engine_developer')" label="엔진 개발자">
+      <SeedLinkButton type="button" danger @click="getDeveloperPerm">개발자 권한 받기</SeedLinkButton>
+    </SeedFormBlock>
+
     <div class="button-block">
       <SeedLinkButton v-if="data.canWithdraw" to="/member/withdraw" danger>계정 삭제</SeedLinkButton>
       <SeedButton submit>변경</SeedButton>
@@ -152,6 +156,20 @@ export default {
           name
         })
       })
+    },
+    async getDeveloperPerm() {
+      const reason = prompt('요청 사유 입력')
+      if(!reason) return
+
+      await this.internalRequestAndProcess('/member/get_developer_perm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          reason
+        }).toString()
+      });
     }
   }
 }
