@@ -24,7 +24,9 @@ import {
     faUser,
     faAt,
     faComments,
-    faBullhorn
+    faBullhorn,
+    faLock,
+    faCode
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faFileLines
@@ -59,7 +61,9 @@ export default {
             faUser,
             faAt,
             faComments,
-            faBullhorn
+            faBullhorn,
+            faLock,
+            faCode
         )
     },
     components: {

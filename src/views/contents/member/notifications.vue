@@ -263,7 +263,7 @@ export default {
 }
 
 .icon-owner {
-  color: #d53343;
+  color: #d64a58;
 }
 
 .buttons-wrap {
