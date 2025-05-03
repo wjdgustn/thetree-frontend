@@ -43,8 +43,11 @@ export default {
     if(this.useCaptcha) this.loadCaptcha()
   },
   watch: {
-    useCaptcha(newValue) {
-      if(newValue) this.loadCaptcha()
+    async useCaptcha(newValue) {
+      if(newValue) {
+        await this.$nextTick()
+        await this.loadCaptcha()
+      }
     }
   },
   methods: {
