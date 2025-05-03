@@ -255,7 +255,7 @@ export default {
   color: inherit;
 }
 
-.row-link:hover {
+.row-link:hover, .row-link:focus {
   text-decoration: none;
 }
 
