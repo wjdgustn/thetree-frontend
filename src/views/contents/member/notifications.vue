@@ -21,7 +21,7 @@
     <GeneralButton :whenClick="readAll" :disabled="!data.items.length">모두 읽음</GeneralButton>
   </div>
   <ul class="list">
-    <li v-for="item in data.items" class="row-parent" :class="{ read: item.read }">
+    <li v-if="data.items.length" v-for="item in data.items" class="row-parent" :class="{ read: item.read }">
       <component :to="item.url" :is="item.url ? 'NuxtLink' : 'div'" class="row row-link">
         <div class="item">
             <span class="icon" :class="iconClass(item.type)">
@@ -62,6 +62,11 @@
           <GeneralButton v-else size="small" :whenClick="() => markNotification(item.uuid, true)">읽음</GeneralButton>
         </div>
       </component>
+    </li>
+    <li v-else class="row-parent">
+      <div class="row no-item">
+        (모든 알림을 확인했습니다.)
+      </div>
     </li>
   </ul>
   <PrevNextBtn flex v-bind="data.pageProps"/>
@@ -291,6 +296,6 @@ export default {
 
 .no-item {
   color: #888;
-  text-align: center;
+  justify-content: center;
 }
 </style>
