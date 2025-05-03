@@ -54,7 +54,8 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     define: {
       __THETREE_COMMIT_IDS__: JSON.stringify(commitIds),
       __THETREE_VERSION_HEADER__: JSON.stringify(versionHeader),
-      __THETREE_COMMIT_DATES__: JSON.stringify(commitDates)
+      __THETREE_COMMIT_DATES__: JSON.stringify(commitDates),
+      __THETREE_SKIN_NAME__: JSON.stringify(skin),
     },
     base: (process.env.NODE_ENV === 'production' || env.METADATA_PATH) ? `/skins/${skin}` : '/',
     publicDir: isSsrBuild ? false : 'public',
