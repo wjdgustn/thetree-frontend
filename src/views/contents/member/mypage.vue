@@ -77,7 +77,8 @@
     </SeedFormBlock>
 
     <SeedFormBlock v-if="data.permissions.includes('engine_developer')" label="엔진 개발자">
-      <SeedButton type="button" danger @click="getDeveloperPerm">개발자 권한 받기</SeedButton>
+      <SeedButton v-if="data.permissions.includes('developer')" type="button" danger @click="removeDeveloperPerm">개발자 권한 제거</SeedButton>
+      <SeedButton v-else type="button" danger @click="getDeveloperPerm">개발자 권한 받기</SeedButton>
     </SeedFormBlock>
 
     <div class="button-block">
@@ -169,7 +170,12 @@ export default {
         body: new URLSearchParams({
           reason
         }).toString()
-      });
+      })
+    },
+    async removeDeveloperPerm() {
+      await this.internalRequestAndProcess('/member/remove_developer_perm', {
+        method: 'POST'
+      })
     }
   }
 }
