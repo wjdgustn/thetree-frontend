@@ -13,7 +13,7 @@
           <AuthorSpan :account="comment.user" :pos="pos" discuss :discussAdmin="comment.admin"/>
           <span class="time-block">
             <LocalDate :date="comment.createdAt"/>
-            <ContextMenu v-if="!previewMode" class="menu-block" placement="bottom-end">
+            <ContextMenu v-if="!previewMode && comment.type === 0" class="menu-block" placement="bottom-end">
               <span role="button" class="button menu-button">
                 <FontAwesomeIcon icon="caret-down" />
               </span>
