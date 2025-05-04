@@ -40,7 +40,7 @@
   </div>
 
   <h3>새 주제 생성</h3>
-  <SeedForm method="post" :captcha="session.user.type !== 1">
+  <SeedForm method="post" :captcha="session.account.type !== 1">
     <SeedFormBlock label="주제 :" inputId="topicInput" name="topic">
       <input type="text" id="topicInput" name="topic">
 
