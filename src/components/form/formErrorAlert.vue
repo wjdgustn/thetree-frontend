@@ -1,5 +1,5 @@
 <template>
-  <Alert v-if="errorAlert" error v-html="'<b>[오류!]</b> ' + errorAlert"/>
+  <Alert v-if="errorAlert" error v-html="'<b>[오류!]</b>&nbsp;' + errorAlert" class="error-alert"/>
 </template>
 <script>
 import Alert from '@/components/alert'
@@ -23,3 +23,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.error-alert {
+  column-gap: 0;
+}
+</style>
