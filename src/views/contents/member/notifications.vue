@@ -301,5 +301,6 @@ export default {
 .no-item {
   color: #888;
   justify-content: center;
+  align-items: center;
 }
 </style>
