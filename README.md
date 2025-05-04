@@ -10,6 +10,10 @@
 [the tree](https:////github.com/wjdgustn/thetree)와 동일한 라이선스를 적용합니다.
 
 ## 스킨 적용 가이드
+1. npm i 명령어를 통해 라이브러리를 다운로드합니다.
+   ```shell
+    npm i
+   ```
 1. skins 폴더(src 안 아님)에 원하는 스킨을 clone합니다. git을 사용하지 않으면 빌드할 수 없습니다.
    <br>아래는 추천하는 스킨 목록입니다.
    - [liberty](https://github.com/wjdgustn/thetree-skin-liberty)
@@ -27,6 +31,10 @@
 1. the tree 엔진을 재시작합니다.
 
 ## 스킨 제작 가이드
+1. npm i 명령어를 통해 라이브러리를 다운로드합니다.
+   ```shell
+    npm i
+   ```
 1. skins 폴더(src 안 아님)에 스킨 폴더를 생성합니다.
 1. .env.local 파일을 생성하고 아래 내용을 작성합니다.
     ```dotenv
