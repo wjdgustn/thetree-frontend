@@ -197,6 +197,10 @@ export default {
   background-color: #fbfbfb;
 }
 
+.theseed-dark-mode .row:hover {
+  background-color: #2a2a2a;
+}
+
 .item {
   display: flex;
   flex-direction: column;
