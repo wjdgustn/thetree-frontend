@@ -3,7 +3,7 @@
     <span>분류</span>
     <ul>
       <template v-for="c in categories">
-        <li>
+        <li :class="{ blur: c.blur }">
           <NuxtLink :class="{ 'not-exist': c.notExist }" :to="doc_action_link(c.document, 'w')" v-text="c.document.title"></NuxtLink>
         </li>
       </template>
@@ -136,5 +136,13 @@ li:last-child:after {
   font-size: .7rem;
   margin: .25rem .5rem 0 0;
   padding: .05rem .25rem;
+}
+
+.blur {
+  filter: blur(3px);
+}
+
+.blur:hover {
+  filter: inherit;
 }
 </style>
