@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="label" :for="inputId" v-text="label"></label>
+    <label v-if="label" :for="inputId">{{label}}</label>
     <slot/>
     <ShowError v-if="name" :tag="name"/>
   </div>

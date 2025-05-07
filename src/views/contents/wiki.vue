@@ -3,7 +3,7 @@
     <b>[주의!]</b> 문서의 이전 버전(<LocalDate :date="data.date"/>에 수정)을 보고 있습니다. <NuxtLink :to="doc_action_link(data.document, 'w')">최신 버전으로 이동</NuxtLink>
   </Alert>
   <Alert v-if="$route.query.from" theme="primary">
-    <NuxtLink rel="nofollow" :title="$route.query.from" :to="{ path: `/w/${$route.query.from}`, query: { noredirect: 1 } }" v-text="$route.query.from"/>에서 넘어옴
+    <NuxtLink rel="nofollow" :title="$route.query.from" :to="{ path: `/w/${$route.query.from}`, query: { noredirect: 1 } }">{{$route.query.from}}</NuxtLink>에서 넘어옴
   </Alert>
 
   <Alert v-if="!categories.length && data.document.namespace !== '사용자'">

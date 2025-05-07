@@ -21,7 +21,7 @@
       :items="aclTypes"
   />
   <div>
-    <h4 v-text="activeAclType.title"/>
+    <h4>{{activeAclType.title}}</h4>
     <div class="acl-table">
       <table>
         <colgroup>

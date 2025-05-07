@@ -2,7 +2,7 @@
   <NamespaceSelector/>
   <ul>
     <li v-for="item in data.docs">
-      <NuxtLink :to="doc_action_link(item, 'w')" v-text="doc_fulltitle(item)"/>
+      <NuxtLink :to="doc_action_link(item, 'w')">{{doc_fulltitle(item)}}</NuxtLink>
     </li>
   </ul>
 </template>

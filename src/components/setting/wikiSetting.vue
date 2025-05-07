@@ -19,7 +19,7 @@
   </SettingItemSelect>
   <SettingItemSelect label="기본 편집 모드" ckey="wiki.default_edit_mode" :default="defaultEditMode">
     <template v-for="mode in editModes">
-      <option :value="mode.name" v-text="mode.label"></option>
+      <option :value="mode.name">{{mode.label}}</option>
     </template>
   </SettingItemSelect>
   <SettingItemCheckbox label="상대 시간 표시를 사용하지 않음" ckey="wiki.no_relative_date" />

@@ -52,13 +52,13 @@
     </div>
     <div v-for="item in [...data.threads, ...data.editRequests]" class="table-row">
       <div class="table-item">
-        <NuxtLink :to="(item.topic ? '/thread/' : '/edit_request/') + item.url" v-text="item.topic || `편집 요청 ${item.url}`"/>
+        <NuxtLink :to="(item.topic ? '/thread/' : '/edit_request/') + item.url">{{item.topic || `편집 요청 ${item.url}`}}</NuxtLink>
         <DiffCount class="diff-count" v-if="item.diffLength" :count="item.diffLength"/>
         <span class="document-group">
           <span class="document-icon">
             <FontAwesomeIcon icon="fa-regular fa-file-lines" />
           </span>
-          <NuxtLink :to="doc_action_link(item.document.parsedName, 'discuss')" class="document-link" v-text="doc_fulltitle(item.document.parsedName)"/>
+          <NuxtLink :to="doc_action_link(item.document.parsedName, 'discuss')" class="document-link">{{doc_fulltitle(item.document.parsedName)}}</NuxtLink>
         </span>
       </div>
       <div class="table-item">

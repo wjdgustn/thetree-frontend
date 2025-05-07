@@ -25,8 +25,8 @@
         <p>Backend 업데이트 내역</p>
         <ul>
           <li v-for="item in data.newCommits">
-            <a :href="item.html_url" target="_blank" v-text="item.sha.slice(0, 7)"/>
-            {{item.commit.message.split('\n')[0]}} - <a :href="item.author.html_url" target="_blank" v-text="item.commit.author.name"/>
+            <a :href="item.html_url" target="_blank">{{item.sha.slice(0, 7)}}</a>
+            {{item.commit.message.split('\n')[0]}} - <a :href="item.author.html_url" target="_blank">{{item.commit.author.name}}</a>
           </li>
         </ul>
       </template>
@@ -34,8 +34,8 @@
         <p>Frontend 업데이트 내역</p>
         <ul>
           <li v-for="item in data.newFECommits">
-            <a :href="item.html_url" target="_blank" v-text="item.sha.slice(0, 7)"/>
-            {{item.commit.message.split('\n')[0]}} - <a :href="item.author.html_url" target="_blank" v-text="item.commit.author.name"/>
+            <a :href="item.html_url" target="_blank">{{item.sha.slice(0, 7)}}</a>
+            {{item.commit.message.split('\n')[0]}} - <a :href="item.author.html_url" target="_blank">{{item.commit.author.name}}</a>
           </li>
         </ul>
       </template>
@@ -120,7 +120,7 @@
   </Heading>
   <Heading title="정적 파일">
     <p v-for="item in data.customStaticFiles" class="static-file">
-      <a :href="item" target="_blank" v-text="item"/>
+      <a :href="item" target="_blank">{{item}}</a>
       <SeedButton danger @click="internalGet('/admin/config/tools/deletestaticfile?path=' + encodeURIComponent(item))">삭제</SeedButton>
     </p>
     <hr>

@@ -8,10 +8,10 @@
       <div>전체 {{category.count}}개 문서</div>
       <div :class="{ 'many-wrapper': Object.keys(category.categoriesPerChar).length >= 3 }">
         <div v-for="(documents, char) in category.categoriesPerChar">
-          <h3 v-text="char"></h3>
+          <h3>{{char}}</h3>
           <ul>
             <li v-for="document in documents">
-              <NuxtLink :to="doc_action_link(document.parsedName, 'w')" :title="doc_fulltitle(document.parsedName)" v-text="document.category.text || document.parsedName.title"/>
+              <NuxtLink :to="doc_action_link(document.parsedName, 'w')" :title="doc_fulltitle(document.parsedName)">{{document.category.text || document.parsedName.title}}</NuxtLink>
             </li>
           </ul>
         </div>

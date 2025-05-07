@@ -24,12 +24,12 @@
 
     <ul>
       <li v-for="tab in tabs">
-        <button @click="activeTab = tab" type="button" :class="{ active: activeTab === tab }" v-text="tab.label"/>
+        <button @click="activeTab = tab" type="button" :class="{ active: activeTab === tab }">{{tab.label}}</button>
       </li>
 
       <li v-if="activeTab.buttons?.length" class="editor-buttons">
         <div v-for="button in activeTab.buttons">
-          <button type="button" @click="getTabComponent(activeTab.name).onButtonClick?.(button.name)" v-text="button.label"/>
+          <button type="button" @click="getTabComponent(activeTab.name).onButtonClick?.(button.name)">{{button.label}}</button>
         </div>
       </li>
     </ul>
@@ -49,7 +49,7 @@
 
     <template v-if="editable">
       <div class="log-block">
-        <label for="logInput" v-text="logLabel"/>
+        <label for="logInput">{{logLabel}}</label>
         <SeedFormInput v-model="log" id="logInput" name="log"/>
       </div>
 

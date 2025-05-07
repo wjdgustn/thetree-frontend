@@ -10,7 +10,7 @@
         <span v-else>Google Authenticator 코드를 입력해주세요.</span>
       </template>
       <template v-else>
-        이메일(<b v-text="email"></b>)로 전송된 PIN을 입력해주세요.
+        이메일(<b>{{email}}</b>)로 전송된 PIN을 입력해주세요.
       </template>
     </p>
 

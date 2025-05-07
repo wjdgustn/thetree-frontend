@@ -6,7 +6,7 @@
   <PrevNextBtn flex :="pageProps"/>
   <ul>
     <li v-for="item in data.items">
-      <NuxtLink :to="doc_action_link(item, 'w')" v-text="doc_fulltitle(item)"/>
+      <NuxtLink :to="doc_action_link(item, 'w')">{{doc_fulltitle(item)}}</NuxtLink>
       &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[역링크]</NuxtLink>
     </li>
   </ul>

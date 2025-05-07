@@ -6,7 +6,7 @@
       <header>
         <ul>
           <template v-for="tab in tabs">
-            <li v-text="tab.label" :class="{ 'selected-tab': selectedTab === tab }" @click="selectTab(tab)"></li>
+            <li :class="{ 'selected-tab': selectedTab === tab }" @click="selectTab(tab)">{{tab.label}}</li>
           </template>
         </ul>
       </header>

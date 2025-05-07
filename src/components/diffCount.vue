@@ -1,8 +1,5 @@
 <template>
-  <span
-      :class="{ plus: count > 0, minus: count < 0 }"
-      v-text="countStr"
-  />
+  <span :class="{ plus: count > 0, minus: count < 0 }">{{countStr}}</span>
 </template>
 <script>
 export default {

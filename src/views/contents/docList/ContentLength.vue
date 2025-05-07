@@ -3,7 +3,7 @@
   <PrevNextBtn flex :="data.pageProps"/>
   <ul>
     <li v-for="item in data.items">
-      <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')" v-text="doc_fulltitle(item.document.parsedName)"/>
+      <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')">{{doc_fulltitle(item.document.parsedName)}}</NuxtLink>
       ({{item.contentLength}}글자)
     </li>
   </ul>

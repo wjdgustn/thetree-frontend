@@ -2,7 +2,7 @@
   <ul>
     <li v-for="(item, index) in data.threads">
       {{index + 1}}.
-      <NuxtLink :to="'/thread/' + item.url" v-text="item.topic"/>
+      <NuxtLink :to="'/thread/' + item.url">{{item.topic}}</NuxtLink>
     </li>
   </ul>
 </template>

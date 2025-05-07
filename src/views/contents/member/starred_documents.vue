@@ -7,7 +7,7 @@
     </div>
     <div v-for="item in data.stars" class="table-row">
       <div class="table-item">
-        <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')" v-text="doc_fulltitle(item.document.parsedName)"/>
+        <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')">{{doc_fulltitle(item.document.parsedName)}}</NuxtLink>
       </div>
       <div class="table-item">
         <LocalDate :date="item.rev.createdAt" relative/>

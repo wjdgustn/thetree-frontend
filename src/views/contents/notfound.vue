@@ -15,7 +15,7 @@
         <i v-if="item.infoText" v-html="'(' + item.infoText + ')&nbsp;'"/>
         (<DiffCount :count="item.diffLength"/>)
         <AuthorSpan :account="item.user" :pos="`${doc_fulltitle(data.document)} r${item.rev}`"/>
-        (<span class="log" v-text="item.log"/>)
+        (<span class="log">{{item.log}}</span>)
       </li>
     </ul>
     <NuxtLink :to="doc_action_link(data.document, 'history')">[더보기]</NuxtLink>

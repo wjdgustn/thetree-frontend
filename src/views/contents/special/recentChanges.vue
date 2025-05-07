@@ -18,7 +18,7 @@
     </div>
     <div v-for="rev in data.revs" class="table-row">
       <div class="table-item">
-        <NuxtLink :to="doc_action_link(rev.document.parsedName, 'w')" v-text="doc_fulltitle(rev.document.parsedName)"/>
+        <NuxtLink :to="doc_action_link(rev.document.parsedName, 'w')">{{doc_fulltitle(rev.document.parsedName)}}</NuxtLink>
         <DiffCount :count="rev.diffLength" class="history-diff-count"/>
       </div>
       <div class="table-item table-buttons">
@@ -38,7 +38,7 @@
         <LocalDate :date="rev.createdAt" relative/>
       </div>
       <div v-if="rev.infoText || rev.log" class="table-item history-log">
-        <span v-if="rev.log" v-text="rev.log"/>
+        <span v-if="rev.log">{{rev.log}}</span>
         <i v-if="rev.infoText" v-html="' (' + rev.infoText + ')'"/>
       </div>
     </div>

@@ -30,8 +30,8 @@
           </i>
         </template>
       </th>
-      <th v-text="index + 1"/>
-      <td v-text="item.content"/>
+      <th>{{index + 1}}</th>
+      <td>{{item.content}}</td>
     </tr>
     </tbody>
   </table>

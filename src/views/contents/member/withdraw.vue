@@ -6,8 +6,8 @@
     </SeedFormBlock>
     <SeedFormBlock name="pledge">
       <label for="pledgeInput">
-        <span class="pledge pledge-correct" v-text="redPledge"/>
-        <span class="pledge" v-text="normalPledge"/>
+        <span class="pledge pledge-correct">{{redPledge}}</span>
+        <span class="pledge">{{normalPledge}}</span>
       </label>
       <SeedFormInput @input="pledgeChange" @paste.prevent type="text" id="pledgeInput" name="pledge" :placeholder="pledge" autocomplete="off"/>
     </SeedFormBlock>

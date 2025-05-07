@@ -1,6 +1,6 @@
 <template>
   <component :is="'h' + level" @click="toggleFold" class="wiki-heading" :class="{ 'wiki-heading-folded': fold }">
-    <span v-text="title"/>
+    <span>{{title}}</span>
   </component>
   <div v-show="!fold" class="wiki-heading-content">
     <slot/>

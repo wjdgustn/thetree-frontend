@@ -5,10 +5,10 @@
 
   <div v-if="Object.keys(data.backlinksPerChar).length" :class="{ 'many-wrapper': Object.keys(data.backlinksPerChar).length >= 3 }">
     <div v-for="(documents, char) in data.backlinksPerChar">
-      <h3 v-text="char"/>
+      <h3>{{char}}</h3>
       <ul>
         <li v-for="doc in documents">
-          <NuxtLink :to="doc_action_link(doc.parsedName, 'w')" v-text="doc_fulltitle(doc.parsedName)"/>
+          <NuxtLink :to="doc_action_link(doc.parsedName, 'w')">{{doc_fulltitle(doc.parsedName)}}</NuxtLink>
           ({{doc.flags.map(a => ({1: 'link', 2: 'file', 4: 'include', 8: 'redirect'})[a]).join(', ')}})
         </li>
       </ul>

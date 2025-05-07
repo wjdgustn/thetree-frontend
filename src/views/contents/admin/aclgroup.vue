@@ -174,7 +174,7 @@
       <h4>ACL 요소 제거</h4>
       <div>
         <p>ID:</p>
-        <span v-text="removeModal.id"/>
+        <span>{{removeModal.id}}</span>
       </div>
       <div>
         <p>메모:</p>

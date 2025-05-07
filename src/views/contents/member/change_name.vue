@@ -5,7 +5,7 @@
       <SeedFormInput type="password" id="passwordInput" name="password"/>
     </SeedFormBlock>
     <SeedFormBlock label="현재 이름">
-      <p v-text="$store.state.session.account.name"></p>
+      <p>{{session.account.name}}</p>
     </SeedFormBlock>
     <SeedFormBlock label="새 이름" inputId="nameInput" name="name">
       <SeedFormInput type="text" id="nameInput" name="name"/>

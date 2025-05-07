@@ -34,7 +34,7 @@
               <AuthorSpan :account="item.comment.user"/> 사용자가
               <NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}} #{{item.comment.id}}</NuxtLink> 사용자 토론 댓글 작성
             </div>
-            <div class="text" v-text="removeHtmlTags(item.comment.contentHtml)"/>
+            <div class="text">{{removeHtmlTags(item.comment.contentHtml)}}</div>
           </template>
           <template v-else-if="item.type === NotificationTypes.Mention">
             <div>
@@ -44,10 +44,10 @@
               <span class="document-icon">
                 <FontAwesomeIcon icon="fa-regular fa-file-lines" />
               </span>
-              <NuxtLink :to="doc_action_link(item.document, 'discuss')" class="document-link" v-text="doc_fulltitle(item.document)"/>
+              <NuxtLink :to="doc_action_link(item.document, 'discuss')" class="document-link">{{doc_fulltitle(item.document)}}</NuxtLink>
             </span>
             </div>
-            <div class="text" v-text="removeHtmlTags(item.comment.contentHtml)"/>
+            <div class="text">{{removeHtmlTags(item.comment.contentHtml)}}</div>
           </template>
           <template v-else-if="item.type === NotificationTypes.Owner">
             <div v-html="item.data"/>

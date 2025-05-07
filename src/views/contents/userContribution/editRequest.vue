@@ -18,10 +18,10 @@
           <span class="document-icon">
             <FontAwesomeIcon icon="fa-regular fa-file-lines" />
           </span>
-          <NuxtLink :to="doc_action_link(item.document.parsedName, 'discuss')" class="document-link" v-text="doc_fulltitle(item.document.parsedName)"/>
+          <NuxtLink :to="doc_action_link(item.document.parsedName, 'discuss')" class="document-link">{{doc_fulltitle(item.document.parsedName)}}</NuxtLink>
         </span>
       </div>
-      <div class="table-item" v-text="['OPEN', 'ACCEPTED', 'CLOSED', 'LOCKED'][item.status]"/>
+      <div class="table-item">{{['OPEN', 'ACCEPTED', 'CLOSED', 'LOCKED'][item.status]}}</div>
       <div class="table-item">
         <LocalDate :date="item.lastUpdatedAt" relative/>
       </div>

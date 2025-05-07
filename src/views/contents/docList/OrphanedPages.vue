@@ -1,7 +1,7 @@
 <template>
   <NamespaceSelector/>
   <p>
-    다음은 [[<NuxtLink :to="doc_action_link(frontPage, 'w')" v-text="frontPage"/>]]에서
+    다음은 [[<NuxtLink :to="doc_action_link(frontPage, 'w')">{{frontPage}}</NuxtLink>]]에서
     링크로 도달할 수 없는 문서로,
     역링크가 없거나 자기네들끼리만 링크가 되어 있는 경우입니다.
   </p>
@@ -10,7 +10,7 @@
   <PrevNextBtn flex :="pageProps"/>
   <ul>
     <li v-for="item in data.items">
-      <NuxtLink :to="doc_action_link(item, 'w')" v-text="doc_fulltitle(item)"/>
+      <NuxtLink :to="doc_action_link(item, 'w')">{{doc_fulltitle(item)}}</NuxtLink>
       &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[역링크]</NuxtLink>
     </li>
   </ul>

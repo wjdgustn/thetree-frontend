@@ -1,5 +1,5 @@
 <template>
-  <p v-if="error" v-text="error.msg"/>
+  <p v-if="error">{{error.msg}}</p>
 </template>
 <script>
 export default {

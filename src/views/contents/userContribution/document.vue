@@ -14,8 +14,8 @@
     <template v-if="data.revs.length" v-for="item in data.revs">
       <div class="table-row" :class="{ troll: item.troll }">
         <div class="table-item">
-          <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')" v-text="doc_fulltitle(item.document.parsedName)"/>
-          <span class="history-rev">(<NuxtLink class="history-rev-link" :to="doc_action_link(item.document.parsedName, 'w', { uuid: item.uuid })" v-text="'r' + item.rev"/>)</span>
+          <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')">{{doc_fulltitle(item.document.parsedName)}}</NuxtLink>
+          <span class="history-rev">(<NuxtLink class="history-rev-link" :to="doc_action_link(item.document.parsedName, 'w', { uuid: item.uuid })">r{{item.rev}}</NuxtLink>)</span>
           <DiffCount class="history-diff-count" :count="item.diffLength"/>
         </div>
         <div class="table-item table-buttons">
@@ -29,7 +29,7 @@
           <LocalDate :date="item.createdAt" relative/>
         </div>
         <div v-if="item.infoText || item.log" class="table-item history-log">
-          <span v-if="item.log" v-text="item.log"/>
+          <span v-if="item.log">{{item.log}}</span>
           <i v-if="item.infoText" v-html="' (' + item.infoText + ')'"/>
         </div>
       </div>

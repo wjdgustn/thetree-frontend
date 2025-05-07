@@ -12,9 +12,9 @@
   <h3>토론</h3>
   <ul>
     <li v-for="(item, index) in data.openThreads">
-      <NuxtLink :to="'#s-' + index + 1" v-text="index + 1"/>
+      <NuxtLink :to="'#s-' + index + 1">{{index + 1}}</NuxtLink>
       <span>.&nbsp;</span>
-      <NuxtLink :to="'/thread/' + item.url" v-text="item.topic"/>
+      <NuxtLink :to="'/thread/' + item.url">{{item.topic}}</NuxtLink>
     </li>
   </ul>
   <p>
@@ -25,7 +25,7 @@
     <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'">
       <SeedButton v-if="data.permissions.delete" type="submit" danger>[ADMIN] 스레드 삭제</SeedButton>
     </SeedForm>
-    <h2>{{index + 1}}. <NuxtLink :to="'/thread/' + item.url" :id="'s-' + index" v-text="item.topic"/></h2>
+    <h2>{{index + 1}}. <NuxtLink :to="'/thread/' + item.url" :id="'s-' + index">{{item.topic}}</NuxtLink></h2>
     <div class="preview-group">
       <div v-for="(comment, index) in item.recentComments">
         <NuxtLink v-if="index === 1 && comment.id !== 2" :to="'/thread/' + item.url" class="comment-more">more...</NuxtLink>

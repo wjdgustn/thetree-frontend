@@ -5,7 +5,7 @@
       <SeedFormInput type="password" id="passwordInput" name="password"/>
     </SeedFormBlock>
     <SeedFormBlock label="이메일">
-      <p v-text="$store.state.viewData.email"></p>
+      <p>{{data.email}}</p>
     </SeedFormBlock>
     <SeedFormBlock label="새 이메일" inputId="emailInput" name="email">
       <SeedFormInput type="email" id="emailInput" name="email"/>

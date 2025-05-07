@@ -4,7 +4,7 @@
     <ul>
       <template v-for="c in categories">
         <li :class="{ blur: c.blur }">
-          <NuxtLink :class="{ 'not-exist': c.notExist }" :to="doc_action_link(c.document, 'w')" v-text="c.document.title"></NuxtLink>
+          <NuxtLink :class="{ 'not-exist': c.notExist }" :to="doc_action_link(c.document, 'w')">{{c.document.title}}</NuxtLink>
         </li>
       </template>
     </ul>

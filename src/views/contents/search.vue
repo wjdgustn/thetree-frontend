@@ -29,7 +29,7 @@
     <div v-for="item in data.hits">
       <h4>
         <i class="ion-md-document"/>
-        <NuxtLink :to="doc_action_link(item, 'w')" v-text="doc_fulltitle(item)"/>
+        <NuxtLink :to="doc_action_link(item, 'w')">{{doc_fulltitle(item)}}</NuxtLink>
       </h4>
       <div v-html="item.content || item.raw"/>
     </div>
@@ -37,7 +37,7 @@
     <nav>
       <ul>
         <li v-for="i in pageNum">
-          <NuxtLink :to="{ query: { page: i } }" :class="{ active: i.toString() === (this.$route.query.page || '1') }" v-text="i"/>
+          <NuxtLink :to="{ query: { page: i } }" :class="{ active: i.toString() === (this.$route.query.page || '1') }">{{i}}</NuxtLink>
         </li>
       </ul>
     </nav>

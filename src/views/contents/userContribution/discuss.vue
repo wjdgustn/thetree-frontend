@@ -16,7 +16,7 @@
           <span class="document-icon">
             <FontAwesomeIcon icon="fa-regular fa-file-lines" />
           </span>
-          <NuxtLink :to="doc_action_link(item.thread.document.parsedName, 'discuss')" class="document-link" v-text="doc_fulltitle(item.thread.document.parsedName)"/>
+          <NuxtLink :to="doc_action_link(item.thread.document.parsedName, 'discuss')" class="document-link">{{doc_fulltitle(item.thread.document.parsedName)}}</NuxtLink>
         </span>
       </div>
       <div class="table-item">

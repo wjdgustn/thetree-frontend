@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="form-block">
-      <label for="documentInput" v-text="documentLabel"/>
+      <label for="documentInput">{{documentLabel}}</label>
       <input ref="documentInput" v-model="document" type="text" id="documentInput" name="document">
       <ShowError tag="document"/>
     </div>
@@ -30,7 +30,7 @@
       <ShowError tag="category"/>
     </div>
     <div class="form-block">
-      <label for="logInput" v-text="logLabel"/>
+      <label for="logInput">{{logLabel}}</label>
       <input v-model="log" type="text" id="logInput" name="log">
     </div>
 

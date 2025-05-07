@@ -33,7 +33,7 @@
             <b>{{item.target}}</b> 이름공간 ACL을 편집함
           </template>
           <template v-else-if="item.action === AuditLogTypes.DeleteThread">
-            <b><NuxtLink :to="'/thread/' + item.thread.url" v-text="item.thread.topic"/></b> 스레드를 삭제함
+            <b><NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}}</NuxtLink></b> 스레드를 삭제함
           </template>
           <template v-else-if="item.action === AuditLogTypes.DevSupport">
             엔진 개발자 권한을 사용함
