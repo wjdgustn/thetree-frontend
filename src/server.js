@@ -60,15 +60,15 @@ function renderPreloadLink(file) {
     } else if (file.endsWith('.css')) {
         return `<link rel="stylesheet" href="${file}">`
     } else if (file.endsWith('.woff')) {
-        return ` <link rel="preload" href="${file}" as="font" type="font/woff" crossorigin>`
+        return `<link rel="preload" href="${file}" as="font" type="font/woff" crossorigin>`
     } else if (file.endsWith('.woff2')) {
-        return ` <link rel="preload" href="${file}" as="font" type="font/woff2" crossorigin>`
+        return `<link rel="preload" href="${file}" as="font" type="font/woff2" crossorigin>`
     } else if (file.endsWith('.gif')) {
-        return ` <link rel="preload" href="${file}" as="image" type="image/gif">`
+        return `<link rel="preload" href="${file}" as="image" type="image/gif">`
     } else if (file.endsWith('.jpg') || file.endsWith('.jpeg')) {
-        return ` <link rel="preload" href="${file}" as="image" type="image/jpeg">`
+        return `<link rel="preload" href="${file}" as="image" type="image/jpeg">`
     } else if (file.endsWith('.png')) {
-        return ` <link rel="preload" href="${file}" as="image" type="image/png">`
+        return `<link rel="preload" href="${file}" as="image" type="image/png">`
     } else {
         return ''
     }
