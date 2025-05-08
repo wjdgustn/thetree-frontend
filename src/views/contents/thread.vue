@@ -40,8 +40,8 @@
     [ADMIN] 스레드 상태 변경
     <select name="status">
       <option v-if="data.thread.status !== 0" value="Normal">normal</option>
-      <option v-if="data.thread.status !== 1" value="Pause">pause</option>
       <option v-if="data.thread.status !== 2" value="Close">close</option>
+      <option v-if="data.thread.status !== 1" value="Pause">pause</option>
     </select>
     <SeedButton type="submit">변경</SeedButton>
   </SeedForm>
