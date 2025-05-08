@@ -16,6 +16,11 @@
             title: '편집 요청',
             href: contribution_link_edit_request(data.account.uuid),
             active: data.contributionType === 'edit_request'
+          },
+          {
+            title: '승인한 편집 요청',
+            href: contribution_link_accepted_edit_request(data.account.uuid),
+            active: data.contributionType === 'accepted_edit_request'
           }
       ]"
   />

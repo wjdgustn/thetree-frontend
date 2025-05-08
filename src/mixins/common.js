@@ -23,6 +23,9 @@ export default {
         contribution_link_edit_request(uuid) {
             return `/contribution/${uuid}/edit_request`;
         },
+        contribution_link_accepted_edit_request(uuid) {
+            return `/contribution/${uuid}/accepted_edit_request`
+        },
         encodeSpecialChars(str, exclude = []) {
             const specialChars = '?&=+$#%'.split('');
             return str.split('').map(a => specialChars.includes(a) && !exclude.includes(a) ? encodeURIComponent(a) : a).join('');
