@@ -29,7 +29,7 @@ export default {
   head() {
     const state = this.$store.state
     const siteName = state.config['wiki.site_name'] || 'the tree'
-    const fullUrl = state.config['base_url'] + this.$route.fullPath
+    const fullUrl = state.config['wiki.canonical_url'] + this.$route.fullPath
 
     return {
       htmlAttrs: { lang: state.config.lang || 'ko' },
