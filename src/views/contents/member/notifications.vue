@@ -50,7 +50,7 @@
             <div class="text">{{removeHtmlTags(item.comment.contentHtml)}}</div>
           </template>
           <template v-else-if="item.type === NotificationTypes.Owner">
-            <div v-html="item.data"/>
+            <div v-html="item.data" class="html-notification"/>
           </template>
 
           <div class="text">
@@ -302,5 +302,9 @@ export default {
   color: #888;
   justify-content: center;
   align-items: center;
+}
+
+.html-notification {
+  white-space: break-spaces;
 }
 </style>
