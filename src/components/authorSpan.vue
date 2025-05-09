@@ -94,6 +94,8 @@ export default {
       let str = this.account.type === 0 ? 'IP' : '사용자'
       if(this.account.type === 2) str = '마이그레이션된 ' + str
 
+      if(this.account.autoVerified) str = '자동 인증된 ' + str
+
       if(this.account.admin) str += ' (관리자)'
       else if(this.discussAdmin) str += ' (전 관리자)'
 
