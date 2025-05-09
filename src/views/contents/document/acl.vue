@@ -94,6 +94,7 @@
               <option value="document_contributor">해당 문서 기여자</option>
               <option value="contributor">위키 기여자</option>
               <option value="match_username_and_document_title">문서 제목과 사용자 이름이 일치</option>
+              <option value="auto_verified_member">자동 인증된 사용자</option>
               <option value="custom">직접 입력</option>
             </select>
             <input v-if="form.permissionSelect === 'custom'" name="permission" placeholder="permission">
