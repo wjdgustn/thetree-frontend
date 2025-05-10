@@ -6,7 +6,7 @@
     <NuxtLink rel="nofollow" :title="$route.query.from" :to="{ path: `/w/${$route.query.from}`, query: { noredirect: 1 } }">{{$route.query.from}}</NuxtLink>에서 넘어옴
   </Alert>
 
-  <Alert v-if="!categories.length && data.document.namespace !== '사용자'">
+  <Alert v-if="!categories.length && data.document.namespace !== '사용자' && !data.isRedirect">
     이 문서는 분류가 되어 있지 않습니다. <NuxtLink :to="doc_action_link({
       namespace: '분류',
       title: '분류'
