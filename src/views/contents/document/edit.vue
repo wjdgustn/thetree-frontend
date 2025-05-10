@@ -41,8 +41,8 @@
       <div :class="{ active: activeTab.name === 'raw' }">
         <textarea ref="textInput" name="text" wrap="soft" v-model="data.content" :readonly="!editable"/>
       </div>
-      <div class="preview" :class="{ active: activeTab.name === 'preview', loading: !preview.content }">
-        <WikiContent v-if="preview.content" :content="preview.content" :categories="preview.categories"/>
+      <div class="preview" :class="{ active: activeTab.name === 'preview', loading: preview.content == null }">
+        <WikiContent v-if="preview.content != null" :content="preview.content" :categories="preview.categories"/>
         <Loading v-else/>
       </div>
     </div>
