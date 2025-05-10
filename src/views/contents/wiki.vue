@@ -46,24 +46,23 @@ export default {
   mixins: [Common],
   components: {
     WikiCategoryDocs,
-    LocalDate, Alert, NuxtLink,
+    LocalDate,
+    Alert,
+    NuxtLink,
     WikiContent
   },
   computed: {
-    data() {
-      return this.$store.state.page.data
-    },
     content() {
-      return this.$store.state.viewData.contentHtml
+      return this.data.contentHtml
     },
     categories() {
-      return this.$store.state.viewData.categories
+      return this.data.categories
     },
     categoriesData() {
-      return this.$store.state.viewData.categoriesData
+      return this.data.categoriesData
     },
     userbox() {
-      return this.$store.state.viewData.userboxData ?? {}
+      return this.data.userboxData ?? {}
     }
   },
 }
