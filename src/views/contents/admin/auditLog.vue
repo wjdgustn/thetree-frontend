@@ -234,7 +234,7 @@ export default {
 
 .top-page {
   flex: 1;
-  margin: 0;
+  margin: 0 !important;
 }
 
 .icon {
