@@ -18,7 +18,7 @@
       <input ref="documentInput" v-model="document" type="text" id="documentInput" name="document">
       <ShowError tag="document"/>
     </div>
-    <textarea name="text" wrap="soft"/>
+    <textarea name="text" wrap="soft" v-model="text"/>
     <div class="form-block">
       <label for="licenseSelect">라이선스</label>
       <SearchableSelect name="license" inputId="licenseSelect" :options="data.licenses"/>
@@ -61,8 +61,12 @@ export default {
   data() {
     return {
       document: '',
-      log: ''
+      log: '',
+      text: ''
     }
+  },
+  mounted() {
+    this.text = this.data.file_upload_template
   },
   watch: {
     '$route.query.document'(newValue) {
