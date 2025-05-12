@@ -44,7 +44,7 @@
           <SeedButton green large :disabled="data.conflict || !data.editable" v-tooltip="acceptTooltip">Accept</SeedButton>
         </SeedForm>
         <SeedButton @click="showCloseModal = true" large :disabled="!data.editable" v-tooltip="closeTooltip">Close</SeedButton>
-        <SeedLinkButton info large :to="'/edit_request/' + editRequest.url + '/edit'" :disabled="!data.editable" v-tooltip="editTooltip">Edit</SeedLinkButton>
+        <SeedLinkButton info large :to="'/edit_request/' + editRequest.url + '/edit'" :disabled="!data.selfCreated" v-tooltip="editTooltip">Edit</SeedLinkButton>
       </div>
     </div>
     <div v-else-if="editRequest.status === 1">
