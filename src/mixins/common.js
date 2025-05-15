@@ -27,6 +27,8 @@ export default {
             return `/contribution/${uuid}/accepted_edit_request`
         },
         encodeSpecialChars(str, exclude = []) {
+            if(!str) return str;
+
             const specialChars = '?&=+$#%'.split('');
             return str.split('').map(a => specialChars.includes(a) && !exclude.includes(a) ? encodeURIComponent(a) : a).join('');
         },
