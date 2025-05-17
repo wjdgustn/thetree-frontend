@@ -37,7 +37,7 @@
     <nav>
       <ul>
         <li v-for="i in pageNum">
-          <NuxtLink :to="{ query: { page: i } }" :class="{ active: i.toString() === (this.$route.query.page || '1') }">{{i}}</NuxtLink>
+          <NuxtLink :to="{ query: { page: i } }" :class="{ active: i.toString() === ($route.query.page || '1') }">{{i}}</NuxtLink>
         </li>
       </ul>
     </nav>
