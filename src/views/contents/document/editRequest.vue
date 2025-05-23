@@ -43,7 +43,7 @@
         <SeedForm method="post" :action="'/edit_request/' + editRequest.url + '/accept'">
           <SeedButton green large :disabled="data.conflict || !data.editable" v-tooltip="acceptTooltip">Accept</SeedButton>
         </SeedForm>
-        <SeedButton @click="showCloseModal = true" large :disabled="!data.editable" v-tooltip="closeTooltip">Close</SeedButton>
+        <SeedButton @click="showCloseModal = true" large :disabled="!data.editable && !data.selfCreated" v-tooltip="closeTooltip">Close</SeedButton>
         <SeedLinkButton info large :to="'/edit_request/' + editRequest.url + '/edit'" :disabled="!data.selfCreated" v-tooltip="editTooltip">Edit</SeedLinkButton>
       </div>
     </div>
