@@ -46,7 +46,7 @@ export default {
         { name: 'application-tooltip', content: siteName },
         { name: 'application-starturl', content: `/w/${state.config['wiki.front_page']}` },
 
-        ...(state.page.data?.date ? [
+        ...((state.page.data?.date && state.viewData.contentHtml) ? [
           { name: 'og:description', content: this.removeHtmlTags(state.viewData.contentHtml).slice(0, 200) },
           { name: 'og:type', content: 'article' }
         ] : []),
