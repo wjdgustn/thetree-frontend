@@ -240,8 +240,10 @@ export default {
         time.textContent = result;
       }
 
-      const anchorElem = document.getElementById(location.hash.slice(1));
-      anchorElem?.scrollIntoView();
+      if(!this.discuss) {
+        const anchorElem = document.getElementById(location.hash.slice(1));
+        anchorElem?.scrollIntoView();
+      }
     },
     setupFootnoteTooltip() {
       let cleanup;

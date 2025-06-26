@@ -144,6 +144,9 @@ export default {
         ...thread
       }
     })
+
+    const anchorElem = document.getElementById(location.hash.slice(1))
+    anchorElem?.scrollIntoView()
   },
   beforeUnmount() {
     if(this.scrollTimer != null) clearTimeout(this.scrollTimer)
