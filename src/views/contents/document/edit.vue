@@ -169,7 +169,8 @@ export default {
       const activeComponent = this.getTabComponent(this.activeTab.name)
 
       if(fromComponent) this.data.content = fromComponent.getValue()
-      activeComponent?.setValue(this.data.content)
+      if(activeComponent && activeComponent.getValue() !== this.data.content)
+        activeComponent.setValue(this.data.content)
     },
     async beforeSubmit() {
       if(!this.$refs.agreeCheckbox.checked) {
