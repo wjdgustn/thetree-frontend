@@ -358,13 +358,13 @@ address, dl, ol, ul {
 
 .button-danger:not(.button-disabled) {
     --button-color: #fff;
-    --button-background-color: #d64a58;
-    --button-border-color: #b42e3b;
+    --button-background-color: #ac2330;
+    --button-border-color: #d57d86;
 }
 
 .theseed-dark-mode .button-danger:not(.button-disabled) {
-    --button-background-color: #75121c;
-    --button-border-color: #861520;
+    --button-background-color: #c72838;
+    --button-border-color: #b72634;
 }
 
 .button-danger:not(.button-unreactive):not(.button-disabled):hover {
@@ -372,7 +372,7 @@ address, dl, ol, ul {
 }
 
 .theseed-dark-mode .button-danger:not(.button-unreactive):not(.button-disabled):hover {
-    --button-background-hover-color: #8d101d;
+    --button-background-hover-color: #b01827;
 }
 
 .button-danger:not(.button-unreactive):not(.button-disabled):focus {
@@ -380,7 +380,7 @@ address, dl, ol, ul {
 }
 
 .theseed-dark-mode .button-danger:not(.button-unreactive):not(.button-disabled):focus {
-    --button-background-focus-color: #84111c;
+    --button-background-focus-color: #ad1726;
 }
 
 .button-danger:not(.button-unreactive):not(.button-disabled):focus-visible {
@@ -388,7 +388,7 @@ address, dl, ol, ul {
 }
 
 .theseed-dark-mode .button-danger:not(.button-unreactive):not(.button-disabled):focus-visible {
-    box-shadow: 0 0 0 .2rem #8b3f46;
+    box-shadow: 0 0 0 .2rem #ac4650;
 }
 
 .button-super:not(.button-disabled) {
