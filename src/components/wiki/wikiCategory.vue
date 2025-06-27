@@ -135,7 +135,7 @@ li:last-child:after {
   display: inline-block;
   font-size: .7rem;
   margin: .25rem .5rem 0 0;
-  padding: .05rem .25rem;
+  padding: .05rem .25rem !important;
 }
 
 .blur {
