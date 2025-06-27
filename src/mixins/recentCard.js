@@ -9,6 +9,7 @@ export default {
     data() {
         return {
             recent: [],
+            discuss: [],
             interval: null
         }
     },
@@ -24,8 +25,9 @@ export default {
     },
     methods: {
         async updateSidebar() {
-            const res = await fetch('/sidebar.json')
-            this.recent = await res.json()
+            const res = await this.internalRequest('/sidebar')
+            this.recent = res.document
+            this.discuss = res.discuss
         }
     }
 }
