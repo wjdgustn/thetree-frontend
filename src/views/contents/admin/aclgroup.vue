@@ -104,7 +104,7 @@
 
   <SeedForm class="id-input-form">
     <div class="form-block">
-      <input type="hidden" name="group" :value="data.selectedGroup.name">
+      <input type="hidden" name="group" :value="data.selectedGroup?.name">
       <input type="text" name="from" placeholder="ID">
       <SeedButton submit>Go</SeedButton>
     </div>
@@ -169,7 +169,7 @@
   <Modal v-model="removeModal.show" v-slot="props" class="aclgroup-modal">
     <SeedForm :afterSubmit="close" method="post" action="/aclgroup/remove">
       <input type="hidden" name="uuid" :value="removeModal.uuid">
-      <input type="hidden" name="group" :value="data.selectedGroup.uuid">
+      <input type="hidden" name="group" :value="data.selectedGroup?.uuid">
 
       <h4>ACL 요소 제거</h4>
       <div>
