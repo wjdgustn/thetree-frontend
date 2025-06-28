@@ -9,7 +9,7 @@
       <button @click="showCreateModal = true">+</button>
     </li>
   </ul>
-  <div v-if="data.permissions.config" class="config-block">
+  <div v-if="data.permissions.config && data.selectedGroup" class="config-block">
     <Heading title="그룹 설정" :level="4" folded>
       <SeedForm method="post" action="/aclgroup/group_edit">
         <input type="hidden" name="uuid" :value="data.selectedGroup.uuid">
