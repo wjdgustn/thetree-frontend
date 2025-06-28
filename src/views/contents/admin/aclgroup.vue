@@ -153,7 +153,7 @@
   <PrevNextBtn flex v-bind="pageProps"/>
 
   <Modal v-model="showCreateModal" v-slot="props" class="aclgroup-modal">
-    <SeedForm :beforeSubmit="goConfirm" :afterSubmit="close" method="post" action="/aclgroup/group_add">
+    <SeedForm :beforeSubmit="goConfirm" :afterSubmit="closeModal" method="post" action="/aclgroup/group_add">
       <h4>ACL그룹 생성</h4>
       <div>
         <p>그룹 이름:</p>
@@ -167,7 +167,7 @@
     </SeedForm>
   </Modal>
   <Modal v-model="removeModal.show" v-slot="props" class="aclgroup-modal">
-    <SeedForm :afterSubmit="close" method="post" action="/aclgroup/remove">
+    <SeedForm :afterSubmit="closeModal" method="post" action="/aclgroup/remove">
       <input type="hidden" name="uuid" :value="removeModal.uuid">
       <input type="hidden" name="group" :value="data.selectedGroup?.uuid">
 
@@ -262,6 +262,9 @@ export default {
           uuid: item.uuid
         }).toString()
       })
+    },
+    closeModal() {
+      this.$vfm.hideAll()
     }
   }
 }
