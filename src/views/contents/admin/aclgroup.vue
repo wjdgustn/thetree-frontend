@@ -69,7 +69,7 @@
       </SeedForm>
     </Heading>
   </div>
-  <SeedForm class="add-form" method="post" action="/aclgroup">
+  <SeedForm v-if="data.selectedGroup" class="add-form" method="post" action="/aclgroup">
     <input type="hidden" name="group" :value="data.selectedGroup.uuid">
 
     <div class="form-block">
