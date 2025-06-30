@@ -25,7 +25,9 @@ export default {
     },
     methods: {
         async updateSidebar() {
-            const res = await this.internalRequest('/sidebar')
+            const res = await this.internalRequest('/sidebar', {
+                noProgress: true
+            })
             this.recent = res.document
             this.discuss = res.discuss
         }
