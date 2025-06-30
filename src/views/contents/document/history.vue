@@ -202,7 +202,7 @@ export default {
 }
 
 .top-page {
-  margin: 0;
+  margin: 0 !important;
 }
 
 @media screen and (max-width: 727.98px) {
