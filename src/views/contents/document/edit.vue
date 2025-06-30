@@ -15,7 +15,7 @@
   <WikiContent :content="data.contentHtml"/>
 
   <template v-if="data.conflict">
-    <Diff :title="`r${viewData.conflict.editedRev} vs 사용자 입력`" :diffHtml="data.conflict.diff.diffHtml"/>
+    <Diff :title="`r${data.conflict.editedRev} vs 사용자 입력`" :diffHtml="data.conflict.diff.diffHtml"/>
     <span class="conflict-error">자동 병합에 실패했습니다! 수동으로 수정된 내역을 아래 텍스트 박스에 다시 입력해주세요.</span>
   </template>
 
@@ -128,6 +128,7 @@ export default {
     this.activeTab = this.tabs.find(a => a.name === activeTabName)
 
     this.initialContent = this.data.content
+    this.log = this.data.log || ''
 
     this.$store.state.components.mainView.beforeLeave = this.beforeLeave
   },
