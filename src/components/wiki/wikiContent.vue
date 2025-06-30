@@ -58,7 +58,8 @@ export default {
     return {
       popover: {
         show: false,
-        content: ''
+        content: '',
+        cleanup: null
       },
       modal: {
         show: false,
@@ -73,6 +74,13 @@ export default {
     async content() {
       await this.$nextTick()
       this.setupWikiContent()
+    },
+    'popover.show'(newValue) {
+      if(!newValue)
+        this.popover.cleanup?.()
+    },
+    $route() {
+      this.popover.show = false
     }
   },
   methods: {
@@ -246,16 +254,13 @@ export default {
       }
     },
     setupFootnoteTooltip() {
-      let cleanup;
       let hovering = 0;
       const mouseLeaveHandler = _ => {
         requestAnimationFrame(() => requestAnimationFrame( () =>{
           hovering--;
 
-          if(!hovering) {
+          if(!hovering)
             this.popover.show = false;
-            if (cleanup) cleanup();
-          }
         }));
       }
 
@@ -293,7 +298,7 @@ export default {
 
           this.popover.show = true;
           this.popover.content = contentElement.innerHTML;
-          cleanup = autoUpdate(footnote, popover, update);
+          this.popover.cleanup = autoUpdate(footnote, popover, update);
         });
 
         footnote.addEventListener('mouseleave', mouseLeaveHandler);
