@@ -2,7 +2,11 @@
   <component
     :is="multiline ? 'textarea' : 'input'"
     class="input"
-    :class="{ multiline }"
+    :class="{
+      multiline,
+      center,
+      readonly
+    }"
     :value="modelValue"
     @input="onInput"
     @keydown="whenKeyDown"
@@ -19,6 +23,11 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      disabled: false
+    }
+  },
   props: {
     modelValue: String,
     hasError: Boolean,
@@ -26,7 +35,9 @@ export default {
     whenInput: Function,
     whenKeyDown: Function,
     whenPaste: Function,
-    name: String
+    name: String,
+    center: Boolean,
+    readonly: Boolean
   },
   emits: ['update:modelValue'],
   mounted() {
@@ -34,10 +45,18 @@ export default {
   },
   watch: {
     submittingSeedForm(newValue) {
-      this.$refs.input.disabled = newValue
+      this.disabled = newValue
     },
     error() {
       this.updateError()
+    },
+    disabled(newValue) {
+      if(newValue) this.$refs.input.classList.add('disabled')
+      else this.$refs.input.classList.remove('disabled')
+      this.$refs.input.disabled = newValue
+    },
+    readonly(newValue) {
+      this.$refs.input.readOnly = newValue
     }
   },
   computed: {
@@ -66,10 +85,14 @@ export default {
 </script>
 <style scoped>
 .input {
+  --input-color: var(--light-text-color, var(--text-color, #212529));
+  --input-background-color: #fcfcfb;
+  --input-border-color: #dfe1e2;
   appearance: none;
-  background-color: var(--light-article-background-color, var(--article-background-color, #fff));
-  border: 1px solid #d5d5d5;
+  background-color: var(--input-background-color);
+  border: 1px solid var(--input-border-color);
   border-radius: 4px;
+  color: var(--input-color);
   display: block;
   font-size: .9rem;
   line-height: 1.5;
@@ -77,12 +100,15 @@ export default {
 }
 
 .theseed-dark-mode .input {
-  background-color: #282829;
-  border-color: #484848;
+  --input-color: var(--dark-text-color,var(--text-color, #e0e0e0));
+  --input-background-color: #2d2e2f;
+  --input-border-color: #5c5c5c;
 }
 
 .input {
-  --focus-outline-color: var(--brand-bright-color-2,#e3e3e3);
+  --light-focus-outline-color: var(--brand-bright-color-2, #e3e3e3);
+  --dark-focus-outline-color: #454545;
+  --focus-outline-color: var(--light-focus-outline-color);
   --focus-box-shadow-style: var(--focus-outline-color) 0 0 0 0.2rem;
 }
 
@@ -92,7 +118,7 @@ export default {
 }
 
 .theseed-dark-mode .input:focus-visible {
-  --focus-outline-color: var(--brand-bright-color-2, #45474b);
+  --focus-outline-color: var(--dark-focus-outline-color);
 }
 
 .input[type=number] {
@@ -109,30 +135,40 @@ export default {
 }
 
 .error {
-  --focus-outline-color: #f1c7cc !important;
-  border-color: #b42e3b;
+  --focus-outline-color: #fdb8ae !important;
+  --input-border-color: #d83933
 }
 
 .theseed-dark-mode .error {
-  --focus-outline-color: #8b3f46 !important;
-  border-color: #861520;
+  --focus-outline-color: #a23737!important;
+  --input-border-color: #8b0a03
 }
 
-.input[disabled] {
+.disabled {
   --focus-outline-color: none !important;
-  background-color: #f7f7f7;
-  border-color: #f0f0f0;
-  color: #d9d9d9;
+  --input-background-color: #f0f0f0;
 }
 
-.theseed-dark-mode .theseed-dark-mode .input[disabled] {
+.theseed-dark-mode .disabled {
   --focus-outline-color: none !important;
-  background-color: #373737;
-  border-color: #424242;
-  color: #777;
+  --input-background-color: #2e2e2e;
 }
 
-.input[disabled]:hover {
+.disabled:hover {
   cursor: not-allowed;
+}
+
+.disabled:not(.readonly) {
+  --input-color: #adadad;
+  --input-border-color: #e6e6e6;
+}
+
+.theseed-dark-mode .disabled:not(.readonly) {
+  --input-color: #5c5c5c;
+  --input-border-color: #454545;
+}
+
+.center {
+  text-align: center;
 }
 </style>
