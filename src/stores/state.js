@@ -67,6 +67,8 @@ export const useStateStore = defineStore('state', {
       })
     },
     async updateView(statePatches) {
+      this.components.mainView.loadingView = true
+
       const contentName = statePatches ? statePatches.page.contentName : this.page.contentName
       if(!contentName) {
         if(statePatches) this.patchPageData(statePatches)
@@ -96,6 +98,7 @@ export const useStateStore = defineStore('state', {
         this.page.contentHtml = `missing view ${contentName}`
       }
       this.components.mainView.skin ??= markRaw(Skin)
+      this.components.mainView.loadingView = false
 
       this.cleanViewData()
     },
