@@ -166,7 +166,10 @@ export default {
       const isNS = this.$route.hash.startsWith('#namespace')
       this.rules = this.data[isNS ? 'namespaceACL' : 'acl'][this.activeAclTypeIndex]
 
-      this.form.actionType = isNS ? 'Allow' : 'GotoNS'
+      if(!this.form.actionType)
+        this.form.actionType = isNS ? 'Allow' : 'GotoNS'
+      else if(this.form.actionType === 'GotoNS' && !isNS)
+        this.form.actionType = 'Allow'
     },
     async dragEnd() {
       await this.internalRequestAndProcess('/action/acl/reorder', {
