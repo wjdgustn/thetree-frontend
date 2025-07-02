@@ -73,7 +73,9 @@ export default {
     return {
       skin: null,
       nextUrl: null,
-      beforeLeave: null
+      beforeLeave: null,
+      loadingView: false,
+      afterLoadView: null
     }
   },
   async serverPrefetch() {
@@ -177,6 +179,8 @@ export default {
       }
     },
     async loadView(url) {
+      this.loadingView = true
+
       url ||= this.$route.fullPath
 
       const json = await this.internalRequest(url, { userUrl: url })
@@ -189,6 +193,7 @@ export default {
 
       this.afterLoadView?.()
       this.afterLoadView = null
+      this.loadingView = false
     }
   }
 }

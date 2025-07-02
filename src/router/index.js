@@ -5,26 +5,34 @@ import { useStateStore } from '@/stores/state'
 
 const router = () => {
   let state = null
+
+  const waitPageLoad = () => {
+    state ??= useStateStore()
+    return new Promise(resolve => {
+      if(!state.components.mainView.loadingView)
+        return resolve()
+      state.components.mainView.afterLoadView = resolve
+    })
+  }
+
   return createRouter({
     history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
     scrollBehavior(to, from, savedPosition) {
-      state ??= useStateStore()
-
       return new Promise(async resolve => {
-        await new Promise(resolve => {
-          state.components.mainView.afterLoadView = resolve
-        })
+        await waitPageLoad()
 
         if(savedPosition
             && (savedPosition.left > 0
-                || savedPosition.top > 0)) resolve(savedPosition)
+                || savedPosition.top > 0)) {
+          resolve(savedPosition)
+        }
         else if(to.hash) switch(to.hash) {
           case '#toc': {
-            const toc = document.getElementsByClassName('wiki-macro-toc')[0];
+            const toc = document.getElementsByClassName('wiki-macro-toc')[0]
             resolve({
               el: toc ?? to.hash
             })
-            break;
+            break
           }
           default:
             resolve({
