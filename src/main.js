@@ -31,9 +31,9 @@ export function createApp() {
         ? createSSRApp(App)
         : createCSRApp(App)
 
-    const router = createRouter()
     const pinia = createPinia()
     app.use(pinia)
+    const router = createRouter()
     app.use(router)
     app.use(vfmPlugin)
 
