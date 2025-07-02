@@ -162,6 +162,9 @@ export default {
     activeTab(newValue) {
       if(newValue === 'preview')
         this.loadPreview()
+    },
+    $route() {
+      this.setScrollTimer(true)
     }
   },
   methods: {
