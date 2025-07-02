@@ -7,8 +7,17 @@ const router = () => createRouter({
     if(savedPosition
         && savedPosition.left > 0
         && savedPosition.top > 0) return savedPosition
-    else if(to.hash) return {
-      el: to.hash
+    else if(to.hash) switch(to.hash) {
+      case '#toc': {
+        const toc = document.getElementsByClassName('wiki-macro-toc')[0];
+        return {
+          el: toc ?? to.hash
+        }
+      }
+      default:
+        return {
+          el: to.hash
+        }
     }
     else return { left: 0, top: 0 }
   },
