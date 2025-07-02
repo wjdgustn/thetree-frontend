@@ -117,7 +117,7 @@ export default {
       if(!canMove()) e.preventDefault()
     })
   },
-  beforeRouteUpdate(to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     let prevPath = from.fullPath
     if(prevPath.includes('#'))
         prevPath = prevPath.slice(0, from.fullPath.lastIndexOf('#'))
@@ -127,7 +127,7 @@ export default {
 
     const isHashChange = to.path === from.path && !!to.hash && to.hash !== from.hash
     if(prevPath !== nextPath && !isHashChange)
-      this.$nextTick(() => this.loadView(to.fullPath))
+      await this.loadView(to.fullPath)
     next()
   },
   mounted() {
