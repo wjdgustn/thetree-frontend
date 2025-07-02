@@ -5,7 +5,7 @@ import { vfmPlugin } from 'vue-final-modal'
 import { decode } from '@msgpack/msgpack'
 
 import App from './App.vue'
-import router from './router'
+import createRouter from './router'
 
 import { useStateStore } from '~/stores/state'
 import GlobalMixin from './mixins/global'
@@ -31,6 +31,7 @@ export function createApp() {
         ? createSSRApp(App)
         : createCSRApp(App)
 
+    const router = createRouter()
     const pinia = createPinia()
     app.use(pinia)
     app.use(router)

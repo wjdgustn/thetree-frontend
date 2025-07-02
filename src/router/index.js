@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 import MainView from '../views/MainView.vue'
 
-const router = createRouter({
+const router = () => createRouter({
   history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
   scrollBehavior(to, from, savedPosition) {
     if(savedPosition
