@@ -26,7 +26,7 @@
 <script>
 import LocalDate from '@/components/localDate'
 
-const toDateStr = date => new Date(date).toISOString().slice(0, 19).replace('T', ' ')
+import { formatDate } from '@/utils'
 
 export default {
   components: {
@@ -41,13 +41,13 @@ export default {
   },
   computed: {
     beDate() {
-      return toDateStr(this.commitDate)
+      return formatDate(this.commitDate)
     },
     feDate() {
-      return toDateStr(this.commitDates.frontend)
+      return formatDate(this.commitDates.frontend)
     },
     skinDate() {
-      return toDateStr(this.commitDates.skin)
+      return formatDate(this.commitDates.skin)
     }
   }
 }

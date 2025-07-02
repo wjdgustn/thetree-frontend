@@ -2,6 +2,8 @@
   <time :datetime="dateObject.toISOString()">{{dateString}}</time>
 </template>
 <script>
+import { formatDate } from '@/utils'
+
 export default {
   props: {
     date: {
@@ -51,19 +53,7 @@ export default {
       return text
     },
     formattedDate() {
-      const strs = {
-        Y: this.dateObject.getFullYear(),
-        m: this.dateObject.getMonth() + 1,
-        d: this.dateObject.getDate(),
-        H: this.dateObject.getHours(),
-        i: this.dateObject.getMinutes(),
-        s: this.dateObject.getSeconds()
-      }
-      let result = this.format
-      for(let [key, value] of Object.entries(strs)) {
-        result = result.replaceAll(key, value.toString().padStart(2, '0'))
-      }
-      return result
+      return formatDate(this.dateObject, this.format)
     },
     dateString() {
       return this.isRelative ? this.relativeDate : this.formattedDate
