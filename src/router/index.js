@@ -4,10 +4,12 @@ import MainView from '../views/MainView.vue'
 import { useStateStore } from '@/stores/state'
 
 const router = () => {
-  const state = useStateStore()
+  let state = null
   return createRouter({
     history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
     scrollBehavior(to, from, savedPosition) {
+      state ??= useStateStore()
+
       return new Promise(async resolve => {
         await new Promise(resolve => {
           state.components.mainView.afterLoadView = resolve

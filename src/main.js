@@ -31,10 +31,10 @@ export function createApp() {
         ? createSSRApp(App)
         : createCSRApp(App)
 
-    const pinia = createPinia()
-    app.use(pinia)
     const router = createRouter()
     app.use(router)
+    const pinia = createPinia()
+    app.use(pinia)
     app.use(vfmPlugin)
 
     if(!import.meta.env.SSR && window.INITIAL_STATE) {
