@@ -30,6 +30,7 @@
           v-if="!comment.hidden || !hideHidden"
           :slug="data.thread.url"
           :comment="comment"
+          @show="commentShown"
       />
     </template>
   </div>
@@ -107,6 +108,7 @@ export default {
   },
   data() {
     return {
+      initLoaded: false,
       locks: [],
       fetchingComments: false,
       scrollTimer: null,
@@ -120,7 +122,6 @@ export default {
     this.$store.state.components.mainView.beforeLeave = this.beforeLeave
   },
   mounted() {
-    this.setScrollTimer()
     window.addEventListener('scroll', this.scrollHandler)
 
     this.socket = io('/thread', {
@@ -164,12 +165,17 @@ export default {
     }
   },
   methods: {
+    commentShown() {
+      if(this.initLoaded) return
+      this.initLoaded = true
+      this.setScrollTimer(true)
+    },
     beforeLeave() {
       if(this.$refs.commentInput?.value)
         return confirm('변경된 사항이 저장되지 않았습니다.')
       return true
     },
-    setScrollTimer() {
+    setScrollTimer(skipWait = false) {
       this.scrollTimer = setTimeout(async () => {
         if(this.fetchingComments) await this.waitUntil(new Promise(resolve => {
           this.locks.push(resolve)
@@ -210,7 +216,7 @@ export default {
           const firstUnfetchedComment = visibleComments.find(a => !a.fetched)
           if(firstUnfetchedComment) this.setScrollTimer()
         });
-      }, 100);
+      }, skipWait ? 0 : 100)
     },
     scrollHandler() {
       if(this.scrollTimer != null) clearTimeout(this.scrollTimer)
