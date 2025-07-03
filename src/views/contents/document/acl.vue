@@ -158,7 +158,8 @@ export default {
         permissionSelect: 'any',
         actionType: ''
       },
-      isMobile
+      isMobile,
+      prevAclCategory: null
     }
   },
   methods: {
@@ -166,10 +167,10 @@ export default {
       const isNS = this.$route.hash.startsWith('#namespace')
       this.rules = this.data[isNS ? 'namespaceACL' : 'acl'][this.activeAclTypeIndex]
 
-      if(!this.form.actionType)
+      if(this.prevAclCategory !== this.aclCategory)
         this.form.actionType = isNS ? 'Allow' : 'GotoNS'
-      else if(this.form.actionType === 'GotoNS' && !isNS)
-        this.form.actionType = 'Allow'
+
+      this.prevAclCategory = this.aclCategory
     },
     async dragEnd() {
       await this.internalRequestAndProcess('/action/acl/reorder', {
