@@ -17,13 +17,13 @@ export function useStore() {
 }
 
 function base64ToUint8Array(base64) {
-    const binaryString = atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
+    const binaryString = atob(base64)
+    const len = binaryString.length
+    const bytes = new Uint8Array(len)
     for(let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+        bytes[i] = binaryString.charCodeAt(i)
     }
-    return bytes;
+    return bytes
 }
 
 export function createApp() {
@@ -38,8 +38,8 @@ export function createApp() {
     app.use(vfmPlugin)
 
     if(!import.meta.env.SSR && window.INITIAL_STATE) {
-        pinia.state.value['state'] = decode(base64ToUint8Array(window.INITIAL_STATE));
-        delete window.INITIAL_STATE;
+        pinia.state.value['state'] = decode(base64ToUint8Array(window.INITIAL_STATE))
+        delete window.INITIAL_STATE
     }
 
     store = app.config.globalProperties.$store = {
