@@ -24,7 +24,12 @@ const router = () => {
         if(savedPosition
             && (savedPosition.left > 0
                 || savedPosition.top > 0)) {
-          resolve(savedPosition)
+          resolve({
+            ...savedPosition,
+            behavior: (to.fullPath.replace(to.hash, '') === from.fullPath.replace(from.hash, ''))
+                ? undefined
+                : 'instant'
+          })
         }
         else if(to.hash) switch(to.hash) {
           case '#toc': {
@@ -39,7 +44,7 @@ const router = () => {
               el: to.hash
             })
         }
-        else resolve({ left: 0, top: 0 })
+        else resolve({ left: 0, top: 0, behavior: 'instant' })
       })
     },
 
