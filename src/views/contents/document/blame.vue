@@ -10,7 +10,7 @@
     <tbody>
     <tr v-for="(item, index) in data.blameLines">
       <th v-if="item.diff" :rowspan="item.diff.count" :style="{ 'background-color': item.diff.user.color }">
-        <NuxtLink v-if="item.diff.rev !== 1" :to="doc_action_link(data.document, 'diff', { uuid: item.diff.uuid })">
+        <NuxtLink v-if="item.diff.history.rev !== 1" :to="doc_action_link(data.document, 'diff', { uuid: item.diff.uuid })">
           r{{item.diff.history.rev}}
         </NuxtLink>
         <template v-else>r{{item.diff.history.rev}}</template>
