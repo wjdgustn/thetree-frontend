@@ -134,6 +134,7 @@ export default {
   },
   mounted() {
     window.addEventListener('keypress', async e => {
+      if(e.metaKey || e.ctrlKey || e.shiftKey || e.defaultPrevented) return
       if([
         'INPUT', 'TEXTAREA'
       ].includes(document.activeElement.tagName)) return
