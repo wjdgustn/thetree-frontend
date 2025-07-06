@@ -398,7 +398,7 @@ form.comment-form textarea {
   color: #ddd;
 }
 
-.theseed-dark-mode form.comment-form li button.tab-button {
+.theseed-dark-mode form.comment-form li button.active {
   background-color: #383b40;
 }
 
