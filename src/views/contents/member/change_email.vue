@@ -1,17 +1,19 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm method="post">
-    <SeedFormBlock label="비밀번호" inputId="passwordInput" name="password">
-      <SeedFormInput type="password" id="passwordInput" name="password"/>
+  <SeedForm :class="$style.form" method="post">
+    <SeedFormBlock newStyle label="비밀번호" inputId="passwordInput" name="password">
+      <InputField type="password" id="passwordInput" name="password"/>
     </SeedFormBlock>
-    <SeedFormBlock label="이메일">
-      <p>{{data.email}}</p>
+    <SeedFormBlock newStyle label="이메일">
+      <InputField readonly disabled type="text" :value="data.email"/>
     </SeedFormBlock>
-    <SeedFormBlock label="새 이메일" inputId="emailInput" name="email">
-      <SeedFormInput type="email" id="emailInput" name="email"/>
+    <SeedFormBlock newStyle label="새 이메일" inputId="emailInput" name="email">
+      <InputField type="email" id="emailInput" name="email"/>
     </SeedFormBlock>
-    <div class="button-block">
-      <SeedButton submit>이메일 변경</SeedButton>
+    <div :class="[$style.form__row, $style['form__row--buttons']]">
+      <div :class="$style.form__buttons">
+        <GeneralButton :class="$style.button" type="submit" theme="primary">이메일 변경</GeneralButton>
+      </div>
     </div>
   </SeedForm>
 </template>
@@ -19,26 +21,19 @@
 import SeedForm from '@/components/form/seedForm'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 import SeedFormBlock from '@/components/form/seedFormBlock'
-import SeedFormInput from '@/components/form/seedFormInput'
-import SeedButton from '@/components/seedButton'
+import InputField from '@/components/form/inputField'
+import GeneralButton from '@/components/generalButton'
 
 export default {
   components: {
+    GeneralButton,
+    InputField,
     SeedForm,
     FormErrorAlert,
-    SeedFormBlock,
-    SeedFormInput,
-    SeedButton
+    SeedFormBlock
   }
 }
 </script>
-<style scoped>
-input {
-  width: calc(100% - .7rem);
-}
-
-.button-block {
-  margin-top: 2rem;
-  text-align: right;
-}
+<style module>
+@import '@/styles/form.css';
 </style>
