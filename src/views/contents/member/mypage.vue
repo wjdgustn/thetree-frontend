@@ -1,89 +1,93 @@
 <template>
-  <SeedForm method="post">
-    <SeedFormBlock label="사용자 이름">
-      <p>{{data.user.name}}</p>
-      <SeedLinkButton to="/member/change_name" info>이름 변경</SeedLinkButton>
-    </SeedFormBlock>
-
-    <SeedFormBlock label="이메일">
-      <p>
-        {{data.user.email}}
-        <SeedLinkButton to="/member/change_email" info>이메일 변경</SeedLinkButton>
-      </p>
-    </SeedFormBlock>
-
-    <SeedFormBlock label="권한">
-      <p>{{data.permissions.join(', ')}}</p>
-    </SeedFormBlock>
-
-    <SeedFormBlock label="비밀번호">
-      <SeedLinkButton to="/member/change_password" info>비밀번호 변경</SeedLinkButton>
-    </SeedFormBlock>
-
-    <SeedFormBlock label="스킨" for="skinInput" name="skin">
-      <SeedFormInput tag="select" id="skinInput" name="skin" v-model="data.user.skin">
-        <option value="default">기본 스킨</option>
-        <template v-for="skin in data.skins">
-          <option>{{skin}}</option>
-        </template>
-      </SeedFormInput>
-    </SeedFormBlock>
-
-    <SeedFormBlock label="이중인증">
-      <template v-if="data.hasTotp">
-        <SeedLinkButton to="/member/deactivate_otp" danger>TOTP 비활성화</SeedLinkButton>
-        <div class="new-passkey-block">
-          <SeedFormInput ref="passkeyName" type="text" placeholder="Passkey Name"/>
-          <SeedButton type="button" submit @click="addPasskey">Passkey 추가</SeedButton>
+  <SeedForm method="post" :class="[$style.form, $style['form--full'], $style['form--row-bordered']]">
+    <div class="mypage-block">
+      <div class="avatar-block">
+        <img :src="session.gravatar_url + '&s=512'" class="avatar-image">
+        <div class="avatar-description">
+          사용자 아바타는 <a href="https://gravatar.com" rel="noopener" target="_blank">Gravatar</a>에서 제공됩니다.
         </div>
-        <table>
-          <thead>
-          <tr>
-            <th>이름</th>
-            <th>등록일</th>
-            <th>마지막 사용</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          <template v-if="data.passkeys.length" v-for="passkey in data.passkeys">
-            <tr>
-              <td>{{passkey.name}}</td>
-              <td><LocalDate :date="passkey.createdAt"/></td>
-              <td>
+      </div>
+      <div class="form-block">
+        <div :class="$style.form__row">
+          <div :class="$style['form__row-inner']">
+            <label for="usernameInput">사용자 이름</label>
+            <GeneralButton theme="link" href="/member/change_name">변경</GeneralButton>
+          </div>
+          <div>{{data.user.name}}</div>
+        </div>
+        <div :class="$style.form__row">
+          <div :class="$style['form__row-inner']">
+            <label for="emailInput">Email</label>
+            <GeneralButton theme="link" href="/member/change_email">변경</GeneralButton>
+          </div>
+          <div>{{data.user.email}}</div>
+        </div>
+        <div :class="$style.form__row">
+          <label for="emailInput">비밀번호</label>
+          <div :class="$style['form__row-inner']">
+            <GeneralButton :class="$style.button" href="/member/change_password">변경</GeneralButton>
+          </div>
+        </div>
+        <div :class="$style.form__row">
+          <label for="permInput">권한</label>
+          <div>{{data.permissions.join(', ')}}</div>
+        </div>
+        <div :class="$style.form__row">
+          <label for="skinSelect">스킨</label>
+          <div :class="$style['form__row-inner']">
+            <SelectMenu id="skinSelect" name="skin" :value="data.user.skin">
+              <option value="default">기본 스킨</option>
+              <option v-for="skin in data.skins">{{skin}}</option>
+            </SelectMenu>
+          </div>
+        </div>
+        <div :class="$style.form__row">
+          <label>일회용 비밀번호 (OTP)</label>
+          <div :class="$style['form__row-inner']">
+            <GeneralButton v-if="data.hasTotp" theme="danger" :class="$style.button" href="/member/deactivate_totp">비활성화</GeneralButton>
+            <GeneralButton v-else :class="$style.button" href="/member/activate_totp">활성화</GeneralButton>
+          </div>
+        </div>
+        <div v-if="data.hasTotp" :class="$style.form__row">
+          <label>Passkey</label>
+          <div :class="[$style.table, $style['table--bordered']]">
+            <div :class="[$style.row, $style['row--head'], 'table-row']">
+              <div v-for="text in ['이름', '등록 시각', '마지막 사용 시각', '']" :class="[$style.column, 'table-column']">{{text}}</div>
+            </div>
+            <div v-if="data.passkeys.length" v-for="passkey in data.passkeys" :class="[$style.row, 'table-row']">
+              <div :class="[$style.column, 'table-column']">{{passkey.name}}</div>
+              <div :class="[$style.column, 'table-column']"><LocalDate :date="passkey.createdAt"/></div>
+              <div :class="[$style.column, 'table-column']">
                 <LocalDate v-if="passkey.lastUsedAt" :date="passkey.lastUsedAt"/>
                 <template v-else>Not used</template>
-              </td>
-              <td>
-                <SeedButton type="button" danger @click="deletePasskey(passkey.name)">삭제</SeedButton>
-              </td>
-            </tr>
-          </template>
-          <template v-else>
-            <tr>
-              <td colspan="4">등록된 Passkey가 없습니다.</td>
-            </tr>
-          </template>
-          </tbody>
-        </table>
-      </template>
-      <template v-else>
-        <SeedLinkButton to="/member/activate_otp" info>TOTP 활성화</SeedLinkButton>
-      </template>
-    </SeedFormBlock>
-
-    <SeedFormBlock label="API Token">
-      <SeedButton type="button" danger @click="showTokenModal">발급</SeedButton>
-    </SeedFormBlock>
-
-    <SeedFormBlock v-if="data.permissions.includes('engine_developer')" label="엔진 개발자">
-      <SeedButton v-if="data.permissions.includes('developer')" type="button" danger @click="removeDeveloperPerm">개발자 권한 제거</SeedButton>
-      <SeedButton v-else type="button" submit @click="getDeveloperPerm">개발자 권한 받기</SeedButton>
-    </SeedFormBlock>
-
-    <div class="button-block">
-      <SeedLinkButton v-if="data.canWithdraw" to="/member/withdraw" danger>계정 삭제</SeedLinkButton>
-      <SeedButton submit>변경</SeedButton>
+              </div>
+              <div :class="[$style.column, $style['column--button-parent'], 'table-column']">
+                <GeneralButton theme="danger" size="small" :whenClick="() => deletePasskey(passkey.name)">삭제</GeneralButton>
+              </div>
+            </div>
+            <div v-else :class="[$style.row, 'table-row']">
+              <div :class="[$style.column, $style['column--single'], 'table-column', 'no-passkey']">
+                (등록된 Passkey가 없습니다.)
+              </div>
+            </div>
+          </div>
+          <div class="new-passkey-block">
+            <InputField ref="passkeyName" class="passkey-name" type="text" placeholder="새 Passkey 이름"/>
+            <GeneralButton :whenClick="addPasskey">추가</GeneralButton>
+          </div>
+        </div>
+        <div :class="$style.form__row">
+          <label>API Token</label>
+          <div :class="$style['form__row-inner']">
+            <GeneralButton :class="$style.button" :whenClick="showTokenModal">발급</GeneralButton>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div :class="[$style.form__row, $style['form__row--buttons']]">
+      <div :class="$style.form__buttons">
+        <GeneralButton :class="$style.button" theme="primary" type="submit">저장</GeneralButton>
+      </div>
     </div>
   </SeedForm>
 </template>
@@ -91,23 +95,21 @@
 import { startRegistration } from '@simplewebauthn/browser'
 
 import Common from '@/mixins/common'
-import SeedForm from '@/components/form/seedForm.vue'
-import SeedFormBlock from '@/components/form/seedFormBlock.vue'
-import SeedFormInput from '@/components/form/seedFormInput.vue'
-import SeedButton from '@/components/seedButton.vue'
-import SeedLinkButton from '@/components/seedLinkButton.vue'
-import LocalDate from '@/components/localDate.vue'
+import SeedForm from '@/components/form/seedForm'
+import GeneralButton from '@/components/generalButton'
+import SelectMenu from '@/components/selectMenu'
+import LocalDate from '@/components/localDate'
+import InputField from '@/components/form/inputField'
 import ApiTokenModal from '@/components/apiTokenModal'
 
 export default {
   mixins: [Common],
   components: {
+    InputField,
+    LocalDate,
+    GeneralButton,
     SeedForm,
-    SeedFormBlock,
-    SeedFormInput,
-    SeedButton,
-    SeedLinkButton,
-    LocalDate
+    SelectMenu
   },
   computed: {
     data() {
@@ -180,48 +182,162 @@ export default {
   }
 }
 </script>
+<style module>
+@import '@/styles/form.css';
+@import '@/styles/table.css';
+</style>
 <style scoped>
-.seed-form-input {
-  width: calc(100% - .7rem);
-}
-
-form div.button-block {
-  column-gap: .25rem;
+.mypage-block {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 2rem;
+  gap: 2rem;
 }
 
-table {
-  background-color: transparent;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-bottom: 1rem;
-  max-width: 100%;
+@media screen and (max-width: 727.98px) {
+  .mypage-block {
+    flex-direction: column;
+  }
+}
+
+.avatar-block {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: .5rem;
+  width: 10rem;
+}
+
+@media screen and (max-width: 727.98px) {
+  .avatar-block {
+    flex: 1;
+    justify-content: center;
+    width: auto;
+  }
+}
+
+.avatar-image {
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  display: block;
   width: 100%;
 }
 
-table td, table th {
-  border-top: 1px solid #eceeef;
-  line-height: 1.5;
-  padding: .5rem .7rem;
+@media screen and (max-width: 727.98px) {
+  .avatar-image {
+    width: 8rem;
+  }
 }
 
-table tr:last-of-type td {
-  border-bottom: 1px solid #eceeef;
+@media screen and (max-width: 371.98px) {
+  .avatar-image {
+    width: 5rem;
+  }
 }
 
-table th {
-  border-bottom: 2px solid #eceeef;
-  text-align: left;
-  vertical-align: bottom;
+.avatar-description {
+  font-size: .85rem;
+  text-align: center;
+  word-break: keep-all;
 }
 
-div.new-passkey-block {
-  margin-top: 1rem;
+.form-block {
+  flex: 1;
 }
 
-div.new-passkey-block input {
-  width: 30%;
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 4rem;
+}
+
+@media screen and (max-width: 1023.98px) {
+  .table-row {
+    gap:.1rem;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    padding: .5rem;
+  }
+
+  .table-column {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .table-column:first-child {
+    grid-column: 1/2;
+  }
+
+  .table-column:nth-child(2),.table-column:nth-child(3) {
+    font-size: .85rem;
+    grid-column: 1/2;
+  }
+}
+
+.table-column:nth-child(4) {
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 1023.98px) {
+  .table-column:nth-child(4) {
+    grid-column: 2;
+    grid-row: 1/3;
+  }
+}
+
+.no-passkey {
+  grid-column: 1/5;
+}
+
+.mobile-th {
+  display: none;
+  margin: 0 .25rem 0 0;
+}
+
+@media screen and (max-width: 1023.98px) {
+  .mobile-th {
+    display: initial;
+  }
+}
+
+.new-passkey-block {
+  align-self: flex-end;
+  margin-top: .25rem;
+  max-width: 20rem;
+  width: 100%;
+}
+
+@media screen and (max-width: 1023.98px) {
+  .new-passkey-block {
+    align-self: auto;
+    max-width: none;
+  }
+}
+
+.passkey-name {
+  width: 100%;
+}
+
+.new-passkey-block {
+  display: flex;
+}
+
+.new-passkey-block> *:first-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.new-passkey-block> *:last-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.new-passkey-block> *:not(:last-child) {
+  border-right-width: 0;
+}
+
+.new-passkey-block> *:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.new-passkey-block> *:focus {
+  z-index: 200;
 }
 </style>
