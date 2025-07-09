@@ -81,6 +81,19 @@
             <GeneralButton :class="$style.button" :whenClick="showTokenModal">발급</GeneralButton>
           </div>
         </div>
+        <div v-if="data.canWithdraw" :class="$style.form__row">
+          <label>계정</label>
+          <div :class="$style['form__row-inner']">
+            <GeneralButton :class="$style.button" theme="danger" href="/member/withdraw">계정 삭제</GeneralButton>
+          </div>
+        </div>
+        <div v-if="data.permissions.includes('engine_developer')" :class="$style.form__row">
+          <label>엔진 개발자</label>
+          <div :class="$style['form__row-inner']">
+            <GeneralButton v-if="data.permissions.includes('developer')" theme="danger" :whenClick="removeDeveloperPerm">개발자 권한 제거</GeneralButton>
+            <GeneralButton v-else theme="primary" :whenClick="getDeveloperPerm">개발자 권한 받기</GeneralButton>
+          </div>
+        </div>
       </div>
     </div>
     <div :class="[$style.form__row, $style['form__row--buttons']]">
