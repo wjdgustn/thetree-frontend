@@ -43,8 +43,8 @@
         <div :class="$style.form__row">
           <label>일회용 비밀번호 (OTP)</label>
           <div :class="$style['form__row-inner']">
-            <GeneralButton v-if="data.hasTotp" theme="danger" :class="$style.button" href="/member/deactivate_totp">비활성화</GeneralButton>
-            <GeneralButton v-else :class="$style.button" href="/member/activate_totp">활성화</GeneralButton>
+            <GeneralButton v-if="data.hasTotp" theme="danger" :class="$style.button" href="/member/deactivate_otp">비활성화</GeneralButton>
+            <GeneralButton v-else :class="$style.button" href="/member/activate_otp">활성화</GeneralButton>
           </div>
         </div>
         <div v-if="data.hasTotp" :class="$style.form__row">
