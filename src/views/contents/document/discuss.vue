@@ -40,6 +40,7 @@
   </div>
 
   <h3>새 주제 생성</h3>
+  <FormErrorAlert/>
   <SeedForm method="post" :captcha="session.account.type !== 1">
     <SeedFormBlock label="주제 :" inputId="topicInput" name="topic">
       <input type="text" id="topicInput" name="topic">
@@ -60,10 +61,12 @@ import SeedButton from '@/components/seedButton'
 import SeedFormBlock from '@/components/form/seedFormBlock'
 import Comment from '@/components/comment'
 import IpWarn from '@/components/ipWarn'
+import FormErrorAlert from '@/components/form/formErrorAlert'
 
 export default {
   mixins: [Common],
   components: {
+    FormErrorAlert,
     IpWarn,
     Comment,
     SeedFormBlock,
