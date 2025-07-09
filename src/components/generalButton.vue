@@ -65,8 +65,8 @@ export default {
       if(this.disable) result.push(this.$style['button--disabled'])
       if(this.noBorder) result.push(this.$style['button--no-border'])
 
-      if(this.size === 'small') result.push(this.$style['button-small-size'])
-      else if(this.size === 'big') result.push(this.$style['button-big-size'])
+      if(this.size === 'small') result.push(this.$style['button--small-size'])
+      else if(this.size === 'big') result.push(this.$style['button--big-size'])
 
       if(this.block) result.push(this.$style['button--block'])
 
