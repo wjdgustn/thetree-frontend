@@ -3,13 +3,13 @@
     <h2 class="topic">{{data.thread.topic}}</h2>
     <div class="title-group-right">
       <ButtonBadge round :theme="['', 'secondary', 'super'][data.thread.status]">
-        <FontAwesomeIcon class="status-icon" :icon="['door-open', 'pause', 'door-closed'][data.thread.status]" />
+        <FontAwesomeIcon :icon="['door-open', 'pause', 'door-closed'][data.thread.status]" />
         <span v-text="['열림', '중지됨', '닫힘'][data.thread.status]"/>
       </ButtonBadge>
       <ContextMenu placement="bottom-end">
-      <span role="button" class="button more-button">
-        <FontAwesomeIcon icon="ellipsis-vertical" />
-      </span>
+        <GeneralButton dummy class="more-button">
+          <FontAwesomeIcon icon="ellipsis-vertical" />
+        </GeneralButton>
         <template #menu>
           <CheckBox v-model="hideHidden">숨겨진 댓글 보이지 않기</CheckBox>
           <template v-if="data.permissions.delete">
@@ -258,6 +258,9 @@ export default {
   }
 }
 </script>
+<style module>
+@import '@/styles/button.css';
+</style>
 <style scoped>
 .clearfix {
   clear: both;
@@ -439,11 +442,6 @@ form.comment-form textarea {
   .topic {
     align-self: auto;
   }
-}
-
-.status-icon {
-  margin: 0 .4rem 0 0;
-  overflow: hidden !important;
 }
 
 .delete-thread-form {
