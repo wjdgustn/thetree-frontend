@@ -3,7 +3,7 @@
     <PrevNextBtn class="top-page top-page-item" flex v-bind="pageProps"/>
     <RevInput blockClass="top-page-item"/>
   </div>
-  <SeedForm :action="doc_action_link(data.document, 'diff')">
+  <SeedForm :beforeSubmit="beforeDiff" :action="doc_action_link(data.document, 'diff')">
     <p>
       <GeneralButton type="submit">선택 리비전 비교</GeneralButton>
     </p>
@@ -183,6 +183,9 @@ export default {
     },
     async adminAction(rev, action) {
       await this.internalRequestAndProcess(this.doc_action_link(this.data.document, 'a/' + action, { uuid: rev.uuid }))
+    },
+    beforeDiff() {
+      return !!this.diffOldRev && !!this.diffRev
     }
   }
 }
