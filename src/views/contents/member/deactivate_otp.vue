@@ -1,11 +1,13 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm method="post">
-    <SeedFormBlock label="PIN" inputId="pinInput" name="pin">
-      <SeedFormInput type="text" id="pinInput" name="pin" maxlength="6"/>
+  <SeedForm :class="$style.form" method="post">
+    <SeedFormBlock newStyle label="일회용 비밀번호 (OTP)" inputId="pinInput" name="pin">
+      <PinInput name="pin"/>
     </SeedFormBlock>
-    <div class="button-block">
-      <SeedButton danger>비활성화</SeedButton>
+    <div :class="[$style.form__row, $style['form__row--buttons']]">
+      <div :class="$style.form__buttons">
+        <GeneralButton :class="$style.button" type="submit" theme="danger">비활성화</GeneralButton>
+      </div>
     </div>
   </SeedForm>
 </template>
@@ -13,37 +15,19 @@
 import SeedForm from '@/components/form/seedForm'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 import SeedFormBlock from '@/components/form/seedFormBlock'
-import SeedFormInput from '@/components/form/seedFormInput'
-import SeedButton from '@/components/seedButton'
+import PinInput from '@/components/form/pinInput'
+import GeneralButton from '@/components/generalButton'
 
 export default {
   components: {
+    GeneralButton,
+    PinInput,
     SeedForm,
     FormErrorAlert,
-    SeedFormBlock,
-    SeedFormInput,
-    SeedButton
+    SeedFormBlock
   }
 }
 </script>
-<style scoped>
-form {
-  width: 100%
-}
-
-@media screen and (min-width: 34rem) {
-  form {
-    margin:0 auto;
-    width: 28rem
-  }
-}
-
-input {
-  width: calc(100% - .7rem);
-}
-
-.button-block {
-  margin-top: 2rem;
-  text-align: right;
-}
+<style module>
+@import '@/styles/form.css';
 </style>
