@@ -32,15 +32,14 @@
           <label for="permInput">권한</label>
           <div>{{data.permissions.join(', ')}}</div>
         </div>
-        <div :class="$style.form__row">
-          <label for="skinSelect">스킨</label>
+        <SeedFormBlock newStyle label="스킨" inputId="skinSelect">
           <div :class="$style['form__row-inner']">
             <SelectMenu id="skinSelect" name="skin" :value="data.user.skin">
               <option value="default">기본 스킨</option>
               <option v-for="skin in data.skins">{{skin}}</option>
             </SelectMenu>
           </div>
-        </div>
+        </SeedFormBlock>
         <div :class="$style.form__row">
           <label>일회용 비밀번호 (OTP)</label>
           <div :class="$style['form__row-inner']">
@@ -101,10 +100,12 @@ import SelectMenu from '@/components/selectMenu'
 import LocalDate from '@/components/localDate'
 import InputField from '@/components/form/inputField'
 import ApiTokenModal from '@/components/apiTokenModal'
+import SeedFormBlock from '@/components/form/seedFormBlock'
 
 export default {
   mixins: [Common],
   components: {
+    SeedFormBlock,
     InputField,
     LocalDate,
     GeneralButton,

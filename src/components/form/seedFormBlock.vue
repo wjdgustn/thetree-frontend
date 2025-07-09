@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div :class="{ [$style.form__row]: newStyle }">
     <label v-if="label" :for="inputId">{{label}}</label>
     <slot/>
-    <ShowError v-if="name" :tag="name"/>
+    <ShowError v-if="name" :tag="name" :class="{ [$style.text]: newStyle }"/>
   </div>
 </template>
 <script>
@@ -15,10 +15,14 @@ export default {
   props: {
     inputId: String,
     name: String,
-    label: String
+    label: String,
+    newStyle: Boolean
   }
 }
 </script>
+<style module>
+@import '@/styles/form.css';
+</style>
 <style scoped>
 div {
   margin-bottom: 15px;
