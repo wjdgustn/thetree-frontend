@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      disabled: false
+      disable: false
     }
   },
   props: {
@@ -37,20 +37,23 @@ export default {
     whenPaste: Function,
     name: String,
     center: Boolean,
-    readonly: Boolean
+    readonly: Boolean,
+    disabled: Boolean
   },
   emits: ['update:modelValue'],
   mounted() {
     this.updateError()
+    if(this.disabled)
+      this.disable = true
   },
   watch: {
     submittingSeedForm(newValue) {
-      this.disabled = newValue
+      this.disable = newValue
     },
     error() {
       this.updateError()
     },
-    disabled(newValue) {
+    disable(newValue) {
       if(newValue) this.$refs.input.classList.add('disabled')
       else this.$refs.input.classList.remove('disabled')
       this.$refs.input.disabled = newValue
@@ -100,7 +103,7 @@ export default {
 }
 
 .theseed-dark-mode .input {
-  --input-color: var(--dark-text-color,var(--text-color, #e0e0e0));
+  --input-color: var(--dark-text-color, var(--text-color, #e0e0e0));
   --input-background-color: #2d2e2f;
   --input-border-color: #5c5c5c;
 }
@@ -136,12 +139,12 @@ export default {
 
 .error {
   --focus-outline-color: #fdb8ae !important;
-  --input-border-color: #d83933
+  --input-border-color: #d83933;
 }
 
 .theseed-dark-mode .error {
   --focus-outline-color: #a23737!important;
-  --input-border-color: #8b0a03
+  --input-border-color: #8b0a03;
 }
 
 .disabled {
