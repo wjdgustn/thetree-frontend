@@ -31,7 +31,7 @@
     transition: background-color .1s ease-in,box-shadow .1s linear;
 }
 
-.theseed-dark-mode .button {
+:global(.theseed-dark-mode) .button {
     --button-color: var(--dark-text-color, var(--text-color, #e0e0e0));
     --button-background-color: var(--dark-article-background-color, var(--article-background-color, #1c1d1f));
     --button-border-color: #5c5c5c;
@@ -65,7 +65,7 @@
     text-decoration: none;
 }
 
-.theseed-dark-mode .button--hover:not(.button--disabled), .theseed-dark-mode .button:not(.button--unreactive):not(.button--disabled):hover {
+:global(.theseed-dark-mode) .button--hover:not(.button--disabled), :global(.theseed-dark-mode) .button:not(.button--unreactive):not(.button--disabled):hover {
     --button-background-color: #2d2e2f;
 }
 
@@ -74,7 +74,7 @@
     transition: box-shadow .1s linear;
 }
 
-.theseed-dark-mode .button--focus:not(.button--unreactive):not(.button--disabled), .theseed-dark-mode .button:not(.button--unreactive):not(.button--disabled):focus-visible {
+:global(.theseed-dark-mode) .button--focus:not(.button--unreactive):not(.button--disabled), :global(.theseed-dark-mode) .button:not(.button--unreactive):not(.button--disabled):focus-visible {
     --focus-outline-color: var(--dark-focus-outline-color);
 }
 
@@ -84,7 +84,7 @@
     --button-border-color: #c9c9c9;
 }
 
-.theseed-dark-mode .button--secondary:not(.button--disabled) {
+:global(.theseed-dark-mode) .button--secondary:not(.button--disabled) {
     --button-background-color: #454545;
     --button-border-color: #1b1b1b;
 }
@@ -93,7 +93,7 @@
     --button-background-color: #454545;
 }
 
-.theseed-dark-mode .button--secondary.button--hover:not(.button--disabled), .theseed-dark-mode .button--secondary:not(.button--unreactive):not(.button--disabled):hover {
+:global(.theseed-dark-mode) .button--secondary.button--hover:not(.button--disabled), :global(.theseed-dark-mode) .button--secondary:not(.button--unreactive):not(.button--disabled):hover {
     --button-background-color: #2e2e2e;
 }
 
@@ -101,7 +101,7 @@
     --focus-outline-color: #919191;
 }
 
-.theseed-dark-mode .button--secondary.button--focus:not(.button--disabled), .theseed-dark-mode .button--secondary:not(.button--unreactive):not(.button--disabled):focus-visible {
+:global(.theseed-dark-mode) .button--secondary.button--focus:not(.button--disabled), :global(.theseed-dark-mode) .button--secondary:not(.button--unreactive):not(.button--disabled):focus-visible {
     --focus-outline-color: #5c5c5c;
 }
 
@@ -111,7 +111,7 @@
     --button-border-color: #2378c3;
 }
 
-.theseed-dark-mode .button--primary:not(.button--disabled) {
+:global(.theseed-dark-mode) .button--primary:not(.button--disabled) {
     --button-background-color: #0b4778;
     --button-border-color: #1f303e;
 }
@@ -120,7 +120,7 @@
     --button-background-color: #005ea2;
 }
 
-.theseed-dark-mode .button--primary.button--hover:not(.button--disabled), .theseed-dark-mode .button--primary:not(.button--unreactive):not(.button--disabled):hover {
+:global(.theseed-dark-mode) .button--primary.button--hover:not(.button--disabled), :global(.theseed-dark-mode) .button--primary:not(.button--unreactive):not(.button--disabled):hover {
     --button-background-color: #112f4e;
 }
 
@@ -128,7 +128,7 @@
     --focus-outline-color: #a1d3ff
 }
 
-.theseed-dark-mode .button--primary.button--focus:not(.button--disabled), .theseed-dark-mode .button--primary:not(.button--unreactive):not(.button--disabled):focus-visible {
+:global(.theseed-dark-mode) .button--primary.button--focus:not(.button--disabled), :global(.theseed-dark-mode) .button--primary:not(.button--unreactive):not(.button--disabled):focus-visible {
     --focus-outline-color: #2c608a;
 }
 
@@ -138,7 +138,7 @@
     --button-border-color: #d83933;
 }
 
-.theseed-dark-mode .button--danger:not(.button--disabled) {
+:global(.theseed-dark-mode) .button--danger:not(.button--disabled) {
     --button-background-color: #8b0a03;
     --button-border-color: #8b0a03;
 }
@@ -147,7 +147,7 @@
     --button-background-color: #8b0a03;
 }
 
-.theseed-dark-mode .button--danger.button--hover:not(.button--disabled), .theseed-dark-mode .button--danger:not(.button--unreactive):not(.button--disabled):hover {
+:global(.theseed-dark-mode) .button--danger.button--hover:not(.button--disabled), :global(.theseed-dark-mode) .button--danger:not(.button--unreactive):not(.button--disabled):hover {
     --button-background-color: #5c1111;
 }
 
@@ -155,7 +155,7 @@
     --focus-outline-color: #fdb8ae;
 }
 
-.theseed-dark-mode .button--danger.button--focus:not(.button--disabled), .theseed-dark-mode .button--danger:not(.button--unreactive):not(.button--disabled):focus-visible {
+:global(.theseed-dark-mode) .button--danger.button--focus:not(.button--disabled), :global(.theseed-dark-mode) .button--danger:not(.button--unreactive):not(.button--disabled):focus-visible {
     --focus-outline-color: #a23737;
 }
 
@@ -165,7 +165,7 @@
     --button-border-color: #9355dc;
 }
 
-.theseed-dark-mode .button--super:not(.button--disabled) {
+:global(.theseed-dark-mode) .button--super:not(.button--disabled) {
     --button-background-color: #54278f;
     --button-border-color: #312b3f;
 }
@@ -174,7 +174,7 @@
     --button-background-color: #665190;
 }
 
-.theseed-dark-mode .button--super.button--hover:not(.button--disabled), .theseed-dark-mode .button--super:not(.button--unreactive):not(.button--disabled):hover {
+:global(.theseed-dark-mode) .button--super.button--hover:not(.button--disabled), :global(.theseed-dark-mode) .button--super:not(.button--unreactive):not(.button--disabled):hover {
     --button-background-color: #39215e;
 }
 
@@ -182,7 +182,7 @@
     --focus-outline-color: #d5bfff;
 }
 
-.theseed-dark-mode .button--super.button--focus:not(.button--disabled), .theseed-dark-mode .button--super:not(.button--unreactive):not(.button--disabled):focus-visible {
+:global(.theseed-dark-mode) .button--super.button--focus:not(.button--disabled), :global(.theseed-dark-mode) .button--super:not(.button--unreactive):not(.button--disabled):focus-visible {
     --focus-outline-color: #665190;
 }
 
@@ -192,7 +192,7 @@
     --button-border-color: var(--brand-color-2, #c7c7c7);
 }
 
-.theseed-dark-mode .button--brand:not(.button--disabled) {
+:global(.theseed-dark-mode) .button--brand:not(.button--disabled) {
     --button-background-color: var(--brand-color-1, #2e3033);
     --button-border-color: var(--brand-color-2, #2e3033);
 }
@@ -201,7 +201,7 @@
     --button-background-color: var(--brand-color-2, #c7c7c7);
 }
 
-.theseed-dark-mode .button--brand.button--hover:not(.button--disabled), .theseed-dark-mode .button--brand:not(.button--unreactive):not(.button--disabled):hover {
+:global(.theseed-dark-mode) .button--brand.button--hover:not(.button--disabled), :global(.theseed-dark-mode) .button--brand:not(.button--unreactive):not(.button--disabled):hover {
     --button-background-color: var(--brand-color-2, #2e3033);
 }
 
@@ -209,7 +209,7 @@
     --focus-outline-color: var(--brand-bright-color-1, #d5d5d5);
 }
 
-.theseed-dark-mode .button--brand.button--focus:not(.button--disabled), .theseed-dark-mode .button--brand:not(.button--unreactive):not(.button--disabled):focus-visible {
+:global(.theseed-dark-mode) .button--brand.button--focus:not(.button--disabled), :global(.theseed-dark-mode) .button--brand:not(.button--unreactive):not(.button--disabled):focus-visible {
     --focus-outline-color: var(--brand-bright-color-1, #45474b);
 }
 
@@ -219,7 +219,7 @@
     --button-border-color: #e6e6e6;
 }
 
-.theseed-dark-mode .button--disabled {
+:global(.theseed-dark-mode) .button--disabled {
     --button-color: #5c5c5c;
     --button-background-color: #2e2e2e;
     --button-border-color: #454545;
@@ -238,7 +238,7 @@
     --button-border-radius: 3px;
 }
 
-.theseed-dark-mode .button--small-size {
+:global(.theseed-dark-mode) .button--small-size {
     --button-border-color: #454545;
 }
 

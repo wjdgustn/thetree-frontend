@@ -81,7 +81,7 @@
     padding: 1rem 0 0;
 }
 
-.theseed-dark-mode .form--row-bordered .form__row {
+:global(.theseed-dark-mode) .form--row-bordered .form__row {
     border-color: #1b1b1b;
 }
 
@@ -146,7 +146,7 @@
     font-size: .9rem;
 }
 
-.theseed-dark-mode .text--help {
+:global(.theseed-dark-mode) .text--help {
     color: #454545;
 }
 
@@ -154,7 +154,7 @@
     color: #b50909;
 }
 
-.theseed-dark-mode .text--error {
+:global(.theseed-dark-mode) .text--error {
     color: #8b0a03;
 }
 
@@ -185,7 +185,7 @@ ol.list {
     transition: box-shadow .1s linear;
 }
 
-.theseed-dark-mode .link:focus-visible {
+:global(.theseed-dark-mode) .link:focus-visible {
     --focus-outline-color: var(--dark-focus-outline-color);
 }
 
