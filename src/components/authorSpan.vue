@@ -121,7 +121,6 @@ export default {
       if(!this.account.uuid) return
       navigator.clipboard.writeText(this.account.uuid)
       toast(`사용자 '${this.account.name}'의 UUID가 복사되었습니다.`)
-
     }
   }
 }
