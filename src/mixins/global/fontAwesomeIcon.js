@@ -26,10 +26,12 @@ import {
     faComments,
     faBullhorn,
     faLock,
-    faCode
+    faCode,
+    faTriangleExclamation
 } from '@fortawesome/free-solid-svg-icons'
 import {
-    faFileLines
+    faFileLines,
+    faCopy
 } from '@fortawesome/free-regular-svg-icons'
 
 export default {
@@ -63,7 +65,9 @@ export default {
             faComments,
             faBullhorn,
             faLock,
-            faCode
+            faCode,
+            faTriangleExclamation,
+            faCopy
         )
     },
     components: {
