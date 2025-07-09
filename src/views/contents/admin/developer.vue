@@ -210,7 +210,7 @@ export default {
 }
 </script>
 <style scoped>
-a[role=button], button {
+a[role=button], span[role=button], button {
   margin-right: .25em;
 }
 
