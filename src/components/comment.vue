@@ -14,9 +14,9 @@
           <span class="time-block">
             <LocalDate :date="comment.createdAt"/>
             <ContextMenu v-if="!previewMode && comment.type === 0" class="menu-block" placement="bottom-end">
-              <span role="button" class="button menu-button">
+              <GeneralButton dummy class="menu-button">
                 <FontAwesomeIcon icon="caret-down" />
-              </span>
+              </GeneralButton>
               <template #menu>
                 <GeneralButton :whenClick="toggleRaw" v-text="showRaw ? '위키 보기' : '원문 보기'" v-close-popover/>
                 <template v-if="data.permissions.hide">
