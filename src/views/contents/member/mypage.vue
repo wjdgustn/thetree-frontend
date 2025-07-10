@@ -145,6 +145,7 @@ export default {
         })
       })
       if(!optionsJSON) return
+      if(optionsJSON.data) return alert(optionsJSON.data)
 
       let attResp
       try {
