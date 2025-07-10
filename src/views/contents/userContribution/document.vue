@@ -20,9 +20,9 @@
         </div>
         <div class="table-item table-buttons">
           <div class="table-buttons-wrap">
-            <GeneralButton size="small" :to="doc_action_link(item.document.parsedName, 'history')">역사</GeneralButton>
-            <GeneralButton size="small" :disabled="item.rev === 1" :to="doc_action_link(item.document.parsedName, 'diff', { uuid: item.uuid })">비교</GeneralButton>
-            <GeneralButton size="small" :to="doc_action_link(item.document.parsedName, 'discuss')">토론</GeneralButton>
+            <GeneralButton size="small" :href="doc_action_link(item.document.parsedName, 'history')">역사</GeneralButton>
+            <GeneralButton size="small" :disabled="item.rev === 1" :href="doc_action_link(item.document.parsedName, 'diff', { uuid: item.uuid })">비교</GeneralButton>
+            <GeneralButton size="small" :href="doc_action_link(item.document.parsedName, 'discuss')">토론</GeneralButton>
           </div>
         </div>
         <div class="table-item">
