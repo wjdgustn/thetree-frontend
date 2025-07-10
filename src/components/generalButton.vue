@@ -1,5 +1,5 @@
 <template>
-  <component v-if="disable" :is="this.block ? 'div' : 'span'" :="dummyButton">
+  <component v-if="disable" :is="block ? 'div' : 'span'" :="dummyButton">
     <slot/>
   </component>
   <a v-else-if="whenClick || type === 'event'" href="#" role="button" :class="buttonClass" @click.prevent="click">
@@ -11,7 +11,7 @@
   <NuxtLink v-else-if="href" :to="href" :rel="nofollow ? 'nofollow' : null" role="button" :class="buttonClass">
     <slot/>
   </NuxtLink>
-  <component v-else :is="this.block ? 'div' : 'span'" :="dummyButton">
+  <component v-else :is="block ? 'div' : 'span'" :="dummyButton">
     <slot/>
   </component>
 </template>
