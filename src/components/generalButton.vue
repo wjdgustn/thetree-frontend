@@ -1,5 +1,8 @@
 <template>
-  <a v-if="whenClick || type === 'event'" href="#" role="button" :class="buttonClass" @click.prevent="click">
+  <component v-if="disable" :="dummyButton">
+    <slot/>
+  </component>
+  <a v-else-if="whenClick || type === 'event'" href="#" role="button" :class="buttonClass" @click.prevent="click">
     <slot/>
   </a>
   <button v-else-if="type === 'submit' || type === 'reset'" :type="type" :class="buttonClass">
@@ -8,7 +11,7 @@
   <NuxtLink v-else-if="href" :to="href" :rel="nofollow ? 'nofollow' : null" role="button" :class="buttonClass">
     <slot/>
   </NuxtLink>
-  <component v-else :is="block ? 'div' : 'span'" role="button" :class="buttonClass">
+  <component v-else :="dummyButton">
     <slot/>
   </component>
 </template>
@@ -75,6 +78,13 @@ export default {
       else if(this.state === 'focus') result.push(this.$style['button--focus'])
 
       return result
+    },
+    dummyButton() {
+      return {
+        is: this.block ? 'div' : 'span',
+        role: 'button',
+        class: this.buttonClass
+      }
     }
   }
 }
