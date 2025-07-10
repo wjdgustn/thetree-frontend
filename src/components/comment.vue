@@ -14,7 +14,7 @@
           <span class="time-block">
             <LocalDate :date="comment.createdAt"/>
             <ContextMenu v-if="!previewMode && comment.type === 0" class="menu-block" placement="bottom-end">
-              <GeneralButton dummy class="menu-button">
+              <GeneralButton class="menu-button">
                 <FontAwesomeIcon icon="caret-down" />
               </GeneralButton>
               <template #menu>

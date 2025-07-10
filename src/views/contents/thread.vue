@@ -7,7 +7,7 @@
         <span v-text="['열림', '중지됨', '닫힘'][data.thread.status]"/>
       </ButtonBadge>
       <ContextMenu placement="bottom-end">
-        <GeneralButton dummy class="more-button">
+        <GeneralButton class="more-button">
           <FontAwesomeIcon icon="ellipsis-vertical" />
         </GeneralButton>
         <template #menu>

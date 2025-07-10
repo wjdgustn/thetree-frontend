@@ -1,16 +1,16 @@
 <template>
-  <component :is="block ? 'div' : 'span'" v-if="disable || dummy" role="button" :class="buttonClass">
-    <slot/>
-  </component>
-  <a v-else-if="whenClick || type === 'event'" href="#" role="button" :class="buttonClass" @click.prevent="click">
+  <a v-if="whenClick || type === 'event'" href="#" role="button" :class="buttonClass" @click.prevent="click">
     <slot/>
   </a>
   <button v-else-if="type === 'submit' || type === 'reset'" :type="type" :class="buttonClass">
     <slot/>
   </button>
-  <NuxtLink v-else :to="href" :rel="nofollow ? 'nofollow' : null" role="button" :class="buttonClass">
+  <NuxtLink v-else-if="href" :to="href" :rel="nofollow ? 'nofollow' : null" role="button" :class="buttonClass">
     <slot/>
   </NuxtLink>
+  <component v-else :is="block ? 'div' : 'span'" role="button" :class="buttonClass">
+    <slot/>
+  </component>
 </template>
 <script>
 import NuxtLink from '@/components/global/nuxtLink'
