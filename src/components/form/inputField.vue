@@ -48,6 +48,7 @@ export default {
   },
   watch: {
     submittingSeedForm(newValue) {
+      if(this.disabled) return
       this.disable = newValue
     },
     error() {
