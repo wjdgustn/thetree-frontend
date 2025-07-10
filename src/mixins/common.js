@@ -191,7 +191,7 @@ export default {
                 return
             }
 
-            progressBar?.finish()
+            if(!json.page) progressBar?.finish()
 
             return json
         },
