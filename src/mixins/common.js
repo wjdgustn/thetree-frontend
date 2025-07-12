@@ -165,7 +165,15 @@ export default {
             let json = decode(buffer)
             json = this.afterInternalRequest(json, progressBar)
 
-            return json
+            return this.withoutKeys(json, [
+                'config',
+                'configHash',
+                'session',
+                'sessionHash',
+                'partialData',
+                'code',
+                'url'
+            ])
         },
         afterInternalRequest(json, progressBar) {
             if(import.meta.env.DEV && !import.meta.env.SSR) console.log(json)
@@ -309,6 +317,12 @@ export default {
         async openQuickACLGroup(data) {
             const QuickACLGroupModal = (await import('@/components/quickACLGroupModal')).default
             await this.$vfm.show({ component: QuickACLGroupModal }, data)
+        },
+        withoutKeys(obj, keys = []) {
+            if(!obj) return obj;
+            if(Array.isArray(obj)) return obj.map(a => this.withoutKeys(a, keys));
+            obj = JSON.parse(JSON.stringify(obj));
+            return Object.fromEntries(Object.entries(obj).filter(([k]) => !keys.includes(k)));
         }
     }
 }

@@ -192,7 +192,6 @@ export default {
 
         const firstIndex = firstUnfetchedComment.comment.id - 1
         const firstComment = this.data.comments[firstIndex]
-        if(!firstComment) return
 
         let commentOffset = 0
         const firstFetchedBelowComment = this.data.comments.find(a => a.id > firstComment.id && a.user)
@@ -207,6 +206,7 @@ export default {
           noProgress: true
         })
         for(let comment of Object.values(comments)) {
+          if(!comment.id) continue
           const commentIndex = this.data.comments.findIndex(a => a.id === comment.id)
           if(commentIndex !== -1) this.data.comments[commentIndex] = comment
           else this.data.comments.push(comment)
