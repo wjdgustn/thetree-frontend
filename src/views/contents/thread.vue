@@ -57,7 +57,7 @@
     <SeedButton type="submit">변경</SeedButton>
   </SeedForm>
 
-  <SeedForm method="post" class="comment-form" :afterSubmit="afterSubmit">
+  <SeedForm method="post" :captcha="session.account.type !== 1" class="comment-form" :afterSubmit="afterSubmit">
     <ul>
       <li><button type="button" class="tab-button" :class="{ active: activeTab === 'raw' }" @click="activeTab = 'raw'">RAW 편집</button></li>
       <li><button type="button" class="tab-button" :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">미리보기</button></li>
