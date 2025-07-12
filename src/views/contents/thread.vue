@@ -192,6 +192,7 @@ export default {
 
         const firstIndex = firstUnfetchedComment.comment.id - 1
         const firstComment = this.data.comments[firstIndex]
+        if(!firstComment) return
 
         let commentOffset = 0
         const firstFetchedBelowComment = this.data.comments.find(a => a.id > firstComment.id && a.user)
