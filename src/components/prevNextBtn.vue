@@ -49,7 +49,8 @@ export default {
         query: {
           ...this.$route.query,
           ...this.prev?.query,
-          from: null
+          from: null,
+          cfrom: null
         }
       }
     },
@@ -59,7 +60,8 @@ export default {
         query: {
           ...this.$route.query,
           ...this.next?.query,
-          until: null
+          until: null,
+          cuntil: null
         }
       }
     }
