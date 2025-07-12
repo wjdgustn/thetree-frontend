@@ -171,7 +171,6 @@ export default {
                 'session',
                 'sessionHash',
                 'partialData',
-                'code',
                 'url'
             ])
         },
