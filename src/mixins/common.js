@@ -249,6 +249,7 @@ export default {
         async internalRequestAndProcess(url, options) {
             const res = await this.internalRequest(url, options)
             await this.processInternalResponse(res)
+            return res
         },
         onDynamicContentClick(e) {
             if(e.metaKey || e.ctrlKey || e.shiftKey || e.defaultPrevented) return
