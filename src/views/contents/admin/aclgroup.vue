@@ -237,7 +237,7 @@ export default {
       const nextItem = this.data.nextItem
       return {
         prev: prevItem ? { query: { name: this.data.selectedGroup.name, until: prevItem } } : null,
-        next: nextItem ? { query: { naem: this.data.selectedGroup.name, from: nextItem } } : null
+        next: nextItem ? { query: { name: this.data.selectedGroup.name, from: nextItem } } : null
       }
     }
   },
