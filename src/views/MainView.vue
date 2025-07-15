@@ -195,8 +195,6 @@ export default {
       this.afterLoadView?.()
       this.afterLoadView = null
       this.loadingView = false
-
-      this.$refs.progressBar.finish()
     }
   }
 }

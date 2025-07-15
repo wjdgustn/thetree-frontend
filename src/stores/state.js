@@ -74,6 +74,7 @@ export const useStateStore = defineStore('state', {
         if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = null
         this.components.mainView.skin ??= markRaw(Skin)
+        this.components.mainView.$refs.progressBar.finish()
         return
       }
       let view
@@ -101,6 +102,7 @@ export const useStateStore = defineStore('state', {
       this.components.mainView.loadingView = false
 
       this.cleanViewData()
+      this.components.mainView.$refs.progressBar.finish()
     },
     cleanViewData() {
       this.clearFormErrors()
