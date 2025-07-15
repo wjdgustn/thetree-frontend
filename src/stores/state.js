@@ -102,7 +102,7 @@ export const useStateStore = defineStore('state', {
       this.components.mainView.loadingView = false
 
       this.cleanViewData()
-      this.components.mainView.$refs.progressBar.finish()
+      this.components.mainView.$refs.progressBar?.finish()
     },
     cleanViewData() {
       this.clearFormErrors()
