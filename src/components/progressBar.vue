@@ -38,7 +38,7 @@ export default {
 
       if(progress === 100) this.done = true
     },
-    start(progress = 100, during = 3000, interval = 100) {
+    start(progress = 100, during = 3000, interval = 50) {
       if(this.interval) return
 
       const progressBar = this.$refs.progressBar
