@@ -56,7 +56,7 @@ export default {
       }, interval)
     },
     finish() {
-      this.set(100)
+      if(!this.done) this.set(100)
     },
     clearProgressInterval() {
       if(this.interval) clearInterval(this.interval)
