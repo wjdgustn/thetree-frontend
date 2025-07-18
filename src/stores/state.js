@@ -74,7 +74,7 @@ export const useStateStore = defineStore('state', {
         if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = null
         this.components.mainView.skin ??= markRaw(Skin)
-        this.components.mainView.$refs.progressBar.finish()
+        this.components.mainView.$refs.progressBar?.finish()
         return
       }
       let view
