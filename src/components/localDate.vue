@@ -1,5 +1,5 @@
 <template>
-  <time :datetime="dateObject.toISOString()">{{dateString}}</time>
+  <time :datetime="dateObject.toISOString()" :title="dateObject.toISOString()">{{dateString}}</time>
 </template>
 <script>
 import { formatDate } from '@/utils'
