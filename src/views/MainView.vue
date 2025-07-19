@@ -186,11 +186,7 @@ export default {
 
       const json = await this.internalRequest(url, { userUrl: url })
       if(!json) return
-      const statePatches = this.$store.state.parseResponse(json)
-
-      if(json.page) {
-        await this.$store.state.updateView(statePatches)
-      }
+      await this.processInternalResponse(json)
 
       this.afterLoadView?.()
       this.afterLoadView = null
