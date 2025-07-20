@@ -244,6 +244,18 @@
         max-width: 100%;
     }
 
+    lite-youtube.wiki-media {
+        display: table-cell;
+    }
+
+    .wiki-media-wrapper {
+        display: table;
+    }
+
+    video {
+        max-width: 100%;
+    }
+
     .wiki-heading {
         cursor: pointer;
     }

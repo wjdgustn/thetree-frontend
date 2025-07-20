@@ -14,6 +14,7 @@
 </template>
 <script>
 import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/vue'
+import '@justinribeiro/lite-youtube'
 
 import NuxtLink from '@/components/global/nuxtLink'
 import Alert from '@/components/alert'
