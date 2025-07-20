@@ -14,7 +14,6 @@
 </template>
 <script>
 import { computePosition, offset, flip, shift, autoUpdate } from '@floating-ui/vue'
-import '@justinribeiro/lite-youtube'
 
 import NuxtLink from '@/components/global/nuxtLink'
 import Alert from '@/components/alert'
@@ -70,6 +69,7 @@ export default {
   },
   mounted() {
     this.setupWikiContent()
+    if(!import.meta.env.SSR) import('@justinribeiro/lite-youtube')
   },
   watch: {
     async content() {
