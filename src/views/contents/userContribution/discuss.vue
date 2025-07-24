@@ -11,7 +11,7 @@
     </div>
     <div v-if="data.items.length" v-for="item in data.items" class="table-row">
       <div class="table-item">
-        <NuxtLink :to="'/thread/' + item.thread.url">#{{item.id}} {{item.thread.topic}}</NuxtLink>
+        <NuxtLink :to="`/thread/${item.thread.url}#${item.id}`">#{{item.id}} {{item.thread.topic}}</NuxtLink>
         <span class="document-group">
           <span class="document-icon">
             <FontAwesomeIcon icon="fa-regular fa-file-lines" />
