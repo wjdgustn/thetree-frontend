@@ -47,7 +47,8 @@ export default {
         { name: 'application-starturl', content: `/w/${state.config['wiki.front_page']}` },
 
         ...((state.page.data?.date && state.viewData.contentHtml) ? [
-          { name: 'og:description', content: this.removeHtmlTags(state.viewData.contentHtml).slice(0, 200) },
+          ...(state.viewData.embed?.image ? [{ name: 'og:image', content: state.viewData.embed.image }] : []),
+          { name: 'og:description', content: state.viewData.embed?.text ?? this.removeHtmlTags(state.viewData.contentHtml).slice(0, 200) },
           { name: 'og:type', content: 'article' }
         ] : []),
         { name: 'og:title', content: this.pageTitle },
