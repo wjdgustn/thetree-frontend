@@ -31,7 +31,7 @@
         <template v-if="session.quick_block">
           <hr>
           <GeneralButton v-close-popover :whenClick="copyUuid">UUID 복사</GeneralButton>
-          <GeneralButton :href="{ path: '/BlockHistory', query: { query: account.uuid, target: 'text' } }">차단 내역 조회</GeneralButton>
+          <GeneralButton :href="{ path: '/BlockHistory', query: { query: (account.type === 0 ? account.ip : account.uuid), target: 'text' } }">차단 내역 조회</GeneralButton>
           <template v-if="isBlockable">
             <hr>
             <GeneralButton v-close-popover theme="danger" :whenClick="onBlockButtonClick">차단</GeneralButton>
