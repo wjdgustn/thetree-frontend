@@ -175,6 +175,12 @@ export default {
         admin: true
       })
 
+      if(permissions.config && rev.fileKey) actions.push({
+        action: 'delete_file',
+        text: '[A]파일 삭제',
+        admin: true
+      })
+
       return actions
     },
     copyUuid(rev) {
