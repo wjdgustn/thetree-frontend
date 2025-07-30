@@ -76,7 +76,7 @@
       </div>
     </div>
     <IpWarn discuss/>
-    <SeedButton type="submit" submit>전송</SeedButton>
+    <SeedButton type="submit" submit :disabled="data.thread.status !== 0">전송</SeedButton>
   </SeedForm>
 </template>
 <script>
