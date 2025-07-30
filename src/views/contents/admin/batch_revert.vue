@@ -33,13 +33,13 @@
   <div v-if="data.result">
     <p>작업 결과</p>
     <ul>
-      <li v-for="item in data.result.resultText">{{item}}</li>
+      <li v-for="item in data.result.resultText" v-html="item"></li>
     </ul>
 
     <template v-if="data.result.failResultText.length">
       <p>실패 작업 목록</p>
       <ul style="color: red">
-        <li v-for="item in data.result.failResultText">{{item}}</li>
+        <li v-for="item in data.result.failResultText" v-html="item"></li>
       </ul>
     </template>
 
