@@ -49,7 +49,7 @@
             </div>
             <div class="text">{{removeHtmlTags(item.comment.contentHtml)}}</div>
           </template>
-          <template v-else-if="item.type === NotificationTypes.Owner">
+          <template v-else-if="item.type === NotificationTypes.Owner || item.type === NotificationTypes.Plugin">
             <div v-html="item.data" class="html-notification"/>
           </template>
 
@@ -85,7 +85,8 @@ import GeneralButton from '@/components/generalButton'
 const NotificationTypes = {
   UserDiscuss: 0,
   Mention: 1,
-  Owner: 2
+  Owner: 2,
+  Plugin: 3
 }
 
 export default {
@@ -116,7 +117,8 @@ export default {
       return ({
         [NotificationTypes.UserDiscuss]: 'comments',
         [NotificationTypes.Mention]: 'at',
-        [NotificationTypes.Owner]: 'bullhorn'
+        [NotificationTypes.Owner]: 'bullhorn',
+        [NotificationTypes.Plugin]: 'bell'
       })[type]
     },
     async markNotification(uuid, read) {
