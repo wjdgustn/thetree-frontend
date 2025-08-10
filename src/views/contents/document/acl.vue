@@ -184,13 +184,11 @@ export default {
   },
   methods: {
     updateRules() {
-      const hash = this.$route.hash
-      const isThread = hash.startsWith('#thread')
-      const isNS = hash.startsWith('#namespace')
+      const isNS = this.aclCategory === 'namespace'
 
       let aclKey = 'acl'
       if(isNS) aclKey = 'namespaceACL'
-      else if(isThread) aclKey = 'threadACL'
+      else if(this.aclCategory === 'thread') aclKey = 'threadACL'
 
       this.rules = this.data[aclKey][this.activeAclType.index]
 
