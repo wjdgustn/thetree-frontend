@@ -3,6 +3,11 @@
   <LinkTab
       tab
       :items="[
+          ...(data.thread ? [{
+            title: '토론 ACL',
+            href: '#thread',
+            active: aclCategory === 'thread'
+          }] : []),
           {
             title: '문서 ACL',
             href: '#document',
@@ -59,7 +64,10 @@
         <tbody v-else>
         <tr>
           <td colspan="5">
-            <template v-if="aclCategory === 'document'">
+            <template v-if="aclCategory === 'thread'">
+              (규칙이 존재하지 않습니다. <NuxtLink :to="'#document.' + aclType">문서 ACL</NuxtLink>이 적용됩니다.)
+            </template>
+            <template v-else-if="aclCategory === 'document'">
               (규칙이 존재하지 않습니다. <NuxtLink :to="'#namespace.' + aclType">이름공간 ACL</NuxtLink>이 적용됩니다.)
             </template>
             <template v-else>
@@ -70,7 +78,8 @@
         </tbody>
       </table>
     </div>
-    <SeedForm v-if="editable" method="post">
+    <SeedForm v-if="editable" method="post" :action="doc_action_link(data.document, 'acl')">
+      <input v-if="data.thread" type="hidden" name="thread" :value="data.thread.url">
       <input type="hidden" name="target" :value="aclCategory">
       <input type="hidden" name="aclType" :value="aclType === 'acl' ? 'ACL' : snakeToCamelCase(aclType)">
 
@@ -108,7 +117,7 @@
           <select name="actionType" v-model="form.actionType">
             <option value="Allow">허용</option>
             <option value="Deny">거부</option>
-            <option value="GotoNS" v-if="aclCategory === 'document'">이름공간ACL 실행</option>
+            <option value="GotoNS" v-if="aclCategory !== 'namespace'">이름공간ACL 실행</option>
             <option value="GotoOtherNS">다른 이름공간ACL 실행</option>
           </select>
           <input v-if="form.actionType === 'GotoOtherNS'" name="actionContent" placeholder="namespace">
@@ -138,6 +147,17 @@ import FormErrorAlert from '@/components/form/formErrorAlert'
 
 import { isMobile } from '@/utils'
 
+const aclNames = {
+  read: '읽기',
+  edit: '편집',
+  move: '이동',
+  delete: '삭제',
+  create_thread: '토론 생성',
+  write_thread_comment: '토론 댓글',
+  edit_request: '편집 요청',
+  acl: 'ACL'
+}
+
 export default {
   mixins: [Common],
   components: {
@@ -164,8 +184,15 @@ export default {
   },
   methods: {
     updateRules() {
-      const isNS = this.$route.hash.startsWith('#namespace')
-      this.rules = this.data[isNS ? 'namespaceACL' : 'acl'][this.activeAclTypeIndex]
+      const hash = this.$route.hash
+      const isThread = hash.startsWith('#thread')
+      const isNS = hash.startsWith('#namespace')
+
+      let aclKey = 'acl'
+      if(isNS) aclKey = 'namespaceACL'
+      else if(isThread) aclKey = 'threadACL'
+
+      this.rules = this.data[aclKey][this.activeAclType.index]
 
       if(this.prevAclCategory !== this.aclCategory)
         this.form.actionType = isNS ? 'Allow' : 'GotoNS'
@@ -199,61 +226,36 @@ export default {
     }
   },
   computed: {
+    availableAclTypes() {
+      return this.aclCategory === 'thread' ? ['read', 'write_thread_comment'] : Object.keys(aclNames)
+    },
     aclTypes() {
-      return [
-        {
-          title: '읽기',
-          href: `#${this.aclCategory}.read`,
-          active: this.aclType === 'read'
-        },
-        {
-          title: '편집',
-          href: `#${this.aclCategory}.edit`,
-          active: this.aclType === 'edit'
-        },
-        {
-          title: '이동',
-          href: `#${this.aclCategory}.move`,
-          active: this.aclType === 'move'
-        },
-        {
-          title: '삭제',
-          href: `#${this.aclCategory}.delete`,
-          active: this.aclType === 'delete'
-        },
-        {
-          title: '토론 생성',
-          href: `#${this.aclCategory}.create_thread`,
-          active: this.aclType === 'create_thread'
-        },
-        {
-          title: '토론 댓글',
-          href: `#${this.aclCategory}.write_thread_comment`,
-          active: this.aclType === 'write_thread_comment'
-        },
-        {
-          title: '편집 요청',
-          href: `#${this.aclCategory}.edit_request`,
-          active: this.aclType === 'edit_request'
-        },
-        {
-          title: 'ACL',
-          href: `#${this.aclCategory}.acl`,
-          active: this.aclType === 'acl'
-        }
-      ]
+      return this.availableAclTypes.map(a => ({
+        name: a,
+        title: aclNames[a],
+        href: `#${this.aclCategory}.${a}`,
+        active: this.aclType === a,
+        index: Object.keys(aclNames).indexOf(a)
+      }))
     },
     activeAclType() {
-      return this.aclTypes.find(a => a.active)
-    },
-    activeAclTypeIndex() {
-      return this.aclTypes.findIndex(a => a.active)
+      return this.aclTypes.find(a => a.name === this.aclType)
     },
     aclCategory() {
-      return (this.$route.hash || '').split('.')[0].slice(1) || 'document'
+      return (this.$route.hash || '').split('.')[0].slice(1) || (this.data.thread ? 'thread' : 'document')
     },
     aclType() {
-      return (this.$route.hash || '').split('.')[1] || (this.aclCategory === 'document' ? 'edit' : 'read')
+      let defaultType = 'read'
+      if(this.aclCategory === 'document')
+        defaultType = 'edit'
+      else if(this.aclCategory === 'thread')
+        defaultType = 'write_thread_comment'
+
+      let selected = (this.$route.hash || '').split('.')[1]
+      if(!this.availableAclTypes.includes(selected))
+        selected = null
+
+      return selected || defaultType
     },
     editable() {
       return this.data[this.aclCategory === 'document' ? 'editableACL' : 'editableNSACL']
