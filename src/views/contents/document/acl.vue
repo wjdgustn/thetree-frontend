@@ -256,7 +256,7 @@ export default {
       return selected || defaultType
     },
     editable() {
-      return this.data[this.aclCategory === 'document' ? 'editableACL' : 'editableNSACL']
+      return this.data[this.aclCategory === 'namespace' ? 'editableNSACL' : 'editableACL']
     }
   }
 }
