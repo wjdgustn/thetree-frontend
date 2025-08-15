@@ -19,6 +19,7 @@ export default {
           && this.$store.state.config.captcha
           && this.captcha,
       captchaId: null,
+      captchaLoadLock: [],
       captchaLock: []
     }
   },
@@ -72,6 +73,9 @@ export default {
     captchaOnLoad() {
       delete window.captchaOnLoad
 
+      for(let resolve of this.captchaLoadLock) resolve()
+      this.captchaLoadLock.length = 0
+
       this.captchaId = this.getCaptchaLib().render(this.$refs.captcha, {
         sitekey: this.captchaConfig.site_key,
         theme: this.$store.state.currentTheme,
@@ -103,6 +107,11 @@ export default {
         await this.$store.state.components.mainView.routerPush(finalUrl)
         return
       }
+
+      if(this.captchaId == null && this.useCaptcha)
+        await new Promise(resolve => {
+          this.captchaLoadLock.push(resolve)
+        })
 
       if(this.captchaId != null) {
         for(let { reject } of this.captchaLock) reject()
