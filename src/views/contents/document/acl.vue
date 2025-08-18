@@ -83,6 +83,12 @@
       <input type="hidden" name="target" :value="aclCategory">
       <input type="hidden" name="aclType" :value="aclType === 'acl' ? 'ACL' : snakeToCamelCase(aclType)">
 
+      <div class="acl-edit-group not-group">
+        <label>not</label>
+        <div>
+          <CheckBox name="not" value="Y"/>
+        </div>
+      </div>
       <div class="acl-edit-group">
         <label>Condition</label>
         <div>
@@ -144,6 +150,7 @@ import NuxtLink from '@/components/global/nuxtLink'
 import SeedForm from '@/components/form/seedForm'
 import DurationSelector from '@/components/durationSelector'
 import FormErrorAlert from '@/components/form/formErrorAlert'
+import CheckBox from '@/components/form/checkBox'
 
 import { isMobile } from '@/utils'
 
@@ -161,6 +168,7 @@ const aclNames = {
 export default {
   mixins: [Common],
   components: {
+    CheckBox,
     FormErrorAlert,
     NuxtLink,
     SeedButton,
@@ -312,6 +320,10 @@ div.acl-edit-group, label {
   display: inline-block;
   margin-bottom: 0;
   vertical-align: middle;
+}
+
+.not-group {
+  margin-right: .25rem;
 }
 
 small {
