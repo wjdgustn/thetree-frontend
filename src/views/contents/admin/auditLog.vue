@@ -6,7 +6,7 @@
     </SelectMenu>
     <SelectMenu name="type" :value="$route.query.type || 'all'">
       <option value="all">전체</option>
-      <option v-for="i in Object.values(AuditLogTypes)" :value="i">{{typeName(i)}}</option>
+      <option v-for="i of Object.values(AuditLogTypes)" :value="i">{{typeName(i)}}</option>
     </SelectMenu>
     <InputField class="search-input" name="query" placeholder="검색" v-model="$route.query.query"/>
     <div class="button-block">
@@ -38,6 +38,12 @@
           <template v-else-if="item.action === AuditLogTypes.DevSupport">
             엔진 개발자 권한을 사용함
           </template>
+          <template v-else-if="item.action === AuditLogTypes.ACLGroupCreate">
+            <b>{{item.target}}</b> ACL 그룹을 생성함
+          </template>
+          <template v-else-if="item.action === AuditLogTypes.ACLGroupDelete">
+            <b>{{item.target}}</b> ACL 그룹을 삭제함
+          </template>
         </div>
         <div v-if="item.content" class="text">
           {{item.content}}
@@ -65,6 +71,8 @@ import NuxtLink from '@/components/global/nuxtLink'
 const AuditLogTypes = {
   NamespaceACL: 0,
   DeleteThread: 1,
+  ACLGroupCreate: 3,
+  ACLGroupDelete: 4,
   DevSupport: 2
 }
 
@@ -93,21 +101,27 @@ export default {
       return ({
         [AuditLogTypes.NamespaceACL]: 'icon-nsacl',
         [AuditLogTypes.DeleteThread]: 'icon-delete-thread',
-        [AuditLogTypes.DevSupport]: 'icon-dev-support'
+        [AuditLogTypes.DevSupport]: 'icon-dev-support',
+        [AuditLogTypes.ACLGroupCreate]: 'icon-aclgroup-create',
+        [AuditLogTypes.ACLGroupDelete]: 'icon-aclgroup-delete'
       })[type]
     },
     iconName(type) {
       return ({
         [AuditLogTypes.NamespaceACL]: 'lock',
         [AuditLogTypes.DeleteThread]: 'trash-can',
-        [AuditLogTypes.DevSupport]: 'code'
+        [AuditLogTypes.DevSupport]: 'code',
+        [AuditLogTypes.ACLGroupCreate]: 'user-plus',
+        [AuditLogTypes.ACLGroupDelete]: 'user-minus'
       })[type]
     },
     typeName(type) {
       return ({
         [AuditLogTypes.NamespaceACL]: '이름공간ACL 편집',
         [AuditLogTypes.DeleteThread]: '스레드 삭제',
-        [AuditLogTypes.DevSupport]: '개발자 지원'
+        [AuditLogTypes.DevSupport]: '개발자 지원',
+        [AuditLogTypes.ACLGroupCreate]: 'ACL그룹 생성',
+        [AuditLogTypes.ACLGroupDelete]: 'ACL그룹 삭제'
       })[type]
     }
   }
@@ -258,5 +272,13 @@ export default {
 
 .icon-dev-support {
   color: #8e4ec6;
+}
+
+.icon-aclgroup-create {
+  color: #46a758;
+}
+
+.icon-aclgroup-delete {
+  color: #8b8d98;
 }
 </style>
