@@ -121,6 +121,7 @@ export default {
     })
   },
   async beforeRouteUpdate(to, from, next) {
+    console.log('beforeRouteUpdate');
     let prevPath = from.fullPath
     if(prevPath.includes('#'))
         prevPath = prevPath.slice(0, from.fullPath.lastIndexOf('#'))
@@ -175,10 +176,13 @@ export default {
       }
     },
     async routerPush(to) {
-      const result = await this.$router.push(to)
-      if(isNavigationFailure(result, NavigationFailureType.duplicated)) {
-        this.loadView().then()
-      }
+      await this.$router.push({
+        ...this.$router.resolve(to),
+        force: true
+      })
+      // if(isNavigationFailure(result, NavigationFailureType.duplicated)) {
+      //   this.loadView().then()
+      // }
     },
     async loadView(url) {
       this.loadingView = true
