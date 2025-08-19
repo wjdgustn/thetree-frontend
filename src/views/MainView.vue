@@ -121,7 +121,6 @@ export default {
     })
   },
   async beforeRouteUpdate(to, from, next) {
-    console.log('beforeRouteUpdate');
     let prevPath = from.fullPath
     if(prevPath.includes('#'))
         prevPath = prevPath.slice(0, from.fullPath.lastIndexOf('#'))
