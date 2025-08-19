@@ -177,6 +177,7 @@ export default {
     async routerPush(to) {
       await this.$router.push({
         ...this.$router.resolve(to),
+        name: undefined,
         force: true
       })
       // if(isNavigationFailure(result, NavigationFailureType.duplicated)) {
