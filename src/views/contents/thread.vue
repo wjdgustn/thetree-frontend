@@ -144,6 +144,9 @@ export default {
         ...this.data.thread,
         ...thread
       }
+
+      if(thread.deleted)
+        this.$store.state.components.mainView.routerPush(this.doc_action_link(this.data.document, 'discuss'))
     })
 
     const anchorElem = document.getElementById(location.hash.slice(1))
