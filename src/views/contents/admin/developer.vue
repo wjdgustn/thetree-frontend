@@ -220,6 +220,10 @@ a[role=button], span[role=button], button {
   resize: vertical;
 }
 
+pre {
+  overflow: scroll;
+}
+
 pre code {
   background: none;
   border: none;
