@@ -55,7 +55,8 @@ export default {
     getCaptchaLib() {
       return this.captchaConfig && {
         recaptcha: window.grecaptcha,
-        turnstile: window.turnstile
+        turnstile: window.turnstile,
+        hcaptcha: window.hcaptcha
       }[this.captchaConfig.type]
     },
     async loadCaptcha() {
@@ -66,7 +67,8 @@ export default {
       const script = document.createElement('script')
       script.src = {
         recaptcha: 'https://www.google.com/recaptcha/api.js?render=explicit&onload=captchaOnLoad',
-        turnstile: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=captchaOnLoad'
+        turnstile: 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=captchaOnLoad',
+        hcaptcha: 'https://js.hcaptcha.com/1/api.js?render=explicit&onload=captchaOnLoad'
       }[this.captchaConfig.type]
       document.head.appendChild(script)
     },
@@ -90,6 +92,9 @@ export default {
           },
           turnstile: {
             execution: 'execute'
+          },
+          hcaptcha: {
+            size: 'invisible'
           }
         }[this.captchaConfig.type]
       })
