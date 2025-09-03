@@ -35,27 +35,34 @@
     </template>
   </div>
 
+  <template v-if="data.thread.pinnedComment">
+    <h3>고정된 댓글</h3>
+    <Comment :slug="data.thread.url" :comment="pinnedComment"/>
+  </template>
+
   <h3>댓글 달기</h3>
   <FormErrorAlert/>
-  <SeedForm v-if="data.permissions.status" method="post" :action="'/admin/thread/' + data.thread.url + '/status'">
-    [ADMIN] 스레드 상태 변경
-    <select name="status">
-      <option v-if="data.thread.status !== 0" value="Normal">normal</option>
-      <option v-if="data.thread.status !== 2" value="Close">close</option>
-      <option v-if="data.thread.status !== 1" value="Pause">pause</option>
-    </select>
-    <SeedButton type="submit">변경</SeedButton>
-  </SeedForm>
-  <SeedForm v-if="data.permissions.document" method="post" :action="'/admin/thread/' + data.thread.url + '/document'">
-    [ADMIN] 스레드 이동
-    <input name="document" :value="doc_fulltitle(data.document)">
-    <SeedButton type="submit">변경</SeedButton>
-  </SeedForm>
-  <SeedForm v-if="data.permissions.document" method="post" :action="'/admin/thread/' + data.thread.url + '/topic'">
-    [ADMIN] 스레드 주제 변경
-    <input name="topic" :value="data.thread.topic">
-    <SeedButton type="submit">변경</SeedButton>
-  </SeedForm>
+  <template v-if="data.permissions.manage">
+    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/status'">
+      [ADMIN] 스레드 상태 변경
+      <select name="status">
+        <option v-if="data.thread.status !== 0" value="Normal">normal</option>
+        <option v-if="data.thread.status !== 2" value="Close">close</option>
+        <option v-if="data.thread.status !== 1" value="Pause">pause</option>
+      </select>
+      <SeedButton type="submit">변경</SeedButton>
+    </SeedForm>
+    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/document'">
+      [ADMIN] 스레드 이동
+      <input name="document" :value="doc_fulltitle(data.document)">
+      <SeedButton type="submit">변경</SeedButton>
+    </SeedForm>
+    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/topic'">
+      [ADMIN] 스레드 주제 변경
+      <input name="topic" :value="data.thread.topic">
+      <SeedButton type="submit">변경</SeedButton>
+    </SeedForm>
+  </template>
 
   <SeedForm method="post" :captcha="session.account.type !== 1" class="comment-form" :afterSubmit="afterSubmit">
     <ul>
@@ -116,6 +123,11 @@ export default {
       socket: null,
       activeTab: 'raw',
       previewComment: {}
+    }
+  },
+  computed: {
+    pinnedComment() {
+      return this.data.thread.pinnedComment && this.data.comments.find(a => a.id === this.data.thread.pinnedComment)
     }
   },
   created() {

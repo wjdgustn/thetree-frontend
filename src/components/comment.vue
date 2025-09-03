@@ -19,9 +19,10 @@
               </GeneralButton>
               <template #menu>
                 <GeneralButton :whenClick="toggleRaw" v-text="showRaw ? '위키 보기' : '원문 보기'" v-close-popover/>
-                <template v-if="data.permissions.hide">
+                <template v-if="data.permissions.manage">
                   <hr>
                   <GeneralButton theme="danger" :whenClick="toggleHide" v-text="comment.hidden ? '[ADMIN] 숨기기 해제' : '[ADMIN] 숨기기'" v-close-popover/>
+                  <GeneralButton theme="danger" :whenClick="togglePin" v-text="comment.id === data.thread?.pinnedComment ? '[ADMIN] 댓글 고정 해제' : '[ADMIN] 댓글 고정'" v-close-popover/>
                 </template>
               </template>
             </ContextMenu>
@@ -39,7 +40,7 @@
         </template>
         <template v-else>
           [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>에 의해 숨겨진 글입니다.]
-          <SeedButton @click="forceShow = true" v-if="data.permissions.hide" danger>[ADMIN] SHOW</SeedButton>
+          <SeedButton @click="forceShow = true" v-if="data.permissions.manage" danger>[ADMIN] SHOW</SeedButton>
         </template>
       </div>
     </div>
@@ -157,6 +158,11 @@ export default {
     },
     async toggleHide() {
       await this.internalRequestAndProcess(`/admin/thread/${this.slug}/${this.comment.id}/${this.comment.hidden ? 'show' : 'hide'}`, {
+        method: 'POST'
+      })
+    },
+    async togglePin() {
+      await this.internalRequestAndProcess(`/admin/thread/${this.slug}/${this.data.thread.pinnedComment === this.comment.id ? 0 : this.comment.id}/pin`, {
         method: 'POST'
       })
     }
