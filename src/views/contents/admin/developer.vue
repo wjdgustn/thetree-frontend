@@ -197,7 +197,7 @@ export default {
     },
     buildAllSkin() {
       this.internalPost('/admin/developer/skin/build', {
-        name: Object.keys(this.data.skinCommitIds)
+        name: Object.keys(this.data.skinCommitIds).filter(a => a !== 'plain')
       })
     },
     evalKeydown(e) {
