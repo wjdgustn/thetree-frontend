@@ -50,7 +50,7 @@
       <GeneralButton theme="primary" type="submit">추가</GeneralButton>
     </SeedForm>
     <GeneralButton theme="primary" type="event" @click="buildAllSkin">모두 빌드</GeneralButton>
-    <Heading v-for="(commitId, name) in data.skinCommitIds" :title="name" :level="3">
+    <Heading v-for="(commitId, name) in data.skinCommitIds" :title="name" :level="3" :folded="name === 'plain'">
       <template v-if="data.skinInfos[name]">
         <p>빌드 정보</p>
         <ul>
@@ -74,7 +74,7 @@
       <GeneralButton theme="primary" type="event" @click="internalPost('/admin/developer/skin/build', { name })">빌드</GeneralButton>
       <p>설치된 스킨: {{commitId}}</p>
       <GeneralButton theme="primary" type="event" @click="internalPost('/admin/developer/skin/update', { name })">업데이트</GeneralButton>
-      <GeneralButton theme="danger" type="event" @click="internalPost('/admin/developer/skin/delete', { name })">삭제</GeneralButton>
+      <GeneralButton theme="danger" type="event" @click="internalPost('/admin/developer/skin/delete', { name })" :disabled="name === 'plain'">삭제</GeneralButton>
     </Heading>
   </Heading>
   <Heading title="도구">
