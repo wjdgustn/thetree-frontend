@@ -20,7 +20,7 @@
         <p>사유:</p>
         <input type="text" name="close_reason">
       </div>
-      <div>
+      <div v-if="data.permissions.status">
         <p>이 편집 요청을 다시 열수 없게 잠금</p>
         <input type="checkbox" name="lock" value="Y">
       </div>
