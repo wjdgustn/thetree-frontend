@@ -71,7 +71,7 @@
     </ul>
     <div class="tabs">
       <div :class="{ active: activeTab === 'raw' }">
-        <textarea v-if="data.thread.status === 0" ref="commentInput" rows="5" name="text"/>
+        <textarea v-if="data.thread.status === 0" ref="commentInput" rows="5" name="text" @keydown.ctrl.enter="sendComment"/>
         <textarea v-else rows="5" disabled v-text="['', 'pause 상태입니다.', '닫힌 토론입니다.'][data.thread.status]"/>
       </div>
       <div class="preview-tab" :class="{ active: activeTab === 'preview' }">
@@ -85,8 +85,6 @@
     <IpWarn discuss/>
     <SeedButton ref="submitButton" type="submit" submit :disabled="data.thread.status !== 0">전송</SeedButton>
   </SeedForm>
-
-  <GlobalEvents @keydown.ctrl.enter="sendComment"/>
 </template>
 <script>
 import { io } from 'socket.io-client'
