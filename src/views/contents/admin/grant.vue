@@ -13,9 +13,16 @@
     <input type="hidden" name="uuid" :value="data.targetUser.uuid">
 
     <h3>{{data.targetUser.name}}</h3>
-    <p v-for="item in data.grantablePermissions">
-      <label :for="item + 'Input'">{{item}}</label>
-      &nbsp;<input type="checkbox" :id="item + 'Input'" :name="item" value="Y" :checked="data.targetUser.permissions.includes(item)">
+    <p v-for="item in data.allPermissions">
+      <label :for="item + 'Input'" :class="{ 'disabled-perm': !data.grantablePermissions.includes(item) }">{{item}}</label>
+      &nbsp;<input
+        type="checkbox"
+        :id="item + 'Input'"
+        :name="item"
+        value="Y"
+        :checked="data.targetUser.permissions.includes(item)"
+        :disabled="!data.grantablePermissions.includes(item)"
+    >
     </p>
     <div class="button-block">
       <label v-if="data.hidelogPerm">
@@ -51,4 +58,7 @@ form div.button-block {
   text-align: right;
 }
 
+.disabled-perm {
+  opacity: .5;
+}
 </style>
