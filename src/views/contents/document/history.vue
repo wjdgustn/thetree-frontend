@@ -20,6 +20,11 @@
               @click="adminAction(rev, action.action)">
             {{action.text}}
           </a>
+          <a
+              v-else-if="action.post"
+              @click="postAction(rev, action.action)">
+            {{action.text}}
+          </a>
           <NuxtLink
               v-else
               :to="doc_action_link(data.document, action.action, { uuid: rev.uuid })"
@@ -144,6 +149,12 @@ export default {
         }] : [])
       ]
 
+      if(rev.transfer) actions.push({
+        action: 'transfer_contribution',
+        text: '이 기여를 로그인 사용자로 이전하기',
+        post: true
+      })
+
       const permissions = this.data.permissions
       if(permissions.troll) actions.push(rev.troll ? {
         action: 'unmark_troll',
@@ -189,6 +200,15 @@ export default {
     },
     async adminAction(rev, action) {
       await this.internalRequestAndProcess(this.doc_action_link(this.data.document, 'a/' + action, { uuid: rev.uuid }))
+    },
+    async postAction(rev, action) {
+      await this.internalRequestAndProcess(this.doc_action_link(this.data.document, action), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({ uuid: rev.uuid }).toString()
+      })
     },
     beforeDiff() {
       return !!this.diffOldRev && !!this.diffRev
