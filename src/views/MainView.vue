@@ -2,11 +2,20 @@
   <ProgressBar ref="progressBar"/>
   <component :is="skin"/>
   <Toaster :theme="$store.state.currentTheme" :richColors="true"/>
+
+  <GlobalEvents
+      :filter="e => !['INPUT', 'TEXTAREA'].includes(e.target.tagName)"
+      @keydown.exact.prevent.a="gotoRandom"
+      @keydown.exact.prevent.e="gotoEdit"
+      @keydown.exact.prevent.d="gotoRecentDiscuss"
+      @keydown.exact.prevent.c="gotoRecent"
+      @keydown.exact.prevent.f="gotoFront"
+  />
 </template>
 
 <script>
-import { isNavigationFailure, NavigationFailureType } from 'vue-router'
 import { Toaster } from 'vue-sonner'
+import { GlobalEvents } from 'vue-global-events'
 
 import Common from '@/mixins/common'
 import ProgressBar from '@/components/progressBar'
@@ -15,7 +24,8 @@ export default {
   mixins: [Common],
   components: {
     ProgressBar,
-    Toaster
+    Toaster,
+    GlobalEvents
   },
   computed: {
     pageTitle() {
@@ -133,23 +143,6 @@ export default {
       await this.loadView(to.fullPath)
     next()
   },
-  mounted() {
-    window.addEventListener('keypress', async e => {
-      if(e.metaKey || e.ctrlKey || e.shiftKey || e.defaultPrevented) return
-      if([
-        'INPUT', 'TEXTAREA'
-      ].includes(document.activeElement.tagName)) return
-
-      if(e.key === 'c') await this.routerPush('/RecentChanges')
-      if(e.key === 'd') await this.routerPush('/RecentDiscuss')
-      if(e.key === 'a') await this.routerPush('/random')
-      if(e.key === 'f') await this.routerPush(this.doc_action_link(this.$store.state.config['wiki.front_page'], 'w'))
-      if(e.key === 'e') {
-        const doc = this.$store.state.page.data.document
-        if(doc) await this.routerPush(this.doc_action_link(doc, 'edit'))
-      }
-    })
-  },
   watch: {
     $route() {
       this.processNextUrl()
@@ -196,6 +189,23 @@ export default {
       this.afterLoadView?.()
       this.afterLoadView = null
       this.loadingView = false
+    },
+
+    gotoRandom() {
+      this.routerPush('/random')
+    },
+    gotoEdit() {
+      const doc = this.$store.state.page.data.document
+      if(doc) this.routerPush(this.doc_action_link(doc, 'edit'))
+    },
+    gotoRecentDiscuss() {
+      this.routerPush('/RecentDiscuss')
+    },
+    gotoRecent() {
+      this.routerPush('/RecentChanges')
+    },
+    gotoFront() {
+      this.routerPush(this.doc_action_link(this.$store.state.config['wiki.front_page'], 'w'))
     }
   }
 }
