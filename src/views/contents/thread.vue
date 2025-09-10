@@ -83,11 +83,14 @@
       </div>
     </div>
     <IpWarn discuss/>
-    <SeedButton type="submit" submit :disabled="data.thread.status !== 0">전송</SeedButton>
+    <SeedButton ref="submitButton" type="submit" submit :disabled="data.thread.status !== 0">전송</SeedButton>
   </SeedForm>
+
+  <GlobalEvents @keydown.ctrl.enter="sendComment"/>
 </template>
 <script>
 import { io } from 'socket.io-client'
+import { GlobalEvents } from 'vue-global-events'
 
 import Common from '@/mixins/common'
 import ButtonBadge from '@/components/buttonBadge'
@@ -111,7 +114,8 @@ export default {
     SeedButton,
     SeedForm,
     ContextMenu,
-    ButtonBadge
+    ButtonBadge,
+    GlobalEvents
   },
   data() {
     return {
@@ -270,6 +274,10 @@ export default {
       })
 
       this.previewComment.contentHtml = json.contentHtml
+    },
+    sendComment(e) {
+      if(e.repeat) return
+      this.$refs.submitButton.$el.click()
     }
   }
 }
