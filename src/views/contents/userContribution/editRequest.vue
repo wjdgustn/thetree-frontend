@@ -4,14 +4,14 @@
   <div style="margin-bottom:1rem">
     <PrevNextBtn flex v-bind="pageProps"/>
   </div>
-  <div class="list-table">
-    <div class="table-row table-heading">
-      <div class="table-item">편집 요청</div>
-      <div class="table-item">상태</div>
-      <div class="table-item">시간</div>
+  <div :class="$style.table">
+    <div :class="[$style.row, $style['row--head'], 'table-row']">
+      <div :class="[$style.column, 'table-column']">편집 요청</div>
+      <div :class="[$style.column, 'table-column']">상태</div>
+      <div :class="[$style.column, 'table-column']">시간</div>
     </div>
-    <div v-if="data.items.length" v-for="item in data.items" class="table-row">
-      <div class="table-item">
+    <div v-if="data.items.length" v-for="item in data.items" :class="[$style.row, 'table-row']">
+      <div :class="[$style.column, 'table-column']">
         <NuxtLink :to="'/edit_request/' + item.url">편집요청 {{item.url}}</NuxtLink>
         <DiffCount class="diff-count" :count="item.diffLength"/>
         <span class="document-group">
@@ -21,13 +21,18 @@
           <NuxtLink :to="doc_action_link(item.document.parsedName, 'discuss')" class="document-link">{{doc_fulltitle(item.document.parsedName)}}</NuxtLink>
         </span>
       </div>
-      <div class="table-item">{{['OPEN', 'ACCEPTED', 'CLOSED', 'LOCKED'][item.status]}}</div>
-      <div class="table-item">
+      <div :class="[$style.column, 'table-column']">{{['OPEN', 'ACCEPTED', 'CLOSED', 'LOCKED'][item.status]}}</div>
+      <div :class="[$style.column, 'table-column']">
         <LocalDate :date="item.lastUpdatedAt" relative/>
       </div>
+      <div v-if="item.createdUser" :class="[$style.column, $style['column--full'], 'table-column', 'author-text']">
+        (사용자
+        <AuthorSpan :account="item.createdUser"/>의
+        편집 요청)
+      </div>
     </div>
-    <div v-else class="table-row">
-      <div class="table-item no-item">
+    <div v-else :class="[$style.row, 'table-row']">
+      <div :class="[$style.column, $style['column--single'], 'table-column']">
         (기여 내역이 없습니다.)
       </div>
     </div>
@@ -43,10 +48,12 @@ import PrevNextBtn from '@/components/prevNextBtn'
 import NuxtLink from '@/components/global/nuxtLink'
 import DiffCount from '@/components/diffCount'
 import LocalDate from '@/components/localDate'
+import AuthorSpan from '@/components/authorSpan'
 
 export default {
   mixins: [Common],
   components: {
+    AuthorSpan,
     LocalDate,
     DiffCount,
     NuxtLink,
@@ -65,61 +72,13 @@ export default {
   }
 }
 </script>
+<style module>
+@import '@/styles/table.css';
+</style>
 <style scoped>
-@media screen and (max-width: 1023.98px) {
-  .table-heading+.table-row {
-    border-top: 1px solid #e0e0e0;
-  }
-
-  .theseed-dark-mode .table-heading+.table-row {
-    border-top-color: #575757;
-  }
-}
-
 .link-tab {
   margin-bottom: 1rem;
   margin-top: 1rem;
-}
-
-.list-table {
-  display: flex;
-  flex-direction: column;
-}
-
-.table-row {
-  border-bottom: 1px solid #e0e0e0;
-  display: grid;
-}
-
-.theseed-dark-mode .table-row {
-  border-bottom-color: #575757;
-}
-
-.table-row:not(.table-heading):hover {
-  background-color: #fbfbfb;
-}
-
-.theseed-dark-mode .table-row:not(.table-heading):hover {
-  background-color: #2a2a2a;
-}
-
-.table-heading {
-  border-bottom-width: 2px;
-  font-weight: 600;
-}
-
-@media screen and (max-width: 1023.98px) {
-  .table-heading {
-    display: none;
-  }
-
-  .table-heading+.table-row {
-    border-top: 1px solid #e0e0e0;
-  }
-}
-
-.table-item {
-  padding: .5rem .75rem;
 }
 
 .document-icon {
@@ -156,35 +115,44 @@ export default {
 }
 
 .table-row {
+  display: grid;
   grid-template-columns: 1fr 10rem 13rem;
 }
 
 @media screen and (max-width: 1023.98px) {
   .table-row {
-    gap:.1rem;
-    grid-template-columns: none;
+    column-gap: .75rem;
+    grid-template-columns: auto 1fr;
     padding: .5rem;
+    row-gap: .1rem;
   }
 
-  .table-item {
+  .table-column {
     margin: 0 !important;
     padding: 0 !important;
   }
+}
 
-  .table-item:first-child {
+.author-text {
+  font-style: italic;
+  grid-column: 1/3;
+}
+
+@media screen and (max-width: 1023.98px) {
+  .table-column:first-child {
     font-size: 1.05rem;
+    grid-column: 1/3;
   }
 
-  .table-item:nth-child(3) {
-    color: #888;
+  .table-column:nth-child(2) {
     font-size: .85rem;
     order: -1;
   }
-}
 
-.no-item {
-  color: #888;
-  grid-column: 1/4;
-  text-align: center;
+  .table-column:nth-child(3) {
+    color: #888;
+    font-size: .85rem;
+    order: -2;
+  }
 }
 </style>

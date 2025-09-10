@@ -15,7 +15,7 @@
 
 .row {
     border-bottom: 1px solid #e0e0e0;
-    display: flex;;
+    display: flex;
 }
 
 :global(.theseed-dark-mode) .row {
