@@ -10,16 +10,20 @@
       <SeedFormInput type="text" id="reasonInput" name="reason"/>
     </SeedFormBlock>
     <SeedFormBlock name="closeEditRequests">
-      <input type="checkbox" id="closeEditRequestsInput" name="closeEditRequests" value="Y">
+      <input type="checkbox" id="closeEditRequestsInput" name="closeEditRequests" value="Y" checked>
       <label for="closeEditRequests">편집 요청 닫기</label>
     </SeedFormBlock>
     <SeedFormBlock name="hideThreadComments">
-      <input type="checkbox" id="hideThreadCommentsInput" name="hideThreadComments" value="Y">
+      <input type="checkbox" id="hideThreadCommentsInput" name="hideThreadComments" value="Y" checked>
       <label for="hideThreadCommentsInput">토론 댓글 숨기기</label>
     </SeedFormBlock>
     <SeedFormBlock name="revertContributions">
-      <input type="checkbox" id="revertContributionsInput" name="revertContributions" value="Y">
+      <input type="checkbox" id="revertContributionsInput" name="revertContributions" value="Y" checked>
       <label for="revertContributionsInput">편집 되돌리기</label>
+    </SeedFormBlock>
+    <SeedFormBlock name="revertEditRequests">
+      <input type="checkbox" id="revertEditRequestsInput" name="revertEditRequests" value="Y" checked>
+      <label for="revertEditRequestsInput">편집 요청 되돌리기</label>
     </SeedFormBlock>
     <SeedFormBlock v-if="data.hidelogPerm" name="revertContributions">
       <input type="checkbox" id="hidelogInput" name="hidelogInput" value="Y">
