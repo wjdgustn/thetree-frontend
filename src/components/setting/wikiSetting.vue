@@ -17,6 +17,11 @@
     <option value="popover">팝오버</option>
     <option value="popup">팝업</option>
   </SettingItemSelect>
+  <SettingItemSelect label="분류 위치" ckey="wiki.category_position" default="top">
+    <option value="top">상단</option>
+    <option value="bottom">하단</option>
+    <option value="both">모두</option>
+  </SettingItemSelect>
   <SettingItemSelect label="기본 편집 모드" ckey="wiki.default_edit_mode" :default="defaultEditMode">
     <template v-for="mode in editModes">
       <option :value="mode.name">{{mode.label}}</option>

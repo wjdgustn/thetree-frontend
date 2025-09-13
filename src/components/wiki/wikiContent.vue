@@ -1,7 +1,9 @@
 <template>
-  <WikiCategory v-if="categories.length" :categories="categories"/>
+  <WikiCategory v-if="categories.length && $store.state.localConfig['wiki.category_position'] !== 'bottom'" :categories="categories"/>
 
   <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" @submit.prevent="formSubmit" :class="{ 'wiki-thread-content': discuss }"></div>
+
+  <WikiCategory v-if="categories.length && ['bottom', 'both'].includes($store.state.localConfig['wiki.category_position'])" :categories="categories"/>
 
   <div ref="popover" v-show="popover.show" id="tooltip" class="popper">
     <div ref="popoverArrow" id="tooltip-arrow" class="popper__arrow"></div>
