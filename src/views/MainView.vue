@@ -169,7 +169,7 @@ export default {
     },
     async routerPush(to) {
       await this.$router.push({
-        ...this.$router.resolve(to),
+        ...(typeof to === 'string' ? this.$router.resolve(to) : to),
         name: undefined,
         force: true
       })
