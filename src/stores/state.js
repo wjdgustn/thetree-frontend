@@ -129,6 +129,9 @@ export const useStateStore = defineStore('state', {
       if(!theme || theme === 'auto')
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
       return theme
-    }
+    },
+      isDark() {
+        return this.currentTheme === 'dark'
+      }
   }
 })
