@@ -47,6 +47,23 @@
             <GeneralButton v-else :class="$style.button" href="/member/activate_otp">활성화</GeneralButton>
           </div>
         </div>
+        <div v-if="data.externalProviders?.length" :class="$style.form__row">
+          <label>외부 계정 연결</label>
+          <div :class="[$style.table, $style['table--bordered']]">
+            <div :class="[$style.row, $style['row--head'], 'table-row']">
+              <div v-for="text in ['제공자', '이름', '이메일', '']" :class="[$style.column, 'table-column']">{{text}}</div>
+            </div>
+            <div v-for="item in data.externalProviders" :class="[$style.row, 'table-row']">
+              <div :class="[$style.column, 'table-column']">{{item.displayName}}</div>
+              <div :class="[$style.column, 'table-column']">{{data.oauth2Maps[item.name]?.name}}</div>
+              <div :class="[$style.column, 'table-column']">{{data.oauth2Maps[item.name]?.email}}</div>
+              <div :class="[$style.column, $style['column--button-parent'], 'table-column']">
+                <GeneralButton v-if="data.oauth2Maps[item.name]" theme="primary" size="small" :href="'/member/login/oauth2/' + item.name">등록</GeneralButton>
+                <GeneralButton v-else theme="danger" size="small" :whenClick="() => removeExternalAccount(item.name)">해제</GeneralButton>
+              </div>
+            </div>
+          </div>
+        </div>
         <div v-if="data.hasTotp" :class="$style.form__row">
           <label>Passkey</label>
           <div :class="[$style.table, $style['table--bordered']]">
@@ -192,6 +209,14 @@ export default {
     async removeDeveloperPerm() {
       await this.internalRequestAndProcess('/member/remove_developer_perm', {
         method: 'POST'
+      })
+    },
+    async removeExternalAccount(provider) {
+      await this.internalRequestAndProcess(`/member/login/oauth2/${provider}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
     }
   }
