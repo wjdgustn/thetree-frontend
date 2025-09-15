@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     externalProviders() {
-      return this.data.externalProviders.map(a => {
+      return this.data.externalProviders?.map(a => {
         const buttonHoverColor = a.buttonColor && Color(a.buttonColor).darken(0.1).hex()
         return {
           ...a,
