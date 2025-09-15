@@ -116,6 +116,10 @@ form {
   margin-top: .5rem;
 }
 
+.external-login-button:last-child {
+  margin-bottom: .5rem;
+}
+
 .external-login-button img {
   width: 20px;
   min-width: 20px;
