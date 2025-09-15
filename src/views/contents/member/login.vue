@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    this.passkeyLogin()
+    this.passkeyLogin(true)
   },
   beforeUnmount() {
     WebAuthnAbortService.cancelCeremony()
@@ -91,7 +91,7 @@ export default {
         return false
       }
     },
-    async passkeyLogin() {
+    async passkeyLogin(auto = false) {
       if(this.data.disableInternal) return
 
       let asseResp
@@ -100,7 +100,7 @@ export default {
       } catch (e) {
         if(e.code === 'ERROR_CEREMONY_ABORTED') return
         console.error(e)
-        alert(e.toString())
+        if(!auto) alert(e.toString())
         return
       }
 
