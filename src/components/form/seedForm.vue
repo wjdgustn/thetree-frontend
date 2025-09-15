@@ -91,7 +91,8 @@ export default {
             size: 'invisible'
           },
           turnstile: {
-            execution: 'execute'
+            execution: 'execute',
+            appearance: 'execute'
           },
           hcaptcha: {
             size: 'invisible'
