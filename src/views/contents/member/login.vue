@@ -1,27 +1,29 @@
 <template>
   <FormErrorAlert/>
   <SeedForm method="post" captcha>
-    <FlexFormBlock label="Email" name="email" inputId="emailInput">
-      <InputField id="emailInput" name="email"/>
-    </FlexFormBlock>
-    <FlexFormBlock label="Password" name="password" inputId="passwordInput">
-      <InputField id="passwordInput" name="password" type="password"/>
-    </FlexFormBlock>
-    <FlexFormBlock flexStart>
-      <NuxtLink to="/member/recover_password">비밀번호를 잊으셨나요?</NuxtLink>
-    </FlexFormBlock>
-    <FlexFormBlock buttons padding>
-      <CheckBox name="autologin" value="Y">자동 로그인</CheckBox>
-      <template #buttons>
-        <GeneralButton href="/member/signup">계정 만들기</GeneralButton>
-        <GeneralButton type="submit" theme="primary">로그인</GeneralButton>
-      </template>
-    </FlexFormBlock>
+    <template v-if="!data.disableInternal">
+      <FlexFormBlock label="Email" name="email" inputId="emailInput">
+        <InputField id="emailInput" name="email"/>
+      </FlexFormBlock>
+      <FlexFormBlock label="Password" name="password" inputId="passwordInput">
+        <InputField id="passwordInput" name="password" type="password"/>
+      </FlexFormBlock>
+      <FlexFormBlock flexStart>
+        <NuxtLink to="/member/recover_password">비밀번호를 잊으셨나요?</NuxtLink>
+      </FlexFormBlock>
+      <FlexFormBlock buttons padding>
+        <CheckBox name="autologin" value="Y">자동 로그인</CheckBox>
+        <template #buttons>
+          <GeneralButton v-if="!data.disableSignup" href="/member/signup">계정 만들기</GeneralButton>
+          <GeneralButton type="submit" theme="primary">로그인</GeneralButton>
+        </template>
+      </FlexFormBlock>
+    </template>
 
     <template v-if="externalProviders.length">
-      <hr>
+      <div class="or" v-if="!data.disableInternal">외부 로그인</div>
       <div class="external-login-buttons">
-        <GeneralButton v-for="item in externalProviders" block :style="{
+        <GeneralButton v-for="item in externalProviders" block :href="`/member/login/oauth2/${item.name}?redirect=${encodeURIComponent($route.query.redirect)}`" :style="{
         '--login-button-background-color': ($store.state.isDark && item.buttonColor) || item.buttonColor || undefined,
         '--login-button-background-hover-color': item.buttonHoverColor || undefined,
         '--login-button-background-dark-hover-color': item.darkButtonHoverColor || undefined,
@@ -59,21 +61,7 @@ export default {
   },
   computed: {
     externalProviders() {
-      return [
-        {
-          text: 'Google 로그인'
-        },
-        {
-          text: 'Kakao 로그인',
-          buttonColor: '#fee500',
-          darkTextColor: '#000000'
-        },
-        {
-          text: 'Naver 로그인',
-          buttonColor: '#03c157',
-          textColor: '#ffffff'
-        }
-      ].map(a => {
+      return this.data.externalProviders.map(a => {
         const buttonHoverColor = a.buttonColor && Color(a.buttonColor).darken(0.1).hex()
         return {
           ...a,
@@ -100,7 +88,28 @@ form {
   justify-content: flex-end;
 }
 
-.external-login-buttons div {
+.or {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.or::before,
+.or::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.or:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.or:not(:empty)::after {
+  margin-left: .25em;
+}
+
+.external-login-buttons a {
   margin-top: .5rem;
   --button-background-color: var(--login-button-background-color);
   --button-background-hover-color: var(--login-button-background-hover-color);
@@ -108,7 +117,7 @@ form {
   --button-color: var(--login-button-color);
 }
 
-.external-login-buttons div img {
+.external-login-buttons a img {
   width: 20px;
   height: 20px;
   min-width: 20px;

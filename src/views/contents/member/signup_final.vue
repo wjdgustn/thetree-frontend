@@ -10,12 +10,15 @@
       </template>
       <SeedFormInput v-else id="usernameInput" name="username"/>
     </SeedFormBlock>
-    <SeedFormBlock label="암호" inputId="passwordInput" name="password">
-      <SeedFormInput id="passwordInput" name="password" type="password"/>
-    </SeedFormBlock>
-    <SeedFormBlock label="암호 확인" inputId="passwordConfirmInput" name="password_confirm">
-      <SeedFormInput id="passwordConfirmInput" name="password_confirm" type="password"/>
-    </SeedFormBlock>
+    <input v-if="data.fromOAuth2" type="hidden" name="from_oauth2" value="Y">
+    <template v-else>
+      <SeedFormBlock label="암호" inputId="passwordInput" name="password">
+        <SeedFormInput id="passwordInput" name="password" type="password"/>
+      </SeedFormBlock>
+      <SeedFormBlock label="암호 확인" inputId="passwordConfirmInput" name="password_confirm">
+        <SeedFormInput id="passwordConfirmInput" name="password_confirm" type="password"/>
+      </SeedFormBlock>
+    </template>
     <SeedButton submit>가입</SeedButton>
   </SeedForm>
 </template>
