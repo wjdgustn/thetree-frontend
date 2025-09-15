@@ -194,6 +194,10 @@ export default {
 
             const strCode = json.code?.toString() || ''
             if(strCode.startsWith('3')) {
+                if(!json.url.startsWith('/')) {
+                    location.href = json.url
+                    return
+                }
                 this.$store.state.components.mainView.nextUrl = json.url
                 return
             }
