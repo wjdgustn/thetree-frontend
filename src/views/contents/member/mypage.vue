@@ -58,8 +58,8 @@
               <div :class="[$style.column, 'table-column']">{{data.oauth2Maps[item.name]?.name}}</div>
               <div :class="[$style.column, 'table-column']">{{data.oauth2Maps[item.name]?.email}}</div>
               <div :class="[$style.column, $style['column--button-parent'], 'table-column']">
-                <GeneralButton v-if="data.oauth2Maps[item.name]" theme="primary" size="small" :href="'/member/login/oauth2/' + item.name">등록</GeneralButton>
-                <GeneralButton v-else theme="danger" size="small" :whenClick="() => removeExternalAccount(item.name)">해제</GeneralButton>
+                <GeneralButton v-if="data.oauth2Maps[item.name]" theme="danger" size="small" :whenClick="() => removeExternalAccount(item.name)">해제</GeneralButton>
+                <GeneralButton v-else theme="primary" size="small" :href="'/member/login/oauth2/' + item.name">등록</GeneralButton>
               </div>
             </div>
           </div>
