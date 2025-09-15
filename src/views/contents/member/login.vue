@@ -28,8 +28,8 @@
         '--dark-article-background-color': item.darkButtonColor || undefined,
         '--button-background-hover-color': item.buttonHoverColor || undefined,
         '--button-background-dark-hover-color': item.darkButtonHoverColor || undefined,
-        '--button-color': item.textColor || undefined,
-        '--button-dark-color': item.darkTextColor || undefined
+        '--light-text-color': item.textColor || undefined,
+        '--dark-text-color': item.darkTextColor || undefined
       }">
           <img v-if="item.logo || item.darkLogo" :src="($store.state.isDark && item.darkLogo) || item.logo || item.darkLogo">
           {{($store.state.isDark && item.darkText) || item.text}}
