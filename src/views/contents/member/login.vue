@@ -3,7 +3,7 @@
   <SeedForm method="post" captcha :beforeSubmit="beforeSubmit">
     <template v-if="!data.disableInternal">
       <FlexFormBlock label="Email" name="email" inputId="emailInput">
-        <InputField id="emailInput" name="email" autocomplete="email username webauthn"/>
+        <InputField id="emailInput" name="email" autocomplete="username webauthn"/>
       </FlexFormBlock>
       <FlexFormBlock label="Password" name="password" inputId="passwordInput">
         <InputField id="passwordInput" name="password" type="password"/>
