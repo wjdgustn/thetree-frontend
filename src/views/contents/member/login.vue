@@ -119,7 +119,6 @@ form {
 
 .external-login-button img {
   width: 20px;
-  height: 20px;
   min-width: 20px;
 }
 </style>
