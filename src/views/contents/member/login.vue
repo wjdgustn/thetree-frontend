@@ -23,7 +23,7 @@
     <template v-if="externalProviders.length">
       <div class="or" v-if="!data.disableInternal">외부 로그인</div>
       <div class="external-login-buttons">
-        <GeneralButton v-for="item in externalProviders" block :href="`/member/login/oauth2/${item.name}?redirect=${encodeURIComponent($route.query.redirect)}`" :style="{
+        <GeneralButton v-for="item in externalProviders" block class="external-login-button" :href="`/member/login/oauth2/${item.name}?redirect=${encodeURIComponent($route.query.redirect)}`" :style="{
         '--login-button-background-color': ($store.state.isDark && item.buttonColor) || item.buttonColor || undefined,
         '--login-button-background-hover-color': item.buttonHoverColor || undefined,
         '--login-button-background-dark-hover-color': item.darkButtonHoverColor || undefined,
@@ -109,7 +109,7 @@ form {
   margin-left: .25em;
 }
 
-.external-login-buttons a {
+.external-login-button {
   margin-top: .5rem;
   --button-background-color: var(--login-button-background-color);
   --button-background-hover-color: var(--login-button-background-hover-color);
@@ -117,7 +117,7 @@ form {
   --button-color: var(--login-button-color);
 }
 
-.external-login-buttons a img {
+.external-login-button img {
   width: 20px;
   height: 20px;
   min-width: 20px;
