@@ -27,7 +27,8 @@
         '--login-button-background-color': ($store.state.isDark && item.darkButtonColor) || item.buttonColor || undefined,
         '--login-button-background-hover-color': item.buttonHoverColor || undefined,
         '--login-button-background-dark-hover-color': item.darkButtonHoverColor || undefined,
-        '--login-button-color': ($store.state.isDark && item.darkTextColor) || item.textColor || undefined
+        '--login-button-color': item.textColor || undefined,
+        '--login-button-dark-color': item.darkTextColor || undefined
       }">
           <img v-if="item.logo || item.darkLogo" :src="($store.state.isDark && item.darkLogo) || item.logo || item.darkLogo">
           {{($store.state.isDark && item.darkText) || item.text}}
@@ -115,7 +116,8 @@ form {
   --button-background-color: var(--login-button-background-color);
   --button-background-hover-color: var(--login-button-background-hover-color);
   --button-background-dark-hover-color: var(--login-button-background-dark-hover-color);
-  --button-color: var(--login-button-color);
+  --light-text-color: var(--login-button-color);
+  --dark-text-color: var(--login-button-dark-color);
 }
 
 .external-login-button img {
