@@ -24,11 +24,12 @@
       <div class="or" v-if="!data.disableInternal">외부 로그인</div>
       <div class="external-login-buttons">
         <GeneralButton v-for="item in externalProviders" block class="external-login-button" :href="`/member/login/oauth2/${item.name}?redirect=${encodeURIComponent($route.query.redirect)}`" :style="{
-        '--login-button-background-color': ($store.state.isDark && item.darkButtonColor) || item.buttonColor || undefined,
-        '--login-button-background-hover-color': item.buttonHoverColor || undefined,
-        '--login-button-background-dark-hover-color': item.darkButtonHoverColor || undefined,
-        '--login-button-color': item.textColor || undefined,
-        '--login-button-dark-color': item.darkTextColor || undefined
+        '--light-article-background-color': item.buttonColor || undefined,
+        '--dark-article-background-color': item.darkButtonColor || undefined,
+        '--button-background-hover-color': item.buttonHoverColor || undefined,
+        '--button-background-dark-hover-color': item.darkButtonHoverColor || undefined,
+        '--button-color': item.textColor || undefined,
+        '--button-dark-color': item.darkTextColor || undefined
       }">
           <img v-if="item.logo || item.darkLogo" :src="($store.state.isDark && item.darkLogo) || item.logo || item.darkLogo">
           {{($store.state.isDark && item.darkText) || item.text}}
@@ -113,11 +114,6 @@ form {
 
 .external-login-button {
   margin-top: .5rem;
-  --button-background-color: var(--login-button-background-color);
-  --button-background-hover-color: var(--login-button-background-hover-color);
-  --button-background-dark-hover-color: var(--login-button-background-dark-hover-color);
-  --light-text-color: var(--login-button-color);
-  --dark-text-color: var(--login-button-dark-color);
 }
 
 .external-login-button img {
