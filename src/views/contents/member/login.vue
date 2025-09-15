@@ -1,9 +1,9 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm method="post" captcha>
+  <SeedForm method="post" captcha :beforeSubmit="beforeSubmit">
     <template v-if="!data.disableInternal">
       <FlexFormBlock label="Email" name="email" inputId="emailInput">
-        <InputField id="emailInput" name="email"/>
+        <InputField id="emailInput" name="email" autocomplete="webauthn"/>
       </FlexFormBlock>
       <FlexFormBlock label="Password" name="password" inputId="passwordInput">
         <InputField id="passwordInput" name="password" type="password"/>
@@ -42,7 +42,9 @@
 </template>
 <script>
 import Color from 'color'
+import { startAuthentication, WebAuthnAbortService } from '@simplewebauthn/browser'
 
+import Common from '@/mixins/common'
 import SeedForm from '@/components/form/seedForm'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 import FlexFormBlock from '@/components/form/flexFormBlock'
@@ -52,6 +54,7 @@ import CheckBox from '@/components/form/checkBox'
 import GeneralButton from '@/components/generalButton'
 
 export default {
+  mixins: [Common],
   components: {
     SeedForm,
     FormErrorAlert,
@@ -71,6 +74,45 @@ export default {
           buttonHoverColor,
           darkButtonHoverColor
         }
+      })
+    }
+  },
+  mounted() {
+    this.passkeyLogin()
+  },
+  beforeUnmount() {
+    WebAuthnAbortService.cancelCeremony()
+  },
+  methods: {
+    beforeSubmit(e) {
+      const formData = Object.fromEntries(new FormData(e.currentTarget))
+      if(!formData.email && !formData.password) {
+        this.passkeyLogin()
+        return false
+      }
+    },
+    async passkeyLogin() {
+      if(this.data.disableInternal) return
+
+      let asseResp
+      try {
+        asseResp = await startAuthentication({ optionsJSON: this.data.passkeyData, useBrowserAutofill: true })
+      } catch (e) {
+        if(e.code === 'ERROR_CEREMONY_ABORTED') return
+        console.error(e)
+        alert(e.toString())
+        return
+      }
+
+      await this.internalRequestAndProcess('/member/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          challenge: asseResp,
+          autologin: this.autologin
+        })
       })
     }
   }

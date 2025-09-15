@@ -70,7 +70,7 @@
   </SeedForm>
 </template>
 <script>
-import { startAuthentication } from '@simplewebauthn/browser'
+import { startAuthentication, WebAuthnAbortService } from '@simplewebauthn/browser'
 
 import Common from '@/mixins/common'
 import SeedForm from '@/components/form/seedForm'
@@ -101,6 +101,9 @@ export default {
     if(this.passkey) this.passkeyLogin()
     else this.$refs.pinInput.focus()
   },
+  beforeUnmount() {
+    WebAuthnAbortService.cancelCeremony()
+  },
   watch: {
     async passkey(newValue) {
       if(!newValue) {
@@ -120,6 +123,7 @@ export default {
       try {
         asseResp = await startAuthentication({ optionsJSON: this.$store.state.page.data.passkeyData })
       } catch (e) {
+        if(e.code === 'ERROR_CEREMONY_ABORTED') return
         console.error(e)
         alert(e.toString())
         this.$refs.form.submitting = false

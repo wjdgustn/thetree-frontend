@@ -91,6 +91,7 @@
             <InputField ref="passkeyName" class="passkey-name" type="text" placeholder="새 Passkey 이름"/>
             <GeneralButton :whenClick="addPasskey">추가</GeneralButton>
           </div>
+          <CheckBox name="usePasswordlessLogin" value="Y" :checked="data.user.usePasswordlessLogin">비밀번호 없이 패스키만 이용해 로그인</CheckBox>
         </div>
         <div :class="$style.form__row">
           <label>API Token</label>
@@ -131,10 +132,12 @@ import LocalDate from '@/components/localDate'
 import InputField from '@/components/form/inputField'
 import ApiTokenModal from '@/components/apiTokenModal'
 import SeedFormBlock from '@/components/form/seedFormBlock'
+import CheckBox from '@/components/form/checkBox'
 
 export default {
   mixins: [Common],
   components: {
+    CheckBox,
     SeedFormBlock,
     InputField,
     LocalDate,
