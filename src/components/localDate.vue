@@ -25,8 +25,18 @@ export default {
   },
   data() {
     return {
-      currDate: new Date()
+      currDate: new Date(),
+      intervalId: null
     }
+  },
+  mounted() {
+    if(this.isRelative)
+      this.intervalId = setInterval(() => {
+        this.currDate = new Date()
+      }, 10000)
+  },
+  beforeUnmount() {
+    clearInterval(this.intervalId)
   },
   computed: {
     dateObject() {
