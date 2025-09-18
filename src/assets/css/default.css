@@ -37,10 +37,10 @@ address, dl, ol, ul {
     left: 0;
     overflow: hidden;
     pointer-events: none;
-    position: absolute;
+    position: absolute !important;
     top: 0;
     width: 100%;
-    z-index: -1;
+    z-index: -1 !important;
 }
 
 .v-popper__popper {
