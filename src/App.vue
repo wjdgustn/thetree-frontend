@@ -20,4 +20,5 @@ export default {
 @import '@/assets/css/katex.min.css';
 
 @import 'vue-select/dist/vue-select.css';
+@import 'floating-vue/dist/style.css';
 </style>
