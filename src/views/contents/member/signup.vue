@@ -51,10 +51,14 @@ form {
 }
 
 .signup-terms {
+  --input-color: var(--light-text-color, var(--text-color, #212529));
+  --input-background-color: #fcfcfb;
+  --input-border-color: #dfe1e2;
   appearance: none;
-  background-color: var(--light-article-background-color, var(--article-background-color, #fff));
-  border: 1px solid #d5d5d5;
+  background-color: var(--input-background-color);
+  border: 1px solid var(--input-border-color);
   border-radius: 4px;
+  color: var(--input-color);
   display: block;
   font-size: .9rem;
   line-height: 1.5;
@@ -64,5 +68,11 @@ form {
   white-space: break-spaces;
   resize: vertical;
   margin: 0;
+}
+
+.theseed-dark-mode .signup-terms {
+  --input-color: var(--dark-text-color, var(--text-color, #e0e0e0));
+  --input-background-color: #2d2e2f;
+  --input-border-color: #5c5c5c;
 }
 </style>
