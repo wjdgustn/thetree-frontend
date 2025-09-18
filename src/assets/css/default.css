@@ -25,6 +25,24 @@ address, dl, ol, ul {
     fill: currentColor;
 }
 
+.resize-observer {
+    background-color: transparent;
+    border: none;
+    opacity: 0;
+}
+
+.resize-observer, .resize-observer object {
+    display: block;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+}
+
 .v-popper__popper {
     left: 0;
     outline: none;

@@ -31,24 +31,6 @@ export default {
 }
 </script>
 <style>
-.context-menu .resize-observer {
-  background-color: transparent;
-  border: none;
-  opacity: 0;
-}
-
-.context-menu .resize-observer, .context-menu .resize-observer object {
-  display: block;
-  height: 100%;
-  left: 0;
-  overflow: hidden;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: -1;
-}
-
 .context-menu {
   background-color: var(--light-article-background-color, var(--article-background-color, #fff));
   border: 1px solid #d5d5d5;
