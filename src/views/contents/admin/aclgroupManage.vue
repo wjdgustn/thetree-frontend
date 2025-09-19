@@ -68,6 +68,7 @@
 @import '@/styles/form.css';
 </style>
 <script>
+import Common from '@/mixins/common'
 import SeedForm from '@/components/form/seedForm'
 import SeedFormBlock from '@/components/form/seedFormBlock'
 import InputField from '@/components/form/inputField'
@@ -76,6 +77,7 @@ import CheckBox from '@/components/form/checkBox'
 import GeneralButton from '@/components/generalButton'
 
 export default {
+  mixins: [Common],
   components: {
     GeneralButton,
     CheckBox,

@@ -137,7 +137,6 @@
   </Modal>
 </template>
 <script>
-import Common from '@/mixins/common'
 import NuxtLink from '@/components/global/nuxtLink'
 import SeedForm from '@/components/form/seedForm'
 import ShowError from '@/components/showError'
@@ -149,7 +148,6 @@ import Heading from '@/components/heading'
 import Modal from '@/components/modal'
 
 export default {
-  mixins: [Common],
   components: {
     Modal,
     Heading,
