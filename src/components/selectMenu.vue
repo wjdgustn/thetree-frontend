@@ -1,10 +1,32 @@
 <template>
-  <select>
+  <select ref="input">
     <slot/>
   </select>
 </template>
 <script>
-
+export default {
+  inject: {
+    submittingSeedForm: {
+      default: false
+    }
+  },
+  data() {
+    return {
+      disable: false
+    }
+  },
+  watch: {
+    submittingSeedForm(newValue) {
+      if(this.disabled) return
+      this.disable = newValue
+    },
+    disable(newValue) {
+      if(newValue) this.$refs.input.classList.add('disabled')
+      else this.$refs.input.classList.remove('disabled')
+      this.$refs.input.disabled = newValue
+    }
+  }
+}
 </script>
 <style scoped>
 select {

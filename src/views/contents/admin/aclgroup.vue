@@ -2,75 +2,17 @@
   <ul>
     <li v-for="item in data.aclGroups">
       <NuxtLink :to="{ query: { group: item.name } }" :class="{ active: data.selectedGroup.uuid === item.uuid }">
-        {{item.name}}<button v-if="item.deletable" @click.prevent="deleteGroup(item)">×</button>
+        {{item.name}}<button v-if="item.managable" @click.prevent="$store.state.components.mainView.routerPush({ path: '/aclgroup/group_manage', query: { name: item.name } })">
+          <FontAwesomeIcon class="gear-icon" icon="gear" />
+        </button>
       </NuxtLink>
     </li>
     <li v-if="data.permissions.aclgroup">
       <button @click="showCreateModal = true">+</button>
     </li>
   </ul>
-  <div v-if="data.permissions.config && data.selectedGroup" class="config-block">
-    <Heading title="그룹 설정" :level="4" folded>
-      <SeedForm method="post" action="/aclgroup/group_edit">
-        <input type="hidden" name="uuid" :value="data.selectedGroup.uuid">
-
-        <div>
-          <label for="nameInput">그룹 이름:</label>
-          <input id="nameInput" name="name" :value="data.selectedGroup.name">
-        </div>
-
-        <div>
-          <label for="cssInput">이름 CSS:</label>
-          <input id="cssInput" name="userCSS" :value="data.selectedGroup.userCSS">
-        </div>
-
-        <div>
-          <label for="aclMessageInput">ACL 메시지:</label>
-          <textarea id="aclMessageInput" name="aclMessage" rows="5" :value="data.selectedGroup.aclMessage"/>
-        </div>
-
-        <div>
-          <input id="forBlockInput" name="forBlock" type="checkbox" value="Y" :checked="data.selectedGroup.forBlock">
-          <label for="forBlockInput">사용자 문서에 차단 틀 표시</label>
-        </div>
-
-        <div>
-          <input id="isWarnInput" name="isWarn" type="checkbox" value="Y" :checked="data.selectedGroup.isWarn">
-          <label for="isWarnInput">경고(직접 해제 가능)</label>
-        </div>
-
-        <div>
-          <input id="noSignupInput" name="noSignup" type="checkbox" value="Y" :checked="data.selectedGroup.noSignup">
-          <label for="noSignupInput">계정 만들기 차단</label>
-        </div>
-
-        <div>
-          <label for="accessPermsInput">보기 권한</label>
-          <input id="accessPermsInput" name="accessPerms" :value="data.selectedGroup.accessPerms.join(',')">
-        </div>
-
-        <div>
-          <label for="addPermsInput">추가 권한</label>
-          <input id="addPermsInput" name="addPerms" :value="data.selectedGroup.addPerms.join(',')">
-        </div>
-
-        <div>
-          <label for="removePermsInput">삭제 권한</label>
-          <input id="removePermsInput" name="removePerms" :value="data.selectedGroup.removePerms.join(',')">
-        </div>
-
-        <div>
-          <label for="deleteGroupPermsInput">그룹 삭제 권한</label>
-          <input id="deleteGroupPermsInput" name="deleteGroupPerms" :value="data.selectedGroup.deleteGroupPerms.join(',')">
-        </div>
-
-        <SeedButton submit>적용</SeedButton>
-        <hr>
-      </SeedForm>
-    </Heading>
-  </div>
-  <SeedForm v-if="data.selectedGroup" class="add-form" method="post" action="/aclgroup">
-    <input type="hidden" name="group" :value="data.selectedGroup.uuid">
+  <SeedForm class="add-form" method="post" action="/aclgroup">
+    <input type="hidden" name="group" :value="data.selectedGroup?.uuid">
 
     <div class="form-block">
       <select name="mode" v-model="mode">
@@ -100,57 +42,59 @@
     <SeedButton :disabled="!data.addable" submit>추가</SeedButton>
   </SeedForm>
 
-  <PrevNextBtn flex v-bind="pageProps"/>
+  <template v-if="data.selectedGroup">
+    <PrevNextBtn flex v-bind="pageProps"/>
 
-  <SeedForm class="id-input-form">
-    <div class="form-block">
-      <input type="hidden" name="group" :value="data.selectedGroup?.name">
-      <input type="text" name="from" placeholder="ID">
-      <SeedButton submit>Go</SeedButton>
-    </div>
-  </SeedForm>
+    <SeedForm class="id-input-form">
+      <div class="form-block">
+        <input type="hidden" name="group" :value="data.selectedGroup?.name">
+        <input type="text" name="from" placeholder="ID">
+        <SeedButton submit>Go</SeedButton>
+      </div>
+    </SeedForm>
 
-  <table>
-    <colgroup>
-      <col style="width:150px;">
-      <col style="width:150px;">
-      <col>
-      <col style="width:200px;">
-      <col style="width:160px;">
-      <col style="width:60px;">
-    </colgroup>
+    <table>
+      <colgroup>
+        <col style="width:150px;">
+        <col style="width:150px;">
+        <col>
+        <col style="width:200px;">
+        <col style="width:160px;">
+        <col style="width:60px;">
+      </colgroup>
 
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>대상</th>
-      <th>메모</th>
-      <th>생성일</th>
-      <th>만료일</th>
-      <th>작업</th>
-    </tr>
-    </thead>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>대상</th>
+        <th>메모</th>
+        <th>생성일</th>
+        <th>만료일</th>
+        <th>작업</th>
+      </tr>
+      </thead>
 
-    <tbody>
-    <tr v-for="item in data.groupItems">
-      <td>{{item.id}}</td>
-      <td>{{item.user?.name || item.ip || item.user?.uuid}}</td>
-      <td>{{item.note}}</td>
-      <td>
-        <LocalDate :date="item.createdAt"/>
-      </td>
-      <td>
-        <LocalDate v-if="item.expiresAt" :date="item.expiresAt"/>
-        <template v-else>영구</template>
-      </td>
-      <td>
-        <SeedButton :disabled="!data.removable" danger @click="openRemoveModal(item)">삭제</SeedButton>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+      <tbody>
+      <tr v-for="item in data.groupItems">
+        <td>{{item.id}}</td>
+        <td>{{item.user?.name || item.ip || item.user?.uuid}}</td>
+        <td>{{item.note}}</td>
+        <td>
+          <LocalDate :date="item.createdAt"/>
+        </td>
+        <td>
+          <LocalDate v-if="item.expiresAt" :date="item.expiresAt"/>
+          <template v-else>영구</template>
+        </td>
+        <td>
+          <SeedButton :disabled="!data.removable" danger @click="openRemoveModal(item)">삭제</SeedButton>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-  <PrevNextBtn flex v-bind="pageProps"/>
+    <PrevNextBtn flex v-bind="pageProps"/>
+  </template>
 
   <Modal v-model="showCreateModal" v-slot="props" class="aclgroup-modal">
     <SeedForm :beforeSubmit="goConfirm" :afterSubmit="closeModal" method="post" action="/aclgroup/group_add">
@@ -249,19 +193,6 @@ export default {
       this.removeModal.uuid = item.uuid
       this.removeModal.id = item.id
       this.removeModal.show = true
-    },
-    async deleteGroup(item) {
-      if(!confirm(`${item.name} 그룹을 삭제하겠습니까?`)) return
-
-      await this.internalRequestAndProcess('/aclgroup/group_remove', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-          uuid: item.uuid
-        }).toString()
-      })
     },
     closeModal() {
       this.$vfm.hideAll()
@@ -437,5 +368,9 @@ div.aclgroup-modal form div.button-block {
 
 div.config-block {
   clear: both;
+}
+
+.gear-icon {
+  vertical-align: -0.125em;
 }
 </style>

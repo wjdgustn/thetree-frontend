@@ -17,7 +17,7 @@
     이 사용자는 특수 권한을 가지고 있습니다.
   </div>
   <div v-if="userbox.blocked" class="user-box banned-box">
-    이 사용자는 차단된 사용자입니다. (#{{userbox.blocked.id}})<br><br>
+    이 사용자는 {{userbox.blocked.name}} 그룹에 있습니다. (#{{userbox.blocked.id}})<br><br>
 
     이 사용자는 <LocalDate :date="userbox.blocked.createdAt"/>에
     <template v-if="userbox.blocked.expiresAt">
@@ -26,8 +26,8 @@
     <template v-else>
       영구적으로
     </template>
-    차단되었습니다.<br>
-    차단 사유: {{userbox.blocked.note ?? '없음'}}
+    {{userbox.blocked.name}} 그룹에 추가되었습니다.<br>
+    사유: {{userbox.blocked.note ?? '없음'}}
   </div>
 
   <WikiContent :content="content" :categories="categories"/>
