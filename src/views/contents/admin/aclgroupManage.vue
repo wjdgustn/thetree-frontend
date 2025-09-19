@@ -58,7 +58,7 @@
     </SeedFormBlock>
     <div :class="[$style.form__row, $style['form__row--buttons']]">
       <div :class="$style.form__buttons">
-        <GeneralButton theme="danger" type="button" @click="deleteGroup">삭제</GeneralButton>
+        <GeneralButton theme="danger" type="button" :whenClick="deleteGroup">삭제</GeneralButton>
         <GeneralButton :class="$style.button" theme="primary" type="submit">수정</GeneralButton>
       </div>
     </div>
