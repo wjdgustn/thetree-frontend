@@ -1,6 +1,23 @@
 <template>
   <WikiCategory v-if="categories.length && $store.state.localConfig['wiki.category_position'] !== 'bottom'" :categories="categories"/>
 
+  <div v-if="userbox.admin" class="user-box admin-box">
+    이 사용자는 특수 권한을 가지고 있습니다.
+  </div>
+  <div v-if="userbox.blocked" class="user-box banned-box">
+    이 사용자는 {{userbox.blocked.name}} 그룹에 있습니다. (#{{userbox.blocked.id}})<br><br>
+
+    이 사용자는 <LocalDate :date="userbox.blocked.createdAt"/>에
+    <template v-if="userbox.blocked.expiresAt">
+      <LocalDate :date="userbox.blocked.expiresAt"/> 까지
+    </template>
+    <template v-else>
+      영구적으로
+    </template>
+    {{userbox.blocked.name}} 그룹에 추가되었습니다.<br>
+    사유: {{userbox.blocked.note ?? '없음'}}
+  </div>
+
   <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" @submit.prevent="formSubmit" :class="{ 'wiki-thread-content': discuss }"></div>
 
   <WikiCategory v-if="categories.length && ['bottom', 'both'].includes($store.state.localConfig['wiki.category_position'])" :categories="categories"/>
@@ -49,6 +66,10 @@ export default {
     categories: {
       type: Array,
       default: () => []
+    },
+    userbox: {
+      type: Object,
+      default: () => ({})
     }
   },
   computed: {
@@ -463,5 +484,29 @@ export default {
 .theseed-dark-mode .thetree-modal-content button {
   background-color: #383b40;
   border-top: 1px solid #111;
+}
+
+ .user-box {
+   border-width: 5px 1px 1px;
+   border-style: solid;
+   border-image: initial;
+   padding: 10px;
+   margin-bottom: 10px;
+ }
+
+.admin-box {
+  border-color: orange gray gray;
+}
+
+.admin-box:hover {
+  border-color: red gray gray;
+}
+
+.banned-box {
+  border-color: red gray gray;
+}
+
+.banned-box:hover {
+  border-color: blue gray gray;
 }
 </style>
