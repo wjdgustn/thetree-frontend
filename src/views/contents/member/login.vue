@@ -111,7 +111,8 @@ export default {
         },
         body: JSON.stringify({
           challenge: asseResp,
-          autologin: this.autologin
+          autologin: this.autologin,
+          redirect: this.$route.query.redirect
         })
       })
     }
