@@ -259,6 +259,12 @@ form li button.active {
   background-color: #383b40;
 }
 
+form div.tabs:before {
+  clear: both;
+  content: "";
+  display: table
+}
+
 form div.tabs {
   border: 1px solid #ddd;
   border-top: none;
