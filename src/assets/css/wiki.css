@@ -520,6 +520,15 @@
     .wiki-macro-vote legend {
         all: revert;
     }
+
+    .wiki-footnote-unfolded, .wiki-link-unfolded {
+        background-color: #efefef;
+        border: 1px solid #cecece;
+        color: #555;
+        font-size: .88888em;
+        margin-left: .1rem;
+        margin-right: .2rem;
+    }
 }
 
 .theseed-dark-mode .wiki-content {
@@ -570,5 +579,10 @@
 
     .wiki-macro-toc {
         border-color: #383b40;
+    }
+
+    .wiki-footnote-unfolded, .wiki-link-unfolded {
+        background-color: #2d2f34;
+        color: #ddd;
     }
 }
