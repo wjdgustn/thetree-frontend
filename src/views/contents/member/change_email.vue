@@ -10,6 +10,7 @@
     <SeedFormBlock newStyle label="새 이메일" inputId="emailInput" name="email">
       <InputField type="email" id="emailInput" name="email"/>
     </SeedFormBlock>
+    <EmailWhitelist :domains="data.emailWhitelist"/>
     <div :class="[$style.form__row, $style['form__row--buttons']]">
       <div :class="$style.form__buttons">
         <GeneralButton :class="$style.button" type="submit" theme="primary">이메일 변경</GeneralButton>
@@ -23,9 +24,11 @@ import FormErrorAlert from '@/components/form/formErrorAlert'
 import SeedFormBlock from '@/components/form/seedFormBlock'
 import InputField from '@/components/form/inputField'
 import GeneralButton from '@/components/generalButton'
+import EmailWhitelist from '@/components/emailWhitelist'
 
 export default {
   components: {
+    EmailWhitelist,
     GeneralButton,
     InputField,
     SeedForm,
