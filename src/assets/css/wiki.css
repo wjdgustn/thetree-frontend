@@ -521,13 +521,18 @@
         all: revert;
     }
 
-    .wiki-footnote-unfolded, .wiki-link-unfolded {
+    .wiki-fn-unfolded, .wiki-link-unfolded {
         background-color: #efefef;
         border: 1px solid #cecece;
         color: #555;
         font-size: .88888em;
         margin-left: .1rem;
         margin-right: .2rem;
+    }
+
+    .wiki-fn-unfolded {
+        font-size: 1em;
+        vertical-align: baseline;
     }
 }
 

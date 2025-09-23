@@ -213,6 +213,7 @@ export default {
 
       if(footnoteType === 'popover') this.setupFootnoteTooltip();
       else if(footnoteType === 'popup') this.setupFootnoteModal();
+      else if(footnoteType === 'unfold') this.setupFootnoteUnfolded();
 
       if(this.$store.state.localConfig['wiki.unfold_wiki_link']) {
         const links = div.getElementsByClassName('wiki-link-internal');
@@ -372,6 +373,37 @@ export default {
           this.modal.content = contentElement.innerHTML;
           this.modal.show = true;
         });
+      }
+    },
+    setupFootnoteUnfolded() {
+      for(let footnote of this.footnotes) {
+        if(footnote.tagName !== 'A') continue;
+
+        const footnoteLink = footnote.getAttribute('href');
+        if(!footnoteLink) continue;
+
+        const footnoteId = decodeURIComponent(footnoteLink.slice(1));
+        const footnoteParent = footnote.parentNode;
+        if(!footnoteParent) continue;
+
+        let footnoteContent = document.getElementById(footnoteId);
+        if(!footnoteContent || !footnoteContent.parentNode)
+          continue;
+        footnoteContent = footnoteContent.parentNode.innerHTML;
+
+        const unfolded = document.createElement('span');
+        unfolded.classList = 'wiki-fn-unfolded';
+        unfolded.innerHTML = footnoteContent;
+        unfolded.id = 'r' + footnoteId;
+
+        const unfoldedLink = unfolded.getElementsByTagName('a')[0];
+        if(unfoldedLink)
+          unfoldedLink.href = '#' + footnoteId;
+
+        unfolded.removeChild(unfolded.getElementsByTagName('span')[0]);
+
+        footnoteParent.insertBefore(unfolded, footnote);
+        footnoteParent.removeChild(footnote);
       }
     },
     async formSubmit(e) {
