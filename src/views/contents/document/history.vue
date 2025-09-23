@@ -17,12 +17,14 @@
           <template v-if="index !== 0"> | </template>
           <a
               v-if="action.admin"
-              @click="adminAction(rev, action.action)">
+              @click="adminAction(rev, action.action)"
+              :rel="action.follow ? null : 'nofollow'">
             {{action.text}}
           </a>
           <a
               v-else-if="action.post"
-              @click="postAction(rev, action.action)">
+              @click="postAction(rev, action.action)"
+              :rel="action.follow ? null : 'nofollow'">
             {{action.text}}
           </a>
           <NuxtLink

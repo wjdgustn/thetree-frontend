@@ -33,7 +33,7 @@
         <ShowError tag="duration"/>
       </div>
       <div class="button-block">
-        <SeedButton large danger>추가</SeedButton>
+        <SeedButton type="submit" large danger>추가</SeedButton>
         <SeedButton type="button" large @click="props.close">취소</SeedButton>
       </div>
     </SeedForm>
