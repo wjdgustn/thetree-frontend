@@ -1,6 +1,6 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm method="post" captcha>
+  <SeedForm method="post">
     <FlexFormBlock>
       <pre class="signup-terms" v-html="terms"></pre>
     </FlexFormBlock>

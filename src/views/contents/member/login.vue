@@ -1,6 +1,6 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm method="post" captcha :beforeSubmit="beforeSubmit">
+  <SeedForm method="post" :beforeSubmit="beforeSubmit">
     <template v-if="!data.disableInternal">
       <FlexFormBlock label="Email" name="email" inputId="emailInput">
         <InputField id="emailInput" name="email" autocomplete="username webauthn"/>

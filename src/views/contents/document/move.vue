@@ -1,5 +1,5 @@
 <template>
-  <SeedForm method="post" captcha>
+  <SeedForm method="post">
     <SeedFormBlock label="변경할 문서 제목" id="titleInput" name="title">
       <input type="text" id="titleInput" name="title">
     </SeedFormBlock>

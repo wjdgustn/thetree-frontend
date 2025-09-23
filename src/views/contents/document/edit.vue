@@ -19,7 +19,7 @@
     <span class="conflict-error">자동 병합에 실패했습니다! 수동으로 수정된 내역을 아래 텍스트 박스에 다시 입력해주세요.</span>
   </template>
 
-  <SeedForm :beforeSubmit="beforeSubmit" method="post" :captcha="data.useCaptcha">
+  <SeedForm :beforeSubmit="beforeSubmit" method="post">
     <input type="hidden" v-for="(value, name) in data.body" :name="name" :value="value">
 
     <ul>

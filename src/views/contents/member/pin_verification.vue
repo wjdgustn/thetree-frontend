@@ -1,6 +1,6 @@
 <template>
   <FormErrorAlert/>
-  <SeedForm ref="form" method="post" action="/member/login/pin" captcha>
+  <SeedForm ref="form" method="post" action="/member/login/pin">
     <input type="hidden" name="autologin" :value="autologin">
 
     <p>

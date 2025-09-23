@@ -1,5 +1,5 @@
 <template>
-  <SeedForm method="post" :beforeSubmit="beforeSubmit" captcha>
+  <SeedForm method="post" :beforeSubmit="beforeSubmit">
     <SeedFormBlock :label="logLabel" inputId="logInput" name="log">
       <input v-model="log" type="text" id="logInput" name="log">
     </SeedFormBlock>

@@ -15,9 +15,9 @@ export default {
     return {
       submitting: false,
       abortController: null,
-      useCaptcha: !this.$store.state.session.disable_captcha
+      useCaptcha: !this.noCaptcha
           && this.$store.state.config.captcha
-          && this.captcha,
+          && this.$store.state.viewData.captchaData?.use,
       captchaId: null,
       captchaLoadLock: [],
       captchaLock: []
@@ -29,7 +29,7 @@ export default {
     }
   },
   props: {
-    captcha: Boolean,
+    noCaptcha: Boolean,
     beforeSubmit: Function,
     flex: Boolean,
     box: Boolean,
@@ -119,7 +119,7 @@ export default {
           this.captchaLoadLock.push(resolve)
         })
 
-      if(this.captchaId != null) {
+      if(this.captchaId != null && this.useCaptcha) {
         for(let { reject } of this.captchaLock) reject()
         this.captchaLock.length = 0
 
@@ -162,6 +162,8 @@ export default {
         })
       })
       this.submitting = false
+      if(!this.data.captchaData?.force)
+        this.useCaptcha = false
 
       const noError = typeof json?.data !== 'string' && !json?.data?.fieldErrors
       if(noError) this.$store.state.components.mainView.beforeLeave = null
@@ -169,7 +171,7 @@ export default {
       await this.processInternalResponse(json, this.$refs.form)
 
       if(typeof json?.data === 'string') {
-        if(json.data.includes('캡챠')) {
+        if(json.data === 'invalid_captcha') {
           this.useCaptcha = true
         }
       }

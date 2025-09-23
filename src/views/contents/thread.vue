@@ -14,7 +14,7 @@
           <CheckBox v-model="hideHidden">숨겨진 댓글 보이지 않기</CheckBox>
           <template v-if="data.permissions.delete">
             <hr>
-            <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + data.thread.url + '/delete'">
+            <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + data.thread.url + '/delete'" noCaptcha>
               <GeneralButton theme="danger" type="submit">[ADMIN] 스레드 삭제</GeneralButton>
             </SeedForm>
           </template>
@@ -43,7 +43,7 @@
   <h3>댓글 달기</h3>
   <FormErrorAlert/>
   <template v-if="data.permissions.manage">
-    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/status'">
+    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/status'" noCaptcha>
       [ADMIN] 스레드 상태 변경
       <select name="status">
         <option v-if="data.thread.status !== 0" value="Normal">normal</option>
@@ -52,19 +52,19 @@
       </select>
       <SeedButton type="submit">변경</SeedButton>
     </SeedForm>
-    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/document'">
+    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/document'" noCaptcha>
       [ADMIN] 스레드 이동
       <input name="document" :value="doc_fulltitle(data.document)">
       <SeedButton type="submit">변경</SeedButton>
     </SeedForm>
-    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/topic'">
+    <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/topic'" noCaptcha>
       [ADMIN] 스레드 주제 변경
       <input name="topic" :value="data.thread.topic">
       <SeedButton type="submit">변경</SeedButton>
     </SeedForm>
   </template>
 
-  <SeedForm method="post" :captcha="session.account.type !== 1" class="comment-form" :afterSubmit="afterSubmit">
+  <SeedForm method="post" class="comment-form" :afterSubmit="afterSubmit" :action="'/thread/' + data.thread.url">
     <ul>
       <li><button type="button" class="tab-button" :class="{ active: activeTab === 'raw' }" @click="activeTab = 'raw'">RAW 편집</button></li>
       <li><button type="button" class="tab-button" :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">미리보기</button></li>

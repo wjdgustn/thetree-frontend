@@ -22,7 +22,7 @@
   </p>
 
   <div v-for="(item, index) in data.openThreads">
-    <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'">
+    <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'" noCaptcha>
       <SeedButton v-if="data.permissions.delete" type="submit" danger>[ADMIN] 스레드 삭제</SeedButton>
     </SeedForm>
     <h2>{{index + 1}}. <NuxtLink :to="'/thread/' + item.url" :id="'s-' + index">{{item.topic}}</NuxtLink></h2>
@@ -41,7 +41,7 @@
 
   <h3>새 주제 생성</h3>
   <FormErrorAlert/>
-  <SeedForm method="post" :captcha="session.account.type !== 1">
+  <SeedForm method="post">
     <SeedFormBlock label="주제 :" inputId="topicInput" name="topic">
       <input type="text" id="topicInput" name="topic">
 
