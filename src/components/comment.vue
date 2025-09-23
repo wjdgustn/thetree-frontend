@@ -289,6 +289,10 @@ div.comment div.comment-inside span.time-block {
   float: right;
 }
 
+div.comment div.comment-inside span.time-block time {
+  display: inline-block;
+}
+
 div.comment div.comment-inside span.time-block div.menu-block {
   display: inline-block;
   vertical-align: middle;
