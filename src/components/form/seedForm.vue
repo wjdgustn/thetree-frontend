@@ -176,6 +176,9 @@ export default {
         }
       }
 
+      if(json?.captchaData?.use)
+        this.useCaptcha = true
+
       if(json?.code === 204) {
         this.$store.state.clearFormErrors()
       }
