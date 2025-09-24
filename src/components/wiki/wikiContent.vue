@@ -28,7 +28,7 @@
   </div>
   <Modal v-model="modal.show" v-slot="props">
     <div class="wiki-content" v-html="modal.content" @click="onDynamicContentClick"></div>
-    <button @click="props.close">닫기</button>
+    <button @click="props.close" type="button">닫기</button>
   </Modal>
 </template>
 <script>
