@@ -162,7 +162,7 @@ export default {
         })
       })
       this.submitting = false
-      if(!this.data.captchaData?.force)
+      if(!this.data.captchaData?.force && this.useCaptcha)
         this.useCaptcha = false
 
       const noError = typeof json?.data !== 'string' && !json?.data?.fieldErrors
