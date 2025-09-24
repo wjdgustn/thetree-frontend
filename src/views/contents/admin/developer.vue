@@ -81,6 +81,7 @@
     <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/minifyjs')">JS 다시 minify</GeneralButton>
     <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/minifycss')">CSS 다시 minify</GeneralButton>
     <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/migrateopennamu')">openNAMU 데이터 마이그레이션</GeneralButton>
+    <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/mailtest')">이메일 전송 테스트</GeneralButton>
     <br><br>
     <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/clearpublicmindir')">publicMin 안 디렉토리 비우기</GeneralButton>
     <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/clearcachedir')">cache 안 디렉토리 비우기</GeneralButton>
