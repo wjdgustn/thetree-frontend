@@ -25,3 +25,17 @@ export const formatDate = (date, format = 'Y-m-d H:i:s') => {
     }
     return result
 }
+
+export const escapeHtml = text => (text?.toString() ?? '')
+    .replaceAll('&', "&amp;")
+    .replaceAll('<', "&lt;")
+    .replaceAll('>', "&gt;")
+    .replaceAll(`"`, "&quot;")
+    .replaceAll(`'`, "&#039;")
+
+export const unescapeHtml = text => (text?.toString() ?? '')
+    .replaceAll("&amp;", '&')
+    .replaceAll("&lt;", '<')
+    .replaceAll("&gt;", '>')
+    .replaceAll("&quot;", `"`)
+    .replaceAll("&#039;", `'`)

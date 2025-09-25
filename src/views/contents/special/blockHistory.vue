@@ -25,9 +25,10 @@
   </SeedForm>
   <div class="top-page-block">
     <PrevNextBtn flex class="top-page" v-bind="pageProps"/>
+    <CheckBox v-model="useFormattedCopy">형식화된 복사 사용</CheckBox>
   </div>
 
-  <ul class="block-list">
+  <ul class="block-list" @copy="onListCopy">
     <li v-for="item in data.logs" class="block-row">
       <div class="block-item">
         <span class="icon" :class="iconClass(item.type)">
@@ -37,9 +38,9 @@
       <div class="block-item block-content">
         <div>
           <template v-if="item.hideLog">(비공개) </template>
+          <AuthorSpan :account="item.createdUser"/>
+          사용자가
           <template v-if="item.type === BlockHistoryTypes.ACLGroupAdd">
-            <AuthorSpan :account="item.createdUser"/>
-            사용자가
             <template v-if="item.targetUser">
               <AuthorSpan :account="item.targetUser"/>
               사용자를
@@ -65,8 +66,6 @@
             <span class="block-id">#{{item.aclGroupId}}</span>
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.ACLGroupRemove">
-            <AuthorSpan :account="item.createdUser"/>
-            사용자가
             <template v-if="item.targetUser">
               <AuthorSpan :account="item.targetUser"/>
               사용자를
@@ -83,21 +82,15 @@
             <span class="block-id">#{{item.aclGroupId}}</span>
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.Grant">
-            <AuthorSpan :account="item.createdUser"/>
-            사용자가
             <AuthorSpan :account="item.targetUser"/>
             사용자의 권한 설정
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.BatchRevert">
-            <AuthorSpan :account="item.createdUser"/>
-            사용자가
             <AuthorSpan :account="item.targetUser"/>
             {{item.targetUser.type === 1 ? '사용자' : 'IP'}}의
             기여를 일괄 되돌림
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.LoginHistory">
-            <AuthorSpan :account="item.createdUser"/>
-            사용자가
             <AuthorSpan :account="item.targetUser"/>
             사용자의 로그인 기록 조회
           </template>
@@ -118,6 +111,8 @@
   <PrevNextBtn flex v-bind="pageProps"/>
 </template>
 <script>
+import { escapeHtml, unescapeHtml, formatDate } from '@/utils'
+
 import Common from '@/mixins/common'
 import SeedForm from '@/components/form/seedForm'
 import SelectMenu from '@/components/selectMenu'
@@ -150,7 +145,13 @@ export default {
   },
   data() {
     return {
-      BlockHistoryTypes
+      BlockHistoryTypes,
+      useFormattedCopy: this.$store.state.localConfig['block_history.use_formatted_copy'] ?? false
+    }
+  },
+  watch: {
+    useFormattedCopy(newValue) {
+      this.$store.state.localConfigSetValue('block_history.use_formatted_copy', newValue)
     }
   },
   computed: {
@@ -193,6 +194,132 @@ export default {
         [BlockHistoryTypes.BatchRevert]: '일괄 되돌리기',
         [BlockHistoryTypes.LoginHistory]: '로그인 기록 조회',
       })[type]
+    },
+    userToText(user) {
+      let link;
+      let text;
+      if(user.type === -1)
+        text = '<i>(삭제된 사용자)</i>';
+      else if(user.name || user.ip) {
+        text = `<b>${escapeHtml(user.name || user.ip)}</b>`
+        if(user.type === 1)
+          link = this.doc_action_link(this.user_doc(user.name), 'w')
+        else if(user.uuid)
+          link = this.contribution_link(user.uuid)
+      }
+
+      link &&= new URL(link, location.href).toString()
+
+      return link && text
+          ? `<a href="${link}" target="_blank">${text}</a>`
+          : text
+    },
+    onListCopy(e) {
+      if(!this.useFormattedCopy) return
+
+      const sel = document.getSelection()
+      if(!sel || sel.rangeCount < 1) return
+
+      const root = e.currentTarget
+      const items = [...root.children]
+          .filter(a => a.nodeType === Node.ELEMENT_NODE && a.classList.contains('block-row'))
+
+      const findClosest = el => {
+        while(el) {
+          if(el.nodeType === Node.ELEMENT_NODE && el.classList.contains('block-row'))
+            return el
+          el = el.parentNode
+        }
+        return null
+      }
+      const startEl = findClosest(sel.getRangeAt(0).startContainer)
+      const endEl = findClosest(sel.getRangeAt(sel.rangeCount - 1).endContainer)
+
+      const startIndex = items.indexOf(startEl)
+      const endIndex = items.indexOf(endEl)
+
+      const htmlItems = []
+      const textItems = []
+      for(let i = startIndex; i <= endIndex; i++) {
+        const item = this.data.logs[i]
+        let li = '<li>'
+
+        if(item.createdAt)
+          li += `(${formatDate(item.createdAt)}) `
+
+        li += `${this.userToText(item.createdUser) ?? '(사용자)'} 사용자가`
+
+        if(item.targetUser) {
+          li += ` ${this.userToText(item.targetUser) ?? '(사용자)'}`
+
+          li += item.targetUser.type === 0
+              ? ' IP'
+              : ' 사용자'
+          if(item.type === BlockHistoryTypes.BatchRevert)
+            li += '의 기여를'
+          else if([
+            BlockHistoryTypes.ACLGroupAdd,
+            BlockHistoryTypes.ACLGroupRemove
+          ].includes(item.type))
+            li += '를'
+
+          if(item.targetUser && item.targetUser.name !== item.targetUsername)
+            li += ` (차단 당시 이름: ${escapeHtml(item.targetUsername)})`
+        }
+        if([
+            BlockHistoryTypes.ACLGroupAdd,
+          BlockHistoryTypes.ACLGroupRemove,
+          BlockHistoryTypes.BatchRevert
+        ].includes(item.type)) {
+          if(!item.targetUser && item.targetContent) {
+            li += ` ${escapeHtml(item.targetContent)} IP를`
+          }
+
+          if(item.type === BlockHistoryTypes.BatchRevert) {
+            li += ' 일괄 되돌림'
+          }
+          else {
+            li += ` <b>${escapeHtml(
+                item.aclGroup?.name || item.aclGroupName || item.aclGroup
+            )}</b> ACL 그룹에${item.type === BlockHistoryTypes.ACLGroupRemove ? '서' : ''}`
+
+            if(item.type === BlockHistoryTypes.ACLGroupAdd) {
+              li += item.duration
+                  ? ` ${this.durationToExactString(item.duration)} 동안`
+                  : ' 영구적으로'
+              li += ' 등록함'
+            }
+            else {
+              li += ' 제거함'
+            }
+
+            li += ` <b>#${escapeHtml(item.aclGroupId)}</b>`
+          }
+        }
+        else if(item.type === BlockHistoryTypes.Grant)
+          li += `의 권한 설정`
+        else if(item.type === BlockHistoryTypes.LoginHistory)
+          li += `의 로그인 기록 조회`
+
+        if(item.type === BlockHistoryTypes.Grant)
+          li += `<br>권한: ${escapeHtml(item.content)}`
+        else if(item.content)
+          li += `<br>사유: ${escapeHtml(item.content)}`
+
+        li += '</li>'
+
+        htmlItems.push(li)
+
+        const text = '- ' + li
+            .replaceAll('<br>', '\n')
+            .replace(/<[^>]*?>/g, '')
+        textItems.push(unescapeHtml(text))
+      }
+
+      e.clipboardData.setData('text/html', `<ul>${htmlItems.join('')}</ul>`)
+      e.clipboardData.setData('text/plain', textItems.join('\n') + '\n')
+
+      e.preventDefault()
     }
   }
 }
