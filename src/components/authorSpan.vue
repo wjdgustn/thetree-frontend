@@ -94,9 +94,15 @@ export default {
       let str = this.account.type === 0 ? 'IP' : '사용자'
       if(this.account.type === 2) str = '마이그레이션된 ' + str
 
-      if(this.account.autoVerified) str = '자동 인증된 ' + str
+      const admin = !!(this.account.flags & 1 << 5)
+      const autoVerified = !!(this.account.flags & 1 << 1)
+      const mobileVerified = !!(this.account.flags & 1 << 2)
 
-      if(this.account.admin) str += ' (관리자)'
+      if(autoVerified && mobileVerified) str = '모바일과 자동 인증된 ' + str
+      else if(autoVerified) str = '자동 인증된 ' + str
+      else if(mobileVerified) str = '모바일 인증된 ' + str
+
+      if(admin) str += ' (관리자)'
       else if(this.discussAdmin) str += ' (전 관리자)'
 
       return str
