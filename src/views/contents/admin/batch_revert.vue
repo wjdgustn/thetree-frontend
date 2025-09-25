@@ -26,7 +26,7 @@
       <label for="revertEditRequestsInput">편집 요청 되돌리기</label>
     </SeedFormBlock>
     <SeedFormBlock v-if="data.hidelogPerm" name="revertContributions">
-      <input type="checkbox" id="hidelogInput" name="hidelogInput" value="Y">
+      <input type="checkbox" id="hidelogInput" name="hidelog" value="Y">
       <label for="revertContributionsInput">hidelog</label>
     </SeedFormBlock>
     <div class="button-block">
