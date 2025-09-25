@@ -267,7 +267,7 @@ export default {
             li += ` (차단 당시 이름: ${escapeHtml(item.targetUsername)})`
         }
         if([
-            BlockHistoryTypes.ACLGroupAdd,
+          BlockHistoryTypes.ACLGroupAdd,
           BlockHistoryTypes.ACLGroupRemove,
           BlockHistoryTypes.BatchRevert
         ].includes(item.type)) {
