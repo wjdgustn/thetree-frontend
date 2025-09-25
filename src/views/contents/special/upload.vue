@@ -1,6 +1,6 @@
 <template>
   <SeedForm method="post" enctype="multipart/form-data">
-    <input ref="fileInput" @change="fileChange" type="file" accept="image/*" name="file" hidden>
+    <input ref="fileInput" @change="fileChange" type="file" accept="image/*" name="file" multiple hidden>
 
     <FormErrorAlert/>
 
@@ -88,9 +88,23 @@ export default {
     }
   },
   methods: {
-    fileChange() {
-      this.$refs.fakeFileInput.value = this.$refs.fileInput.value
-      this.document ||= '파일:' + this.$refs.fileInput.files[0].name
+    fileChange(e) {
+      const fileCount = e.srcElement.files.length
+      if(fileCount > 10) {
+        alert('파일은 10개까지만 선택할 수 있습니다.')
+        return e.preventDefault()
+      }
+
+      if(fileCount <= 1) {
+        this.$refs.fakeFileInput.value = this.$refs.fileInput.value
+        if(fileCount === 1) this.document ||= '파일:' + this.$refs.fileInput.files[0].name
+        this.$refs.documentInput.disabled = false
+      }
+      else {
+        this.$refs.fakeFileInput.value = [...e.srcElement.files].map(a => `"${a.name}"`).join(', ')
+        this.document = ''
+        this.$refs.documentInput.disabled = true
+      }
     }
   }
 }
@@ -106,6 +120,10 @@ form input, form select {
   line-height: 1.5;
   padding: .25rem .5rem;
   width: 100%;
+}
+
+form input[disabled] {
+  opacity: .5;
 }
 
 form label {
