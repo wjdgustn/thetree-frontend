@@ -20,7 +20,7 @@
   </template>
 
   <SeedForm :beforeSubmit="beforeSubmit" method="post">
-    <input type="hidden" v-for="(value, name) in data.body" :name="name" :value="value">
+    <input type="hidden" v-for="(value, name) in page.data.body" :name="name" :value="value">
 
     <ul>
       <li v-for="tab in tabs">
@@ -140,6 +140,11 @@ export default {
 
       if(newValue.name === 'preview')
         this.loadPreview()
+    },
+    'data.content'() {
+      if(this.activeTab.name === 'raw') return
+      const activeComponent = this.getTabComponent(this.activeTab.name)
+      activeComponent.setValue(this.data.content)
     }
   },
   computed: {
