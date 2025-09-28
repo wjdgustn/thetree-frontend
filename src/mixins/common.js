@@ -155,7 +155,7 @@ export default {
                 }
                 else {
                     if(userUrl) location.href = userUrl
-                    else location.reload()
+                    else if(!import.meta.env.DEV) location.reload()
                 }
                 progressBar?.finish()
                 return
