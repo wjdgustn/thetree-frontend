@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     getFootnotes(element) {
-      return element.getElementsByClassName('wiki-fn-content')
+      return [...element.getElementsByClassName('wiki-fn-content')]
     },
     setupWikiContent(element = this.$refs.div) {
       const headings = element.getElementsByClassName('wiki-heading');
