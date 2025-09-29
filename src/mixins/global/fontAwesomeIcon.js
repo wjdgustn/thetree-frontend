@@ -29,7 +29,8 @@ import {
     faCode,
     faTriangleExclamation,
     faBell,
-    faGear
+    faGear,
+    faCircleCheck
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faFileLines,
@@ -71,7 +72,8 @@ export default {
             faTriangleExclamation,
             faCopy,
             faBell,
-            faGear
+            faGear,
+            faCircleCheck
         )
     },
     components: {

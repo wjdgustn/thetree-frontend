@@ -35,9 +35,7 @@
       :folded="data.hasAclGroup">
     <p>생성 그룹 목록</p>
     <ul>
-      <li>차단된 사용자</li>
-      <li>로그인 허용 차단</li>
-      <li>경고</li>
+      <li v-for="item in recommandedGroupList">{{item}}</li>
     </ul>
     <GeneralButton theme="primary" :whenClick="addAclGroup" :disabled="data.hasAclGroup">권장 ACLGroup 생성</GeneralButton>
   </Heading>
@@ -57,6 +55,21 @@
     <GeneralButton theme="primary" :whenClick="addNsacl" :disabled="data.hasNsacl">권장 이름공간 ACL 생성</GeneralButton>
     <GeneralButton theme="danger" :whenClick="removeAllNsacl">모든 이름공간 ACL 제거</GeneralButton>
   </Heading>
+  <Heading
+    title="브랜딩 설정"
+    :folded="changedWikiName || changedFrontPage">
+    <p><NuxtLink to="/admin/config">config 페이지</NuxtLink>의 publicConfig.json에서 위키 이름, 색상 등을 설정해 주세요.</p>
+    <p><CheckMarkText :checked="changedWikiName">위키 이름 변경</CheckMarkText></p>
+    <p><CheckMarkText :checked="changedFrontPage">대문 변경</CheckMarkText></p>
+  </Heading>
+  <Heading title="권장사항">
+    <p>원활한 위키 운영을 위한 설정 권장사항입니다.</p>
+    <p><CheckMarkText :checked="data.useEmailVerification">이메일 인증 활성화(devConfig.json)</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useCaptcha">캡챠 활성화(devConfig.json)</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useSearchEngine">검색 엔진 설정(.env)</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useRedis">Redis 설정(.env)</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useS3">파일 서버 설정(.env)</CheckMarkText></p>
+  </Heading>
 </template>
 <script>
 import { computed } from 'vue'
@@ -68,6 +81,7 @@ import InputField from '@/components/form/inputField'
 import GeneralButton from '@/components/generalButton'
 import SeedForm from '@/components/form/seedForm'
 import Alert from '@/components/alert'
+import CheckMarkText from '@/components/checkMarkText'
 
 export default {
   mixins: [Common],
@@ -77,6 +91,7 @@ export default {
     }
   },
   components: {
+    CheckMarkText,
     Alert,
     SeedForm,
     GeneralButton,
@@ -92,7 +107,14 @@ export default {
       repoUrl: '',
       skinName: '',
 
-      baseUrl: this.$store.state.config['wiki.canonical_url']
+      baseUrl: this.$store.state.config['wiki.canonical_url'],
+
+      recommandedGroupList: [
+        '차단된 사용자',
+        '편집요청 차단',
+        '로그인 허용 차단',
+        '경고'
+      ]
     }
   },
   watch: {
@@ -103,6 +125,12 @@ export default {
   computed: {
     baseUrlIsSet() {
       return this.$store.state.config['wiki.canonical_url'] === location.origin
+    },
+    changedWikiName() {
+      return this.$store.state.config['wiki.site_name'] !== '테스트위키'
+    },
+    changedFrontPage() {
+      return this.$store.state.config['wiki.front_page'] !== 'FrontPage'
     }
   },
   methods: {
@@ -135,19 +163,15 @@ export default {
       this.baseUrl = location.origin
     },
     async addAclGroup() {
-      await this.internalPost('/aclgroup/group_add', {
-        name: '차단된 사용자'
-      })
-      await this.internalPost('/aclgroup/group_add', {
-        name: '로그인 허용 차단'
-      })
-      await this.internalPost('/aclgroup/group_add', {
-        name: '경고'
-      })
+      for(let name of this.recommandedGroupList) {
+        await this.internalPost('/aclgroup/group_add', {
+          name
+        })
+      }
       await this.reloadView()
     },
     async addNsacl() {
-      const aclNames = ['Read', 'Edit', 'Move', 'Delete', 'CreateThread', 'WriteThreadComment', 'EditRequest', 'ACL']
+      const aclTypes = ['Read', 'Edit', 'Move', 'Delete', 'CreateThread', 'WriteThreadComment', 'EditRequest', 'ACL']
       const addRule = async (namespace, aclType, data = {}) => await this.internalPost(this.doc_action_link({ namespace, title: 'dummy' }, 'acl'), {
         target: 'namespace',
         aclType,
@@ -160,9 +184,108 @@ export default {
         permission: 'any',
         actionType: 'Allow'
       })
+
+      for(let aclType of ['Edit', 'CreateThread', 'WriteThreadComment']) {
+        await addRule('문서', aclType, {
+          conditionType: 'ACLGroup',
+          conditionContent: '경고',
+          actionType: 'Deny'
+        })
+        await addRule('문서', aclType, {
+          conditionType: 'ACLGroup',
+          conditionContent: '차단된 사용자',
+          actionType: 'Deny'
+        })
+        await addRule('문서', aclType, {
+          conditionType: 'Perm',
+          permission: 'member',
+          actionType: 'Allow'
+        })
+        await addRule('문서', aclType, {
+          conditionType: 'ACLGroup',
+          conditionContent: '로그인 허용 차단',
+          actionType: 'Deny'
+        })
+        await addRule('문서', aclType, {
+          conditionType: 'Perm',
+          permission: 'any',
+          actionType: 'Allow'
+        })
+      }
+
+      await addRule('문서', 'Move', {
+        conditionType: 'Perm',
+        permission: 'member_signup_15days_ago',
+        actionType: 'Allow'
+      })
+      await addRule('문서', 'Delete', {
+        conditionType: 'Perm',
+        permission: 'any',
+        actionType: 'Allow'
+      })
+
+      await addRule('문서', 'EditRequest', {
+        conditionType: 'ACLGroup',
+        conditionContent: '경고',
+        actionType: 'Deny'
+      })
+      await addRule('문서', 'EditRequest', {
+        conditionType: 'ACLGroup',
+        conditionContent: '편집요청 차단',
+        actionType: 'Deny'
+      })
+      await addRule('문서', 'EditRequest', {
+        conditionType: 'Perm',
+        permission: 'member',
+        actionType: 'Allow'
+      })
+      await addRule('문서', 'EditRequest', {
+        conditionType: 'ACLGroup',
+        conditionContent: '차단된 사용자',
+        actionType: 'Deny'
+      })
+      await addRule('문서', 'EditRequest', {
+        conditionType: 'Perm',
+        permission: 'any',
+        actionType: 'Allow'
+      })
+
+      await addRule('문서', 'ACL', {
+        conditionType: 'Perm',
+        permission: 'admin',
+        actionType: 'Allow'
+      })
+
+      for(let namespace of this.data.namespaces) {
+        for(let aclType of aclTypes) {
+          if(namespace === '사용자' && aclType === 'Edit') {
+            await addRule(namespace, aclType, {
+              conditionType: 'Perm',
+              permission: 'match_username_and_document_title',
+              actionType: 'GotoOtherNS',
+              actionContent: '문서'
+            })
+            await addRule(namespace, aclType, {
+              conditionType: 'Perm',
+              permission: 'admin',
+              actionType: 'GotoOtherNS',
+              actionContent: '문서'
+            })
+          }
+          else {
+            const isAdmin = namespace.includes('운영') || namespace.includes('휴지통')
+            await addRule(namespace, aclType, {
+              conditionType: 'Perm',
+              permission: isAdmin ? 'admin' : 'any',
+              actionType: 'GotoOtherNS',
+              actionContent: '문서'
+            })
+          }
+        }
+      }
     },
     async removeAllNsacl() {
-
+      await this.internalPost('/admin/initial_setup/remove_all_nsacl', {}, true)
     }
   }
 }
