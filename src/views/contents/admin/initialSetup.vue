@@ -124,7 +124,7 @@ export default {
   },
   computed: {
     baseUrlIsSet() {
-      return this.$store.state.config['wiki.canonical_url'] === location.origin
+      return !import.meta.env.SSR && this.$store.state.config['wiki.canonical_url'] === location.origin
     },
     changedWikiName() {
       return this.$store.state.config['wiki.site_name'] !== '테스트위키'
