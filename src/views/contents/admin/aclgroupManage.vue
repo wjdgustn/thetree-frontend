@@ -50,6 +50,12 @@
     <SeedFormBlock newStyle inputId="self_remove_noteInput" label="self_remove_note" name="selfRemoveNote">
       <InputField type="text" id="self_remove_noteInput" name="selfRemoveNote" v-model="group.selfRemoveNote"/>
     </SeedFormBlock>
+    <SeedFormBlock newStyle inputId="permissionsInput" label="permissions" name="permissions">
+      <InputField type="text" id="permissionsInput" name="permissions" v-model="group.permissions"/>
+    </SeedFormBlock>
+    <SeedFormBlock newStyle inputId="captchaRateInput" label="captcha_rate" name="captchaRate">
+      <InputField type="text" id="captchaRateInput" name="captchaRate" v-model="group.captchaRate"/>
+    </SeedFormBlock>
     <SeedFormBlock newStyle>
       <CheckBox id="show_user_documentInput" name="forBlock" v-model="group.forBlock" value="Y">show_user_document</CheckBox>
     </SeedFormBlock>
