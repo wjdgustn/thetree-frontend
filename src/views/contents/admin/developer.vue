@@ -50,7 +50,7 @@
       <GeneralButton theme="primary" type="submit">추가</GeneralButton>
     </SeedForm>
     <GeneralButton theme="primary" type="event" @click="buildAllSkin">모두 빌드</GeneralButton>
-    <Heading v-for="(commitId, name) in data.skinCommitIds" :title="name" :level="3" :folded="name === 'plain'">
+    <Heading v-for="(commitId, name) in data.skinCommitIds" :title="name" :level="3" :folded="name === 'plain'" :key="name">
       <template v-if="data.skinInfos[name]">
         <p>빌드 정보</p>
         <ul>
