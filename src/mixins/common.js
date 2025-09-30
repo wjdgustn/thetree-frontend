@@ -29,7 +29,7 @@ export default {
         encodeSpecialChars(str, exclude = []) {
             if(!str) return str;
 
-            const specialChars = '?&=+$#%'.split('');
+            const specialChars = '?&=+$#%\\'.split('');
             return str.split('').map(a => specialChars.includes(a) && !exclude.includes(a) ? encodeURIComponent(a) : a).join('');
         },
         doc_action_link(document, route, query = {}) {
