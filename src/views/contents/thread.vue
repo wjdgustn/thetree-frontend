@@ -1,4 +1,11 @@
 <template>
+  <Alert v-if="doc_fulltitle(page.data.document) === config['wiki.front_page']">
+    <strong>[경고!]</strong>
+    이 토론은 {{doc_fulltitle(page.data.document)}} 문서의 토론입니다.
+    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 각 문서의 토론에서 진행해 주시기 바랍니다.
+    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 삭제될 수 있습니다.
+  </Alert>
+
   <div class="title-group">
     <h2 class="topic">{{data.thread.topic}}</h2>
     <div class="title-group-right">
@@ -100,10 +107,12 @@ import CheckBox from '@/components/form/checkBox'
 import GeneralButton from '@/components/generalButton'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 import IpWarn from '@/components/ipWarn'
+import Alert from '@/components/alert'
 
 export default {
   mixins: [Common],
   components: {
+    Alert,
     IpWarn,
     FormErrorAlert,
     GeneralButton,

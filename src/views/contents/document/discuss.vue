@@ -40,6 +40,14 @@
   </div>
 
   <h3>새 주제 생성</h3>
+
+  <Alert v-if="doc_fulltitle(page.data.document) === config['wiki.front_page']">
+    <strong>[경고!]</strong>
+    이 토론은 {{doc_fulltitle(page.data.document)}} 문서의 토론입니다.
+    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 각 문서의 토론에서 진행해 주시기 바랍니다.
+    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 삭제될 수 있습니다.
+  </Alert>
+
   <FormErrorAlert/>
   <SeedForm method="post">
     <SeedFormBlock label="주제 :" inputId="topicInput" name="topic">
@@ -62,10 +70,12 @@ import SeedFormBlock from '@/components/form/seedFormBlock'
 import Comment from '@/components/comment'
 import IpWarn from '@/components/ipWarn'
 import FormErrorAlert from '@/components/form/formErrorAlert'
+import Alert from '@/components/alert'
 
 export default {
   mixins: [Common],
   components: {
+    Alert,
     FormErrorAlert,
     IpWarn,
     Comment,

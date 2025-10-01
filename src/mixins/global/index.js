@@ -12,6 +12,9 @@ export default {
         RouterLink: NuxtLink
     },
     computed: {
+        config() {
+            return this.$store.state.config
+        },
         page() {
             return this.$store.state.page
         },
