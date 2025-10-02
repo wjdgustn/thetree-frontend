@@ -31,6 +31,11 @@ export default {
   created() {
     if(this.checked) this.value = true
   },
+  watch: {
+    checked(newValue) {
+      this.value = newValue
+    }
+  },
   computed: {
     fieldError() {
       return this.name && this.$store.state.viewData.fieldErrors?.[this.name]
