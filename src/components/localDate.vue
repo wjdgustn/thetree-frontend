@@ -41,7 +41,7 @@ export default {
   computed: {
     dateObject() {
       return new Date(
-          typeof this.date === 'string' || this.date * 1000 > Date.now()
+          typeof this.date === 'string' || this.date * 1000 >= Date.now()
               ? this.date
               : this.date * 1000)
     },
