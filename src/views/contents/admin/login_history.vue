@@ -1,5 +1,5 @@
 <template>
-  <SeedForm method="post">
+  <SeedForm :beforeSubmit="goConfirm" method="post">
     <SeedFormBlock label="Username" for="usernameInput" name="username">
       <SeedFormInput id="usernameInput" name="username" required/>
     </SeedFormBlock>
@@ -24,6 +24,11 @@ export default {
     SeedForm,
     SeedButton,
     SeedFormBlock
+  },
+  methods: {
+    goConfirm() {
+      return confirm('go?')
+    }
   }
 }
 </script>
