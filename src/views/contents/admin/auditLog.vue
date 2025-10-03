@@ -44,6 +44,9 @@
           <template v-else-if="item.action === AuditLogTypes.ACLGroupDelete">
             <b>{{item.target}}</b> ACL 그룹을 삭제함
           </template>
+          <template v-else-if="item.action === AuditLogTypes.ManageAccount">
+            <AuthorSpan :account="item.targetUser"/> 계정을 관리함
+          </template>
         </div>
         <div v-if="item.content" class="text">
           {{item.content}}
@@ -73,6 +76,7 @@ const AuditLogTypes = {
   DeleteThread: 1,
   ACLGroupCreate: 3,
   ACLGroupDelete: 4,
+  ManageAccount: 5,
   DevSupport: 2
 }
 
@@ -103,7 +107,8 @@ export default {
         [AuditLogTypes.DeleteThread]: 'icon-delete-thread',
         [AuditLogTypes.DevSupport]: 'icon-dev-support',
         [AuditLogTypes.ACLGroupCreate]: 'icon-aclgroup-create',
-        [AuditLogTypes.ACLGroupDelete]: 'icon-aclgroup-delete'
+        [AuditLogTypes.ACLGroupDelete]: 'icon-aclgroup-delete',
+        [AuditLogTypes.ManageAccount]: 'icon-manage-account'
       })[type]
     },
     iconName(type) {
@@ -112,7 +117,8 @@ export default {
         [AuditLogTypes.DeleteThread]: 'trash-can',
         [AuditLogTypes.DevSupport]: 'code',
         [AuditLogTypes.ACLGroupCreate]: 'user-plus',
-        [AuditLogTypes.ACLGroupDelete]: 'user-minus'
+        [AuditLogTypes.ACLGroupDelete]: 'user-minus',
+        [AuditLogTypes.ManageAccount]: 'user-gear'
       })[type]
     },
     typeName(type) {
@@ -121,7 +127,8 @@ export default {
         [AuditLogTypes.DeleteThread]: '스레드 삭제',
         [AuditLogTypes.DevSupport]: '개발자 지원',
         [AuditLogTypes.ACLGroupCreate]: 'ACL그룹 생성',
-        [AuditLogTypes.ACLGroupDelete]: 'ACL그룹 삭제'
+        [AuditLogTypes.ACLGroupDelete]: 'ACL그룹 삭제',
+        [AuditLogTypes.ManageAccount]: '계정 관리'
       })[type]
     }
   }
@@ -280,5 +287,9 @@ export default {
 
 .icon-aclgroup-delete {
   color: #8b8d98;
+}
+
+.icon-manage-account {
+  color: darkslategrey;
 }
 </style>
