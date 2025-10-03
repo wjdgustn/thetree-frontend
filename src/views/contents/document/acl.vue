@@ -45,7 +45,7 @@
           <th></th>
         </tr>
         </thead>
-        <draggable v-if="rules.length" v-model="rules" tag="tbody" @end="dragEnd" itemKey="uuid" :disabled="!editable" :delay="isMobile ? 100 : 0">
+        <draggable v-if="rules.length" v-model="rules" tag="tbody" @end="dragEnd" itemKey="uuid" :disabled="!editable" :delay="100" :delayOnTouchOnly="true">
           <template #item="{element, index}">
             <tr>
               <td>{{index + 1}}</td>
