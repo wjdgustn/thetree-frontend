@@ -1,6 +1,6 @@
 <template>
   <table class="diff-table">
-    <thead>
+    <thead v-if="title">
     <tr>
       <th></th>
       <th></th>

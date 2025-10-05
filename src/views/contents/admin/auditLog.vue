@@ -47,10 +47,18 @@
           <template v-else-if="item.action === AuditLogTypes.ManageAccount">
             <AuthorSpan :account="item.targetUser"/> 계정을 관리함
           </template>
+          <template v-else-if="item.action === AuditLogTypes.ModifyConfig">
+            <b>{{item.target}}</b> 설정을 수정함
+          </template>
         </div>
         <div v-if="item.content" class="text">
           {{item.content}}
         </div>
+        <details v-if="item.hasDiff" @toggle="onDiffToggle(item)">
+          <summary>비교</summary>
+          <Diff v-if="item.diffHtml" :diffHtml="item.diffHtml"/>
+          <span v-else>Loading...</span>
+        </details>
         <div class="text">
           <LocalDate :date="item.createdAt"/>
         </div>
@@ -61,6 +69,7 @@
   <PrevNextBtn flex v-bind="data.pageProps"/>
 </template>
 <script>
+import Common from '@/mixins/common'
 import SeedForm from '@/components/form/seedForm'
 import InputField from '@/components/form/inputField'
 import CheckBox from '@/components/form/checkBox'
@@ -70,6 +79,8 @@ import PrevNextBtn from '@/components/prevNextBtn'
 import AuthorSpan from '@/components/authorSpan'
 import LocalDate from '@/components/localDate'
 import NuxtLink from '@/components/global/nuxtLink'
+import Heading from '@/components/heading'
+import Diff from '@/components/diff'
 
 const AuditLogTypes = {
   NamespaceACL: 0,
@@ -77,11 +88,15 @@ const AuditLogTypes = {
   ACLGroupCreate: 3,
   ACLGroupDelete: 4,
   ManageAccount: 5,
+  ModifyConfig: 6,
   DevSupport: 2
 }
 
 export default {
+  mixins: [Common],
   components: {
+    Diff,
+    Heading,
     NuxtLink,
     LocalDate,
     AuthorSpan,
@@ -108,7 +123,8 @@ export default {
         [AuditLogTypes.DevSupport]: 'icon-dev-support',
         [AuditLogTypes.ACLGroupCreate]: 'icon-aclgroup-create',
         [AuditLogTypes.ACLGroupDelete]: 'icon-aclgroup-delete',
-        [AuditLogTypes.ManageAccount]: 'icon-manage-account'
+        [AuditLogTypes.ManageAccount]: 'icon-manage-account',
+        [AuditLogTypes.ModifyConfig]: 'icon-modify-config'
       })[type]
     },
     iconName(type) {
@@ -118,7 +134,8 @@ export default {
         [AuditLogTypes.DevSupport]: 'code',
         [AuditLogTypes.ACLGroupCreate]: 'user-plus',
         [AuditLogTypes.ACLGroupDelete]: 'user-minus',
-        [AuditLogTypes.ManageAccount]: 'user-gear'
+        [AuditLogTypes.ManageAccount]: 'user-gear',
+        [AuditLogTypes.ModifyConfig]: 'gear'
       })[type]
     },
     typeName(type) {
@@ -128,8 +145,15 @@ export default {
         [AuditLogTypes.DevSupport]: '개발자 지원',
         [AuditLogTypes.ACLGroupCreate]: 'ACL그룹 생성',
         [AuditLogTypes.ACLGroupDelete]: 'ACL그룹 삭제',
-        [AuditLogTypes.ManageAccount]: '계정 관리'
+        [AuditLogTypes.ManageAccount]: '계정 관리',
+        [AuditLogTypes.ModifyConfig]: '설정 수정'
       })[type]
+    },
+    async onDiffToggle(item) {
+      if(!item.hasDiff || item.diffHtml) return
+
+      const { diffHtml } = await this.internalRequest(`/admin/audit_log/${item._id}/diff`)
+      item.diffHtml = diffHtml
     }
   }
 }
@@ -289,7 +313,11 @@ export default {
   color: #8b8d98;
 }
 
-.icon-manage-account {
+.icon-manage-account, .icon-modify-config {
   color: darkslategrey;
+}
+
+details summary {
+  display: revert;
 }
 </style>
