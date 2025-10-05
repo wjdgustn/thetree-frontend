@@ -217,6 +217,7 @@ export default {
           if(link.tagName !== 'A') continue;
 
           const title = link.getAttribute('title');
+          if(!title) continue;
           let checkTitle = title;
 
           const anchorPos = title.lastIndexOf('#');
