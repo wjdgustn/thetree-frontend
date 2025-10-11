@@ -61,8 +61,11 @@
       <IpWarn/>
 
       <SeedButton submit>저장</SeedButton>
+      <div class="clearboth"/>
     </template>
   </SeedForm>
+
+  <WikiContent :content="data.dochelptext"/>
 </template>
 <script>
 import Common from '@/mixins/common'
@@ -360,5 +363,9 @@ form li.editor-buttons {
 
 form li.editor-buttons>div {
   display: inline-block;
+}
+
+.clearboth {
+  clear: both;
 }
 </style>

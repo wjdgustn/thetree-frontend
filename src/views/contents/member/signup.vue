@@ -5,7 +5,7 @@
       <pre class="signup-terms" v-html="terms"></pre>
     </FlexFormBlock>
     <FlexFormBlock name="agree">
-      <CheckBox name="agree">동의합니다.</CheckBox>
+      <CheckBox name="agree">{{agreeText}}</CheckBox>
     </FlexFormBlock>
     <FlexFormBlock label="Email" inputId="emailInput" name="email">
       <InputField id="emailInput" name="email"/>
