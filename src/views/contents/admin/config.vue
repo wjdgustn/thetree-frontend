@@ -15,7 +15,7 @@
         <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/fixstringconfig')">stringConfig.example.json 필드 추가</GeneralButton>
       </SeedForm>
 
-      <SeedForm v-for="(value, key) in data.stringConfig" method="post" action="/admin/config/stringconfig">
+      <SeedForm v-for="(value, key) in data.stringConfig" :key="key" method="post" action="/admin/config/stringconfig">
         <input type="hidden" name="key" :value="key">
         <Heading :title="key" :level="4" folded>
           <textarea name="value" rows="10" :value="value"/>
@@ -39,7 +39,7 @@
             <td>Message</td>
             <td>Action</td>
           </tr>
-          
+
           <tr v-for="(item, index) in data.disabledFeatures">
             <td style="min-width: 100px;">{{item.method}}</td>
             <td style="min-width: 100px;">{{item.type}}</td>
