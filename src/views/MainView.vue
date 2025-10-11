@@ -139,7 +139,7 @@ export default {
         nextPath = nextPath.slice(0, to.fullPath.lastIndexOf('#'))
 
     const isHashChange = to.path === from.path && !!to.hash && to.hash !== from.hash
-    if(prevPath !== nextPath && !isHashChange)
+    if(!isHashChange)
       await this.loadView(to.fullPath)
     next()
   },
