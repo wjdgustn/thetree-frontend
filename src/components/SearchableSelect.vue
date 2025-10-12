@@ -5,7 +5,7 @@
       v-model="modelValue"
       v-bind="$attrs"
   />
-  <input v-if="name" :name="name" type="hidden" :value="modelValue">
+  <input v-if="name" :name="name" type="hidden" :value="modelValue?.value ?? modelValue">
 </template>
 <script>
 import VSelect from 'vue-select'

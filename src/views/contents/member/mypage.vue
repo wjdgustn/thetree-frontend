@@ -32,6 +32,16 @@
           <label for="permInput">권한</label>
           <div>{{data.permissions.join(', ')}}</div>
         </div>
+        <div :class="$style.form__row">
+          <label for="permInput">모바일 인증</label>
+          <div :class="$style['form__row-inner']">
+            <span v-if="data.permissions.includes('mobile_verified_member')" class="color-text color-text-green">
+            <FontAwesomeIcon icon="fa-circle-check"/>
+            인증됨
+          </span>
+            <GeneralButton v-else :class="$style.button" href="/member/signup_verify">인증</GeneralButton>
+          </div>
+        </div>
         <SeedFormBlock newStyle :class="$style.form__row" label="스킨" inputId="skinSelect">
           <div :class="$style['form__row-inner']">
             <SelectMenu id="skinSelect" name="skin" :value="data.user.skin">
@@ -382,5 +392,25 @@ export default {
 
 .new-passkey-block> *:focus {
   z-index: 200;
+}
+
+.color-text {
+  align-items: center;
+  display: inline-flex;
+  gap: .4rem;
+}
+
+.color-text-green {
+  color: #00a91c;
+}
+
+.theseed-dark-mode .color-text-green {
+  color: #216e1f;
+}
+
+.color-text svg {
+  height: 1em;
+  fill: currentColor;
+  overflow: visible;
 }
 </style>
