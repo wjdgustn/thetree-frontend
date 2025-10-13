@@ -29,7 +29,7 @@
     <FormErrorAlert/>
 
     <h3>{{data.targetUser.name}}</h3>
-    <p v-if="!data.verifyEnabled" class="phone-number-text">
+    <p v-if="data.verifyEnabled" class="phone-number-text">
       전화번호:
       <span v-if="data.phoneNumber">{{data.phoneNumber}}</span>
       <GeneralButton v-else-if="data.targetUser.mobileVerified" size="small" type="event" @click="accountAction('getPhoneNumber', false)">표시</GeneralButton>
