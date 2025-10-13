@@ -32,7 +32,7 @@
           <label for="permInput">권한</label>
           <div>{{data.permissions.join(', ')}}</div>
         </div>
-        <div :class="$style.form__row">
+        <div v-if="data.verifyEnabled" :class="$style.form__row">
           <label for="permInput">모바일 인증</label>
           <div :class="$style['form__row-inner']">
             <span v-if="data.permissions.includes('mobile_verified_member')" class="color-text color-text-green">
