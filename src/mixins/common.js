@@ -223,8 +223,10 @@ export default {
                 if(typeof json.data === 'string') {
                     this.$store.state.viewData.errorAlert = json.data
 
-                    const firstInput = form?.querySelector('input, select, textarea')
-                    if(firstInput) this.$nextTick().then(() => firstInput.focus())
+                    if(json.code?.toString().startsWith('4')) {
+                        const firstInput = form?.querySelector('input, select, textarea')
+                        if(firstInput) this.$nextTick().then(() => firstInput.focus())
+                    }
 
                     this.$store.state.viewData.errorAlertExists = false
                     await this.$nextTick()

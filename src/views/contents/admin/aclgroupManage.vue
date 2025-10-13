@@ -12,6 +12,7 @@
       <SelectMenu id="signup_policyInput" name="signupPolicy" :value="group.signupPolicy">
         <option value="0">none</option>
         <option value="1">block</option>
+        <option value="2">require_verification</option>
       </SelectMenu>
     </SeedFormBlock>
     <SeedFormBlock newStyle inputId="max_durationInput" label="max_duration" name="maxDuration">
