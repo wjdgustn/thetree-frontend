@@ -29,6 +29,12 @@
     <FormErrorAlert/>
 
     <h3>{{data.targetUser.name}}</h3>
+    <p v-if="!data.verifyEnabled" class="phone-number-text">
+      전화번호:
+      <span v-if="data.phoneNumber">{{data.phoneNumber}}</span>
+      <GeneralButton v-else-if="data.targetUser.mobileVerified" size="small" type="event" @click="accountAction('getPhoneNumber', false)">표시</GeneralButton>
+      <span v-else>없음</span>
+    </p>
     <SeedFormBlock name="name" label="name" inputId="nameInput" newStyle>
       <InputField name="name" id="nameInput" :value="data.targetUser.name" required/>
     </SeedFormBlock>
@@ -56,6 +62,7 @@
         <GeneralButton theme="danger" type="event" @click="accountAction('resetLastNameChange')">이름 변경 기간 제한 해제</GeneralButton>
         <GeneralButton theme="danger" type="event" @click="accountAction('resetLastActivity')">탈퇴 미활동 제한 해제</GeneralButton>
         <GeneralButton theme="danger" type="event" @click="accountAction('resetPasswordLink')">비밀번호 재설정 링크 생성</GeneralButton>
+        <GeneralButton :disabled="!data.targetUser.mobileVerified" theme="danger" type="event" @click="accountAction('removePhoneNumber')">모바일 인증 해제</GeneralButton>
         <GeneralButton theme="danger" type="event" @click="accountAction('deleteAccount')">계정 삭제</GeneralButton>
       </SeedFormBlock>
     </Heading>
@@ -99,9 +106,9 @@ export default {
       if(!this.data.targetUser)
         this.$refs.queryInput.focus()
     },
-    async accountAction(action) {
+    async accountAction(action, danger = true) {
       if(!this.data.targetUser.uuid) return
-      if(!confirm('go?')) return
+      if(danger && !confirm('go?')) return
 
       await this.internalRequestAndProcess('/admin/manage_account/action', {
         method: 'POST',
@@ -119,4 +126,9 @@ export default {
 </script>
 <style module>
 @import '@/styles/form.css';
+</style>
+<style scoped>
+.phone-number-text {
+  margin-top: 0;
+}
 </style>
