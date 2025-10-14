@@ -37,7 +37,7 @@
         <template v-if="!fetched || !comment.hidden || forceShow">
           <div v-if="showRaw" v-text="rawContent" class="wiki-raw"/>
           <WikiContent v-else-if="comment.contentHtml" discuss :content="comment.contentHtml"/>
-          <SeedButton v-if="forceShow" @click="forceShow = false" danger>[ADMIN] HIDE</SeedButton>
+          <SeedButton v-if="comment.hidden" @click="forceShow = false" danger>[ADMIN] HIDE</SeedButton>
         </template>
         <template v-else>
           [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>에 의해 숨겨진 글입니다.]
