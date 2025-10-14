@@ -22,7 +22,7 @@
   </p>
 
   <div v-for="(item, index) in data.openThreads">
-    <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'" noCaptcha>
+    <SeedForm :beforeSubmit="goConfirm" method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'" noCaptcha>
       <SeedButton v-if="data.permissions.delete" type="submit" danger>[ADMIN] 스레드 삭제</SeedButton>
     </SeedForm>
     <h2>{{index + 1}}. <NuxtLink :to="'/thread/' + item.url" :id="'s-' + index">{{item.topic}}</NuxtLink></h2>
@@ -83,6 +83,11 @@ export default {
     SeedButton,
     SeedForm,
     NuxtLink
+  },
+  methods: {
+    goConfirm() {
+      return confirm('go?')
+    }
   }
 }
 </script>

@@ -21,7 +21,7 @@
           <CheckBox v-model="hideHidden">숨겨진 댓글 보이지 않기</CheckBox>
           <template v-if="data.permissions.delete">
             <hr>
-            <SeedForm method="post" class="delete-thread-form" :action="'/admin/thread/' + data.thread.url + '/delete'" noCaptcha>
+            <SeedForm :beforeSubmit="goConfirm" method="post" class="delete-thread-form" :action="'/admin/thread/' + data.thread.url + '/delete'" noCaptcha>
               <GeneralButton theme="danger" type="submit">[ADMIN] 스레드 삭제</GeneralButton>
             </SeedForm>
           </template>
@@ -285,6 +285,9 @@ export default {
     sendComment(e) {
       if(e.repeat) return
       this.$refs.submitButton.$el.click()
+    },
+    goConfirm() {
+      return confirm('go?')
     }
   }
 }
