@@ -130,7 +130,7 @@ export default {
       locks: [],
       fetchingComments: false,
       scrollTimer: null,
-      hideHidden: true,
+      hideHidden: this.$store.state.localConfig['thread.hide_hidden'] ?? true,
       socket: null,
       activeTab: 'raw',
       previewComment: {}
@@ -182,8 +182,9 @@ export default {
     this.socket.disconnect()
   },
   watch: {
-    hideHidden() {
+    hideHidden(newValue) {
       this.setScrollTimer()
+      this.$store.state.localConfigSetValue('thread.hide_hidden', newValue)
     },
     activeTab(newValue) {
       if(newValue === 'preview')
