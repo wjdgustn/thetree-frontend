@@ -52,11 +52,8 @@
   <SeedForm method="post">
     <SeedFormBlock label="주제 :" inputId="topicInput" name="topic">
       <input type="text" id="topicInput" name="topic">
-
     </SeedFormBlock>
-    <SeedFormBlock label="내용 :" inputId="contentInput" name="text">
-      <textarea id="contentInput" name="text" rows="5"/>
-    </SeedFormBlock>
+    <CommentPreviewTab/>
     <IpWarn discuss/>
     <SeedButton class="submit-button" submit>전송</SeedButton>
   </SeedForm>
@@ -71,10 +68,12 @@ import Comment from '@/components/comment'
 import IpWarn from '@/components/ipWarn'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 import Alert from '@/components/alert'
+import CommentPreviewTab from '@/components/commentPreviewTab'
 
 export default {
   mixins: [Common],
   components: {
+    CommentPreviewTab,
     Alert,
     FormErrorAlert,
     IpWarn,

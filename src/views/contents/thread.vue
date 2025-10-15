@@ -72,23 +72,7 @@
   </template>
 
   <SeedForm method="post" class="comment-form" :afterSubmit="afterSubmit" :action="'/thread/' + data.thread.url">
-    <ul>
-      <li><button type="button" class="tab-button" :class="{ active: activeTab === 'raw' }" @click="activeTab = 'raw'">RAW 편집</button></li>
-      <li><button type="button" class="tab-button" :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">미리보기</button></li>
-    </ul>
-    <div class="tabs">
-      <div :class="{ active: activeTab === 'raw' }">
-        <textarea v-if="data.thread.status === 0" ref="commentInput" rows="5" name="text" @keydown.ctrl.enter="sendComment"/>
-        <textarea v-else rows="5" disabled v-text="['', 'pause 상태입니다.', '닫힌 토론입니다.'][data.thread.status]"/>
-      </div>
-      <div class="preview-tab" :class="{ active: activeTab === 'preview' }">
-        <Comment
-            previewMode
-            :slug="data.thread.url"
-            :comment="previewComment"
-        />
-      </div>
-    </div>
+    <CommentPreviewTab :sendComment="sendComment"/>
     <IpWarn discuss/>
     <SeedButton ref="submitButton" type="submit" submit :disabled="data.thread.status !== 0">전송</SeedButton>
   </SeedForm>
@@ -108,10 +92,12 @@ import GeneralButton from '@/components/generalButton'
 import FormErrorAlert from '@/components/form/formErrorAlert'
 import IpWarn from '@/components/ipWarn'
 import Alert from '@/components/alert'
+import CommentPreviewTab from '@/components/commentPreviewTab'
 
 export default {
   mixins: [Common],
   components: {
+    CommentPreviewTab,
     Alert,
     IpWarn,
     FormErrorAlert,
@@ -131,9 +117,7 @@ export default {
       fetchingComments: false,
       scrollTimer: null,
       hideHidden: this.$store.state.localConfig['thread.hide_hidden'] ?? true,
-      socket: null,
-      activeTab: 'raw',
-      previewComment: {}
+      socket: null
     }
   },
   computed: {
@@ -185,10 +169,6 @@ export default {
     hideHidden(newValue) {
       this.setScrollTimer()
       this.$store.state.localConfigSetValue('thread.hide_hidden', newValue)
-    },
-    activeTab(newValue) {
-      if(newValue === 'preview')
-        this.loadPreview()
     },
     $route() {
       this.setScrollTimer(true)
@@ -256,32 +236,6 @@ export default {
     afterSubmit() {
       this.$refs.commentInput.value = ''
       this.activeTab = 'raw'
-    },
-    async loadPreview() {
-      this.previewComment = {
-        type: 0,
-        id: this.data.comments.at(-1).id + 1,
-        createdAt: new Date().toISOString(),
-        user: {
-          uuid: this.session.account.uuid,
-          name: this.session.account.name,
-          type: this.session.account.type
-        }
-      }
-
-      const json = await this.internalRequest(this.doc_action_link(this.data.document, 'preview'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-          content: this.$refs.commentInput.value,
-          mode: 'thread'
-        }).toString(),
-        noProgress: true
-      })
-
-      this.previewComment.contentHtml = json.contentHtml
     },
     sendComment(e) {
       if(e.repeat) return
@@ -353,91 +307,6 @@ textarea[disabled] {
 form.comment-form button {
   float: right;
   width: 8rem;
-}
-
-form.comment-form ul {
-  border-bottom: 1px solid #ddd;
-  height: 36px;
-  list-style: none;
-  margin-bottom: 0;
-  margin-top: 0;
-  padding-left: 0;
-}
-
-form.comment-form ul:after,form.comment-form ul:before {
-  content: " ";
-  display: table;
-}
-
-form.comment-form li {
-  float: left;
-  margin-bottom: -1px;
-}
-
-form.comment-form li+li {
-  margin-left: .2rem;
-}
-
-form.comment-form li button {
-  background: none;
-  border: 1px solid transparent;
-  border-radius: .25rem .25rem 0 0;
-  cursor: pointer;
-  display: block;
-  font-size: .9rem;
-  padding: .5em 1em;
-}
-
-form.comment-form li button.active {
-  background-color: #fff;
-  border-color: #ddd #ddd transparent;
-  color: #55595c;
-}
-
-form.comment-form div.tabs:before {
-  clear: both;
-  content: "";
-  display: table
-}
-
-form.comment-form div.tabs {
-  border: 1px solid #ddd;
-  border-top: none;
-  margin-bottom: 1em;
-}
-
-form.comment-form div.tabs>div {
-  display: none;
-}
-
-form.comment-form div.tabs>div.active {
-  display: block;
-}
-
-form.comment-form div.tabs>div.preview-tab {
-  padding: 20px;
-}
-
-form.comment-form div.tabs>div.preview-tab>div {
-  padding-bottom: 0;
-}
-
-form.comment-form textarea {
-  border: none;
-}
-
-.theseed-dark-mode form.comment-form div.tabs, .theseed-dark-mode form.comment-form ul {
-  border-color: #383b40;
-}
-
-.theseed-dark-mode form.comment-form li button {
-  background-color: #27292d;
-  border-color: #383b40;
-  color: #ddd;
-}
-
-.theseed-dark-mode form.comment-form li button.active {
-  background-color: #383b40;
 }
 
 .title-group {
