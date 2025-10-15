@@ -167,7 +167,7 @@ export default {
                 finalPath += urlChars[parseInt(chunk.padEnd(6, '0'), 2)]
             }
 
-            const res = await fetch(import.meta.env.DEV ? ('/internal' + url) : ('/i/' + finalPath + parsedUrl.search), {
+            const res = await fetch(import.meta.env.DEV ? ('/internal' + parsedUrl.pathname + parsedUrl.search) : ('/i/' + finalPath + parsedUrl.search), {
                 ...options,
                 headers: {
                     ...(options?.headers || {}),
