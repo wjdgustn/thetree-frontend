@@ -144,8 +144,6 @@ export default {
       if(form.method === 'get')
         url.search = new URLSearchParams(data).toString()
 
-      url.pathname = '/internal' + url.pathname
-
       const isMultipartForm = form.enctype === 'multipart/form-data'
 
       const json = await this.internalRequest(url, {
