@@ -72,7 +72,7 @@
   </template>
 
   <SeedForm method="post" class="comment-form" :afterSubmit="afterSubmit" :action="'/thread/' + data.thread.url">
-    <CommentPreviewTab :sendComment="sendComment"/>
+    <CommentPreviewTab ref="commentPreviewTab" :sendComment="sendComment"/>
     <IpWarn discuss/>
     <SeedButton ref="submitButton" type="submit" submit :disabled="data.thread.status !== 0">전송</SeedButton>
   </SeedForm>
@@ -181,7 +181,7 @@ export default {
       this.setScrollTimer(true)
     },
     beforeLeave() {
-      if(this.$refs.commentInput?.value)
+      if(this.$refs.commentPreviewTab.$refs.commentInput?.value)
         return confirm('변경된 사항이 저장되지 않았습니다.')
       return true
     },
@@ -234,7 +234,7 @@ export default {
       this.setScrollTimer()
     },
     afterSubmit() {
-      this.$refs.commentInput.value = ''
+      this.$refs.commentPreviewTab.$refs.commentInput.value = ''
       this.activeTab = 'raw'
     },
     sendComment(e) {
