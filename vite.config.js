@@ -32,8 +32,13 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       cwd: skinPath
     }).toString().trim()) * 1000)
   }
+
+  const pluginPaths = []
+  for(let pluginType of fs.readdirSync('./plugins'))
+    pluginPaths.push(fs.readdirSync(`./plugins/${pluginType}`))
+
   const versionHeader = crypto.createHash('md5')
-      .update(skin + JSON.stringify(commitIds))
+      .update(skin + JSON.stringify(commitIds) + JSON.stringify(pluginPaths))
       .digest('hex')
       .slice(0, 17)
 
