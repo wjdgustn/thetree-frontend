@@ -51,9 +51,9 @@
   <FormErrorAlert/>
   <SeedForm method="post">
     <SeedFormBlock label="주제 :" inputId="topicInput" name="topic">
-      <input type="text" id="topicInput" name="topic">
+      <input ref="topicInput" type="text" id="topicInput" name="topic">
     </SeedFormBlock>
-    <CommentPreviewTab/>
+    <CommentPreviewTab ref="commentPreviewTab"/>
     <IpWarn discuss/>
     <SeedButton class="submit-button" submit>전송</SeedButton>
   </SeedForm>
@@ -83,9 +83,17 @@ export default {
     SeedForm,
     NuxtLink
   },
+  created() {
+    this.$store.state.components.mainView.beforeLeave = this.beforeLeave
+  },
   methods: {
     goConfirm() {
       return confirm('go?')
+    },
+    beforeLeave() {
+      if(this.$refs.topicInput?.value || this.$refs.commentPreviewTab.$refs.commentInput?.value)
+        return confirm('변경된 사항이 저장되지 않았습니다.')
+      return true
     }
   }
 }
