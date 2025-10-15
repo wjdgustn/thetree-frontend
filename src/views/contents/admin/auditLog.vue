@@ -50,6 +50,9 @@
           <template v-else-if="item.action === AuditLogTypes.ModifyConfig">
             <b>{{item.target}}</b> 설정을 수정함
           </template>
+          <template v-else-if="item.action === AuditLogTypes.ThreadACL">
+            <b><NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}}</NuxtLink></b> 토론 ACL을 편집함
+          </template>
         </div>
         <div v-if="item.content" class="text">
           {{item.content}}
@@ -89,6 +92,7 @@ const AuditLogTypes = {
   ACLGroupDelete: 4,
   ManageAccount: 5,
   ModifyConfig: 6,
+  ThreadACL: 7,
   DevSupport: 2
 }
 
@@ -124,7 +128,8 @@ export default {
         [AuditLogTypes.ACLGroupCreate]: 'icon-aclgroup-create',
         [AuditLogTypes.ACLGroupDelete]: 'icon-aclgroup-delete',
         [AuditLogTypes.ManageAccount]: 'icon-manage-account',
-        [AuditLogTypes.ModifyConfig]: 'icon-modify-config'
+        [AuditLogTypes.ModifyConfig]: 'icon-modify-config',
+        [AuditLogTypes.ThreadACL]: 'icon-thread-acl'
       })[type]
     },
     iconName(type) {
@@ -135,7 +140,8 @@ export default {
         [AuditLogTypes.ACLGroupCreate]: 'user-plus',
         [AuditLogTypes.ACLGroupDelete]: 'user-minus',
         [AuditLogTypes.ManageAccount]: 'user-gear',
-        [AuditLogTypes.ModifyConfig]: 'gear'
+        [AuditLogTypes.ModifyConfig]: 'gear',
+        [AuditLogTypes.ThreadACL]: 'comments'
       })[type]
     },
     typeName(type) {
@@ -146,7 +152,8 @@ export default {
         [AuditLogTypes.ACLGroupCreate]: 'ACL그룹 생성',
         [AuditLogTypes.ACLGroupDelete]: 'ACL그룹 삭제',
         [AuditLogTypes.ManageAccount]: '계정 관리',
-        [AuditLogTypes.ModifyConfig]: '설정 수정'
+        [AuditLogTypes.ModifyConfig]: '설정 수정',
+        [AuditLogTypes.ThreadACL]: '토론 ACL 편집'
       })[type]
     },
     async onDiffToggle(item) {
@@ -315,6 +322,10 @@ export default {
 
 .icon-manage-account, .icon-modify-config {
   color: darkslategrey;
+}
+
+.icon-thread-acl {
+  color: #f76b15;
 }
 
 details summary {
