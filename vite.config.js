@@ -41,6 +41,9 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       .update(skin + JSON.stringify(commitIds) + JSON.stringify(pluginPaths))
       .digest('hex')
       .slice(0, 17)
+    const urlKey = [...crypto.createHash('sha256')
+        .update(versionHeader)
+        .digest()]
 
   const apiProxy = {
     target: env.API_HOST || 'http://localhost:3000',
@@ -53,7 +56,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       vueDevTools(),
       skinRawLoaderPlugin(skin),
       ...(isSsrBuild ? [] : [
-        metadata({ name: skin, versionHeader, commitIds, commitDates }, env.METADATA_PATH || './dist')
+        metadata({ name: skin, versionHeader, urlKey, commitIds, commitDates }, env.METADATA_PATH || './dist')
       ])
     ],
     define: {
@@ -61,6 +64,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       __THETREE_VERSION_HEADER__: JSON.stringify(versionHeader),
       __THETREE_COMMIT_DATES__: JSON.stringify(commitDates),
       __THETREE_SKIN_NAME__: JSON.stringify(skin),
+      __THETREE_URL_KEY__: JSON.stringify(urlKey)
     },
     base: (process.env.NODE_ENV === 'production' || env.METADATA_PATH) ? `/skins/${skin}` : '/',
     publicDir: isSsrBuild ? false : 'public',
@@ -77,6 +81,7 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     server: {
       proxy: {
+        '/i': apiProxy,
         '/internal': apiProxy,
         '/sidebar.json': apiProxy,
         '/socket.io': apiProxy

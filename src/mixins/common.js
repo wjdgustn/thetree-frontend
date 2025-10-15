@@ -137,7 +137,37 @@ export default {
             const userUrl = options?.userUrl
             delete options?.userUrl
 
-            const res = await fetch(typeof url === 'string' ? '/internal' + url : url, {
+            const encKey = __THETREE_URL_KEY__
+            const parsedUrl = new URL(url, location.origin)
+            const encryptedPath = (__THETREE_VERSION_HEADER__ + parsedUrl.pathname).split('')
+                .map((a, i) => a.charCodeAt(0) ^ encKey[i % encKey.length])
+            const shuffleArray = arr => {
+                for(let i in arr) {
+                    const j = encKey[i % encKey.length] % arr.length;
+                    [arr[i], arr[j]] = [arr[j], arr[i]]
+                }
+            }
+            shuffleArray(encryptedPath)
+            const urlChars = [
+                ...[
+                    ...[...Array(26)].map((a, i) => i + 97),
+                    ...[...Array(26)].map((a, i) => i + 65),
+                    ...[...Array(10)].map((a, i) => i + 48)
+                ]
+                    .map(a => String.fromCharCode(a)),
+                '-',
+                '_'
+            ]
+            shuffleArray(urlChars)
+
+            const binary = encryptedPath.map(a => a.toString(2).padStart(8, '0')).join('')
+            let finalPath = ''
+            for(let i = 0; i < binary.length; i += 6) {
+                const chunk = binary.slice(i, i + 6)
+                finalPath += urlChars[parseInt(chunk.padEnd(6, '0'), 2)]
+            }
+
+            const res = await fetch(import.meta.env.DEV ? ('/internal' + url) : ('/i/' + finalPath + parsedUrl.search), {
                 ...options,
                 headers: {
                     ...(options?.headers || {}),
