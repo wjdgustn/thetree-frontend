@@ -53,7 +53,7 @@
     <div v-for="item in [...data.threads, ...data.editRequests]" class="table-row">
       <div class="table-item">
         <NuxtLink :to="(item.topic ? '/thread/' : '/edit_request/') + item.url">{{item.topic || `편집 요청 ${item.url}`}}</NuxtLink>
-        <DiffCount class="diff-count" v-if="item.diffLength" :count="item.diffLength"/>
+        <DiffCount class="diff-count" v-if="item.diffLength != null" :count="item.diffLength"/>
         <span class="document-group">
           <span class="document-icon">
             <FontAwesomeIcon icon="fa-regular fa-file-lines" />
