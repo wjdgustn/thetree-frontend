@@ -185,7 +185,7 @@ export default {
                 }
                 else {
                     if(userUrl) location.href = userUrl
-                    else if(!import.meta.env.DEV) location.reload()
+                    else if(!import.meta.env.DEV && url !== '/sidebar') location.reload()
                 }
                 progressBar?.finish()
                 return
