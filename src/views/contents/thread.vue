@@ -235,7 +235,7 @@ export default {
     },
     afterSubmit() {
       this.$refs.commentPreviewTab.$refs.commentInput.value = ''
-      this.activeTab = 'raw'
+      this.$refs.commentPreviewTab.activeTab = 'raw'
     },
     sendComment(e) {
       if(e.repeat) return
