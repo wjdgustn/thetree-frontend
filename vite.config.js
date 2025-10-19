@@ -85,7 +85,8 @@ export default defineConfig(({ mode, isSsrBuild }) => {
         '/i': apiProxy,
         '/internal': apiProxy,
         '/sidebar.json': apiProxy,
-        '/socket.io': apiProxy
+        '/socket.io': apiProxy,
+        '/sw.js': apiProxy
       }
     },
     build: {

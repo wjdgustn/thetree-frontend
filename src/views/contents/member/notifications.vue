@@ -18,6 +18,7 @@
   ]"/>
   <div class="top-button-group">
     <PrevNextBtn flex v-bind="data.pageProps"/>
+    <GeneralButton v-if="showSubscribePushUI" :whenClick="subscribePushNotificationButton" :disabled="disableSubscribePushUI">푸시 알림 켜기</GeneralButton>
     <GeneralButton :whenClick="readAll" :disabled="!session.notifications.length">모두 읽음</GeneralButton>
   </div>
   <ul class="list">
@@ -81,6 +82,7 @@ import NuxtLink from '@/components/global/nuxtLink'
 import AuthorSpan from '@/components/authorSpan'
 import LocalDate from '@/components/localDate'
 import GeneralButton from '@/components/generalButton'
+import Alert from '@/components/alert'
 
 const NotificationTypes = {
   UserDiscuss: 0,
@@ -92,6 +94,7 @@ const NotificationTypes = {
 export default {
   mixins: [Common],
   components: {
+    Alert,
     GeneralButton,
     LocalDate,
     AuthorSpan,
@@ -102,10 +105,32 @@ export default {
   },
   data() {
     return {
-      NotificationTypes
+      NotificationTypes,
+      showSubscribePushUI: false,
+      disableSubscribePushUI: false
+    }
+  },
+  mounted() {
+    this.onLoaded()
+  },
+  watch: {
+    $route() {
+      this.onLoaded()
+    }
+  },
+  computed: {
+    pushNotificationSupported() {
+      return ('serviceWorker' in navigator) && ('PushManager' in window)
     }
   },
   methods: {
+    async onLoaded() {
+      if(this.pushNotificationSupported) {
+        const subscribed = await this.subscribedPushNotification()
+        if(!subscribed)
+          this.showSubscribePushUI = true
+      }
+    },
     iconClass(type) {
       return ({
         [NotificationTypes.UserDiscuss]: 'icon-user-discuss',
@@ -130,6 +155,60 @@ export default {
       await this.internalRequestAndProcess('/member/notifications/read', {
         method: 'POST'
       });
+    },
+    async subscribedPushNotification() {
+      if(!this.pushNotificationSupported) return false
+
+      const registration = await navigator.serviceWorker.getRegistration()
+      const subscription = registration && await registration.pushManager.getSubscription()
+      return !!subscription
+    },
+    async subscribePushNotificationButton() {
+      this.disableSubscribePushUI = true
+      try {
+        return await this.subscribePushNotification()
+      } finally {
+        this.disableSubscribePushUI = false
+      }
+    },
+    async subscribePushNotification() {
+      if(!this.pushNotificationSupported) return
+
+      const subscribed = await this.subscribedPushNotification()
+      if(subscribed) return
+
+      const status = await Notification.requestPermission()
+      if(status === 'denied')
+        return alert('알림 권한이 거부되었습니다. 브라우저 설정에서 알림 권한을 허용해 주세요.')
+
+      const { applicationServerKey } = await this.internalRequest('/member/notifications/subscribe')
+
+      const registration = await navigator.serviceWorker.register('/sw.js')
+      console.log(registration);
+      if(!registration.active) await new Promise(resolve => {
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing
+          newWorker.addEventListener('statechange', () => {
+            if(newWorker.state === 'activated')
+              resolve()
+          })
+        })
+      })
+      const pushSubscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey
+      })
+      console.log(pushSubscription)
+
+      await this.internalRequestAndProcess('/member/notifications/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pushSubscription)
+      })
+
+      this.showSubscribePushUI = false;
     }
   }
 }
@@ -290,7 +369,7 @@ export default {
 .top-button-group {
   align-items: center;
   display: flex;
-  gap: 1rem;
+  gap: .5rem;
   justify-content: space-between;
   margin: 1rem 0;
 }
