@@ -60,6 +60,8 @@
 
       <IpWarn/>
 
+      <span v-if="data.editRequestBottomText" v-html="data.editRequestBottomText"/>
+
       <SeedButton submit>저장</SeedButton>
       <div class="clearboth"/>
     </template>

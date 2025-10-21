@@ -21,9 +21,10 @@
     <textarea name="text" wrap="soft" v-model="text"/>
     <div class="form-block">
       <label for="licenseSelect">라이선스</label>
-      <SearchableSelect name="license" inputId="licenseSelect" :options="data.licenses"/>
+      <SearchableSelect name="license" inputId="licenseSelect" :options="data.licenses" v-model="license"/>
       <ShowError tag="license"/>
     </div>
+    <p v-if="data.licenseText" v-html="data.licenseText"/>
     <div class="form-block">
       <label for="categorySelect">분류</label>
       <SearchableSelect name="category" inputId="categorySelect" :options="data.categories"/>
@@ -61,11 +62,13 @@ export default {
   data() {
     return {
       document: '',
+      license: null,
       log: '',
       text: ''
     }
   },
   mounted() {
+    this.license = this.data.defaultLicense
     this.text = this.data.file_upload_template
   },
   watch: {
@@ -158,6 +161,12 @@ form textarea[readonly] {
 form div.form-block {
   margin-bottom: 15px;
   margin-top: 1rem;
+}
+
+form p {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  margin-top: 0;
 }
 
 form input[type=checkbox] {
