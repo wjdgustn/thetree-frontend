@@ -250,28 +250,31 @@ export default {
             if(json.data) {
                 this.$store.state.clearFormErrors()
 
-                if(typeof json.data === 'string') {
-                    this.$store.state.viewData.errorAlert = json.data
+                const strCode = json.code?.toString() || ''
+                if(strCode[0] === '4' || strCode[0] === '5') {
+                    if(typeof json.data === 'string') {
+                        this.$store.state.viewData.errorAlert = json.data
 
-                    if(json.code?.toString().startsWith('4')) {
-                        const firstInput = form?.querySelector('input, select, textarea')
-                        if(firstInput) this.$nextTick().then(() => firstInput.focus())
-                    }
+                        if(json.code?.toString().startsWith('4')) {
+                            const firstInput = form?.querySelector('input, select, textarea')
+                            if(firstInput) this.$nextTick().then(() => firstInput.focus())
+                        }
 
-                    this.$store.state.viewData.errorAlertExists = false
-                    await this.$nextTick()
-                    const alertExists = this.$store.state.viewData.errorAlertExists
-                    if(!alertExists)
-                        alert(json.data)
-                }
-                else {
-                    const fieldErrors = json.data.fieldErrors
-                    this.$store.state.viewData.fieldErrors = fieldErrors
-                    if(fieldErrors) {
-                        const firstInputName = Object.keys(json.data.fieldErrors)[0]
-                        const firstInput = form?.querySelector(`[name="${firstInputName}"]`)
+                        this.$store.state.viewData.errorAlertExists = false
                         await this.$nextTick()
-                        firstInput?.focus()
+                        const alertExists = this.$store.state.viewData.errorAlertExists
+                        if(!alertExists)
+                            alert(json.data)
+                    }
+                    else {
+                        const fieldErrors = json.data.fieldErrors
+                        this.$store.state.viewData.fieldErrors = fieldErrors
+                        if(fieldErrors) {
+                            const firstInputName = Object.keys(json.data.fieldErrors)[0]
+                            const firstInput = form?.querySelector(`[name="${firstInputName}"]`)
+                            await this.$nextTick()
+                            firstInput?.focus()
+                        }
                     }
                 }
             }
