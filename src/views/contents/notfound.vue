@@ -12,7 +12,7 @@
           <LocalDate :date="item.createdAt"/>&nbsp;
         </span>
         <strong>r{{item.rev}}&nbsp;</strong>
-        <i v-if="item.infoText" v-html="'(' + removeHtmlTags(item.infoText) + ')&nbsp;'"/>
+        <i v-if="item.infoText">({{removeHtmlTags(item.infoText)}})&nbsp;</i>
         (<DiffCount :count="item.diffLength"/>)
         <AuthorSpan :account="item.user" :pos="`${doc_fulltitle(data.document)} r${item.rev}`"/>
         (<span class="log">{{item.log}}</span>)

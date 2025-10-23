@@ -52,7 +52,7 @@
               :style="{ visibility: !diffOldRev || rev.rev > diffOldRev.rev ? 'visible' : 'hidden' }"
           />
         </span>
-        <i v-if="rev.infoText" v-html="'(' + removeHtmlTags(rev.infoText) + ') '"/>
+        <i v-if="rev.infoText">({{removeHtmlTags(rev.infoText)}}) </i>
         <strong>
           <a class="rev-text" href="#" @click.prevent="copyUuid(rev)">r{{rev.rev}}</a>
         </strong>
