@@ -1,5 +1,7 @@
 import { decode } from '@msgpack/msgpack';
 
+import { unescapeHtml } from '@/utils';
+
 export default {
     methods: {
         doc_fulltitle(document) {
@@ -79,7 +81,7 @@ export default {
             return text ? ` (${text})` + (additionalText ? ` - ${additionalText}` : '') : '';
         },
         removeHtmlTags(text) {
-            return text.replaceAll(/<[^>]+>/g, '');
+            return unescapeHtml(text.replaceAll(/<[^>]+>/g, ''));
         },
         durationToExactString(duration) {
             const strs = [];
