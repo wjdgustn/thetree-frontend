@@ -67,13 +67,13 @@
         <template v-if="rev.troll">
           [<AuthorSpan :account="rev.trollBy"/> 사용자에 의해 반달로 표시됨]
         </template>
-        <template v-else-if="rev.log">
+        <template v-else-if="rev.log || rev.hideLog">
           <template v-if="rev.hideLog">
             (<span class="log"><AuthorSpan :account="rev.hideLogBy"/> 사용자에 의해 편집 요약 숨겨짐</span>)
           </template>
 
           <template v-if="rev.hideLog && !rev.forceShowLog">
-            <GeneralButton class="show-log-button" size="small" :whenClick="() => rev.forceShowLog = true">내용 보기</GeneralButton>
+            <GeneralButton v-if="data.permissions.hide" class="show-log-button" size="small" :whenClick="() => rev.forceShowLog = true">내용 보기</GeneralButton>
           </template>
           <template v-else>
             (<span class="log"><template v-if="rev.hideLog">내용: </template>{{rev.log}}</span>)
