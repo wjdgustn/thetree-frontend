@@ -13,14 +13,14 @@
           <AuthorSpan :account="comment.user" :pos="pos" discuss :discussAdmin="comment.admin"/>
           <span class="time-block">
             <LocalDate :date="comment.createdAt"/>
-            <ContextMenu v-if="!previewMode && comment.type === 0" class="menu-block" placement="bottom-end">
+            <ContextMenu v-if="!previewMode && (comment.type === 0 || data.permissions.manage)" class="menu-block" placement="bottom-end">
               <GeneralButton class="menu-button">
                 <FontAwesomeIcon icon="caret-down" />
               </GeneralButton>
               <template #menu>
-                <GeneralButton :whenClick="toggleRaw" v-text="showRaw ? '위키 보기' : '원문 보기'" v-close-popover/>
+                <GeneralButton v-if="comment.type === 0" :whenClick="toggleRaw" v-text="showRaw ? '위키 보기' : '원문 보기'" v-close-popover/>
                 <template v-if="data.permissions.manage">
-                  <hr>
+                  <hr v-if="comment.type === 0">
                   <GeneralButton theme="danger" :whenClick="toggleHide" v-text="comment.hidden ? '[ADMIN] 숨기기 해제' : '[ADMIN] 숨기기'" v-close-popover/>
                   <GeneralButton theme="danger" :whenClick="togglePin" v-text="comment.id === data.thread?.pinnedComment ? '[ADMIN] 댓글 고정 해제' : '[ADMIN] 댓글 고정'" v-close-popover/>
                 </template>
@@ -34,7 +34,7 @@
         'special-comment': fetched && comment.type !== 0,
         'hidden-comment': comment.hidden && !forceShow
       }">
-        <template v-if="!fetched || !comment.hidden || forceShow">
+        <template v-if="!fetched || !comment.hidden || forceShow || comment.type !== 0">
           <div v-if="showRaw" v-text="rawContent" class="wiki-raw"/>
           <WikiContent v-else-if="comment.contentHtml" discuss :content="comment.contentHtml"/>
           <SeedButton v-if="forceShow && comment.hidden" @click="forceShow = false" danger>[ADMIN] HIDE</SeedButton>
