@@ -1,11 +1,10 @@
 <template>
   <VSelect
       :placeholder="placeholder"
-      :value="modelValue"
-      v-model="modelValue"
+      v-model="value"
       v-bind="$attrs"
   />
-  <input v-if="name" :name="name" type="hidden" :value="modelValue?.value ?? modelValue">
+  <input v-if="name" :name="name" type="hidden" :value="value?.value ?? value">
 </template>
 <script>
 import VSelect from 'vue-select'
@@ -20,11 +19,20 @@ export default {
       type: String,
       default: '선택'
     },
-    value: String
+    modelValue: Object
   },
   data() {
     return {
-      modelValue: this.value
+      value: this.modelValue
+    }
+  },
+  emits: ['update:modelValue'],
+  watch: {
+    value(newValue) {
+      this.$emit('update:modelValue', newValue)
+    },
+    modelValue(newValue) {
+      this.value = newValue
     }
   }
 }

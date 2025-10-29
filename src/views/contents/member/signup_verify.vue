@@ -3,7 +3,7 @@
   <FormErrorAlert/>
   <SeedForm :class="$style.form" method="post">
     <SeedFormBlock newStyle label="전화번호" inputId="phoneNumberInput" name="phoneNumber">
-      <SearchableSelect name="countryCode" :options="countryCodes" ref="countryCode"/>
+      <SearchableSelect name="countryCode" :options="countryCodes" v-model="countryCode"/>
       <ShowError tag="countryCode" :class="$style.text"/>
       <InputField pattern="\d*" type="text" id="phoneNumberInput" name="phoneNumber"/>
     </SeedFormBlock>
@@ -34,6 +34,11 @@ export default {
     SeedFormBlock,
     SeedForm
   },
+  data() {
+    return {
+      countryCode: null
+    }
+  },
   mounted() {
     this.init()
   },
@@ -54,7 +59,7 @@ export default {
     init() {
       const defaultCountryCode = this.countryCodes.find(a => a.value === this.data.countryCode)
       if(defaultCountryCode)
-        this.$refs.countryCode.modelValue = defaultCountryCode
+        this.countryCode = defaultCountryCode
     }
   }
 }
