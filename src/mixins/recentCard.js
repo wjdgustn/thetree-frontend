@@ -14,7 +14,7 @@ export default {
         }
     },
     mounted() {
-        this.interval = setInterval(() => this.updateSidebar(), 1000 * 30)
+        this.interval = setInterval(() => this.updateSidebar(), 1000 * 5)
         this.updateSidebar().then()
     },
     beforeUnmount() {
