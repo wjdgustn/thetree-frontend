@@ -115,6 +115,9 @@
             </select>
             <input v-if="form.permissionSelect === 'custom'" name="permission" placeholder="permission">
           </template>
+          <select v-else-if="form.conditionType === 'ACLGroup'" name="conditionContent">
+            <option v-for="item in aclGroups">{{item.name}}</option>
+          </select>
           <input v-else type="text" name="conditionContent">
         </div>
       </div>
@@ -188,7 +191,8 @@ export default {
         actionType: ''
       },
       isMobile,
-      prevAclCategory: null
+      prevAclCategory: null,
+      aclGroups: []
     }
   },
   methods: {
@@ -219,6 +223,12 @@ export default {
     },
     async deleteRule(rule) {
       await this.internalRequestAndProcess('/action/acl/delete?acl=' + rule.uuid)
+    },
+    async loadACLGroups() {
+      const res = await this.internalRequest('/aclgroup/groups', {
+        noProgress: true
+      })
+      this.aclGroups = Object.values(res)
     }
   },
   mounted() {
@@ -230,6 +240,10 @@ export default {
     },
     data() {
       this.updateRules()
+    },
+    'form.conditionType'(newValue) {
+      if(newValue === 'ACLGroup')
+        this.loadACLGroups()
     }
   },
   computed: {
