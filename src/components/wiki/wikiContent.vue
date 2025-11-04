@@ -18,7 +18,14 @@
     사유: {{userbox.blocked.note ?? '없음'}}
   </div>
 
-  <div ref="div" v-html="content" class="wiki-content" @click="onDynamicContentClick" @submit.prevent="formSubmit" :class="{ 'wiki-thread-content': discuss }"></div>
+  <div
+      ref="div"
+      v-html="(topHtml || '') + content + (bottomHtml || '')"
+      class="wiki-content"
+      @click="onDynamicContentClick"
+      @submit.prevent="formSubmit"
+      :class="{ 'wiki-thread-content': discuss }"
+  />
 
   <WikiCategory v-if="categories.length && ['bottom', 'both'].includes($store.state.localConfig['wiki.category_position'])" :categories="categories"/>
 
@@ -70,6 +77,12 @@ export default {
     userbox: {
       type: Object,
       default: () => ({})
+    },
+    topHtml: {
+      type: String
+    },
+    bottomHtml: {
+      type: String
     }
   },
   data() {

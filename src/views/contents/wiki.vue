@@ -13,7 +13,13 @@
     }, 'w')">분류:분류</NuxtLink>에서 적절한 분류를 찾아 문서를 분류해주세요!
   </Alert>
 
-  <WikiContent :content="content" :categories="categories" :userbox="userbox"/>
+  <WikiContent
+      :content="content"
+      :categories="categories"
+      :userbox="userbox"
+      :topHtml="data.topDocument"
+      :bottomHtml="data.bottomDocument"
+  />
 
   <WikiCategoryDocs v-if="data.document.namespace === '분류'" :categories="categoriesData"/>
 </template>
