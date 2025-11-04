@@ -34,6 +34,17 @@ export default {
     NuxtLink,
     WikiContent
   },
+  mounted() {
+    if(this.data.docScript) eval(this.data.docScript)
+  },
+  watch: {
+    async 'data.docScript'(newValue) {
+      if(newValue) {
+        await this.$nextTick()
+        eval(newValue)
+      }
+    }
+  },
   computed: {
     content() {
       return this.data.contentHtml
