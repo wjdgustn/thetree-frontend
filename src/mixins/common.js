@@ -1,3 +1,4 @@
+import { inflate } from 'pako';
 import { decode } from '@msgpack/msgpack';
 
 import { unescapeHtml } from '@/utils';
@@ -194,7 +195,7 @@ export default {
             }
 
             const buffer = await res.arrayBuffer()
-            let json = decode(buffer)
+            let json = decode(inflate(buffer))
             json = this.afterInternalRequest(json, progressBar)
 
             return this.withoutKeys(json, [
