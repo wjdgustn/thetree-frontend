@@ -159,7 +159,9 @@ export default {
     async onDiffToggle(item) {
       if(!item.hasDiff || item.diffHtml) return
 
-      const { diffHtml } = await this.internalRequest(`/admin/audit_log/${item._id}/diff`)
+      const { diffHtml } = await this.internalRequest(`/admin/audit_log/${item._id}/diff`, {
+        noProgress: true
+      })
       item.diffHtml = diffHtml
     }
   }
