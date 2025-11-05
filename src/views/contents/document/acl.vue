@@ -115,9 +115,13 @@
             </select>
             <input v-if="form.permissionSelect === 'custom'" name="permission" placeholder="permission">
           </template>
-          <select v-else-if="form.conditionType === 'ACLGroup'" name="conditionContent">
-            <option v-for="item in aclGroups">{{item.name}}</option>
-          </select>
+          <template v-else-if="form.conditionType === 'ACLGroup'">
+            <select ref="aclGroupSelect" @change="aclGroupIndex = $event.srcElement.selectedIndex" :name="aclGroupIndex === aclGroups.length ? null : 'conditionContent'">
+              <option v-for="item in aclGroups">{{item.name}}</option>
+              <option>직접 입력</option>
+            </select>
+            <input v-if="aclGroupIndex === aclGroups.length" name="conditionContent" placeholder="ACL그룹 이름">
+          </template>
           <input v-else type="text" name="conditionContent">
         </div>
       </div>
@@ -192,7 +196,8 @@ export default {
       },
       isMobile,
       prevAclCategory: null,
-      aclGroups: []
+      aclGroups: [],
+      aclGroupIndex: 0
     }
   },
   methods: {
@@ -229,6 +234,8 @@ export default {
         noProgress: true
       })
       this.aclGroups = Object.values(res)
+      await this.$nextTick()
+      this.$refs.aclGroupSelect.selectedIndex = 0
     }
   },
   mounted() {
