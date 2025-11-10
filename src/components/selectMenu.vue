@@ -1,5 +1,5 @@
 <template>
-  <select ref="input">
+  <select ref="input" @change="onChange" :value="modelValue">
     <slot/>
   </select>
 </template>
@@ -15,6 +15,10 @@ export default {
       disable: false
     }
   },
+  props: {
+    modelValue: String
+  },
+  emits: ['update:modelValue'],
   watch: {
     submittingSeedForm(newValue) {
       if(this.disabled) return
@@ -24,6 +28,11 @@ export default {
       if(newValue) this.$refs.input.classList.add('disabled')
       else this.$refs.input.classList.remove('disabled')
       this.$refs.input.disabled = newValue
+    }
+  },
+  methods: {
+    onChange(e) {
+      this.$emit('update:modelValue', e.target.value)
     }
   }
 }
