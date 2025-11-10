@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <div class="setting-item">
     <label :for="ckey">
       {{label}}
       <template v-if="note">
         <small> {{note}}</small>
       </template>
     </label>
-    <slot/>
+    <div class="setting-item-content">
+      <slot/>
+    </div>
   </div>
 </template>
 <script>
@@ -35,8 +37,16 @@ export default {
 }
 </script>
 <style scoped>
-div {
-  margin-bottom: 15px
+.setting-item {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin: 0 0 1rem;
+}
+
+.setting-item:last-child {
+  margin: 0;
 }
 
 label {
@@ -47,5 +57,11 @@ label {
 
 small {
   font-size: 80%;
+}
+
+.setting-item-content {
+  align-items: center;
+  column-gap: 1rem;
+  display: flex;
 }
 </style>

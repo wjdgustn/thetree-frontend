@@ -1,16 +1,18 @@
 <template>
   <SettingItem v-bind="$props">
-    <select :id="ckey" v-model="value">
+    <SelectMenu :id="ckey" v-model="value" class="select-menu">
       <slot/>
-    </select>
+    </SelectMenu>
   </SettingItem>
 </template>
 <script>
 import SettingItem from '@/components/settingItem';
+import SelectMenu from '@/components/selectMenu'
 
 export default {
   extends: SettingItem,
   components: {
+    SelectMenu,
     SettingItem
   },
   props: {
@@ -19,16 +21,7 @@ export default {
 }
 </script>
 <style scoped>
-select {
-  background-color: #fff;
-  background-image: none;
-  border: .0625rem solid #ccc;
-  color: #55595c;
-  display: block;
-  line-height: 1.5;
-  margin: 0;
-  max-width: 16rem;
-  padding: .375rem .75rem;
-  width: 100%;
+.select-menu {
+  width: 17rem;
 }
 </style>

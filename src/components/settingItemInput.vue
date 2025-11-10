@@ -1,14 +1,16 @@
 <template>
   <SettingItem :="$props">
-    <input v-model="value" :id="ckey" @change="changed" :type="type" placeholder="입력">
+    <InputField class="setting-input" v-model="value" :id="ckey" :whenInput="changed" :type="type" placeholder="입력"/>
   </SettingItem>
 </template>
 <script>
 import SettingItem from '@/components/settingItem'
+import InputField from '@/components/form/inputField'
 
 export default {
   extends: SettingItem,
   components: {
+    InputField,
     SettingItem
   },
   props: {
@@ -28,16 +30,7 @@ export default {
 }
 </script>
 <style scoped>
-input {
-  background-color: #fff;
-  background-image: none;
-  border: .0625rem solid #ccc;
-  color: #55595c;
-  display: block;
-  line-height: 1.5;
-  margin: 0;
-  max-width: 16rem;
-  padding: .375rem .75rem;
-  width: 100%;
+.setting-input {
+  width: 17rem;
 }
 </style>
