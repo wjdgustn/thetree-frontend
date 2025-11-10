@@ -152,7 +152,7 @@ export default {
         const imageHide = this.$store.state.localConfig['wiki.image_hide']
         const disableImageLazy = this.$store.state.localConfig['wiki.disable_image_lazy']
 
-        for(let img of element.getElementsByClassName('wiki-image-loading')) {
+        for(let img of [...element.getElementsByClassName('wiki-image-loading')]) {
           if(img.tagName !== 'IMG') continue
 
           const parent = img.parentNode
