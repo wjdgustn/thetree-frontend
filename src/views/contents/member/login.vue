@@ -12,7 +12,7 @@
         <NuxtLink to="/member/recover_password">비밀번호를 잊으셨나요?</NuxtLink>
       </FlexFormBlock>
       <FlexFormBlock buttons padding>
-        <CheckBox name="autologin" value="Y">자동 로그인</CheckBox>
+        <CheckBox name="autologin" value="Y" v-model="autologin">자동 로그인</CheckBox>
         <template #buttons>
           <GeneralButton v-if="!data.disableSignup" href="/member/signup">계정 만들기</GeneralButton>
           <GeneralButton type="submit" theme="primary">로그인</GeneralButton>
@@ -23,7 +23,7 @@
     <template v-if="externalProviders.length">
       <div class="or" v-if="!data.disableInternal">외부 로그인</div>
       <div class="external-login-buttons">
-        <GeneralButton v-for="item in externalProviders" block class="external-login-button" :href="`/member/login/oauth2/${item.name}?redirect=${encodeURIComponent($route.query.redirect)}`" :style="{
+        <GeneralButton v-for="item in externalProviders" block class="external-login-button" :href="`/member/login/oauth2/${item.name}?redirect=${encodeURIComponent($route.query.redirect)}${autologin ? `&autologin=Y` : ''}`" :style="{
         '--light-article-background-color': item.buttonColor || undefined,
         '--dark-article-background-color': item.darkButtonColor || undefined,
         '--button-background-hover-color': item.buttonHoverColor || undefined,
@@ -63,6 +63,11 @@ export default {
     NuxtLink,
     CheckBox,
     GeneralButton
+  },
+  data() {
+    return {
+      autologin: false
+    }
   },
   computed: {
     externalProviders() {
