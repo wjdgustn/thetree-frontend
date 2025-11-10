@@ -147,7 +147,7 @@ export default {
         this.loadPreview()
     },
     'data.content'() {
-      if(this.activeTab.name === 'raw') return
+      if(this.activeTab.name === 'raw' || this.activeTab.name === 'preview') return
       const activeComponent = this.getTabComponent(this.activeTab.name)
       activeComponent.setValue(this.data.content)
     }
