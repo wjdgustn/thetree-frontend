@@ -233,7 +233,7 @@ export default {
             }
             sizeText &&= ` (${sizeText})`
 
-            btn.innerText = '이미지' + sizeText
+            btn.innerText = (img.dataset.src ? '이미지' : '동영상') + sizeText
 
             const removeBtnListener = () => {
               btn.removeEventListener('click', onBtnClick)

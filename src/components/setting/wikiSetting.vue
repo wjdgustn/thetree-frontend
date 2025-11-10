@@ -19,12 +19,12 @@
     <option value="popup">팝업</option>
     <option value="unfold">펼침</option>
   </SettingItemSelect>
-  <SettingItemSelect label="이미지" ckey="wiki.image_hide" default="show">
+  <SettingItemSelect label="파일" ckey="wiki.image_hide" default="show">
     <option value="show">보이기</option>
     <option value="hide">숨기기</option>
-    <option value="hide_1mb">1MB 이상 이미지 숨기기</option>
+    <option value="hide_1mb">1MB 이상 파일 숨기기</option>
   </SettingItemSelect>
-  <SettingItemCheckbox label="이미지 lazy load 비활성화" ckey="wiki.disable_image_lazy"/>
+  <SettingItemCheckbox label="파일 lazy load 비활성화" ckey="wiki.disable_image_lazy"/>
   <SettingItemSelect label="분류 위치" ckey="wiki.category_position" default="top">
     <option value="top">상단</option>
     <option value="bottom">하단</option>
