@@ -95,12 +95,40 @@ export default {
       modal: {
         show: false,
         content: ''
-      }
+      },
+      canPlayVideo: false,
+      autoplayObserver: null,
+      cleanupFunctions: []
     }
   },
   mounted() {
+    this.canPlayVideo = (() => {
+      try {
+        const video = document.createElement('video')
+        if(video?.canPlayType?.(`video/mp4; codecs="avc1.4D401E"`))
+          return true
+      } catch(e) {}
+
+      return false
+    })
+    this.autoplayObserver = new IntersectionObserver(entries => {
+      for(let entry of entries) {
+        try {
+          if(entry.isIntersecting)
+            entry.target.play()
+          else
+            entry.target.pause()
+        } catch (e) {}
+      }
+    })
+
     this.setupWikiContent()
     if(!import.meta.env.SSR) import('@justinribeiro/lite-youtube')
+  },
+  beforeUnmount() {
+    for(let func of this.cleanupFunctions)
+      func()
+    this.cleanupFunctions.length = 0
   },
   watch: {
     async content() {
@@ -120,227 +148,338 @@ export default {
       return [...element.getElementsByClassName('wiki-fn-content')]
     },
     setupWikiContent(element = this.$refs.div) {
-      const headings = element.getElementsByClassName('wiki-heading');
-      for(let heading of headings) {
-        heading.addEventListener('click', e => {
-          if(e.target.tagName === 'A') return;
+      {
+        const imageHide = this.$store.state.localConfig['wiki.image_hide']
+        const disableImageLazy = this.$store.state.localConfig['wiki.disable_image_lazy']
 
-          const heading = e.currentTarget;
-          const content = heading.nextElementSibling;
-          const prevClosed = heading.classList.contains('wiki-heading-folded');
-          if(prevClosed) {
-            heading.classList.remove('wiki-heading-folded');
-            content.classList.remove('wiki-heading-content-folded');
-          }
-          else {
-            heading.classList.add('wiki-heading-folded');
-            content.classList.add('wiki-heading-content-folded');
-          }
-        });
+        for(let img of element.getElementsByClassName('wiki-image-loading')) {
+          if(img.tagName !== 'IMG') continue
 
-        if(this.$store.state.localConfig['wiki.hide_heading_content']) {
-          heading.classList.add('wiki-heading-folded');
-          heading.nextElementSibling.classList.add('wiki-heading-content-folded');
+          const parent = img.parentNode
+          if(!parent) continue
+
+          const isVideo = img.dataset.videoSrc && this.canPlayVideo
+          const size = parseInt(isVideo ? img.dataset.videoFilesize : img.dataset.filesize)
+
+          img.classList.remove('wiki-image-loading')
+
+          const addInfoBtn = () => {
+            if(!img.dataset.doc || img.closest('a')) return
+
+            const btn = document.createElement('a')
+            btn.classList.add('wiki-image-info-btn')
+            btn.href = img.dataset.doc
+            btn.rel = 'nofollow noopener'
+            parent.appendChild(btn)
+          }
+
+          const loadImg = () => {
+            if(!isVideo) {
+              if(!disableImageLazy)
+                img.setAttribute('loading', 'lazy')
+              img.setAttribute('src', img.dataset.src)
+              addInfoBtn()
+              return
+            }
+
+            const video = document.createElement('video')
+            if(img.dataset.src) {
+              video.muted = true
+              video.loop = true
+
+              const baseUrl = import.meta.env.BASE_URL
+              video.setAttribute('poster', baseUrl + (baseUrl.endsWith('/') ? '' : '/') + 'img/loading.gif')
+            }
+            else {
+              video.controls = true
+            }
+            video.playsInline = true
+            video.setAttribute('src', img.dataset.videoSrc)
+            video.classList.add('wiki-image')
+
+            if(img.getAttribute('width'))
+              video.setAttribute('width', img.getAttribute('width'))
+            if(img.getAttribute('height'))
+              video.setAttribute('height', img.getAttribute('height'))
+
+            if(!disableImageLazy)
+              video.setAttribute('loading', 'lazy')
+
+            parent.insertBefore(video, img)
+            addInfoBtn()
+            parent.removeChild(img)
+
+            if(this.autoplayObserver) {
+              this.autoplayObserver.observe(video)
+              this.cleanupFunctions.push(() => {
+                this.autoplayObserver.unobserve(video)
+              })
+            }
+          }
+
+          if(imageHide === 'hide' || (imageHide === 'hide_1mb' && !isNaN(size) && size >= (1024 * 1024))) {
+            const btn = document.createElement('button')
+            btn.setAttribute('type', 'button')
+            btn.classList.add('wiki-image', 'wiki-image-show-button')
+
+            let sizeText = ''
+            if(size) {
+              if(size > 1024 * 1024)
+                sizeText = (size / 1024 / 1024).toFixed(2) + 'MB'
+              else if(size > 1024)
+                sizeText = (size / 1024).toFixed(2) + 'KB'
+              else
+                sizeText = size + 'bytes'
+            }
+            sizeText &&= ` (${sizeText})`
+
+            btn.innerText = '이미지' + sizeText
+
+            const removeBtnListener = () => {
+              btn.removeEventListener('click', onBtnClick)
+            }
+            this.cleanupFunctions.push(removeBtnListener)
+
+            let onBtnClick = e => {
+              if(!onBtnClick) return
+
+              e?.preventDefault()
+              removeBtnListener()
+              onBtnClick = null
+              parent.insertBefore(img, btn)
+              parent.removeChild(btn)
+              loadImg()
+            }
+
+            btn.addEventListener('click', onBtnClick)
+            parent.insertBefore(btn, img)
+            parent.removeChild(img)
+          }
+          else loadImg()
         }
       }
 
-      const foldings = element.getElementsByClassName('wiki-folding');
+      const headings = element.getElementsByClassName('wiki-heading')
+      for(let heading of headings) {
+        heading.addEventListener('click', e => {
+          if(e.target.tagName === 'A') return
+
+          const heading = e.currentTarget
+          const content = heading.nextElementSibling
+          const prevClosed = heading.classList.contains('wiki-heading-folded')
+          if(prevClosed) {
+            heading.classList.remove('wiki-heading-folded')
+            content.classList.remove('wiki-heading-content-folded')
+          }
+          else {
+            heading.classList.add('wiki-heading-folded')
+            content.classList.add('wiki-heading-content-folded')
+          }
+        })
+
+        if(this.$store.state.localConfig['wiki.hide_heading_content']) {
+          heading.classList.add('wiki-heading-folded')
+          heading.nextElementSibling.classList.add('wiki-heading-content-folded')
+        }
+      }
+
+      const foldings = element.getElementsByClassName('wiki-folding')
       for(let folding of foldings) {
-        const foldingText = folding.firstElementChild;
-        const foldingContent = foldingText.nextElementSibling;
+        const foldingText = folding.firstElementChild
+        const foldingContent = foldingText.nextElementSibling
 
-        let offsetWidth;
-        let offsetHeight;
+        let offsetWidth
+        let offsetHeight
         const resizeObserver = new ResizeObserver(([entry]) => {
-          if(!entry.contentRect.height) return;
+          if(!entry.contentRect.height) return
 
-          const openedBefore = foldingContent.classList.contains('wiki-folding-opened');
+          const openedBefore = foldingContent.classList.contains('wiki-folding-opened')
 
-          if(!openedBefore) foldingContent.classList.add('wiki-folding-opened');
-          offsetWidth = foldingContent.offsetWidth;
-          offsetHeight = foldingContent.offsetHeight;
-          if(!openedBefore) foldingContent.classList.remove('wiki-folding-opened');
+          if(!openedBefore) foldingContent.classList.add('wiki-folding-opened')
+          offsetWidth = foldingContent.offsetWidth
+          offsetHeight = foldingContent.offsetHeight
+          if(!openedBefore) foldingContent.classList.remove('wiki-folding-opened')
 
-          resizeObserver.disconnect();
-        });
-        resizeObserver.observe(foldingText);
+          resizeObserver.disconnect()
+        })
+        resizeObserver.observe(foldingText)
 
-        let transitionCount = 0;
-        const transitioning = () => transitionCount !== 0;
+        let transitionCount = 0
+        const transitioning = () => transitionCount !== 0
 
-        foldingContent.addEventListener('transitionstart', _ => transitionCount++);
-        foldingContent.addEventListener('transitionend', _ => transitionCount--);
-        foldingContent.addEventListener('transitioncancel', _ => transitionCount--);
+        foldingContent.addEventListener('transitionstart', _ => transitionCount++)
+        foldingContent.addEventListener('transitionend', _ => transitionCount--)
+        foldingContent.addEventListener('transitioncancel', _ => transitionCount--)
 
         const setSizeToOffsetSize = () => {
-          foldingContent.style.maxWidth = offsetWidth + 'px';
-          foldingContent.style.maxHeight = offsetHeight + 'px';
+          foldingContent.style.maxWidth = offsetWidth + 'px'
+          foldingContent.style.maxHeight = offsetHeight + 'px'
         }
         const removeSize = () => {
-          foldingContent.style.maxWidth = '';
-          foldingContent.style.maxHeight = '';
+          foldingContent.style.maxWidth = ''
+          foldingContent.style.maxHeight = ''
         }
         const finishOpen = () => {
-          if(transitioning()) return;
+          if(transitioning()) return
 
-          removeSize();
-          foldingContent.classList.add('wiki-folding-opened');
+          removeSize()
+          foldingContent.classList.add('wiki-folding-opened')
 
-          foldingContent.removeEventListener('transitionend', finishOpen);
+          foldingContent.removeEventListener('transitionend', finishOpen)
         }
 
         if(this.$store.state.localConfig['wiki.show_folding'])
-          foldingContent.classList.add('wiki-folding-open-anim', 'wiki-folding-opened');
+          foldingContent.classList.add('wiki-folding-open-anim', 'wiki-folding-opened')
 
         foldingText.addEventListener('click', e => {
-          const foldingText = e.currentTarget;
-          const foldingContent = foldingText.nextElementSibling;
+          const foldingText = e.currentTarget
+          const foldingContent = foldingText.nextElementSibling
 
-          const opened = foldingContent.classList.contains('wiki-folding-open-anim');
+          const opened = foldingContent.classList.contains('wiki-folding-open-anim')
 
           if(opened) {
-            setSizeToOffsetSize();
+            setSizeToOffsetSize()
 
             requestAnimationFrame(_ => {
-              foldingContent.classList.remove('wiki-folding-open-anim');
-              foldingContent.classList.remove('wiki-folding-opened');
+              foldingContent.classList.remove('wiki-folding-open-anim')
+              foldingContent.classList.remove('wiki-folding-opened')
 
-              removeSize();
-            });
+              removeSize()
+            })
           }
           else {
-            foldingContent.classList.add('wiki-folding-open-anim');
-            setSizeToOffsetSize();
+            foldingContent.classList.add('wiki-folding-open-anim')
+            setSizeToOffsetSize()
 
-            foldingContent.addEventListener('transitionend', finishOpen);
+            foldingContent.addEventListener('transitionend', finishOpen)
           }
-        });
+        })
       }
 
-      let footnoteType = this.$store.state.localConfig['wiki.footnote_type'];
-      footnoteType ??= isMobile ? 'popup' : 'popover';
+      let footnoteType = this.$store.state.localConfig['wiki.footnote_type']
+      footnoteType ??= isMobile ? 'popup' : 'popover'
 
-      if(footnoteType === 'popover') this.setupFootnoteTooltip(element);
-      else if(footnoteType === 'popup') this.setupFootnoteModal(element);
-      else if(footnoteType === 'unfold') this.setupFootnoteUnfolded(element);
+      if(footnoteType === 'popover') this.setupFootnoteTooltip(element)
+      else if(footnoteType === 'popup') this.setupFootnoteModal(element)
+      else if(footnoteType === 'unfold') this.setupFootnoteUnfolded(element)
 
       if(this.$store.state.localConfig['wiki.unfold_wiki_link']) {
-        const links = element.getElementsByClassName('wiki-link-internal');
+        const links = element.getElementsByClassName('wiki-link-internal')
         for(let link of links) {
-          if(link.tagName !== 'A') continue;
+          if(link.tagName !== 'A') continue
 
-          const title = link.getAttribute('title');
-          if(!title) continue;
-          let checkTitle = title;
+          const title = link.getAttribute('title')
+          if(!title) continue
+          let checkTitle = title
 
-          const anchorPos = title.lastIndexOf('#');
+          const anchorPos = title.lastIndexOf('#')
           if(anchorPos !== -1)
-            checkTitle = title.slice(0, anchorPos);
+            checkTitle = title.slice(0, anchorPos)
 
           if(checkTitle.trim() === link.innerText.trim())
-            continue;
+            continue
           if(link.getElementsByTagName('img').length)
-            continue;
+            continue
 
-          const unfolded = document.createElement('span');
-          unfolded.classList = 'wiki-link-unfolded';
-          unfolded.innerText = title;
+          const unfolded = document.createElement('span')
+          unfolded.classList = 'wiki-link-unfolded'
+          unfolded.innerText = title
 
-          const linkParent = link.parentNode;
+          const linkParent = link.parentNode
           if(linkParent) {
             if(link.nextSibling)
-              linkParent.insertBefore(unfolded, link.nextSibling);
+              linkParent.insertBefore(unfolded, link.nextSibling)
             else
-              linkParent.appendChild(unfolded);
+              linkParent.appendChild(unfolded)
           }
         }
       }
 
-      const oldDarkStyle = document.getElementById('darkStyle');
-      if(oldDarkStyle) oldDarkStyle.remove();
+      const oldDarkStyle = document.getElementById('darkStyle')
+      if(oldDarkStyle) oldDarkStyle.remove()
 
-      const darkStyleElements = document.querySelectorAll('*[data-dark-style]');
-      const darkStyles = [];
+      const darkStyleElements = document.querySelectorAll('*[data-dark-style]')
+      const darkStyles = []
       for(let element of darkStyleElements) {
-        const styleData = element.dataset.darkStyle.split(';').map(a => a.trim()).filter(a => a);
-        let style = '';
+        const styleData = element.dataset.darkStyle.split(';').map(a => a.trim()).filter(a => a)
+        let style = ''
         for(let stylePart of styleData) {
-          const [key, value] = stylePart.split(':').map(a => a.trim());
-          style += `${key}:${value} !important;`;
+          const [key, value] = stylePart.split(':').map(a => a.trim())
+          style += `${key}:${value} !important;`
         }
 
-        let darkStyle = darkStyles.find(a => a.style === style);
+        let darkStyle = darkStyles.find(a => a.style === style)
         if(!darkStyle) {
           darkStyle = {
             style,
             class: '_' + crypto.randomUUID().replaceAll('-', '')
           }
-          darkStyles.push(darkStyle);
+          darkStyles.push(darkStyle)
         }
-        element.classList.add(darkStyle.class);
+        element.classList.add(darkStyle.class)
       }
 
       if(darkStyles.length) {
-        const newDarkStyle = document.createElement('style');
-        newDarkStyle.id = 'darkStyle';
-        newDarkStyle.innerHTML = darkStyles.map(a => `.theseed-dark-mode .${a.class}{${a.style}}`).join('');
-        document.body.appendChild(newDarkStyle);
+        const newDarkStyle = document.createElement('style')
+        newDarkStyle.id = 'darkStyle'
+        newDarkStyle.innerHTML = darkStyles.map(a => `.theseed-dark-mode .${a.class}{${a.style}}`).join('')
+        document.body.appendChild(newDarkStyle)
       }
 
       const times = element.querySelectorAll('time[data-type=timezone]')
       for(let time of times) {
-        const type = time.dataset.type;
-        const date = new Date(time.dateTime);
+        const type = time.dataset.type
+        const date = new Date(time.dateTime)
 
         const dateStr = [
           date.getFullYear(),
           date.getMonth() + 1,
           date.getDate()
-        ].map(num => num.toString().padStart(2, '0')).join('-');
+        ].map(num => num.toString().padStart(2, '0')).join('-')
 
         const timeStr = [
           date.getHours(),
           date.getMinutes(),
           date.getSeconds()
-        ].map(num => num.toString().padStart(2, '0')).join(':');
+        ].map(num => num.toString().padStart(2, '0')).join(':')
 
-        let result = dateStr + ' ' + timeStr;
+        let result = dateStr + ' ' + timeStr
 
         if(type === 'timezone') {
-          const offset = -(date.getTimezoneOffset() / 60);
-          result += (offset > 0 ? '+' : '-') + (offset * 100).toString().padStart(4, '0');
+          const offset = -(date.getTimezoneOffset() / 60)
+          result += (offset > 0 ? '+' : '-') + (offset * 100).toString().padStart(4, '0')
         }
 
-        time.textContent = result;
+        time.textContent = result
       }
 
       if(!this.discuss) {
-        const anchorElem = document.getElementById(location.hash.slice(1));
-        anchorElem?.scrollIntoView();
+        const anchorElem = document.getElementById(location.hash.slice(1))
+        anchorElem?.scrollIntoView()
       }
     },
     setupFootnoteTooltip(element) {
-      let hovering = 0;
+      let hovering = 0
       const mouseLeaveHandler = _ => {
         requestAnimationFrame(() => requestAnimationFrame( () =>{
-          hovering--;
+          hovering--
 
           if(!hovering)
-            this.popover.show = false;
-        }));
+            this.popover.show = false
+        }))
       }
 
-      const popover = this.$refs.popover;
+      const popover = this.$refs.popover
       popover.addEventListener('mouseenter', _ => {
-        hovering++;
-      });
-      popover.addEventListener('mouseleave', mouseLeaveHandler);
+        hovering++
+      })
+      popover.addEventListener('mouseleave', mouseLeaveHandler)
 
       for(let footnote of this.getFootnotes(element)) {
-        const targetId = footnote.getAttribute('href').slice(1);
-        const contentElement = document.getElementById(targetId).parentElement;
+        const targetId = footnote.getAttribute('href').slice(1)
+        const contentElement = document.getElementById(targetId).parentElement
 
-        footnote.title = '';
+        footnote.title = ''
 
         const update = () => computePosition(footnote, popover, {
           placement: 'top',
@@ -350,72 +489,72 @@ export default {
             shift()
           ]
         }).then(({x, y, placement, middlewareData}) => {
-          popover.setAttribute('x-placement', placement);
+          popover.setAttribute('x-placement', placement)
           Object.assign(popover.style, {
             left: `${x}px`,
             top: `${y}px`,
-          });
+          })
 
-          this.$refs.popoverArrow.style.left = `calc(50% - 10px - ${middlewareData.shift.x}px)`;
-        });
+          this.$refs.popoverArrow.style.left = `calc(50% - 10px - ${middlewareData.shift.x}px)`
+        })
 
         footnote.addEventListener('mouseenter', async _ => {
-          hovering++;
+          hovering++
 
-          this.popover.show = true;
-          this.popover.content = contentElement.innerHTML;
-          this.popover.cleanup = autoUpdate(footnote, popover, update);
-        });
+          this.popover.show = true
+          this.popover.content = contentElement.innerHTML
+          this.popover.cleanup = autoUpdate(footnote, popover, update)
+        })
 
-        footnote.addEventListener('mouseleave', mouseLeaveHandler);
+        footnote.addEventListener('mouseleave', mouseLeaveHandler)
       }
     },
     setupFootnoteModal(element) {
       for(let footnote of this.getFootnotes(element)) {
-        const targetId = footnote.getAttribute('href').slice(1);
-        const contentElement = document.getElementById(targetId).parentElement;
+        const targetId = footnote.getAttribute('href').slice(1)
+        const contentElement = document.getElementById(targetId).parentElement
 
-        footnote.title = '';
+        footnote.title = ''
 
         footnote.addEventListener('click', e => {
-          e.preventDefault();
+          e.preventDefault()
 
-          this.modal.content = contentElement.innerHTML;
-          this.modal.show = true;
-        });
+          this.modal.content = contentElement.innerHTML
+          this.modal.show = true
+        })
       }
     },
     setupFootnoteUnfolded(element) {
       for(let footnote of this.getFootnotes(element)) {
-        if(footnote.tagName !== 'A') continue;
+        if(footnote.tagName !== 'A') continue
 
-        const footnoteLink = footnote.getAttribute('href');
-        if(!footnoteLink) continue;
+        const footnoteLink = footnote.getAttribute('href')
+        if(!footnoteLink) continue
 
-        const footnoteId = decodeURIComponent(footnoteLink.slice(1));
-        const footnoteParent = footnote.parentNode;
-        if(!footnoteParent) continue;
+        const footnoteId = decodeURIComponent(footnoteLink.slice(1))
+        const footnoteParent = footnote.parentNode
+        if(!footnoteParent) continue
 
-        let footnoteContent = document.getElementById(footnoteId);
+        let footnoteContent = document.getElementById(footnoteId)
         if(!footnoteContent || !footnoteContent.parentNode)
-          continue;
-        footnoteContent = footnoteContent.parentNode.innerHTML;
+          continue
+        footnoteContent = footnoteContent.parentNode.innerHTML
 
-        const unfolded = document.createElement('span');
-        unfolded.classList = 'wiki-fn-unfolded';
-        unfolded.innerHTML = footnoteContent;
-        unfolded.id = 'r' + footnoteId;
+        const unfolded = document.createElement('span')
+        unfolded.classList = 'wiki-fn-unfolded'
+        unfolded.innerHTML = footnoteContent
+        unfolded.id = 'r' + footnoteId
 
-        const unfoldedLink = unfolded.getElementsByTagName('a')[0];
+        const unfoldedLink = unfolded.getElementsByTagName('a')[0]
         if(unfoldedLink)
-          unfoldedLink.href = '#' + footnoteId;
+          unfoldedLink.href = '#' + footnoteId
 
-        unfolded.removeChild(unfolded.getElementsByTagName('span')[0]);
+        unfolded.removeChild(unfolded.getElementsByTagName('span')[0])
 
-        this.setupWikiContent(unfolded);
+        this.setupWikiContent(unfolded)
 
-        footnoteParent.insertBefore(unfolded, footnote);
-        footnoteParent.removeChild(footnote);
+        footnoteParent.insertBefore(unfolded, footnote)
+        footnoteParent.removeChild(footnote)
       }
     },
     async formSubmit(e) {

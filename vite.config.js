@@ -82,10 +82,10 @@ export default defineConfig(({ mode, isSsrBuild }) => {
     },
     server: {
       proxy: {
-        '/i': apiProxy,
-        '/internal': apiProxy,
+        '/i/': apiProxy,
+        '/internal/': apiProxy,
         '/sidebar.json': apiProxy,
-        '/socket.io': apiProxy,
+        '/socket.io/': apiProxy,
         '/sw.js': apiProxy
       }
     },

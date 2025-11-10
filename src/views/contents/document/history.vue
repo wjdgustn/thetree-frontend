@@ -188,7 +188,7 @@ export default {
         admin: true
       })
 
-      if(permissions.config && rev.fileKey) actions.push({
+      if(permissions.config && (rev.fileKey || rev.videoFileKey)) actions.push({
         action: 'delete_file',
         text: '[A]파일 삭제',
         admin: true

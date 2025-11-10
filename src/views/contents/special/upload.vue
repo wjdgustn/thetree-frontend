@@ -1,6 +1,6 @@
 <template>
   <SeedForm method="post" enctype="multipart/form-data">
-    <input ref="fileInput" @change="fileChange" type="file" accept="image/*" name="file" multiple hidden>
+    <input ref="fileInput" @change="fileChange" type="file" accept="image/*,video/mp4" name="file" multiple hidden>
 
     <FormErrorAlert/>
 

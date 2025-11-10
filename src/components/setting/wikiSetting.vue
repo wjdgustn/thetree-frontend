@@ -19,6 +19,12 @@
     <option value="popup">팝업</option>
     <option value="unfold">펼침</option>
   </SettingItemSelect>
+  <SettingItemSelect label="이미지" ckey="wiki.image_hide" default="show">
+    <option value="show">보이기</option>
+    <option value="hide">숨기기</option>
+    <option value="hide_1mb">1MB 이상 이미지 숨기기</option>
+  </SettingItemSelect>
+  <SettingItemCheckbox label="이미지 lazy load 비활성화" ckey="wiki.disable_image_lazy"/>
   <SettingItemSelect label="분류 위치" ckey="wiki.category_position" default="top">
     <option value="top">상단</option>
     <option value="bottom">하단</option>
@@ -29,13 +35,14 @@
       <option :value="mode.name">{{mode.label}}</option>
     </template>
   </SettingItemSelect>
-  <SettingItemCheckbox label="상대 시간 표시를 사용하지 않음" ckey="wiki.no_relative_date" />
+  <SettingItemCheckbox label="상대 시간 표기를 사용하지 않음" ckey="wiki.no_relative_date" />
 </template>
 <script>
 import SettingItemCheckbox from '@/components/settingItemCheckbox';
 import SettingItemSelect from '@/components/settingItemSelect';
 
 import { isMobile } from '@/utils'
+import SettingItemInput from '@/components/settingItemInput'
 
 export default {
   components: {
