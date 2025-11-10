@@ -209,7 +209,7 @@ export default {
             addInfoBtn()
             parent.removeChild(img)
 
-            if(this.autoplayObserver) {
+            if(img.dataset.src && this.autoplayObserver) {
               this.autoplayObserver.observe(video)
               this.cleanupFunctions.push(() => {
                 this.autoplayObserver.unobserve(video)
