@@ -1,6 +1,8 @@
 import { markRaw } from 'vue';
 import { defineStore } from 'pinia'
 
+import Skin from 'skin/layout'
+
 export const useStateStore = defineStore('state', {
   state() {
     return {
@@ -71,6 +73,7 @@ export const useStateStore = defineStore('state', {
       if(!contentName) {
         if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = null
+        this.components.mainView.skin ??= markRaw(Skin)
         this.components.mainView.$refs.progressBar?.finish()
         return
       }
@@ -95,6 +98,7 @@ export const useStateStore = defineStore('state', {
         this.page.title = '오류'
         this.page.contentHtml = `missing view ${contentName}`
       }
+      this.components.mainView.skin ??= markRaw(Skin)
       this.components.mainView.loadingView = false
 
       this.cleanViewData()

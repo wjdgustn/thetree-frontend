@@ -1,6 +1,6 @@
 <template>
   <ProgressBar ref="progressBar"/>
-  <Skin v-if="isCreated"/>
+  <component :is="skin"/>
   <Toaster :theme="$store.state.currentTheme" :richColors="true"/>
 
   <GlobalEvents
@@ -14,22 +14,18 @@
 </template>
 
 <script>
-import { markRaw } from 'vue'
 import { Toaster } from 'vue-sonner'
 import { GlobalEvents } from 'vue-global-events'
 
 import Common from '@/mixins/common'
 import ProgressBar from '@/components/progressBar'
 
-import Skin from 'skin/layout'
-
 export default {
   mixins: [Common],
   components: {
     ProgressBar,
     Toaster,
-    GlobalEvents,
-    Skin
+    GlobalEvents
   },
   computed: {
     pageTitle() {
@@ -86,8 +82,7 @@ export default {
   },
   data() {
     return {
-      skin: markRaw(Skin),
-      isCreated: false,
+      skin: null,
       nextUrl: null,
       beforeLeave: null,
       loadingView: false,
@@ -103,8 +98,6 @@ export default {
     if(!page.contentName && !page.contentHtml) return
 
     await this.$store.state.updateView(statePatches)
-
-    this.isReady = true
   },
   async created() {
     this.$store.state.components.mainView = this
@@ -136,8 +129,6 @@ export default {
     window.addEventListener('beforeunload', e => {
       if(!canMove()) e.preventDefault()
     })
-
-    this.isReady = true
   },
   async beforeRouteUpdate(to, from, next) {
     let prevPath = from.fullPath
