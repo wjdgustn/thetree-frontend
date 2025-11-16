@@ -21,6 +21,11 @@ const router = () => {
       return new Promise(async resolve => {
         await waitPageLoad()
 
+        if(to.hash) {
+            const el = document.getElementById(to.hash.slice(1))
+            if(el) el.focus()
+        }
+
         if(savedPosition
             && (savedPosition.left > 0
                 || savedPosition.top > 0)) {
