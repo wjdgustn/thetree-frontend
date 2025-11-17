@@ -181,7 +181,7 @@ export default {
             })
 
             if(res.status !== 200) {
-                if(!this.$store.state.page.contentHtml && !this.$store.state.viewData.viewComponent) {
+                if(!this.$store.state.page.contentHtml && !this.$store.state.page.contentName) {
                     this.$store.state.page.title = '오류'
                     this.$store.state.page.contentHtml = `API 요청 실패: ${res.status}`
                     await this.$store.state.updateView()

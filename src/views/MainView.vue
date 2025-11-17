@@ -1,6 +1,6 @@
 <template>
   <ProgressBar ref="progressBar"/>
-  <component :is="skin"/>
+  <Skin v-if="$store.state.isReady"/>
   <Toaster :theme="$store.state.currentTheme" :richColors="true"/>
 
   <GlobalEvents
@@ -20,12 +20,15 @@ import { GlobalEvents } from 'vue-global-events'
 import Common from '@/mixins/common'
 import ProgressBar from '@/components/progressBar'
 
+import Skin from 'skin/layout'
+
 export default {
   mixins: [Common],
   components: {
     ProgressBar,
     Toaster,
-    GlobalEvents
+    GlobalEvents,
+    Skin
   },
   computed: {
     pageTitle() {
@@ -82,7 +85,6 @@ export default {
   },
   data() {
     return {
-      skin: null,
       nextUrl: null,
       beforeLeave: null,
       loadingView: false,
