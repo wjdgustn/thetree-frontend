@@ -28,7 +28,7 @@ function base64ToUint8Array(base64) {
 }
 
 export function createApp() {
-    const app = import.meta.env.SSR
+    const app = (import.meta.env.SSR || window.INITIAL_STATE)
         ? createSSRApp(App)
         : createCSRApp(App)
 
