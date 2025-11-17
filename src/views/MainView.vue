@@ -117,9 +117,9 @@ export default {
       await this.loadView()
       this.processNextUrl()
     }
-    else {
-      await this.$store.state.updateView()
-    }
+    // else {
+    //   await this.$store.state.updateView()
+    // }
 
     const canMove = (to, from) => {
       if(!this.beforeLeave || this.nextUrl) return true

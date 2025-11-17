@@ -1,9 +1,15 @@
-import { createApp } from './main'
+import { createApp, useStore } from './main'
 import { createHead } from '@unhead/vue/client'
 
-const { app } = createApp()
+const { app, router } = createApp()
 
 const head = createHead()
 app.use(head)
 
-app.mount('#app')
+router.isReady().then(async () => {
+    const store = useStore()
+    const page = store.state.page
+    if(page.contentName || page.contentHtml)
+        await store.state.updateView()
+    app.mount('#app')
+})

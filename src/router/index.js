@@ -9,7 +9,7 @@ const router = () => {
   const waitPageLoad = () => {
     state ??= useStateStore()
     return new Promise(resolve => {
-      if(!state.components.mainView.loadingView)
+      if(!state.components.mainView?.loadingView)
         return resolve()
       state.components.mainView.afterLoadView = resolve
     })

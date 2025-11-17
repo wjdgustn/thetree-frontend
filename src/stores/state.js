@@ -66,14 +66,15 @@ export const useStateStore = defineStore('state', {
       })
     },
     async updateView(statePatches) {
-      this.components.mainView.loadingView = true
+      const mainView = this.components.mainView
+      if(mainView) mainView.loadingView = true
 
       const contentName = statePatches ? statePatches.page.contentName : this.page.contentName
       if(!contentName) {
         if(statePatches) this.patchPageData(statePatches)
         this.viewData.viewComponent = null
         this.isReady = true
-        this.components.mainView.$refs.progressBar?.finish()
+        mainView?.$refs.progressBar?.finish()
         return
       }
       let view
@@ -98,14 +99,15 @@ export const useStateStore = defineStore('state', {
         this.page.contentHtml = `missing view ${contentName}`
       }
       this.isReady = true
-      this.components.mainView.loadingView = false
+      if(mainView) mainView.loadingView = false
 
       this.cleanViewData()
-      this.components.mainView.$refs.progressBar?.finish()
+      mainView?.$refs.progressBar?.finish()
     },
     cleanViewData() {
       this.clearFormErrors()
-      this.components.mainView.beforeLeave = null
+      const mainView = this.components.mainView
+      if(mainView) mainView.beforeLeave = null
     },
     clearFormErrors() {
       this.viewData.errorAlert = this.viewData.alert ?? null
