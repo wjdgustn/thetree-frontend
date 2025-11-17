@@ -50,7 +50,7 @@
       <div class="table-item">수정자</div>
       <div class="table-item">시간</div>
     </div>
-    <div v-for="item in [...data.threads, ...data.editRequests]" class="table-row">
+    <div v-for="item in [...data.threads, ...data.editRequests]" :key="item.url" class="table-row">
       <div class="table-item">
         <NuxtLink :to="(item.topic ? '/thread/' : '/edit_request/') + item.url">{{item.topic || `편집 요청 ${item.url}`}}</NuxtLink>
         <DiffCount class="diff-count" v-if="item.diffLength != null" :count="item.diffLength"/>

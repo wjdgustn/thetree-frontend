@@ -16,7 +16,7 @@
       <div class="table-item">수정자</div>
       <div class="table-item">수정 시간</div>
     </div>
-    <div v-for="rev in data.revs" class="table-row">
+    <div v-for="rev in data.revs" :key="rev.uuid" class="table-row">
       <div class="table-item">
         <NuxtLink :to="doc_action_link(rev.document.parsedName, 'w')">{{doc_fulltitle(rev.document.parsedName)}}</NuxtLink>
         <DiffCount :count="rev.diffLength" class="history-diff-count"/>
