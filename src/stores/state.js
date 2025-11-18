@@ -19,6 +19,7 @@ export const useStateStore = defineStore('state', {
 
       localConfig: {},
       localConfigInitialized: false,
+      currentTheme: 'light',
       page: {
         data: {}
       },
@@ -122,17 +123,8 @@ export const useStateStore = defineStore('state', {
     }
   },
   getters: {
-    currentTheme() {
-      if(import.meta.env.SSR)
-        return 'light'
-
-      const theme = this.localConfig['wiki.theme']
-      if(!theme || theme === 'auto')
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      return theme
-    },
-      isDark() {
-        return this.currentTheme === 'dark'
-      }
+    isDark() {
+      return this.currentTheme === 'dark'
+    }
   }
 })

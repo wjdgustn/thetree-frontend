@@ -37,6 +37,9 @@ export default {
       if(!doc) return page.title
 
       return this.doc_fulltitle(doc) + this.getTitleDescription(page)
+    },
+    wikiTheme() {
+      return this.$store.state.localConfig['wiki.theme']
     }
   },
   head() {
@@ -150,13 +153,18 @@ export default {
       this.processNextUrl()
       document.activeElement?.blur()
     },
-    '$store.state.currentTheme'() {
+    'wikiTheme'() {
       this.updateThemeClass()
     }
   },
   methods: {
     updateThemeClass() {
-      const theme = this.$store.state.currentTheme
+      const theme = this.$store.state.localConfig['wiki.theme']
+      if(!theme || theme === 'auto')
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+
+      this.$store.state.currentTheme = theme
+
       const className = `theseed-${theme}-mode`
       const otherClassName = `theseed-${theme === 'dark' ? 'light' : 'dark'}-mode`
       document.body.classList.add(className)
