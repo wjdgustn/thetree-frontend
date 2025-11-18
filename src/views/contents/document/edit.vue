@@ -123,6 +123,14 @@ export default {
       return
     }
 
+    this.activeTab = this.tabs[0]
+
+    this.initialContent = this.data.content
+    this.log = this.data.log || ''
+
+    this.$store.state.components.mainView.beforeLeave = this.beforeLeave
+  },
+  mounted() {
     this.tabs.unshift(...this.$store.state.thetreePlugins.editor.map(a => ({
       ...a.pluginInfo,
       component: a
@@ -131,11 +139,6 @@ export default {
     if(!this.tabs.some(a => a.name === activeTabName)) activeTabName = null
     activeTabName ??= isMobile ? 'raw' : this.tabs[0].name
     this.activeTab = this.tabs.find(a => a.name === activeTabName)
-
-    this.initialContent = this.data.content
-    this.log = this.data.log || ''
-
-    this.$store.state.components.mainView.beforeLeave = this.beforeLeave
   },
   watch: {
     activeTab(newValue, oldValue) {
