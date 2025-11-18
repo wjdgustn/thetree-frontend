@@ -196,7 +196,7 @@ export default {
 
             const buffer = await res.arrayBuffer()
             let json = decode(inflate(buffer))
-            json = this.afterInternalRequest(json, progressBar)
+            json = this.afterInternalRequest(json, progressBar, (options?.method || 'GET').toUpperCase())
 
             return this.withoutKeys(json, [
                 'config',
@@ -207,7 +207,7 @@ export default {
                 'url'
             ])
         },
-        afterInternalRequest(json, progressBar) {
+        afterInternalRequest(json, progressBar, method = 'GET') {
             if(import.meta.env.DEV && !import.meta.env.SSR) console.log(json)
 
             if(json.config) {
@@ -231,7 +231,10 @@ export default {
                     location.href = json.url
                     return
                 }
-                this.$store.state.components.mainView.nextUrl = json.url
+                if(method === 'GET')
+                    this.$store.state.components.mainView.nextUrl = json.url
+                else
+                    this.$router.push(json.url)
                 return
             }
 
