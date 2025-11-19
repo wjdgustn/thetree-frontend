@@ -231,7 +231,7 @@ export default {
                     location.href = json.url
                     return
                 }
-                if(method === 'GET')
+                if(method === 'GET' || json.url === this.$route.fullPath)
                     this.$store.state.components.mainView.nextUrl = json.url
                 else
                     this.$router.push(json.url)
