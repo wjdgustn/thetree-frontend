@@ -159,9 +159,9 @@ export default {
   },
   methods: {
     updateThemeClass() {
-      const theme = this.$store.state.localConfig['wiki.theme']
+      let theme = this.$store.state.localConfig['wiki.theme']
       if(!theme || theme === 'auto')
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 
       this.$store.state.currentTheme = theme
 
