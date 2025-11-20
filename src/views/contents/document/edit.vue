@@ -131,6 +131,8 @@ export default {
     this.$store.state.components.mainView.beforeLeave = this.beforeLeave
   },
   mounted() {
+    if(!this.editable) return
+
     this.tabs.unshift(...this.$store.state.thetreePlugins.editor.map(a => ({
       ...a.pluginInfo,
       component: a
