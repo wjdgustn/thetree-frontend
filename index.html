@@ -4,7 +4,7 @@
     <!--app-head-->
   </head>
   <body>
-    <script>try{n=["light","dark"],t=JSON.parse(localStorage.getItem("thetree_settings"))?.["wiki.theme"],d=0,t&&"auto"!=t?t==n[1]&&(d=1):d=matchMedia("(prefers-color-scheme:dark)").matches-0,c=e=>`theseed-${n[e]}-mode`,b=document.body.classList,b.remove(c(1-d)),b.add(c(d))}catch(e){}</script>
+    <script nonce="{cspNonce}">try{n=["light","dark"],t=JSON.parse(localStorage.getItem("thetree_settings"))?.["wiki.theme"],d=0,t&&"auto"!=t?t==n[1]&&(d=1):d=matchMedia("(prefers-color-scheme:dark)").matches-0,c=e=>`theseed-${n[e]}-mode`,b=document.body.classList,b.remove(c(1-d)),b.add(c(d))}catch(e){}</script>
     <div id="app"><!--app-body--></div>
     <script type="module" src="/src/client.js"></script>
   </body>
