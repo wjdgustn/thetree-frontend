@@ -155,6 +155,9 @@ export default {
     },
     'wikiTheme'() {
       this.updateThemeClass()
+    },
+    '$store.state.currentTheme'() {
+      this.updateThemeClass()
     }
   },
   methods: {
