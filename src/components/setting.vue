@@ -12,18 +12,18 @@
       </header>
       <TransitionGroup name="slide-fade" tag="section" mode="out-in">
         <template v-for="tab in tabs">
-          <SettingItemSelect
-              v-if="session.account.type !== 1 && selectedTab.name === 'skin'"
-              label="스킨"
-              ckey="skin"
-              :default="skinName"
-              @change="skinChange"
-              noSave
-          >
-            <option value="default">기본 스킨</option>
-            <option v-for="skin in config.skins">{{skin}}</option>
-          </SettingItemSelect>
           <div v-if="tab === selectedTab" :key="tab.name">
+            <SettingItemSelect
+                v-if="session.account.type !== 1 && selectedTab.name === 'skin'"
+                label="스킨"
+                ckey="skin"
+                :default="skinName"
+                @change="skinChange"
+                noSave
+            >
+              <option value="default">기본 스킨</option>
+              <option v-for="skin in config.skins">{{skin}}</option>
+            </SettingItemSelect>
             <component :is="tab.component"/>
           </div>
         </template>
