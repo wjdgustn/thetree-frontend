@@ -1,4 +1,15 @@
 <template>
+  <SettingItemSelect
+      v-if="session.account.type !== 1"
+      label="스킨"
+      ckey="skin"
+      :default="skinName"
+      @change="skinChange"
+      noSave
+  >
+    <option value="default">기본 스킨</option>
+    <option v-for="skin in config.skins">{{skin}}</option>
+  </SettingItemSelect>
   <SettingItemSelect label="테마" ckey="wiki.theme" default="auto">
     <option value="auto">자동 (시스템 설정)</option>
     <option value="light">라이트</option>
@@ -49,6 +60,11 @@ export default {
     SettingItemCheckbox,
     SettingItemSelect
   },
+  data() {
+    return {
+      skinName: __THETREE_SKIN_NAME__
+    }
+  },
   computed: {
     footnoteType() {
       return isMobile ? 'popup' : 'popover'
@@ -64,6 +80,20 @@ export default {
     },
     defaultEditMode() {
       return isMobile ? 'raw' : this.editModes[0].name
+    }
+  },
+  methods: {
+    async skinChange(e) {
+      await this.internalRequestAndProcess('/member/ipskin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          skin: e.target.value
+        }),
+        noProgress: true
+      })
     }
   }
 }

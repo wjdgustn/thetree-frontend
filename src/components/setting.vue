@@ -13,17 +13,6 @@
       <TransitionGroup name="slide-fade" tag="section" mode="out-in">
         <template v-for="tab in tabs">
           <div v-if="tab === selectedTab" :key="tab.name">
-            <SettingItemSelect
-                v-if="session.account.type !== 1 && selectedTab.name === 'skin'"
-                label="스킨"
-                ckey="skin"
-                :default="skinName"
-                @change="skinChange"
-                noSave
-            >
-              <option value="default">기본 스킨</option>
-              <option v-for="skin in config.skins">{{skin}}</option>
-            </SettingItemSelect>
             <component :is="tab.component"/>
           </div>
         </template>
@@ -65,8 +54,7 @@ export default {
           component: this.$slots.default
         }
       ],
-      selectedTab: null,
-      skinName: __THETREE_SKIN_NAME__
+      selectedTab: null
     }
   },
   created() {
@@ -75,18 +63,6 @@ export default {
   methods: {
     selectTab(tab) {
       this.selectedTab = tab
-    },
-    async skinChange(e) {
-      await this.internalRequestAndProcess('/member/ipskin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          skin: e.target.value
-        }),
-        noProgress: true
-      })
     }
   }
 }
