@@ -23,14 +23,12 @@
 <script>
 import { markRaw } from 'vue'
 
-import Common from '@/mixins/common'
 import WikiSetting from '@/components/setting/wikiSetting'
 import DiscussSetting from '@/components/setting/discussSetting'
 import Modal from '@/components/modal'
 import SettingItemSelect from '@/components/settingItemSelect'
 
 export default {
-  mixins: [Common],
   components: {
     SettingItemSelect,
     Modal

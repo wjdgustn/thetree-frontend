@@ -49,13 +49,14 @@
   <SettingItemCheckbox label="상대 시간 표기를 사용하지 않음" ckey="wiki.no_relative_date" />
 </template>
 <script>
-import SettingItemCheckbox from '@/components/settingItemCheckbox';
-import SettingItemSelect from '@/components/settingItemSelect';
+import Common from '@/mixins/common'
+import SettingItemCheckbox from '@/components/settingItemCheckbox'
+import SettingItemSelect from '@/components/settingItemSelect'
 
 import { isMobile } from '@/utils'
-import SettingItemInput from '@/components/settingItemInput'
 
 export default {
+  mixins: [Common],
   components: {
     SettingItemCheckbox,
     SettingItemSelect
