@@ -22,6 +22,10 @@ export default {
     },
     note: {
       type: String
+    },
+    noSave: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -31,7 +35,7 @@ export default {
   },
   watch: {
     value(newValue) {
-      this.$store.state.localConfigSetValue(this.ckey, newValue)
+      if(!this.noSave) this.$store.state.localConfigSetValue(this.ckey, newValue)
     }
   }
 }
