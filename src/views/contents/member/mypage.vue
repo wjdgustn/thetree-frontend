@@ -44,7 +44,7 @@
         </div>
         <SeedFormBlock newStyle :class="$style.form__row" label="스킨" inputId="skinSelect">
           <div :class="$style['form__row-inner']">
-            <SelectMenu id="skinSelect" name="skin" :value="data.user.skin">
+            <SelectMenu id="skinSelect" name="skin" v-model="data.user.skin">
               <option value="default">기본 스킨</option>
               <option v-for="skin in data.skins">{{skin}}</option>
             </SelectMenu>
