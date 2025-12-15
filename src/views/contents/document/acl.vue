@@ -245,8 +245,8 @@ export default {
   },
   watch: {
     $route() {
-      this.updateRules()
       this.hash = this.$route.hash
+      this.updateRules()
     },
     data() {
       this.updateRules()
