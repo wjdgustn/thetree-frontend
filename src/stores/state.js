@@ -114,6 +114,10 @@ export const useStateStore = defineStore('state', {
       this.viewData.errorAlert = this.viewData.alert ?? null
       this.viewData.fieldErrors = null
     },
+    loadLocalConfig() {
+      this.localConfig = JSON.parse(localStorage.getItem('thetree_settings')) || {}
+      this.localConfigInitialized = true
+    },
     localConfigSetValue(key, value) {
       this.localConfig[key] = value
       localStorage.setItem('thetree_settings', JSON.stringify(this.localConfig))

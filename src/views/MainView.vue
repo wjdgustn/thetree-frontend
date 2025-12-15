@@ -110,11 +110,6 @@ export default {
 
     this.updateThemeClass()
 
-    if(!this.$store.state.localConfigInitialized) {
-      this.$store.state.localConfig = JSON.parse(localStorage.getItem('thetree_settings')) || {}
-      this.$store.state.localConfigInitialized = true
-    }
-
     const page = this.$store.state.page
     if(!page.contentName && !page.contentHtml) {
       await this.loadView()
@@ -134,6 +129,14 @@ export default {
     window.addEventListener('beforeunload', e => {
       if(!canMove()) e.preventDefault()
     })
+  },
+  mounted() {
+    const loadLocalConfig = this.$store.state.loadLocalConfig
+    loadLocalConfig()
+    window.addEventListener('storage', () => loadLocalConfig())
+
+    const darkQueryList = window.matchMedia('(prefers-color-scheme: dark)')
+    darkQueryList.addEventListener('change', () => this.updateThemeClass())
   },
   async beforeRouteUpdate(to, from, next) {
     let prevPath = from.fullPath
