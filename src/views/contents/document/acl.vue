@@ -197,7 +197,8 @@ export default {
       isMobile,
       prevAclCategory: null,
       aclGroups: [],
-      aclGroupIndex: 0
+      aclGroupIndex: 0,
+      hash: null
     }
   },
   methods: {
@@ -240,10 +241,12 @@ export default {
   },
   mounted() {
     this.updateRules()
+    this.hash = this.$route.hash
   },
   watch: {
     $route() {
       this.updateRules()
+      this.hash = this.$route.hash
     },
     data() {
       this.updateRules()
@@ -270,7 +273,7 @@ export default {
       return this.aclTypes.find(a => a.name === this.aclType)
     },
     aclCategory() {
-      return (this.$route.hash || '').split('.')[0].slice(1) || (this.data.thread ? 'thread' : 'document')
+      return (this.hash || '').split('.')[0].slice(1) || (this.data.thread ? 'thread' : 'document')
     },
     aclType() {
       let defaultType = 'read'
@@ -279,7 +282,7 @@ export default {
       else if(this.aclCategory === 'thread')
         defaultType = 'write_thread_comment'
 
-      let selected = (this.$route.hash || '').split('.')[1]
+      let selected = (this.hash || '').split('.')[1]
       if(!this.availableAclTypes.includes(selected))
         selected = null
 
