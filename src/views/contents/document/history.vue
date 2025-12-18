@@ -128,7 +128,7 @@ export default {
   methods: {
     getActions(rev) {
       const actions = [
-        ...(rev.troll ? [] : [{
+        ...((rev.troll && !permissions.troll) ? [] : [{
           action: 'w',
           text: '보기',
           follow: true
