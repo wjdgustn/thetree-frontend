@@ -127,6 +127,8 @@ export default {
   },
   methods: {
     getActions(rev) {
+      const permissions = this.data.permissions
+
       const actions = [
         ...((rev.troll && !permissions.troll) ? [] : [{
           action: 'w',
@@ -157,7 +159,6 @@ export default {
         post: true
       })
 
-      const permissions = this.data.permissions
       if(permissions.troll) actions.push(rev.troll ? {
         action: 'unmark_troll',
         text: '[A]반달표시 해제',
