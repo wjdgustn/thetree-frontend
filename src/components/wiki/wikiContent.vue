@@ -48,7 +48,7 @@ import WikiCategoryDocs from '@/components/wiki/wikiCategoryDocs'
 import LocalDate from '@/components/localDate'
 
 import Common from '@/mixins/common'
-import { isMobile } from '@/utils'
+import { isMobile, sha256 } from '@/utils'
 import Modal from '@/components/modal'
 
 export default {
@@ -133,7 +133,7 @@ export default {
   watch: {
     async content() {
       await this.$nextTick()
-      this.setupWikiContent()
+      await this.setupWikiContent()
     },
     'popover.show'(newValue) {
       if(!newValue)
@@ -147,7 +147,7 @@ export default {
     getFootnotes(element) {
       return [...element.getElementsByClassName('wiki-fn-content')]
     },
-    setupWikiContent(element = this.$refs.div) {
+    async setupWikiContent(element = this.$refs.div) {
       {
         const imageHide = this.$store.state.localConfig['wiki.image_hide']
         const disableImageLazy = this.$store.state.localConfig['wiki.disable_image_lazy']
@@ -401,6 +401,10 @@ export default {
       const darkStyleElements = document.querySelectorAll('*[data-dark-style]')
       const darkStyles = []
       for(let element of darkStyleElements) {
+        const className = '_' + (await sha256(element.dataset.darkStyle))
+        if(element.classList.contains(className))
+          continue
+
         const styleData = element.dataset.darkStyle.split(';').map(a => a.trim()).filter(a => a)
         let style = ''
         for(let stylePart of styleData) {
@@ -412,7 +416,7 @@ export default {
         if(!darkStyle) {
           darkStyle = {
             style,
-            class: '_' + crypto.randomUUID().replaceAll('-', '')
+            class: className
           }
           darkStyles.push(darkStyle)
         }

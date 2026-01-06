@@ -43,3 +43,9 @@ export const unescapeHtml = text => (text?.toString() ?? '')
     .replaceAll("&gt;", '>')
     .replaceAll("&quot;", `"`)
     .replaceAll("&#039;", `'`)
+
+export const sha256 = async str => {
+    const arr = new TextEncoder().encode(str);
+    const buf = await window.crypto.subtle.digest('SHA-256', arr);
+    return new Uint8Array(buf).toHex();
+}
