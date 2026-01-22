@@ -240,8 +240,8 @@ export default {
     }
   },
   mounted() {
-    this.updateRules()
     this.hash = this.$route.hash
+    this.updateRules()
   },
   watch: {
     $route() {
