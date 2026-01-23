@@ -459,20 +459,19 @@ export default {
 
       const tables = [...element.getElementsByClassName('wiki-table')]
       for(let table of tables) {
-        const thead = table.getElementsByTagName('thead')[0]
-        const tbody = table.getElementsByTagName('tbody')[0]
+        const thead = [...table.children].find(e => e.tagName === 'THEAD')
+        const tbody = [...table.children].find(e => e.tagName === 'TBODY')
         if(!thead || !tbody) continue
 
-        if(!thead.querySelector('th.wiki-table-sortable')
-            || tbody.querySelector('td[colspan]')
+        if(tbody.querySelector('td[colspan]')
             || tbody.querySelector('td[rowspan]'))
           continue
 
         const lastHeaderRow = [...thead.getElementsByTagName('tr')].pop()
         if(!lastHeaderRow) continue
 
-        const headerCells = [...lastHeaderRow.getElementsByTagName('th')]
-        const rows = [...tbody.getElementsByTagName('tr')]
+        const headerCells = [...lastHeaderRow.children].filter(e => e.tagName === 'TH')
+        const rows = [...tbody.children].filter(e => e.tagName === 'TR')
         for(let cellIndex in headerCells) {
           const cell = headerCells[cellIndex]
           if(!cell.classList.contains('wiki-table-sortable'))
@@ -490,8 +489,8 @@ export default {
             const directionNum = direction === 'asc' ? 1 : -1
             const sorted = [...rows]
             if(direction !== 'original') sorted.sort((a, b) => {
-              const cellA = a.getElementsByTagName('td')[cellIndex]
-              const cellB = b.getElementsByTagName('td')[cellIndex]
+              const cellA = [...a.children].filter(e => e.tagName === 'TD')[cellIndex]
+              const cellB = [...b.children].filter(e => e.tagName === 'TD')[cellIndex]
 
               const textA = cellA ? cellA.textContent : ''
               const textB = cellB ? cellB.textContent : ''
