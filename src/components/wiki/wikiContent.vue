@@ -457,6 +457,67 @@ export default {
         time.textContent = result
       }
 
+      const tables = [...element.getElementsByClassName('wiki-table')]
+      for(let table of tables) {
+        const thead = table.getElementsByTagName('thead')[0]
+        const tbody = table.getElementsByTagName('tbody')[0]
+        if(!thead || !tbody) continue
+
+        if(!thead.querySelector('th.wiki-table-sortable')
+            || tbody.querySelector('td[colspan]')
+            || tbody.querySelector('td[rowspan]'))
+          continue
+
+        const lastHeaderRow = [...thead.getElementsByTagName('tr')].pop()
+        if(!lastHeaderRow) continue
+
+        const headerCells = [...lastHeaderRow.getElementsByTagName('th')]
+        const rows = [...tbody.getElementsByTagName('tr')]
+        for(let cellIndex in headerCells) {
+          const cell = headerCells[cellIndex]
+          if(!cell.classList.contains('wiki-table-sortable'))
+            continue
+
+          cell.classList.add('sortable-table-head-cell')
+
+          const sortDirections = ['original', 'asc', 'desc']
+          const nextSortDirection = str => sortDirections[(sortDirections.indexOf(str) + 1) % sortDirections.length]
+          const onCellClick = () => {
+            for(let otherCell of headerCells)
+              if(cell !== otherCell) delete otherCell.dataset.sortDirection
+
+            const direction = cell.dataset.sortDirection = nextSortDirection(cell.dataset.sortDirection || 'original')
+            const directionNum = direction === 'asc' ? 1 : -1
+            const sorted = [...rows]
+            if(direction !== 'original') sorted.sort((a, b) => {
+              const cellA = a.getElementsByTagName('td')[cellIndex]
+              const cellB = b.getElementsByTagName('td')[cellIndex]
+
+              const textA = cellA ? cellA.textContent : ''
+              const textB = cellB ? cellB.textContent : ''
+              if(textA === textB) return 0
+
+              const numA = textA ? parseInt(textA.replaceAll(',', ''), 10) : NaN
+              const numB = textB ? parseInt(textB.replaceAll(',', ''), 10) : NaN
+
+              if(isNaN(numA) || isNaN(numB))
+                return (textA > textB ? 1 : -1) * directionNum
+              else
+                return (numA - numB) * directionNum
+            })
+
+            for(let row of sorted)
+              tbody.appendChild(row)
+          }
+          cell.addEventListener('click', onCellClick)
+
+          this.cleanupFunctions.push(() => {
+            cell.removeEventListener('click', onCellClick)
+            cell.classList.remove('sortable-table-head-cell')
+          })
+        }
+      }
+
       if(!this.discuss) {
         const anchorElem = document.getElementById(location.hash.slice(1))
         anchorElem?.scrollIntoView()
