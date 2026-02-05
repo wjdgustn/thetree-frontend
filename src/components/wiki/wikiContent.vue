@@ -496,8 +496,8 @@ export default {
               const textB = cellB ? cellB.textContent : ''
               if(textA === textB) return 0
 
-              const numA = textA ? parseInt(textA.replaceAll(',', ''), 10) : NaN
-              const numB = textB ? parseInt(textB.replaceAll(',', ''), 10) : NaN
+              const numA = textA ? parseFloat(textA.replaceAll(',', ''), 10) : NaN
+              const numB = textB ? parseFloat(textB.replaceAll(',', ''), 10) : NaN
 
               if(isNaN(numA) || isNaN(numB))
                 return (textA > textB ? 1 : -1) * directionNum
