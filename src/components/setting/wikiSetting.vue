@@ -6,8 +6,7 @@
       @change="$i18next.changeLanguage($event.target.value)"
       noSave
   >
-    <option value="ko">한국어</option>
-    <option value="en">English</option>
+    <option v-for="locale in locales" :value="locale.code">{{locale.name}}</option>
   </SettingItemSelect>
   <SettingItemSelect
       v-if="session.account.type !== 1"
@@ -73,7 +72,8 @@ export default {
   },
   data() {
     return {
-      skinName: __THETREE_SKIN_NAME__
+      skinName: __THETREE_SKIN_NAME__,
+      locales: __THETREE_LOCALES__
     }
   },
   computed: {

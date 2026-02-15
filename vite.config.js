@@ -12,7 +12,23 @@ import skinRawLoaderPlugin from './vitePlugins/skinRawLoader'
 import metadata from './vitePlugins/metadata'
 
 // https://vite.dev/config/
-export default defineConfig(({ mode, isSsrBuild }) => {
+export default defineConfig(async ({ mode, isSsrBuild }) => {
+  const dev = mode === 'development'
+  let locales = [
+    {
+      name: 'English',
+      code: 'en'
+    },
+    {
+      name: '한국어',
+      code: 'ko'
+    }
+  ]
+  if(!dev) try {
+    const localeRes = await fetch('https://testwiki.hyonsu.com/engine/locale_list')
+    locales = await localeRes.json()
+  } catch {}
+
   const env = loadEnv(mode, process.cwd(), '')
 
   const skin = env.SKIN_NAME || fs.readdirSync('./skins')[0]
@@ -65,7 +81,8 @@ export default defineConfig(({ mode, isSsrBuild }) => {
       __THETREE_VERSION_HEADER__: JSON.stringify(versionHeader),
       __THETREE_COMMIT_DATES__: JSON.stringify(commitDates),
       __THETREE_SKIN_NAME__: JSON.stringify(skin),
-      __THETREE_URL_KEY__: JSON.stringify(urlKey)
+      __THETREE_URL_KEY__: JSON.stringify(urlKey),
+      __THETREE_LOCALES__: JSON.stringify(locales)
     },
     base: (process.env.NODE_ENV === 'production' || env.METADATA_PATH) ? `/skins/${skin}` : '/',
     publicDir: isSsrBuild ? false : 'public',
