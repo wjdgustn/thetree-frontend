@@ -1,5 +1,15 @@
 <template>
   <SettingItemSelect
+      label="언어 (Language)"
+      ckey="lang"
+      :default="$i18next.language"
+      @change="$i18next.changeLanguage($event.target.value)"
+      noSave
+  >
+    <option value="ko">한국어</option>
+    <option value="en">English</option>
+  </SettingItemSelect>
+  <SettingItemSelect
       v-if="session.account.type !== 1"
       label="스킨"
       ckey="skin"

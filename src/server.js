@@ -2,12 +2,15 @@ import { createHead, renderSSRHead } from '@unhead/vue/server'
 import { renderToString } from 'vue/server-renderer'
 import { createApp } from './main'
 import { basename } from 'node:path'
+import I18NextVue from 'i18next-vue'
 
-export async function render(url, data, manifest) {
+export async function render(url, data, manifest, i18next) {
     const { app, router, pinia } = createApp(url, data)
 
     const unhead = createHead()
     app.use(unhead)
+
+    app.use(I18NextVue, { i18next })
 
     app.config.globalProperties.initialData = data
     router.push(url).then()
