@@ -32,10 +32,18 @@ export const useStateStore = defineStore('state', {
     parseResponse(json) {
       const statePatches = {}
       if(json.page) {
+        const publicData = { ...json.data.publicData }
+        if(publicData.document) {
+          const i18next = this.components.mainView.$i18next
+          publicData.document.namespace = i18next.t(`namespaces.${publicData.document.namespace}`, {
+            defaultValue: publicData.document.namespace
+          })
+        }
+
         Object.assign(statePatches, {
           page: {
             ...json.page,
-            data: json.data.publicData
+            data: publicData
           },
           viewData: {
             ...json.data,

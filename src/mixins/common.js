@@ -10,7 +10,9 @@ export default {
 
             if(type === 'object') {
                 if(document.forceShowNamespace === false) return document.title;
-                return `${document.namespace}:${document.title}`;
+                return `${this.$t(`namespaces.${document.namespace}`, {
+                    defaultValue: document.namespace
+                })}:${document.title}`;
             }
             else return document;
         },

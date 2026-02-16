@@ -10,27 +10,38 @@ const { app, router } = createApp()
 const head = createHead()
 app.use(head)
 
-i18next
-    .use(i18nBackend)
-    .use(LanguageDetector)
-    .init({
-        supportedLngs: ['ko', 'en'],
-        fallbackLng: 'ko',
-        backend: {
-            loadPath: '/locale/{{lng}}.json'
-        },
-        detection: {
-            order: ['cookie', 'navigator'],
-            lookupCookie: 'thetree.lang',
-            caches: ['cookie']
-        },
-        convertDetectedLanguage: a => a.slice(0, 2)
-    })
-
-app.use(I18NextVue, { i18next })
-
 router.isReady().then(async () => {
     const store = useStore()
+
+    const langDetector = new LanguageDetector()
+    langDetector.addDetector({
+        name: 'configDetector',
+        lookup() {
+            if(!store.state.config.lang) return
+            return store.state.config.lang
+        }
+    })
+
+    await i18next
+        .use(i18nBackend)
+        .use(langDetector)
+        .init({
+            supportedLngs: ['ko', 'en'],
+            fallbackLng: 'ko',
+            backend: {
+                loadPath: '/locale/{{lng}}.json'
+            },
+            detection: {
+                order: ['cookie', 'configDetector', 'navigator'],
+                lookupCookie: 'thetree.lang',
+                caches: ['cookie']
+            },
+            convertDetectedLanguage: a => a.slice(0, 2),
+            showSupportNotice: false
+        })
+
+    app.use(I18NextVue, { i18next })
+
     const page = store.state.page
     if(page.contentName || page.contentHtml)
         await store.state.updateView()
