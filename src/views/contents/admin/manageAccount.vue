@@ -66,6 +66,19 @@
         <GeneralButton theme="danger" type="event" @click="accountAction('deleteAccount')">계정 삭제</GeneralButton>
       </SeedFormBlock>
     </Heading>
+
+    <Heading v-if="data.externalProviders?.length" title="외부 계정 목록" folded>
+      <div :class="[$style.table, $style['table--bordered']]">
+        <div :class="[$style.row, $style['row--head'], 'table-row']">
+          <div v-for="text in ['제공자', '이름', '이메일']" :class="[$style.column, 'table-column']">{{text}}</div>
+        </div>
+        <div v-for="item in data.externalProviders" :class="[$style.row, 'table-row']">
+          <div :class="[$style.column, 'table-column']">{{item.displayName}}</div>
+          <div :class="[$style.column, 'table-column']">{{data.targetUser.oauth2Maps[item.name]?.name}}</div>
+          <div :class="[$style.column, 'table-column']">{{data.targetUser.oauth2Maps[item.name]?.email}}</div>
+        </div>
+      </div>
+    </Heading>
   </SeedForm>
 </template>
 <script>
@@ -126,6 +139,7 @@ export default {
 </script>
 <style module>
 @import '@/styles/form.css';
+@import '@/styles/table.css';
 </style>
 <style scoped>
 .phone-number-text {
