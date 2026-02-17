@@ -11,7 +11,8 @@ export default {
             if(type === 'object') {
                 if(document.forceShowNamespace === false) return document.title;
                 return `${this.$t(`namespaces.${document.namespace}`, {
-                    defaultValue: document.namespace
+                    defaultValue: document.namespace,
+                    lng: this.config.lang || 'ko'
                 })}:${document.title}`;
             }
             else return document;

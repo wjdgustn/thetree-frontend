@@ -36,7 +36,8 @@ export const useStateStore = defineStore('state', {
         if(publicData.document) {
           const i18next = this.components.mainView.$i18next
           publicData.document.namespace = i18next.t(`namespaces.${publicData.document.namespace}`, {
-            defaultValue: publicData.document.namespace
+            defaultValue: publicData.document.namespace,
+            lng: this.config.lang || 'ko'
           })
         }
 
