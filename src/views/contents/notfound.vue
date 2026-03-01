@@ -1,11 +1,11 @@
 <template>
-  <p>해당 문서를 찾을 수 없습니다.</p>
+  <p>{{$t('views.notfound.text')}}</p>
   <p>
-    <NuxtLink :to="newLink" rel="nofollow">[새 문서 만들기]</NuxtLink>
+    <NuxtLink :to="newLink" rel="nofollow">[{{$t('views.notfound.new_document')}}]</NuxtLink>
   </p>
   <template v-if="data.revs.length">
     <div style="margin-top: 40px; margin-bottom: 15px;"/>
-    <h3>이 문서의 역사</h3>
+    <h3>{{$t('views.notfound.history')}}</h3>
     <ul>
       <li v-for="item in data.revs">
         <span>
@@ -18,7 +18,7 @@
         (<span class="log">{{item.log}}</span>)
       </li>
     </ul>
-    <NuxtLink :to="doc_action_link(data.document, 'history')">[더보기]</NuxtLink>
+    <NuxtLink :to="doc_action_link(data.document, 'history')">[{{$t('views.notfound.history_more')}}]</NuxtLink>
   </template>
 </template>
 <script>

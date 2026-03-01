@@ -1,29 +1,29 @@
 <template>
   <SeedForm>
     <select name="namespace" :value="$route.query.namespace || ''">
-      <option value="">전체</option>
+      <option value="">{{$t('views.search.namespace_all')}}</option>
       <option v-for="item in data.readableNamespaces">{{item}}</option>
     </select>
     <select name="target" :value="$route.query.target || 'title_content'">
-      <option value="title_content">제목/내용</option>
-      <option value="title">제목</option>
-      <option value="content">내용</option>
-      <option value="raw">원문</option>
+      <option value="title_content">{{$t('views.search.target.title_content')}}</option>
+      <option value="title">{{$t('views.search.target.title')}}</option>
+      <option value="content">{{$t('views.search.target.content')}}</option>
+      <option value="raw">{{$t('views.search.target.raw')}}</option>
     </select>
     <input type="text" name="q" :value="$route.query.q || ''">
-    <SeedButton submit>검색</SeedButton>
+    <SeedButton submit>{{$t('views.search.search')}}</SeedButton>
   </SeedForm>
   <Alert>
     <div class="alert-block">
       <i class="ion-ios-arrow-forward"/>
-      찾는 문서가 없나요? 문서로 바로 갈 수 있습니다.
+      {{$t('views.search.direct_document')}}
     </div>
     <div class="alert-button">
-      <SeedLinkButton :to="doc_action_link($route.query.q, 'w')">'{{$route.query.q}}' 문서로 가기</SeedLinkButton>
+      <SeedLinkButton :to="doc_action_link($route.query.q, 'w')">{{$t('views.search.direct_document_btn', { query: $route.query.q })}}</SeedLinkButton>
     </div>
     <div class="clear"/>
   </Alert>
-  <div class="info-text">전체 {{data.totalHits}} 건 / 처리 시간 {{data.processingTime / 1000}}초</div>
+  <div class="info-text">{{$t('views.search.result', { count: data.totalHits, sec: data.processingTime / 1000 })}}</div>
 
   <section>
     <div v-for="item in data.hits">

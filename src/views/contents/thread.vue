@@ -1,9 +1,7 @@
 <template>
   <Alert v-if="doc_fulltitle(page.data.document) === config['wiki.front_page']">
-    <strong>[경고!]</strong>
-    이 토론은 {{doc_fulltitle(page.data.document)}} 문서의 토론입니다.
-    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 각 문서의 토론에서 진행해 주시기 바랍니다.
-    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 삭제될 수 있습니다.
+    <strong>[{{$t('views.thread.warn')}}]</strong>
+    {{$t('views.thread.front_page_warn', { document: doc_fulltitle(page.data.document) })}}
   </Alert>
 
   <div class="title-group">
@@ -11,18 +9,18 @@
     <div class="title-group-right">
       <ButtonBadge round :theme="['', 'secondary', 'super'][data.thread.status]">
         <FontAwesomeIcon :icon="['door-open', 'pause', 'door-closed'][data.thread.status]" />
-        <span v-text="['열림', '중지됨', '닫힘'][data.thread.status]"/>
+        <span v-text="$t(`views.thread.status.${data.thread.status?.toString()}`)"/>
       </ButtonBadge>
       <ContextMenu placement="bottom-end">
         <GeneralButton class="more-button">
           <FontAwesomeIcon icon="ellipsis-vertical" />
         </GeneralButton>
         <template #menu>
-          <CheckBox v-model="hideHidden">숨겨진 댓글 보이지 않기</CheckBox>
+          <CheckBox v-model="hideHidden">{{$t('views.thread.hide_hidden')}}</CheckBox>
           <template v-if="data.permissions.delete">
             <hr>
             <SeedForm :beforeSubmit="goConfirm" method="post" class="delete-thread-form" :action="'/admin/thread/' + data.thread.url + '/delete'" noCaptcha>
-              <GeneralButton theme="danger" type="submit">[ADMIN] 스레드 삭제</GeneralButton>
+              <GeneralButton theme="danger" type="submit">{{$t('views.thread.delete_thread')}}</GeneralButton>
             </SeedForm>
           </template>
         </template>
@@ -43,38 +41,38 @@
   </div>
 
   <template v-if="data.thread.pinnedComment">
-    <h3>고정된 댓글</h3>
+    <h3>{{$t('views.thread.pinned_comment')}}</h3>
     <Comment :slug="data.thread.url" :comment="pinnedComment"/>
   </template>
 
-  <h3>댓글 달기</h3>
+  <h3>{{$t('views.thread.write_comment')}}</h3>
   <FormErrorAlert/>
   <template v-if="data.permissions.manage">
     <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/status'" noCaptcha>
-      [ADMIN] 스레드 상태 변경
+      {{$t('views.thread.update_thread_status')}}
       <select name="status">
         <option v-if="data.thread.status !== 0" value="Normal">normal</option>
         <option v-if="data.thread.status !== 2" value="Close">close</option>
         <option v-if="data.thread.status !== 1" value="Pause">pause</option>
       </select>
-      <SeedButton type="submit">변경</SeedButton>
+      <SeedButton type="submit">{{$t('views.thread.change')}}</SeedButton>
     </SeedForm>
     <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/document'" noCaptcha>
-      [ADMIN] 스레드 이동
+      {{$t('views.thread.update_thread_document')}}
       <input name="document" :value="doc_fulltitle(data.document)">
-      <SeedButton type="submit">변경</SeedButton>
+      <SeedButton type="submit">{{$t('views.thread.change')}}</SeedButton>
     </SeedForm>
     <SeedForm method="post" :action="'/admin/thread/' + data.thread.url + '/topic'" noCaptcha>
-      [ADMIN] 스레드 주제 변경
+      {{$t('views.thread.update_thread_topic')}}
       <input name="topic" :value="data.thread.topic">
-      <SeedButton type="submit">변경</SeedButton>
+      <SeedButton type="submit">{{$t('views.thread.change')}}</SeedButton>
     </SeedForm>
   </template>
 
   <SeedForm method="post" class="comment-form" :afterSubmit="afterSubmit" :action="'/thread/' + data.thread.url">
     <CommentPreviewTab ref="commentPreviewTab" :sendComment="sendComment"/>
     <IpWarn discuss/>
-    <SeedButton ref="submitButton" type="submit" submit :disabled="data.thread.status !== 0">전송</SeedButton>
+    <SeedButton ref="submitButton" type="submit" submit :disabled="data.thread.status !== 0">{{$t('views.thread.submit')}}</SeedButton>
   </SeedForm>
 </template>
 <script>
