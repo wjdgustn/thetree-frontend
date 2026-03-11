@@ -9,19 +9,19 @@
         <InputField id="passwordInput" name="password" type="password"/>
       </FlexFormBlock>
       <FlexFormBlock flexStart>
-        <NuxtLink to="/member/recover_password">비밀번호를 잊으셨나요?</NuxtLink>
+        <NuxtLink to="/member/recover_password">{{$t('views.login.forgot_password')}}</NuxtLink>
       </FlexFormBlock>
       <FlexFormBlock buttons padding>
-        <CheckBox name="autologin" value="Y" v-model="autologin">자동 로그인</CheckBox>
+        <CheckBox name="autologin" value="Y" v-model="autologin">{{$t('views.login.auto_login')}}</CheckBox>
         <template #buttons>
-          <GeneralButton v-if="!data.disableSignup" href="/member/signup">계정 만들기</GeneralButton>
-          <GeneralButton type="submit" theme="primary">로그인</GeneralButton>
+          <GeneralButton v-if="!data.disableSignup" href="/member/signup">{{$t('views.login.signup')}}</GeneralButton>
+          <GeneralButton type="submit" theme="primary">{{$t('views.login.submit')}}</GeneralButton>
         </template>
       </FlexFormBlock>
     </template>
 
     <template v-if="externalProviders.length">
-      <div class="or" v-if="!data.disableInternal">외부 로그인</div>
+      <div class="or" v-if="!data.disableInternal">{{$t('views.login.external_login')}}</div>
       <div class="external-login-buttons">
         <GeneralButton v-for="item in externalProviders" block class="external-login-button" :href="`/member/login/oauth2/${item.name}?redirect=${encodeURIComponent($route.query.redirect)}${autologin ? `&autologin=Y` : ''}`" :style="{
         '--light-article-background-color': item.buttonColor || undefined,

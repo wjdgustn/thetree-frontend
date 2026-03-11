@@ -1,11 +1,11 @@
 <template>
   <SeedForm method="post">
     <FormErrorAlert/>
-    <SeedFormBlock label="이메일" inputId="emailInput" name="email">
+    <SeedFormBlock :label="$t('views.change_email.email')" inputId="emailInput" name="email">
       <SeedFormInput type="email" id="emailInput" name="email"/>
     </SeedFormBlock>
     <div class="buttons-block">
-      <SeedButton submit>찾기</SeedButton>
+      <SeedButton submit>{{$t('views.recover_password.submit')}}</SeedButton>
     </div>
   </SeedForm>
 </template>

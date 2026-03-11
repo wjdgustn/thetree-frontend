@@ -5,11 +5,11 @@
     <FormErrorAlert/>
 
     <div class="form-block">
-      <label for="fakeFileInput">파일 선택</label>
+      <label for="fakeFileInput">{{$t('views.upload.select_file')}}</label>
       <div class="file-block" @click="$refs.fileInput.click">
         <input ref="fakeFileInput" type="text" id="fakeFileInput" readonly>
         <span>
-          <SeedButton type="button">Select</SeedButton>
+          <SeedButton type="button">{{$t('views.upload.select_button')}}</SeedButton>
         </span>
       </div>
     </div>
@@ -20,13 +20,13 @@
     </div>
     <textarea name="text" wrap="soft" v-model="text"/>
     <div class="form-block">
-      <label for="licenseSelect">라이선스</label>
+      <label for="licenseSelect">{{$t('views.upload.license')}}</label>
       <SearchableSelect name="license" inputId="licenseSelect" :options="data.licenses" v-model="license"/>
       <ShowError tag="license"/>
     </div>
     <p v-if="data.licenseText" v-html="data.licenseText"/>
     <div class="form-block">
-      <label for="categorySelect">분류</label>
+      <label for="categorySelect">{{$t('views.upload.category')}}</label>
       <SearchableSelect name="category" inputId="categorySelect" :options="data.categories"/>
       <ShowError tag="category"/>
     </div>
@@ -39,7 +39,7 @@
     <div>
       <IpWarn/>
     </div>
-    <SeedButton submit>업로드</SeedButton>
+    <SeedButton submit>{{$t('views.upload.upload')}}</SeedButton>
   </SeedForm>
 </template>
 <script>
@@ -78,13 +78,13 @@ export default {
   },
   computed: {
     documentLabel() {
-      let result = '파일 이름'
+      let result = this.$t('views.upload.document_label')
       if(this.document)
         result += ` (${this.document.length}/255)`
       return result
     },
     logLabel() {
-      let result = '요약'
+      let result = this.$t('views.upload.log_label')
       if(this.log)
         result += ` (${this.log.length}/255)`
       return result
@@ -94,13 +94,13 @@ export default {
     fileChange(e) {
       const fileCount = e.srcElement.files.length
       if(fileCount > 10) {
-        alert('파일은 10개까지만 선택할 수 있습니다.')
+        alert(this.$t('views.upload.max_file_amount', { count: 10 }))
         return e.preventDefault()
       }
 
       if(fileCount <= 1) {
         this.$refs.fakeFileInput.value = this.$refs.fileInput.value
-        if(fileCount === 1) this.document ||= '파일:' + this.$refs.fileInput.files[0].name
+        if(fileCount === 1) this.document ||= this.$t('namespaces.파일', { lng: this.config.lang || 'ko' }) + ':' + this.$refs.fileInput.files[0].name
         this.$refs.documentInput.disabled = false
       }
       else {

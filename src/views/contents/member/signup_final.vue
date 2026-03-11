@@ -1,9 +1,9 @@
 <template>
   <SeedForm method="post">
-    <SeedFormBlock label="이메일" inputId="emailInput" name="email">
+    <SeedFormBlock :label="$t('views.signup_final.email')" inputId="emailInput" name="email">
       <SeedFormInput id="emailInput" name="email" readonly :value="data.email"/>
     </SeedFormBlock>
-    <SeedFormBlock label="사용자 이름" inputId="usernameInput" name="username">
+    <SeedFormBlock :label="$t('views.signup_final.username')" inputId="usernameInput" name="username">
       <template v-if="data.name">
         <SeedFormInput id="usernameInput" :value="data.name" readonly/>
         <input type="hidden" name="username" value="special:bypass">
@@ -12,14 +12,14 @@
     </SeedFormBlock>
     <input v-if="data.fromOAuth2" type="hidden" name="from_oauth2" value="Y">
     <template v-else>
-      <SeedFormBlock label="암호" inputId="passwordInput" name="password">
+      <SeedFormBlock :label="$t('views.signup_final.password')" inputId="passwordInput" name="password">
         <SeedFormInput id="passwordInput" name="password" type="password"/>
       </SeedFormBlock>
-      <SeedFormBlock label="암호 확인" inputId="passwordConfirmInput" name="password_confirm">
+      <SeedFormBlock :label="$t('views.signup_final.password_confirm')" inputId="passwordConfirmInput" name="password_confirm">
         <SeedFormInput id="passwordConfirmInput" name="password_confirm" type="password"/>
       </SeedFormBlock>
     </template>
-    <SeedButton submit>가입</SeedButton>
+    <SeedButton submit>{{$t('views.signup_final.submit')}}</SeedButton>
   </SeedForm>
 </template>
 <script>

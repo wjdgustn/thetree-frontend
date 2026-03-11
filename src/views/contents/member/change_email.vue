@@ -1,19 +1,19 @@
 <template>
   <FormErrorAlert/>
   <SeedForm :class="$style.form" method="post">
-    <SeedFormBlock newStyle label="비밀번호" inputId="passwordInput" name="password">
+    <SeedFormBlock newStyle :label="$t('views.change_email.password')" inputId="passwordInput" name="password">
       <InputField type="password" id="passwordInput" name="password"/>
     </SeedFormBlock>
-    <SeedFormBlock newStyle label="이메일">
+    <SeedFormBlock newStyle :label="$t('views.change_email.email')">
       <InputField readonly disabled type="text" :value="data.email"/>
     </SeedFormBlock>
-    <SeedFormBlock newStyle label="새 이메일" inputId="emailInput" name="email">
+    <SeedFormBlock newStyle :label="$t('views.change_email.new_email')" inputId="emailInput" name="email">
       <InputField type="email" id="emailInput" name="email"/>
     </SeedFormBlock>
     <EmailWhitelist :domains="data.emailWhitelist"/>
     <div :class="[$style.form__row, $style['form__row--buttons']]">
       <div :class="$style.form__buttons">
-        <GeneralButton :class="$style.button" type="submit" theme="primary">이메일 변경</GeneralButton>
+        <GeneralButton :class="$style.button" type="submit" theme="primary">{{$t('views.change_email.submit')}}</GeneralButton>
       </div>
     </div>
   </SeedForm>

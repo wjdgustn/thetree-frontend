@@ -5,16 +5,16 @@
         :checked="$route.query.showAll === '1'"
         :whenChange="e => $router.push({ query: { showAll: e.target.checked ? '1' : undefined } })"
         style="float:right">
-      모든 변경 보기
+      {{$t('views.recent_changes.see_all_changes')}}
     </CheckBox>
     <div style="clear:both"/>
   </template>
   <div class="list-table">
     <div class="table-row table-heading">
-      <div class="table-item">문서</div>
-      <div class="table-item">기능</div>
-      <div class="table-item">수정자</div>
-      <div class="table-item">수정 시간</div>
+      <div class="table-item">{{$t('views.user_contribution.document')}}</div>
+      <div class="table-item">{{$t('views.user_contribution.tools')}}</div>
+      <div class="table-item">{{$t('views.recent_changes.author')}}</div>
+      <div class="table-item">{{$t('views.user_contribution.edit_date')}}</div>
     </div>
     <div v-for="rev in data.revs" :key="rev.uuid" class="table-row">
       <div class="table-item">
@@ -23,9 +23,9 @@
       </div>
       <div class="table-item table-buttons">
         <div class="table-buttons-wrap">
-          <GeneralButton size="small" :href="doc_action_link(rev.document.parsedName, 'history')">역사</GeneralButton>
-          <GeneralButton size="small" :disabled="rev.rev === 1" :href="doc_action_link(rev.document.parsedName, 'diff', { uuid: rev.uuid })">비교</GeneralButton>
-          <GeneralButton size="small" :href="doc_action_link(rev.document.parsedName, 'discuss')">토론</GeneralButton>
+          <GeneralButton size="small" :href="doc_action_link(rev.document.parsedName, 'history')">{{$t('document.history')}}</GeneralButton>
+          <GeneralButton size="small" :disabled="rev.rev === 1" :href="doc_action_link(rev.document.parsedName, 'diff', { uuid: rev.uuid })">{{$t('document.diff')}}</GeneralButton>
+          <GeneralButton size="small" :href="doc_action_link(rev.document.parsedName, 'discuss')">{{$t('document.discuss')}}</GeneralButton>
         </div>
       </div>
       <div class="table-item">

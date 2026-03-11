@@ -1,6 +1,6 @@
 <template>
   <SeedForm :class="$style.form" method="post">
-    <p>입력하신 전화번호로 전송된 PIN을 입력해주세요.</p>
+    <p>{{$t('views.signup_verify_code.message')}}</p>
     <FormErrorAlert/>
     <SeedFormBlock newStyle label="PIN" inputId="pinInput" name="pin">
       <InputField pattern="\d*" type="text" id="pinInput" name="pin"/>
@@ -8,8 +8,8 @@
     <input type="hidden" ref="cancelInput" name="cancel">
     <div :class="[$style.form__row, $style['form__row--buttons']]">
       <div :class="$style.form__buttons">
-        <GeneralButton :class="$style.button" type="event" @click="cancelVerify">취소</GeneralButton>
-        <GeneralButton ref="submitButton" :class="$style.button" theme="primary" type="submit">인증</GeneralButton>
+        <GeneralButton :class="$style.button" type="event" @click="cancelVerify">{{$t('views.signup_verify_code.cancel')}}</GeneralButton>
+        <GeneralButton ref="submitButton" :class="$style.button" theme="primary" type="submit">{{$t('views.signup_verify_code.submit')}}</GeneralButton>
       </div>
     </div>
   </SeedForm>

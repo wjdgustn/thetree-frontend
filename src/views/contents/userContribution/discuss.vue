@@ -1,13 +1,13 @@
 <template>
   <ContributionTab/>
-  <div>전체 {{data.total}}회</div>
+  <div>{{$t('views.user_contribution.total', { count: data.total })}}</div>
   <div style="margin-bottom:1rem">
     <PrevNextBtn flex v-bind="data.pageProps"/>
   </div>
   <div class="list-table">
     <div class="table-row table-heading">
-      <div class="table-item">제목</div>
-      <div class="table-item">시간</div>
+      <div class="table-item">{{$t('views.user_contribution.topic')}}</div>
+      <div class="table-item">{{$t('views.user_contribution.date')}}</div>
     </div>
     <div v-if="data.items.length" v-for="item in data.items" class="table-row">
       <div class="table-item">
@@ -25,7 +25,7 @@
     </div>
     <div v-else class="table-row">
       <div class="table-item no-item">
-        (기여 내역이 없습니다.)
+        ({{$t('views.user_contribution.no_contribution')}})
       </div>
     </div>
   </div>

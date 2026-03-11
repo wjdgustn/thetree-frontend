@@ -1,15 +1,15 @@
 <template>
   <SeedForm method="post">
     <FormErrorAlert/>
-    <p>새로운 비밀번호를 입력해주세요</p>
-    <SeedFormBlock label="비밀번호" inputId="passwordInput" name="password">
+    <p>{{$t('views.recover_password_final.message')}}</p>
+    <SeedFormBlock :label="$t('views.change_password.new_password')" inputId="passwordInput" name="password">
       <SeedFormInput type="password" id="passwordInput" name="password"/>
     </SeedFormBlock>
-    <SeedFormBlock label="비밀번호 확인" inputId="passwordConfirmInput" name="password_confirm">
+    <SeedFormBlock :label="$t('views.change_password.confirm_password')" inputId="passwordConfirmInput" name="password_confirm">
       <SeedFormInput type="password" id="passwordConfirmInput" name="password_confirm"/>
     </SeedFormBlock>
     <div class="buttons-block">
-      <SeedButton submit>비밀번호 변경</SeedButton>
+      <SeedButton submit>{{$t('views.recover_password_final.submit')}}</SeedButton>
     </div>
   </SeedForm>
 </template>

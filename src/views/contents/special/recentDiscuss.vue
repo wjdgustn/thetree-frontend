@@ -3,42 +3,42 @@
       class="link-tab"
       :items="[
           {
-            title: '열린 토론',
+            title: $t('views.recent_discuss.normal_thread'),
             href: '?logtype=normal_thread',
             active: !$route.query.logtype || $route.query.logtype === 'normal_thread'
           },
           {
-            title: '오래된 토론',
+            title: $t('views.recent_discuss.old_thread'),
             href: '?logtype=old_thread',
             active: $route.query.logtype === 'old_thread'
           },
           {
-            title: '중지된 토론',
+            title: $t('views.recent_discuss.pause_thread'),
             href: '?logtype=pause_thread',
             active: $route.query.logtype === 'pause_thread'
           },
           {
-            title: '닫힌 토론',
+            title: $t('views.recent_discuss.closed_thread'),
             href: '?logtype=closed_thread',
             active: $route.query.logtype === 'closed_thread'
           },
           {
-            title: '열린 편집 요청',
+            title: $t('views.recent_discuss.open_editrequest'),
             href: '?logtype=open_editrequest',
             active: $route.query.logtype === 'open_editrequest'
           },
           {
-            title: '승인된 편집 요청',
+            title: $t('views.recent_discuss.accepted_editrequest'),
             href: '?logtype=accepted_editrequest',
             active: $route.query.logtype === 'accepted_editrequest'
           },
           {
-            title: '닫힌 편집 요청',
+            title: $t('views.recent_discuss.closed_editrequest'),
             href: '?logtype=closed_editrequest',
             active: $route.query.logtype === 'closed_editrequest'
           },
           {
-            title: '오래된 편집 요청',
+            title: $t('views.recent_discuss.old_editrequest'),
             href: '?logtype=old_editrequest',
             active: $route.query.logtype === 'old_editrequest'
           }
@@ -46,13 +46,13 @@
   />
   <div class="list-table">
     <div class="table-row table-heading">
-      <div class="table-item">제목</div>
-      <div class="table-item">수정자</div>
-      <div class="table-item">시간</div>
+      <div class="table-item">{{$t('views.user_contribution.topic')}}</div>
+      <div class="table-item">{{$t('views.recent_changes.author')}}</div>
+      <div class="table-item">{{$t('views.user_contribution.date')}}</div>
     </div>
     <div v-for="item in [...data.threads, ...data.editRequests]" :key="item.url" class="table-row">
       <div class="table-item">
-        <NuxtLink :to="(item.topic ? '/thread/' : '/edit_request/') + item.url">{{item.topic || `편집 요청 ${item.url}`}}</NuxtLink>
+        <NuxtLink :to="(item.topic ? '/thread/' : '/edit_request/') + item.url">{{item.topic || $t('views.user_contribution.edit_request_link', { slug: item.url })}}</NuxtLink>
         <DiffCount class="diff-count" v-if="item.diffLength != null" :count="item.diffLength"/>
         <span class="document-group">
           <span class="document-icon">
@@ -62,7 +62,7 @@
         </span>
       </div>
       <div class="table-item">
-        <AuthorSpan :account="item.lastUpdateUser || item.createdUser" :pos="(item.lastUpdateUser ? '토론' : '편집 요청') + ' ' + (item.url)"/>
+        <AuthorSpan :account="item.lastUpdateUser || item.createdUser" :pos="$t(item.lastUpdateUser ? 'document.discuss' : 'document.edit_request') + ' ' + (item.url)"/>
       </div>
       <div class="table-item">
         <LocalDate :date="item.lastUpdatedAt" relative/>

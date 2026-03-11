@@ -1,8 +1,8 @@
 <template>
   <div class="list-table">
     <div class="table-row table-heading">
-      <div class="table-item">문서명</div>
-      <div class="table-item">문서 수정 시각</div>
+      <div class="table-item">{{$t('views.starred_documents.document')}}</div>
+      <div class="table-item">{{$t('views.starred_documents.edit_date')}}</div>
       <div class="table-item"></div>
     </div>
     <div v-for="item in data.stars" class="table-row">
@@ -18,26 +18,26 @@
             class="toggle-button"
             size="small"
             theme="primary"
-            title="추가"
+            :title="$t('views.starred_documents.add')"
             type="event"
             @click="toggleStar(item)"
             :disabled="disableButton"
         >
           <FontAwesomeIcon class="button-icon" icon="plus" />
-          <span class="button-text">추가</span>
+          <span class="button-text">{{$t('views.starred_documents.add')}}</span>
         </GeneralButton>
         <GeneralButton
             v-else
             class="toggle-button"
             size="small"
             theme="danger"
-            title="삭제"
+            :title="$t('views.starred_documents.remove')"
             type="event"
             @click="toggleStar(item)"
             :disabled="disableButton"
         >
           <FontAwesomeIcon class="button-icon" icon="trash-can" />
-          <span class="button-text">삭제</span>
+          <span class="button-text">{{$t('views.starred_documents.remove')}}</span>
         </GeneralButton>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <h2>the tree</h2>
 
   <p>v{{version}}<span v-if="branch"> ({{branch}})</span></p>
-  <p>엔진 업데이트: <LocalDate :date="commitDate"/> (<LocalDate :date="commitDate" forceRelative/>)</p>
+  <p>{{$t('views.license.engine_update')}}: <LocalDate :date="commitDate"/> (<LocalDate :date="commitDate" forceRelative/>)</p>
   <ul>
     <li :title="beDate">Backend: {{commitId}}</li>
     <li :title="feDate">Frontend: {{commitIds.frontend}}</li>

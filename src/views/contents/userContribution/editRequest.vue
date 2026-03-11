@@ -1,18 +1,18 @@
 <template>
   <ContributionTab/>
-  <div>전체 {{data.total}}회</div>
+  <div>{{$t('views.user_contribution.total', { count: data.total })}}</div>
   <div style="margin-bottom:1rem">
     <PrevNextBtn flex v-bind="pageProps"/>
   </div>
   <div :class="$style.table">
     <div :class="[$style.row, $style['row--head'], 'table-row']">
-      <div :class="[$style.column, 'table-column']">편집 요청</div>
-      <div :class="[$style.column, 'table-column']">상태</div>
-      <div :class="[$style.column, 'table-column']">시간</div>
+      <div :class="[$style.column, 'table-column']">{{$t('views.user_contribution.edit_request')}}</div>
+      <div :class="[$style.column, 'table-column']">{{$t('views.user_contribution.status')}}</div>
+      <div :class="[$style.column, 'table-column']">{{$t('views.user_contribution.date')}}</div>
     </div>
     <div v-if="data.items.length" v-for="item in data.items" :class="[$style.row, 'table-row']">
       <div :class="[$style.column, 'table-column']">
-        <NuxtLink :to="'/edit_request/' + item.url">편집요청 {{item.url}}</NuxtLink>
+        <NuxtLink :to="'/edit_request/' + item.url">{{$t('views.user_contribution.edit_request_link', { slug: item.url })}}</NuxtLink>
         <DiffCount class="diff-count" :count="item.diffLength"/>
         <span class="document-group">
           <span class="document-icon">
@@ -26,14 +26,16 @@
         <LocalDate :date="item.lastUpdatedAt" relative/>
       </div>
       <div v-if="item.createdUser" :class="[$style.column, $style['column--full'], 'table-column', 'author-text']">
-        (사용자
-        <AuthorSpan :account="item.createdUser"/>의
-        편집 요청)
+        (<i18next :translation="$t('views.user_contribution.edit_request_author')">
+          <template #user>
+            <AuthorSpan :account="item.createdUser"/>
+          </template>
+        </i18next>)
       </div>
     </div>
     <div v-else :class="[$style.row, 'table-row']">
       <div :class="[$style.column, $style['column--single'], 'table-column']">
-        (기여 내역이 없습니다.)
+        ({{$t('views.user_contribution.no_contribution')}})
       </div>
     </div>
   </div>

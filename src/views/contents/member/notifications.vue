@@ -1,25 +1,25 @@
 <template>
   <LinkTab :items="[
       {
-        title: '읽지 않음',
+        title: $t('views.notifications.status.unread'),
         href: '?status=unread',
         active: !$route.query.status || $route.query.status === 'unread'
       },
       {
-        title: '읽음',
+        title: $t('views.notifications.status.read'),
         href: '?status=read',
         active: $route.query.status === 'read'
       },
       {
-        title: '전체',
+        title: $t('views.notifications.status.all'),
         href: '?status=all',
         active: $route.query.status === 'all'
       }
   ]"/>
   <div class="top-button-group">
     <PrevNextBtn flex v-bind="data.pageProps"/>
-    <GeneralButton v-if="showSubscribePushUI" :whenClick="subscribePushNotificationButton" :disabled="disableSubscribePushUI">푸시 알림 켜기</GeneralButton>
-    <GeneralButton :whenClick="readAll" :disabled="!session.notifications.length">모두 읽음</GeneralButton>
+    <GeneralButton v-if="showSubscribePushUI" :whenClick="subscribePushNotificationButton" :disabled="disableSubscribePushUI">{{$t('views.notifications.turn_on_push')}}</GeneralButton>
+    <GeneralButton :whenClick="readAll" :disabled="!session.notifications.length">{{$t('views.notifications.read_all')}}</GeneralButton>
   </div>
   <ul class="list">
     <li v-if="data.items.length" v-for="item in data.items" class="row-parent" :class="{ read: item.read }">
@@ -32,21 +32,33 @@
         <div class="item content">
           <template v-if="item.type === NotificationTypes.UserDiscuss">
             <div>
-              <AuthorSpan :account="item.comment.user"/> 사용자가
-              <NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}} #{{item.comment.id}}</NuxtLink> 사용자 토론 댓글 작성
+              <i18next :translation="$t('views.notifications.messages.user_discuss')">
+                <template #user>
+                  <AuthorSpan :account="item.comment.user"/>
+                </template>
+                <template #link>
+                  <NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}} #{{item.comment.id}}</NuxtLink>
+                </template>
+              </i18next>
             </div>
             <div class="text">{{removeHtmlTags(item.comment.contentHtml)}}</div>
           </template>
           <template v-else-if="item.type === NotificationTypes.Mention">
             <div>
-              <AuthorSpan :account="item.comment.user"/> 사용자가
-              <NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}} #{{item.comment.id}}</NuxtLink> 댓글에서 호출
+              <i18next :translation="$t('views.notifications.messages.mention')">
+                <template #user>
+                  <AuthorSpan :account="item.comment.user"/>
+                </template>
+                <template #link>
+                  <NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}} #{{item.comment.id}}</NuxtLink>
+                </template>
+              </i18next>
               <span class="document-group">
-              <span class="document-icon">
-                <FontAwesomeIcon icon="fa-regular fa-file-lines" />
+                <span class="document-icon">
+                  <FontAwesomeIcon icon="fa-regular fa-file-lines" />
+                </span>
+                <NuxtLink :to="doc_action_link(item.document, 'discuss')" class="document-link">{{doc_fulltitle(item.document)}}</NuxtLink>
               </span>
-              <NuxtLink :to="doc_action_link(item.document, 'discuss')" class="document-link">{{doc_fulltitle(item.document)}}</NuxtLink>
-            </span>
             </div>
             <div class="text">{{removeHtmlTags(item.comment.contentHtml)}}</div>
           </template>
@@ -59,14 +71,14 @@
           </div>
         </div>
         <div class="buttons-wrap">
-          <GeneralButton v-if="item.read" size="small" :whenClick="() => markNotification(item.uuid, false)">읽지 않음</GeneralButton>
-          <GeneralButton v-else size="small" :whenClick="() => markNotification(item.uuid, true)">읽음</GeneralButton>
+          <GeneralButton v-if="item.read" size="small" :whenClick="() => markNotification(item.uuid, false)">{{$t('views.notifications.mark_unread')}}</GeneralButton>
+          <GeneralButton v-else size="small" :whenClick="() => markNotification(item.uuid, true)">{{$t('views.notifications.mark_read')}}</GeneralButton>
         </div>
       </component>
     </li>
     <li v-else class="row-parent">
       <div class="row no-item">
-        (모든 알림을 확인했습니다.)
+        ({{$t('views.notifications.checked_all')}})
       </div>
     </li>
   </ul>
@@ -179,7 +191,7 @@ export default {
 
       const status = await Notification.requestPermission()
       if(status === 'denied')
-        return alert('알림 권한이 거부되었습니다. 브라우저 설정에서 알림 권한을 허용해 주세요.')
+        return alert(this.$t('views.notifications.permission_denied'))
 
       const { applicationServerKey } = await this.internalRequest('/member/notifications/subscribe')
 

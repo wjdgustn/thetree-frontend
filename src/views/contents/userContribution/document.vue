@@ -1,15 +1,15 @@
 <template>
   <ContributionTab/>
   <HistoryTypeTab/>
-  <div>전체 {{data.total}}회</div>
+  <div>{{$t('views.user_contribution.total', { count: data.total })}}</div>
   <div style="margin-bottom:1rem">
     <PrevNextBtn flex v-bind="pageProps"/>
   </div>
   <div class="list-table">
     <div class="table-row table-heading">
-      <div class="table-item">문서</div>
-      <div class="table-item">기능</div>
-      <div class="table-item">수정 시간</div>
+      <div class="table-item">{{$t('views.user_contribution.document')}}</div>
+      <div class="table-item">{{$t('views.user_contribution.tools')}}</div>
+      <div class="table-item">{{$t('views.user_contribution.edit_date')}}</div>
     </div>
     <template v-if="data.revs.length" v-for="item in data.revs">
       <div class="table-row" :class="{ troll: item.troll }">
@@ -20,9 +20,9 @@
         </div>
         <div class="table-item table-buttons">
           <div class="table-buttons-wrap">
-            <GeneralButton size="small" :href="doc_action_link(item.document.parsedName, 'history')">역사</GeneralButton>
-            <GeneralButton size="small" :disabled="item.rev === 1" :href="doc_action_link(item.document.parsedName, 'diff', { uuid: item.uuid })">비교</GeneralButton>
-            <GeneralButton size="small" :href="doc_action_link(item.document.parsedName, 'discuss')">토론</GeneralButton>
+            <GeneralButton size="small" :href="doc_action_link(item.document.parsedName, 'history')">{{$t('document.history')}}</GeneralButton>
+            <GeneralButton size="small" :disabled="item.rev === 1" :href="doc_action_link(item.document.parsedName, 'diff', { uuid: item.uuid })">{{$t('document.diff')}}</GeneralButton>
+            <GeneralButton size="small" :href="doc_action_link(item.document.parsedName, 'discuss')">{{$t('document.discuss')}}</GeneralButton>
           </div>
         </div>
         <div class="table-item">
@@ -36,7 +36,7 @@
     </template>
     <div v-else class="table-row">
       <div class="table-item no-item">
-        (기여 내역이 없습니다.)
+        ({{$t('views.user_contribution.no_contribution')}})
       </div>
     </div>
   </div>

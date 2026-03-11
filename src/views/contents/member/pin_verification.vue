@@ -4,13 +4,17 @@
     <input type="hidden" name="autologin" :value="autologin">
 
     <p>
-      확인되지 않은 기기에서 로그인하셨습니다.<br>
+      {{$t('views.pin_verification.new_device')}}<br>
       <template v-if="useTotp">
-        <span v-if="passkey">Passkey을 사용하여 2단계 인증을 진행합니다.</span>
-        <span v-else>Google Authenticator 코드를 입력해주세요.</span>
+        <span v-if="passkey">{{$t('views.pin_verification.passkey_verify')}}</span>
+        <span v-else>{{$t('views.pin_verification.otp_verify')}}</span>
       </template>
       <template v-else>
-        이메일(<b>{{email}}</b>)로 전송된 PIN을 입력해주세요.
+        <i18next :translation="$t('views.pin_verification.email_verify')">
+          <template #email>
+            <b>{{email}}</b>
+          </template>
+        </i18next>
       </template>
     </p>
 
@@ -19,7 +23,7 @@
         <FontAwesomeIcon icon="key" />
       </div>
       <FlexFormBlock class="padding">
-        <GeneralButton :whenClick="passkeyLogin" theme="primary" block>Passkey 로그인</GeneralButton>
+        <GeneralButton :whenClick="passkeyLogin" theme="primary" block>{{$t('views.pin_verification.passkey_login_button')}}</GeneralButton>
       </FlexFormBlock>
     </template>
     <template v-else>
@@ -29,23 +33,23 @@
     </template>
 
     <FlexFormBlock :class="{ 'buttons padding': !passkey }">
-      <CheckBox name="trust">이 기기를 신뢰</CheckBox>
+      <CheckBox name="trust">{{$t('views.pin_verification.trust')}}</CheckBox>
       <template #buttons v-if="!passkey">
-        <GeneralButton type="submit" theme="primary">로그인</GeneralButton>
+        <GeneralButton type="submit" theme="primary">{{$t('views.pin_verification.login_button')}}</GeneralButton>
       </template>
     </FlexFormBlock>
 
     <FlexFormBlock v-if="data.hasPasskey" class="other-method">
-      <div class="other-method-title">다른 인증 방법</div>
+      <div class="other-method-title">{{$t('views.pin_verification.other_method')}}</div>
 
       <GeneralButton v-if="passkey" class="other-method-button" :whenClick="togglePasskey">
         <div class="other-method-icon">
           <FontAwesomeIcon icon="mobile-screen" />
         </div>
         <div class="other-method-content">
-          <div>일회용 암호</div>
+          <div>{{$t('views.pin_verification.otp_method')}}</div>
           <div class="other-method-description">
-            이메일이나 OTP 앱에서 받은 일회용 인증 코드를 입력하여 인증합니다.
+            {{$t('views.pin_verification.otp_method_description')}}
           </div>
         </div>
         <div class="other-method-arrow">
@@ -57,9 +61,9 @@
           <FontAwesomeIcon icon="key" />
         </div>
         <div class="other-method-content">
-          <div>Passkey</div>
+          <div>{{$t('views.pin_verification.passkey_method')}}</div>
           <div class="other-method-description">
-            지문, 얼굴 인식 또는 보안 키를 사용하여 인증합니다.
+            {{$t('views.pin_verification.passkey_method_description')}}
           </div>
         </div>
         <div class="other-method-arrow">

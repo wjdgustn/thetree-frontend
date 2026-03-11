@@ -2,9 +2,9 @@
   <FormErrorAlert/>
   <div v-if="step === 1" :class="[$style.form, $style['form--large']]">
     <div :class="$style.form__row">
-      <div :class="$style['form__section-title']">1단계</div>
+      <div :class="$style['form__section-title']">{{$t('views.activate_otp.step', { count: 1 })}}</div>
       <div>
-        <p>모바일 장치에 일회용 비밀번호 (OTP) 등록을 위한 인증기 애플리케이션을 설치합니다.</p>
+        <p>{{$t('views.activate_otp.install_app')}}</p>
         <ul>
           <li>
             Google OTP
@@ -17,18 +17,18 @@
             <a href="https://apps.apple.com/us/app/freeotp-authenticator/id872559395" rel="noopener" target="_blank">App Store</a>)
           </li>
         </ul>
-        <p>위의 예시 외에도 본인이 선호하는 인증기 애플리케이션을 사용할 수 있습니다.</p>
+        <p>{{$t('views.activate_otp.other_app')}}</p>
         <p>
-          [<FontAwesomeIcon :class="$style.icon" icon="triangle-exclamation" /> 주의]
+          [<FontAwesomeIcon :class="$style.icon" icon="triangle-exclamation" /> {{$t('views.activate_otp.warn')}}]
           <br>
-          일회용 비밀번호를 설정하면 계정에 어떤 영향을 주는지 이해하는 경우에만 설정하세요.
+          {{$t('views.activate_otp.understand')}}
         </p>
       </div>
     </div>
     <div :class="[$style.form__row, $style['form__row--buttons']]">
       <div :class="$style.form__buttons">
         <GeneralButton :class="$style.button" :whenClick="nextStep">
-          <span>다음</span>
+          <span>{{$t('views.activate_otp.next')}}</span>
           <FontAwesomeIcon icon="chevron-right"/>
         </GeneralButton>
       </div>
@@ -36,14 +36,14 @@
   </div>
   <div v-if="step === 2" :class="[$style.form, $style['form--large']]">
     <div :class="$style.form__row">
-      <div :class="$style['form__section-title']">2단계</div>
+      <div :class="$style['form__section-title']">{{$t('views.activate_otp.step', { count: 2 })}}</div>
       <div>
         <ol>
-          <li>인증기 애플리케이션을 실행합니다.</li>
-          <li>코드 추가를 클릭합니다.</li>
-          <li>화면에 표시되는 단계를 따릅니다.</li>
+          <li>{{$t('views.activate_otp.run_app')}}</li>
+          <li>{{$t('views.activate_otp.add_code')}}</li>
+          <li>{{$t('views.activate_otp.follow_step')}}</li>
         </ol>
-        <p>모바일 장치에서 등록을 시도하는 경우, QR 코드를 클릭해서 바로 인증기 애플리케이션에 등록할 수 있습니다.</p>
+        <p>{{$t('views.activate_otp.mobile_guide')}}</p>
       </div>
     </div>
     <div :class="[$style.form__row, $style['form__row--center']]">
@@ -52,10 +52,10 @@
       </a>
     </div>
     <div :class="$style.form__row">
-      <p>만약 QR 코드를 사용할 수 없는 경우, 아래의 비밀키를 사용하세요.</p>
+      <p>{{$t('views.activate_otp.secret_key_guide')}}</p>
     </div>
     <div :class="[$style.form__row, $style['form__row--self-center']]">
-      <label>비밀키</label>
+      <label>{{$t('views.activate_otp.secret_key')}}</label>
       <div :class="$style['form__row-inner']">
         <InputField class="secret-input" readonly disabled center :value="data.secret"/>
         <GeneralButton class="copy-button" :whenClick="copySecret">
@@ -66,30 +66,30 @@
     <div :class="[$style.form__row, $style['form__row--between'], $style['form__row--buttons']]">
       <GeneralButton :class="$style.button" :whenClick="prevStep">
         <FontAwesomeIcon icon="chevron-left"/>
-        <span>이전</span>
+        <span>{{$t('views.activate_otp.prev')}}</span>
       </GeneralButton>
       <GeneralButton :class="$style.button" :whenClick="nextStep">
-        <span>다음</span>
+        <span>{{$t('views.activate_otp.next')}}</span>
         <FontAwesomeIcon icon="chevron-right"/>
       </GeneralButton>
     </div>
   </div>
   <SeedForm v-if="step === 3" :class="[$style.form, $style['form--large']]" method="post">
     <div style="margin: 0 0 1rem">
-      <div :class="$style['form__section-title']">3단계</div>
+      <div :class="$style['form__section-title']">{{$t('views.activate_otp.step', { count: 3 })}}</div>
       <div>
-        <p>아래에 일회용 비밀번호를 입력해서 2단계 인증을 활성화 할 수 있습니다.</p>
+        <p>{{$t('views.activate_otp.put_code_for_enable')}}</p>
       </div>
     </div>
-    <SeedFormBlock newStyle label="일회용 비밀번호 (OTP)" inputId="pinInput" name="pin">
+    <SeedFormBlock newStyle :label="$t('views.activate_otp.otp_label')" inputId="pinInput" name="pin">
       <PinInput name="pin"/>
     </SeedFormBlock>
     <div :class="[$style.form__row, $style['form__row--between'], $style['form__row--buttons']]">
       <GeneralButton :class="$style.button" :whenClick="prevStep">
         <FontAwesomeIcon icon="chevron-left"/>
-        <span>이전</span>
+        <span>{{$t('views.activate_otp.prev')}}</span>
       </GeneralButton>
-      <GeneralButton :class="$style.button" type="submit" theme="primary">제출</GeneralButton>
+      <GeneralButton :class="$style.button" type="submit" theme="primary">{{$t('views.activate_otp.submit')}}</GeneralButton>
     </div>
   </SeedForm>
 </template>
@@ -128,7 +128,7 @@ export default {
     },
     copySecret() {
       navigator.clipboard.writeText(this.data.secret)
-      toast('비밀키가 복사되었습니다.')
+      toast(this.$t('views.activate_otp.copied_secret_key'))
     }
   }
 }

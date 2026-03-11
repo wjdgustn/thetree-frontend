@@ -4,115 +4,119 @@
       <div class="avatar-block">
         <img :src="session.gravatar_url + '&s=512'" class="avatar-image">
         <div class="avatar-description">
-          사용자 아바타는 <a href="https://gravatar.com" rel="noopener" target="_blank">Gravatar</a>에서 제공됩니다.
+          <i18next :translation="$t('views.mypage.gravatar')">
+            <template #gravatar>
+              <a href="https://gravatar.com" rel="noopener" target="_blank">Gravatar</a>
+            </template>
+          </i18next>
         </div>
       </div>
       <div class="form-block">
         <div :class="$style.form__row">
           <div :class="$style['form__row-inner']">
-            <label for="usernameInput">사용자 이름</label>
-            <GeneralButton theme="link" href="/member/change_name">변경</GeneralButton>
+            <label for="usernameInput">{{$t('views.mypage.username')}}</label>
+            <GeneralButton theme="link" href="/member/change_name">{{$t('views.mypage.change')}}</GeneralButton>
           </div>
           <div>{{data.user.name}}</div>
         </div>
         <div :class="$style.form__row">
           <div :class="$style['form__row-inner']">
-            <label for="emailInput">Email</label>
-            <GeneralButton theme="link" href="/member/change_email">변경</GeneralButton>
+            <label for="emailInput">{{$t('views.mypage.email')}}</label>
+            <GeneralButton theme="link" href="/member/change_email">{{$t('views.mypage.change')}}</GeneralButton>
           </div>
           <div>{{data.user.email}}</div>
         </div>
         <div :class="$style.form__row">
-          <label for="emailInput">비밀번호</label>
+          <label for="emailInput">{{$t('views.mypage.password')}}</label>
           <div :class="$style['form__row-inner']">
-            <GeneralButton :class="$style.button" href="/member/change_password">변경</GeneralButton>
+            <GeneralButton :class="$style.button" href="/member/change_password">{{$t('views.mypage.change')}}</GeneralButton>
           </div>
         </div>
         <div :class="$style.form__row">
-          <label for="permInput">권한</label>
+          <label for="permInput">{{$t('views.mypage.permission')}}</label>
           <div>{{data.permissions.join(', ')}}</div>
         </div>
         <div v-if="data.verifyEnabled" :class="$style.form__row">
-          <label for="permInput">모바일 인증</label>
+          <label for="permInput">{{$t('views.mypage.mobile_verify')}}</label>
           <div :class="$style['form__row-inner']">
             <span v-if="data.permissions.includes('mobile_verified_member')" class="color-text color-text-green">
             <FontAwesomeIcon icon="fa-circle-check"/>
-            인증됨
+            {{$t('views.mypage.mobile_verified')}}
           </span>
-            <GeneralButton v-else :class="$style.button" href="/member/signup_verify">인증</GeneralButton>
+            <GeneralButton v-else :class="$style.button" href="/member/signup_verify">{{$t('views.mypage.mobile_verify_button')}}</GeneralButton>
           </div>
         </div>
-        <SeedFormBlock newStyle :class="$style.form__row" label="스킨" inputId="skinSelect">
+        <SeedFormBlock newStyle :class="$style.form__row" :label="$t('views.mypage.skin')" inputId="skinSelect">
           <div :class="$style['form__row-inner']">
             <SelectMenu id="skinSelect" name="skin" :value="data.user.skin">
-              <option value="default">기본 스킨</option>
+              <option value="default">{{$t('views.mypage.default_skin')}}</option>
               <option v-for="skin in data.skins" :selected="skin === data.user.skin">{{skin}}</option>
             </SelectMenu>
           </div>
         </SeedFormBlock>
         <div :class="$style.form__row">
-          <label>일회용 비밀번호 (OTP)</label>
+          <label>{{$t('views.mypage.otp')}}</label>
           <div :class="$style['form__row-inner']">
-            <GeneralButton v-if="data.hasTotp" theme="danger" :class="$style.button" href="/member/deactivate_otp">비활성화</GeneralButton>
-            <GeneralButton v-else :class="$style.button" href="/member/activate_otp">활성화</GeneralButton>
+            <GeneralButton v-if="data.hasTotp" theme="danger" :class="$style.button" href="/member/deactivate_otp">{{$t('views.mypage.deactivate')}}</GeneralButton>
+            <GeneralButton v-else :class="$style.button" href="/member/activate_otp">{{$t('views.mypage.activate')}}</GeneralButton>
           </div>
         </div>
         <div v-if="data.externalProviders?.length" :class="$style.form__row">
-          <label>외부 계정 연결</label>
+          <label>{{$t('views.mypage.connect_external_account')}}</label>
           <div :class="[$style.table, $style['table--bordered']]">
             <div :class="[$style.row, $style['row--head'], 'table-row']">
-              <div v-for="text in ['제공자', '이름', '이메일', '']" :class="[$style.column, 'table-column']">{{text}}</div>
+              <div v-for="text in ['provider', 'name', 'email', ''].map(a => a && $t('views.mypage.external_' + a))" :class="[$style.column, 'table-column']">{{text}}</div>
             </div>
             <div v-for="item in data.externalProviders" :class="[$style.row, 'table-row']">
               <div :class="[$style.column, 'table-column']">{{item.displayName}}</div>
               <div :class="[$style.column, 'table-column']">{{data.oauth2Maps[item.name]?.name}}</div>
               <div :class="[$style.column, 'table-column']">{{data.oauth2Maps[item.name]?.email}}</div>
               <div :class="[$style.column, $style['column--button-parent'], 'table-column']">
-                <GeneralButton v-if="data.oauth2Maps[item.name]" theme="danger" size="small" :whenClick="() => removeExternalAccount(item.name)">해제</GeneralButton>
-                <GeneralButton v-else theme="primary" size="small" :href="'/member/login/oauth2/' + item.name">등록</GeneralButton>
+                <GeneralButton v-if="data.oauth2Maps[item.name]" theme="danger" size="small" :whenClick="() => removeExternalAccount(item.name)">{{$t('views.mypage.external_remove')}}</GeneralButton>
+                <GeneralButton v-else theme="primary" size="small" :href="'/member/login/oauth2/' + item.name">{{$t('views.mypage.external_add')}}</GeneralButton>
               </div>
             </div>
           </div>
         </div>
         <div v-if="data.hasTotp" :class="$style.form__row">
-          <label>Passkey</label>
+          <label>{{$t('views.mypage.passkey')}}</label>
           <div :class="[$style.table, $style['table--bordered']]">
             <div :class="[$style.row, $style['row--head'], 'table-row']">
-              <div v-for="text in ['이름', '등록 시각', '마지막 사용 시각', '']" :class="[$style.column, 'table-column']">{{text}}</div>
+              <div v-for="text in ['name', 'created', 'last_used', ''].map(a => a && $t('views.mypage.passkey_' + a))" :class="[$style.column, 'table-column']">{{text}}</div>
             </div>
             <div v-if="data.passkeys.length" v-for="passkey in data.passkeys" :class="[$style.row, 'table-row']">
               <div :class="[$style.column, 'table-column']">{{passkey.name}}</div>
               <div :class="[$style.column, 'table-column']"><LocalDate :date="passkey.createdAt"/></div>
               <div :class="[$style.column, 'table-column']">
                 <LocalDate v-if="passkey.lastUsedAt" :date="passkey.lastUsedAt"/>
-                <template v-else>Not used</template>
+                <template v-else>{{$t('views.mypage.passkey_not_used')}}</template>
               </div>
               <div :class="[$style.column, $style['column--button-parent'], 'table-column']">
-                <GeneralButton theme="danger" size="small" :whenClick="() => deletePasskey(passkey.name)">삭제</GeneralButton>
+                <GeneralButton theme="danger" size="small" :whenClick="() => deletePasskey(passkey.name)">{{$t('views.mypage.passkey_remove')}}</GeneralButton>
               </div>
             </div>
             <div v-else :class="[$style.row, 'table-row']">
               <div :class="[$style.column, $style['column--single'], 'table-column', 'no-passkey']">
-                (등록된 Passkey가 없습니다.)
+                ({{$t('views.mypage.no_passkey')}})
               </div>
             </div>
           </div>
           <div class="new-passkey-block">
-            <InputField ref="passkeyName" class="passkey-name" type="text" placeholder="새 Passkey 이름"/>
-            <GeneralButton :whenClick="addPasskey">추가</GeneralButton>
+            <InputField ref="passkeyName" class="passkey-name" type="text" :placeholder="$t('views.mypage.new_passkey_name')"/>
+            <GeneralButton :whenClick="addPasskey">{{$t('views.mypage.passkey_add')}}</GeneralButton>
           </div>
-          <CheckBox name="usePasswordlessLogin" value="Y" :checked="data.user.usePasswordlessLogin">비밀번호 없이 패스키만 이용해 로그인</CheckBox>
+          <CheckBox name="usePasswordlessLogin" value="Y" :checked="data.user.usePasswordlessLogin">{{$t('views.mypage.use_passwordless_login')}}</CheckBox>
         </div>
         <div :class="$style.form__row">
-          <label>API Token</label>
+          <label>{{$t('views.mypage.api_token')}}</label>
           <div :class="$style['form__row-inner']">
-            <GeneralButton :class="$style.button" :whenClick="showTokenModal">발급</GeneralButton>
+            <GeneralButton :class="$style.button" :whenClick="showTokenModal">{{$t('views.mypage.api_token_button')}}</GeneralButton>
           </div>
         </div>
         <div v-if="data.canWithdraw" :class="$style.form__row">
-          <label>계정</label>
+          <label>{{$t('views.mypage.account')}}</label>
           <div :class="$style['form__row-inner']">
-            <GeneralButton :class="$style.button" theme="danger" href="/member/withdraw">계정 삭제</GeneralButton>
+            <GeneralButton :class="$style.button" theme="danger" href="/member/withdraw">{{$t('views.mypage.withdraw')}}</GeneralButton>
           </div>
         </div>
         <div v-if="data.permissions.includes('engine_developer')" :class="$style.form__row">
@@ -126,7 +130,7 @@
     </div>
     <div :class="[$style.form__row, $style['form__row--buttons']]">
       <div :class="$style.form__buttons">
-        <GeneralButton :class="$style.button" theme="primary" type="submit">저장</GeneralButton>
+        <GeneralButton :class="$style.button" theme="primary" type="submit">{{$t('views.mypage.submit')}}</GeneralButton>
       </div>
     </div>
   </SeedForm>

@@ -1,17 +1,17 @@
 <template>
   <SeedForm flex box class="search-form">
     <SelectMenu name="target" :value="$route.query.target || 'text'">
-      <option value="text">내용</option>
-      <option value="author">실행자</option>
+      <option value="text">{{$t('views.block_history.target.text')}}</option>
+      <option value="author">{{$t('views.block_history.target.author')}}</option>
     </SelectMenu>
     <SelectMenu name="type" :value="$route.query.type || 'all'">
-      <option value="all">전체</option>
+      <option value="all">{{$t('views.block_history.type_all')}}</option>
       <option v-for="i in Object.values(BlockHistoryTypes)" :value="i">{{typeName(i)}}</option>
     </SelectMenu>
-    <InputField class="search-input" name="query" placeholder="검색" v-model="$route.query.query"/>
+    <InputField class="search-input" name="query" :placeholder="$t('views.block_history.search')" v-model="$route.query.query"/>
     <div class="button-block">
-      <GeneralButton type="submit" theme="primary" class="search-button">검색</GeneralButton>
-      <GeneralButton :whenClick="reset">초기화</GeneralButton>
+      <GeneralButton type="submit" theme="primary" class="search-button">{{$t('views.block_history.search')}}</GeneralButton>
+      <GeneralButton :whenClick="reset">{{$t('views.block_history.reset')}}</GeneralButton>
     </div>
     <CheckBox
         v-if="data.permissions.dev"
@@ -20,12 +20,12 @@
         name="showHidden"
         value="1"
     >
-      비공개 내역 보기
+      {{$t('views.block_history.show_hidden')}}
     </CheckBox>
   </SeedForm>
   <div class="top-page-block">
     <PrevNextBtn flex class="top-page" v-bind="pageProps"/>
-    <CheckBox v-model="useFormattedCopy">형식화된 복사 사용</CheckBox>
+    <CheckBox v-if="$i18next.language === 'ko'" v-model="useFormattedCopy">형식화된 복사 사용</CheckBox>
   </div>
 
   <ul class="block-list" @copy="onListCopy">
@@ -37,62 +37,70 @@
       </div>
       <div class="block-item block-content">
         <div>
-          <template v-if="item.hideLog">(비공개) </template>
-          <AuthorSpan :account="item.createdUser"/>
-          사용자가
+          <template v-if="item.hideLog">({{$t('views.block_history.hidden_prefix')}}) </template>
           <template v-if="item.type === BlockHistoryTypes.ACLGroupAdd">
-            <template v-if="item.targetUser">
-              <AuthorSpan :account="item.targetUser"/>
-              사용자를
-            </template>
-            <template v-else>
-              {{item.targetContent}}
-              IP를
-            </template>
-            <template v-if="item.targetUser && item.targetUser.name !== item.targetUsername">
-              (차단 당시 이름: {{item.targetUsername}})
-            </template>
-            <span class="bold">{{item.aclGroup?.name || item.aclGroupName || item.aclGroup}}</span>
-            ACL 그룹에
-            <span>
-              <template v-if="item.duration">
-                {{durationToExactString(item.duration)}} 동안
+            <i18next :translation="$t('views.block_history.messages.acl_group_add_' + (item.duration ? 'duration' : 'forever'), {
+              userOrIp: $t('views.block_history.messages.' + (item.targetUser ? 'user' : 'ip')),
+              blockNameText: (item.targetUser && item.targetUser.name !== item.targetUsername) ? $t('views.block_history.messages.block_name_text', { targetUsername: item.targetUsername }) : undefined,
+              duration: durationToExactString(item.duration)
+            })">
+              <template #createdUser>
+                <AuthorSpan :account="item.createdUser"/>
               </template>
-              <template v-else>
-                영구적으로
+              <template #targetUser>
+                <AuthorSpan v-if="item.targetUser" :account="item.targetUser"/>
+                <template v-else>{{item.targetContent}}</template>
               </template>
-            </span>
-            등록함
-            <span class="block-id">#{{item.aclGroupId}}</span>
+              <template #aclGroup>
+                <span class="bold">{{item.aclGroup?.name || item.aclGroupName || item.aclGroup}}</span>
+              </template>
+            </i18next> <span class="block-id">#{{item.aclGroupId}}</span>
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.ACLGroupRemove">
-            <template v-if="item.targetUser">
-              <AuthorSpan :account="item.targetUser"/>
-              사용자를
-            </template>
-            <template v-else>
-              {{item.targetContent}}
-              IP를
-            </template>
-            <template v-if="item.targetUser && item.targetUser.name !== item.targetUsername">
-              (차단 당시 이름: {{item.targetUsername}})
-            </template>
-            <span class="bold">{{item.aclGroup?.name || item.aclGroupName || item.aclGroup}}</span>
-            ACL 그룹에서 제거함
-            <span class="block-id">#{{item.aclGroupId}}</span>
+            <i18next :translation="$t('views.block_history.messages.acl_group_remove', {
+              userOrIp: $t('views.block_history.messages.' + (item.targetUser ? 'user' : 'ip')),
+              blockNameText: (item.targetUser && item.targetUser.name !== item.targetUsername) ? $t('views.block_history.messages.block_name_text', { targetUsername: item.targetUsername }) : undefined
+            })">
+              <template #createdUser>
+                <AuthorSpan :account="item.createdUser"/>
+              </template>
+              <template #targetUser>
+                <AuthorSpan v-if="item.targetUser" :account="item.targetUser"/>
+                <template v-else>{{item.targetContent}}</template>
+              </template>
+            </i18next> <span class="block-id">#{{item.aclGroupId}}</span>
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.Grant">
-            <AuthorSpan :account="item.targetUser"/>
-            사용자의 권한 설정
+            <i18next :translation="$t('views.block_history.messages.grant')">
+              <template #createdUser>
+                <AuthorSpan :account="item.createdUser"/>
+              </template>
+              <template #targetUser v-if="item.targetUser">
+                <AuthorSpan :account="item.targetUser"/>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.BatchRevert">
-            <AuthorSpan :account="item.targetUser"/>
-            {{item.targetUser.type === 1 ? '사용자' : 'IP'}}의
-            기여를 일괄 되돌림
+            <i18next :translation="$t('views.block_history.messages.batch_revert', {
+              userOrIp: $t('views.block_history.messages.' + (item.targetUser ? 'user' : 'ip'))
+            })">
+              <template #createdUser>
+                <AuthorSpan :account="item.createdUser"/>
+              </template>
+              <template #targetUser v-if="item.targetUser">
+                <AuthorSpan :account="item.targetUser"/>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.LoginHistory">
-            <AuthorSpan :account="item.targetUser"/>
-            사용자의 로그인 기록 조회
+            <i18next :translation="$t('views.block_history.messages.login_history')">
+              <template #createdUser>
+                <AuthorSpan :account="item.createdUser"/>
+              </template>
+              <template #targetUser v-if="item.targetUser">
+                <AuthorSpan :account="item.targetUser"/>
+              </template>
+            </i18next>
           </template>
         </div>
         <div class="block-text" v-if="item.type === BlockHistoryTypes.Grant">
@@ -187,13 +195,13 @@ export default {
       })[type]
     },
     typeName(type) {
-      return ({
-        [BlockHistoryTypes.ACLGroupAdd]: 'ACL그룹 등록',
-        [BlockHistoryTypes.ACLGroupRemove]: 'ACL그룹 제거',
-        [BlockHistoryTypes.Grant]: '권한 설정',
-        [BlockHistoryTypes.BatchRevert]: '일괄 되돌리기',
-        [BlockHistoryTypes.LoginHistory]: '로그인 기록 조회',
-      })[type]
+      return this.$t('views.block_history.types.' + ({
+        [BlockHistoryTypes.ACLGroupAdd]: 'acl_group_add',
+        [BlockHistoryTypes.ACLGroupRemove]: 'acl_group_remove',
+        [BlockHistoryTypes.Grant]: 'grant',
+        [BlockHistoryTypes.BatchRevert]: 'batch_revert',
+        [BlockHistoryTypes.LoginHistory]: 'login_history'
+      })[type])
     },
     userToText(user) {
       let link;
