@@ -49,7 +49,7 @@ export default {
     WikiContent
   },
   mounted() {
-    if(this.data.docScript) eval(this.data.docScript)
+    if(this.data.docScript) this.$nextTick(() => eval(this.data.docScript))
   },
   watch: {
     async 'data.docScript'(newValue) {
