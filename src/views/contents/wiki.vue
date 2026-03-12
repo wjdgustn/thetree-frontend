@@ -10,7 +10,7 @@
     <NuxtLink rel="nofollow" :title="$route.query.from" :to="{ path: `/w/${$route.query.from}`, query: { noredirect: 1 } }">{{$route.query.from}}</NuxtLink>에서 넘어옴
   </Alert>
 
-  <Alert v-if="!categories.length && !data.user && !data.isRedirect">
+  <Alert v-if="!categories.length && data.document.namespace !== '사용자' && !data.isRedirect">
     <i18next :translation="$t('views.wiki.no_category')">
       <template #link>
         <NuxtLink :to="doc_action_link({
