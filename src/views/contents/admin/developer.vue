@@ -31,7 +31,7 @@
         </ul>
       </template>
       <template v-if="hasFEUpdate">
-        <p>{{$t('views.developer.front_update_log')}}</p>
+        <p>{{$t('views.developer.frontend_update_log')}}</p>
         <ul>
           <li v-for="item in data.newFECommits">
             <a :href="item.html_url" target="_blank">{{item.sha.slice(0, 7)}}</a>
