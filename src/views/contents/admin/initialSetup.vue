@@ -1,23 +1,23 @@
 <template>
   <Heading
-    title="스킨 설치"
+    :title="$t('views.initial_setup.install_skin')"
     :folded="THETREE_SKIN_NAME !== 'plain'">
     <div :class="[$style.form, $style['form--full']]">
-      <SeedFormBlock label="설치할 스킨의 Git 레포지토리 URL을 입력하세요." inputId="skinRepoInput" newStyle>
+      <SeedFormBlock :label="$t('views.initial_setup.skin_git_repo_url')" inputId="skinRepoInput" newStyle>
         <InputField id="skinRepoInput" v-model="repoUrl"/>
       </SeedFormBlock>
-      <SeedFormBlock label="설치할 스킨의 이름을 입력하세요." inputId="skinNameInput" newStyle>
+      <SeedFormBlock :label="$t('views.initial_setup.skin_name')" inputId="skinNameInput" newStyle>
         <InputField id="skinNameInput" v-model="skinName"/>
       </SeedFormBlock>
       <div>
-        <GeneralButton theme="primary" type="button" :whenClick="installSkin">설치</GeneralButton>
+        <GeneralButton theme="primary" type="button" :whenClick="installSkin">{{$t('views.initial_setup.install')}}</GeneralButton>
       </div>
     </div>
   </Heading>
   <Heading
-    title="base_url 설정"
+    :title="$t('views.initial_setup.set_base_url')"
     :folded="baseUrlIsSet">
-    <Alert v-if="!baseUrlIsSet" theme="danger">base_url이 현재 접속한 주소와 다릅니다.</Alert>
+    <Alert v-if="!baseUrlIsSet" theme="danger">{{$t('views.initial_setup.different_base_url')}}</Alert>
     <SeedForm method="post" action="/admin/config/configjson" :class="[$style.form, $style['form--full']]">
       <input type="hidden" name="config" value="publicConfig.json">
       <input type="hidden" name="key" value="base_url">
@@ -25,50 +25,62 @@
         <InputField id="baseUrlInput" v-model="baseUrl" name="value"/>
       </SeedFormBlock>
       <div>
-        <GeneralButton theme="primary" type="submit">변경</GeneralButton>
-        <GeneralButton type="button" :whenClick="setBaseUrlToOrigin">현재 접속 URL 입력</GeneralButton>
+        <GeneralButton theme="primary" type="submit">{{$t('views.initial_setup.change')}}</GeneralButton>
+        <GeneralButton type="button" :whenClick="setBaseUrlToOrigin">{{$t('views.initial_setup.set_base_url_to_origin')}}</GeneralButton>
       </div>
     </SeedForm>
   </Heading>
   <Heading
-      title="권장 ACLGroup 생성"
+      :title="$t('views.initial_setup.generate_default_aclgroup')"
       :folded="data.hasAclGroup">
-    <p>생성 그룹 목록</p>
+    <p>$t('views.initial_setup.generate_group_list')</p>
     <ul>
       <li v-for="item in recommandedGroupList">{{item}}</li>
     </ul>
-    <GeneralButton theme="primary" :whenClick="addAclGroup" :disabled="data.hasAclGroup">권장 ACLGroup 생성</GeneralButton>
+    <GeneralButton theme="primary" :whenClick="addAclGroup" :disabled="data.hasAclGroup">$t('views.initial_setup.generate_default_aclgroup')</GeneralButton>
   </Heading>
   <Heading
-    title="이름공간 ACL 설정"
+    :title="$t('views.initial_setup.setup_nsacl')"
     :folded="data.hasNsacl">
-    <Alert theme="primary" v-if="data.namespaces.at(-1) === '삭제된사용자'">추가할 이름공간이 있다면 nsacl 설정 전 <NuxtLink to="/admin/config">config 페이지</NuxtLink>의 serverConfig.json에서 namespaces에 이름공간을 추가해주세요.</Alert>
-    <p>권장 이름공간 ACL 설명</p>
+    <Alert theme="primary" v-if="data.namespaces.at(-1) === '삭제된사용자'">
+      <i18next :translation="$t('views.initial_setup.add_namespace_before_nsacl')">
+        <template #link>
+          <NuxtLink to="/admin/config">{{$t('views.initial_setup.config_link_text')}}</NuxtLink>
+        </template>
+      </i18next>
+    </Alert>
+    <p>{{$t('views.initial_setup.default_aclgroup_guide.title')}}</p>
     <ul>
-      <li>아무나 읽기, 삭제, 토론, 편집 요청 허용</li>
-      <li>차단된 사용자, 경고 보유 시 편집 차단</li>
-      <li>로그인 허용 차단 지원</li>
-      <li>admin에게 ACL 조정 허용</li>
-      <li>사용자 문서는 본인과 관리자만 편집 허용</li>
-      <li>휴지통, 운영 문서는 관리자만 열람 허용</li>
+      <li>{{$t('views.initial_setup.default_aclgroup_guide.list_1')}}</li>
+      <li>{{$t('views.initial_setup.default_aclgroup_guide.list_2')}}</li>
+      <li>{{$t('views.initial_setup.default_aclgroup_guide.list_3')}}</li>
+      <li>{{$t('views.initial_setup.default_aclgroup_guide.list_4')}}</li>
+      <li>{{$t('views.initial_setup.default_aclgroup_guide.list_5')}}</li>
+      <li>{{$t('views.initial_setup.default_aclgroup_guide.list_6')}}</li>
     </ul>
-    <GeneralButton theme="primary" :whenClick="addNsacl" :disabled="data.hasNsacl">권장 이름공간 ACL 생성</GeneralButton>
-    <GeneralButton theme="danger" :whenClick="removeAllNsacl">모든 이름공간 ACL 제거</GeneralButton>
+    <GeneralButton theme="primary" :whenClick="addNsacl" :disabled="data.hasNsacl">{{$t('views.initial_setup.generate_default_nsacl')}}</GeneralButton>
+    <GeneralButton theme="danger" :whenClick="removeAllNsacl">{{$t('views.initial_setup.remove_all_nsacl')}}</GeneralButton>
   </Heading>
   <Heading
-    title="브랜딩 설정"
+    :title="$t('views.initial_setup.branding')"
     :folded="changedWikiName || changedFrontPage">
-    <p><NuxtLink to="/admin/config">config 페이지</NuxtLink>의 publicConfig.json에서 위키 이름, 색상 등을 설정해 주세요.</p>
-    <p><CheckMarkText :checked="changedWikiName">위키 이름 변경</CheckMarkText></p>
-    <p><CheckMarkText :checked="changedFrontPage">대문 변경</CheckMarkText></p>
+    <p>
+      <i18next :translation="$t('views.initial_setup.branding_guide')">
+        <template #link>
+          <NuxtLink to="/admin/config">{{$t('views.initial_setup.config_link_text')}}</NuxtLink>
+        </template>
+      </i18next>
+    </p>
+    <p><CheckMarkText :checked="changedWikiName">{{$t('views.initial_setup.change_wiki_name')}}</CheckMarkText></p>
+    <p><CheckMarkText :checked="changedFrontPage">{{$t('views.initial_setup.change_frontpage')}}</CheckMarkText></p>
   </Heading>
-  <Heading title="권장사항">
-    <p>원활한 위키 운영을 위한 설정 권장사항입니다.</p>
-    <p><CheckMarkText :checked="data.useEmailVerification">이메일 인증 활성화(devConfig.json)</CheckMarkText></p>
-    <p><CheckMarkText :checked="data.useCaptcha">캡챠 활성화(devConfig.json)</CheckMarkText></p>
-    <p><CheckMarkText :checked="data.useSearchEngine">검색 엔진 설정(.env)</CheckMarkText></p>
-    <p><CheckMarkText :checked="data.useRedis">Redis 설정(.env)</CheckMarkText></p>
-    <p><CheckMarkText :checked="data.useS3">파일 서버 설정(.env)</CheckMarkText></p>
+  <Heading :title="$t('views.initial_setup.guide')">
+    <p>{{$t('views.initial_setup.guide_description')}}</p>
+    <p><CheckMarkText :checked="data.useEmailVerification">{{$t('views.initial_setup.use_email_verification')}}</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useCaptcha">{{$t('views.initial_setup.use_captcha')}}</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useSearchEngine">{{$t('views.initial_setup.use_search_engine')}}</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useRedis">{{$t('views.initial_setup.use_redis')}}</CheckMarkText></p>
+    <p><CheckMarkText :checked="data.useS3">{{$t('views.initial_setup.use_s3')}}</CheckMarkText></p>
   </Heading>
 </template>
 <script>
@@ -110,10 +122,10 @@ export default {
       baseUrl: this.$store.state.config['wiki.canonical_url'],
 
       recommandedGroupList: [
-        '차단된 사용자',
-        '편집요청 차단',
-        '로그인 허용 차단',
-        '경고'
+        this.$t('default_aclgroups.blocked_user'),
+        this.$t('default_aclgroups.block_edit_request'),
+        this.$t('default_aclgroups.login_allowed_block'),
+        this.$t('default_aclgroups.warn_keyword')
       ]
     }
   },
@@ -188,12 +200,12 @@ export default {
       for(let aclType of ['Edit', 'CreateThread', 'WriteThreadComment']) {
         await addRule('문서', aclType, {
           conditionType: 'ACLGroup',
-          conditionContent: '경고',
+          conditionContent: this.$t('default_aclgroups.warn_keyword'),
           actionType: 'Deny'
         })
         await addRule('문서', aclType, {
           conditionType: 'ACLGroup',
-          conditionContent: '차단된 사용자',
+          conditionContent: this.$t('default_aclgroups.blocked_user'),
           actionType: 'Deny'
         })
         await addRule('문서', aclType, {
@@ -203,7 +215,7 @@ export default {
         })
         await addRule('문서', aclType, {
           conditionType: 'ACLGroup',
-          conditionContent: '로그인 허용 차단',
+          conditionContent: this.$t('default_aclgroups.login_allowed_block'),
           actionType: 'Deny'
         })
         await addRule('문서', aclType, {
@@ -226,12 +238,12 @@ export default {
 
       await addRule('문서', 'EditRequest', {
         conditionType: 'ACLGroup',
-        conditionContent: '경고',
+        conditionContent: this.$t('default_aclgroups.warn_keyword'),
         actionType: 'Deny'
       })
       await addRule('문서', 'EditRequest', {
         conditionType: 'ACLGroup',
-        conditionContent: '편집요청 차단',
+        conditionContent: this.$t('default_aclgroups.block_edit_request'),
         actionType: 'Deny'
       })
       await addRule('문서', 'EditRequest', {
@@ -241,7 +253,7 @@ export default {
       })
       await addRule('문서', 'EditRequest', {
         conditionType: 'ACLGroup',
-        conditionContent: '차단된 사용자',
+        conditionContent: this.$t('default_aclgroups.blocked_user'),
         actionType: 'Deny'
       })
       await addRule('문서', 'EditRequest', {
@@ -273,7 +285,7 @@ export default {
             })
           }
           else {
-            const isAdmin = namespace.includes('운영') || namespace.includes('휴지통')
+            const isAdmin = namespace.includes(this.$t('views.initial_setup.mod_keyword')) || namespace.includes(this.$t('views.initial_setup.trash_keyword'))
             await addRule(namespace, aclType, {
               conditionType: 'Perm',
               permission: isAdmin ? 'admin' : 'any',

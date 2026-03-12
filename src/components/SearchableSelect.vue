@@ -1,6 +1,6 @@
 <template>
   <VSelect
-      :placeholder="placeholder"
+      :placeholder="placeholder || $t('components.searchable_select.placeholder')"
       v-model="value"
       v-bind="$attrs"
   />
@@ -17,7 +17,7 @@ export default {
     name: String,
     placeholder: {
       type: String,
-      default: '선택'
+      default: null
     },
     modelValue: Object
   },

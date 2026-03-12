@@ -7,10 +7,10 @@
     </GeneralButton>
     <GeneralButton v-if="prev !== undefined" :disabled="!prev" class="page-button" :href="actualPrev ?? undefined">
       <FontAwesomeIcon icon="chevron-left"/>
-      <span>이전</span>
+      <span>{{$t('components.prev_next_btn.prev')}}</span>
     </GeneralButton>
     <GeneralButton v-if="next !== undefined" :disabled="!next" class="page-button" :href="actualNext ?? undefined">
-      <span>다음</span>
+      <span>{{$t('components.prev_next_btn.next')}}</span>
       <FontAwesomeIcon icon="chevron-right"/>
     </GeneralButton>
     <GeneralButton v-if="end !== undefined" :disabled="!end" class="page-button" :href="end ?? undefined">

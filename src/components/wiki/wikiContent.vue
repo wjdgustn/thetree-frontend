@@ -2,20 +2,20 @@
   <WikiCategory v-if="categories.length && $store.state.localConfig['wiki.category_position'] !== 'bottom'" :categories="categories"/>
 
   <div v-if="userbox.admin" class="user-box admin-box">
-    이 사용자는 특수 권한을 가지고 있습니다.
+    {{$t('components.wiki_content.admin')}}
   </div>
   <div v-if="userbox.blocked" class="user-box banned-box">
-    이 사용자는 {{userbox.blocked.name}} 그룹에 있습니다. (#{{userbox.blocked.id}})<br><br>
+    {{$t('components.wiki_content.admin', { group: userbox.blocked.name, id: userbox.blocked.id })}}<br><br>
 
-    이 사용자는 <LocalDate :date="userbox.blocked.createdAt"/>에
-    <template v-if="userbox.blocked.expiresAt">
-      <LocalDate :date="userbox.blocked.expiresAt"/> 까지
-    </template>
-    <template v-else>
-      영구적으로
-    </template>
-    {{userbox.blocked.name}} 그룹에 추가되었습니다.<br>
-    사유: {{userbox.blocked.note ?? '없음'}}
+    <i18next :translation="$t('components.wiki_content.blocked_' + (userbox.blocked.expiresAt ? 'duration' : 'forever'), { group: userbox.blocked.name })">
+      <template #createdAt>
+        <LocalDate :date="userbox.blocked.createdAt"/>
+      </template>
+      <template v-if="userbox.blocked.expiresAt" #expiresAt>
+        <LocalDate :date="userbox.blocked.expiresAt"/>
+      </template>
+    </i18next><br>
+    {{$t('components.wiki_content.reason')}} {{userbox.blocked.note ?? 'null'}}
   </div>
 
   <div
@@ -35,7 +35,7 @@
   </div>
   <Modal v-model="modal.show" v-slot="props">
     <div class="wiki-content" v-html="modal.content" @click="onDynamicContentClick"></div>
-    <button @click="props.close" type="button">닫기</button>
+    <button @click="props.close" type="button">{{$t('components.wiki_content.close_modal')}}</button>
   </Modal>
 </template>
 <script>
@@ -233,7 +233,7 @@ export default {
             }
             sizeText &&= ` (${sizeText})`
 
-            btn.innerText = (img.dataset.src ? '이미지' : '동영상') + sizeText
+            btn.innerText = this.$t('components.wiki_content.' + (img.dataset.src ? 'image' : 'video')) + sizeText
 
             const removeBtnListener = () => {
               btn.removeEventListener('click', onBtnClick)

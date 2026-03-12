@@ -2,7 +2,7 @@
   <Modal v-slot="props">
     <div class="setting-block">
       <button @click="props.close">×</button>
-      <h1>설정</h1>
+      <h1>{{$t('components.setting.title')}}</h1>
       <header>
         <ul>
           <template v-for="tab in tabs">
@@ -38,17 +38,17 @@ export default {
       tabs: [
         {
           name: 'wiki',
-          label: '위키',
+          label: this.$t('components.setting.tabs.wiki'),
           component: markRaw(WikiSetting)
         },
         {
           name: 'discuss',
-          label: '토론',
+          label: this.$t('components.setting.tabs.discuss'),
           component: markRaw(DiscussSetting)
         },
         {
           name: 'skin',
-          label: '스킨',
+          label: this.$t('components.setting.tabs.skin'),
           component: this.$slots.default
         }
       ],

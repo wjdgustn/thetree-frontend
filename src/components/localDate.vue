@@ -54,7 +54,7 @@ export default {
       const relative = new Intl.RelativeTimeFormat('ko')
 
       let text
-      if(diff < 1000 * 10) text = '방금 전'
+      if(diff < 1000 * 10) text = this.$t('components.local_date.recent')
       else if(diff < 1000 * 60) text = relative.format(-Math.floor(diff / 1000), 'second')
       else if(diff < 1000 * 60 * 60) text = relative.format(-Math.floor(diff / 1000 / 60), 'minute')
       else if(diff < 1000 * 60 * 60 * 24) text = relative.format(-Math.floor(diff / 1000 / 60 / 60), 'hour')

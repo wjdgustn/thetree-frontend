@@ -5,7 +5,7 @@
       <SeedFormInput name="username" required/>
     </SeedFormBlock>
     <div class="button-block">
-      <SeedButton submit>확인</SeedButton>
+      <SeedButton submit>{{$t('views.grant.submit')}}</SeedButton>
     </div>
   </SeedForm>
 
@@ -29,7 +29,7 @@
         hidelog:
         <input type="checkbox" name="hidelog" value="Y">
       </label>
-      <SeedButton submit>확인</SeedButton>
+      <SeedButton submit>{{$t('views.grant.submit')}}</SeedButton>
     </div>
   </SeedForm>
 </template>

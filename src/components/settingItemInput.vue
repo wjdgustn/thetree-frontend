@@ -1,6 +1,6 @@
 <template>
   <SettingItem :="$props">
-    <InputField class="setting-input" v-model="value" :id="ckey" :whenInput="changed" :type="type" placeholder="입력"/>
+    <InputField class="setting-input" v-model="value" :id="ckey" :whenInput="changed" :type="type" :placeholder="$t('components.setting_item_input.placeholder')"/>
   </SettingItem>
 </template>
 <script>

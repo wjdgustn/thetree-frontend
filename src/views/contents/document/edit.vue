@@ -2,21 +2,21 @@
   <FormErrorAlert/>
 
   <Alert v-if="$route.query.redirected === '1' && data.isEditRequest && data.aclMessage">
-    <strong>[알림]</strong>
-    문서를 편집할 권한이 없기 때문에 편집 요청으로 이동되었습니다.
+    <strong>[{{$t('views.edit.notify')}}]</strong>
+    {{$t('views.edit.edit_request_redirected')}}
     <div v-html="data.aclMessage"></div>
   </Alert>
 
   <Alert v-if="!editable" theme="danger">
-    <strong>[오류!] </strong>
+    <strong>[{{$t('views.edit.error')}}] </strong>
     <span v-html="data.aclMessage"/>
   </Alert>
 
   <WikiContent :content="data.contentHtml"/>
 
   <template v-if="data.conflict">
-    <Diff :title="`r${data.conflict.editedRev} vs 사용자 입력`" :diffHtml="data.conflict.diff.diffHtml"/>
-    <span class="conflict-error">자동 병합에 실패했습니다! 수동으로 수정된 내역을 아래 텍스트 박스에 다시 입력해주세요.</span>
+    <Diff :title="$t('views.edit.conflict_diff_title', { editedRev: data.conflict.editedRev })" :diffHtml="data.conflict.diff.diffHtml"/>
+    <span class="conflict-error">{{$t('views.edit.conflict_error')}}</span>
   </template>
 
   <SeedForm :beforeSubmit="beforeSubmit" method="post">
@@ -62,7 +62,7 @@
 
       <span v-if="data.editRequestBottomText" v-html="data.editRequestBottomText"/>
 
-      <SeedButton submit>저장</SeedButton>
+      <SeedButton submit>{{$t('views.edit.submit')}}</SeedButton>
       <div class="clearboth"/>
     </template>
   </SeedForm>
@@ -159,7 +159,7 @@ export default {
   },
   computed: {
     logLabel() {
-      let result = '요약'
+      let result = this.$t('views.edit.log_label')
       if(this.log)
         result += ` (${this.log.length}/255)`
       return result
@@ -172,7 +172,7 @@ export default {
     beforeLeave() {
       this.updateContent()
       if(this.data.content !== this.initialContent)
-        return confirm('변경된 사항이 저장되지 않았습니다.')
+        return confirm(this.$t('views.edit.not_saved'))
       return true
     },
     getTabComponent(name) {
@@ -190,7 +190,7 @@ export default {
     },
     async beforeSubmit() {
       if(!this.$refs.agreeCheckbox.checked) {
-        alert('수정하기 전에 먼저 문서 배포 규정에 동의해 주세요.')
+        alert(this.$t('routes.document.errors.missing_edit_agree'))
         return false
       }
 

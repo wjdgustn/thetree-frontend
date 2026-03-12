@@ -15,7 +15,7 @@
     </div>
   </div>
   <div v-else>
-    해당 문서의 역링크가 존재하지 않습니다.
+    {{$t('views.backlink.no_backlink')}}
   </div>
 
   <PrevNextBtn flex v-bind="pageProps"/>

@@ -4,17 +4,17 @@
       tab
       :items="[
           ...(data.thread ? [{
-            title: '토론 ACL',
+            title: $t('views.acl.tabs.thread'),
             href: '#thread',
             active: aclCategory === 'thread'
           }] : []),
           {
-            title: '문서 ACL',
+            title: $t('views.acl.tabs.document'),
             href: '#document',
             active: aclCategory === 'document'
           },
           {
-            title: '이름공간 ACL',
+            title: $t('views.acl.tabs.namespace'),
             href: '#namespace',
             active: aclCategory === 'namespace'
           }
@@ -53,10 +53,10 @@
               <td v-html="element.action"/>
               <td>
                 <LocalDate v-if="element.expiresAt" :date="element.expiresAt"/>
-                <template v-else>영구</template>
+                <template v-else>{{$t('views.acl.forever')}}</template>
               </td>
               <td>
-                <SeedButton v-if="editable" danger @click="deleteRule(element)">삭제</SeedButton>
+                <SeedButton v-if="editable" danger @click="deleteRule(element)">{{$t('views.acl.delete')}}</SeedButton>
               </td>
             </tr>
           </template>
@@ -65,13 +65,21 @@
         <tr>
           <td colspan="5">
             <template v-if="aclCategory === 'thread'">
-              (규칙이 존재하지 않습니다. <NuxtLink :to="'#document.' + aclType">문서 ACL</NuxtLink>이 적용됩니다.)
+              <i18next :translation="$t('views.acl.no_rule')">
+                <template #tabLink>
+                  <NuxtLink :to="'#document.' + aclType">{{$t('views.acl.tabs.document')}}</NuxtLink>
+                </template>
+              </i18next>
             </template>
             <template v-else-if="aclCategory === 'document'">
-              (규칙이 존재하지 않습니다. <NuxtLink :to="'#namespace.' + aclType">이름공간 ACL</NuxtLink>이 적용됩니다.)
+              <i18next :translation="$t('views.acl.no_rule')">
+                <template #tabLink>
+                  <NuxtLink :to="'#namespace.' + aclType">{{$t('views.acl.tabs.namespace')}}</NuxtLink>
+                </template>
+              </i18next>
             </template>
             <template v-else>
-              (규칙이 존재하지 않습니다. 모두 거부됩니다.)
+              {{$t('views.acl.namespace_no_rule')}}
             </template>
           </td>
         </tr>
@@ -93,34 +101,34 @@
         <label>Condition</label>
         <div>
           <select v-model="form.conditionType" name="conditionType">
-            <option value="Perm">권한</option>
-            <option value="User">사용자</option>
-            <option value="IP">아이피</option>
-            <option value="GeoIP">GeoIP</option>
-            <option value="ACLGroup">ACL그룹</option>
+            <option value="Perm">{{$t('views.acl.conditions.perm')}}</option>
+            <option value="User">{{$t('views.acl.conditions.user')}}</option>
+            <option value="IP">{{$t('views.acl.conditions.ip')}}</option>
+            <option value="GeoIP">{{$t('views.acl.conditions.geoip')}}</option>
+            <option value="ACLGroup">{{$t('views.acl.conditions.aclgroup')}}</option>
           </select>
           <template v-if="form.conditionType === 'Perm'">
             <select v-model="form.permissionSelect" :name="form.permissionSelect === 'custom' ? null : 'permission'">
-              <option value="any">아무나</option>
-              <option value="ip">아이피 사용자</option>
-              <option value="member">로그인된 사용자</option>
-              <option value="admin">관리자</option>
-              <option value="member_signup_15days_ago">가입한지 15일 지난 사용자</option>
-              <option value="document_contributor">해당 문서 기여자</option>
-              <option value="contributor">위키 기여자</option>
-              <option value="match_username_and_document_title">문서 제목과 사용자 이름이 일치</option>
-              <option value="mobile_verified_member">모바일 인증된 사용자</option>
-              <option value="auto_verified_member">자동 인증된 사용자</option>
-              <option value="custom">직접 입력</option>
+              <option value="any">{{$t('permissions.any')}}</option>
+              <option value="ip">{{$t('permissions.ip')}}</option>
+              <option value="member">{{$t('permissions.member')}}</option>
+              <option value="admin">{{$t('permissions.admin')}}</option>
+              <option value="member_signup_15days_ago">{{$t('permissions.member_signup_15days_ago')}}</option>
+              <option value="document_contributor">{{$t('permissions.document_contributor')}}</option>
+              <option value="contributor">{{$t('permissions.contributor')}}</option>
+              <option value="match_username_and_document_title">{{$t('permissions.match_username_and_document_title')}}</option>
+              <option value="mobile_verified_member">{{$t('permissions.mobile_verified_member')}}</option>
+              <option value="auto_verified_member">{{$t('permissions.auto_verified_member')}}</option>
+              <option value="custom">{{$t('views.acl.custom')}}</option>
             </select>
             <input v-if="form.permissionSelect === 'custom'" name="permission" placeholder="permission">
           </template>
           <template v-else-if="form.conditionType === 'ACLGroup'">
             <select ref="aclGroupSelect" @change="aclGroupIndex = $event.srcElement.selectedIndex" :name="aclGroupIndex === aclGroups.length ? null : 'conditionContent'">
               <option v-for="item in aclGroups">{{item.name}}</option>
-              <option>직접 입력</option>
+              <option>{{$t('views.acl.custom')}}</option>
             </select>
-            <input v-if="aclGroupIndex === aclGroups.length" name="conditionContent" placeholder="ACL그룹 이름">
+            <input v-if="aclGroupIndex === aclGroups.length" name="conditionContent" :placeholder="$t('views.acl.aclgroup_name')">
           </template>
           <input v-else type="text" name="conditionContent">
         </div>
@@ -129,10 +137,10 @@
         <label>Action :</label>
         <div>
           <select name="actionType" v-model="form.actionType">
-            <option value="Allow">허용</option>
-            <option value="Deny">거부</option>
-            <option value="GotoNS" v-if="aclCategory !== 'namespace'">이름공간ACL 실행</option>
-            <option value="GotoOtherNS">다른 이름공간ACL 실행</option>
+            <option value="Allow">{{$t('views.acl.actions.allow')}}</option>
+            <option value="Deny">{{$t('views.acl.actions.deny')}}</option>
+            <option value="GotoNS" v-if="aclCategory !== 'namespace'">{{$t('views.acl.actions.gotons')}}</option>
+            <option value="GotoOtherNS">{{$t('views.acl.actions.gotootherns')}}</option>
           </select>
           <input v-if="form.actionType === 'GotoOtherNS'" name="actionContent" placeholder="namespace">
         </div>
@@ -143,7 +151,7 @@
           <DurationSelector name="duration"/>
         </div>
       </div>
-      <SeedButton submit>추가</SeedButton>
+      <SeedButton submit>{{$t('views.acl.add')}}</SeedButton>
     </SeedForm>
   </div>
 </template>
@@ -161,17 +169,6 @@ import FormErrorAlert from '@/components/form/formErrorAlert'
 import CheckBox from '@/components/form/checkBox'
 
 import { isMobile } from '@/utils'
-
-const aclNames = {
-  read: '읽기',
-  edit: '편집',
-  move: '이동',
-  delete: '삭제',
-  create_thread: '토론 생성',
-  write_thread_comment: '토론 댓글',
-  edit_request: '편집 요청',
-  acl: 'ACL'
-}
 
 export default {
   mixins: [Common],
@@ -257,16 +254,28 @@ export default {
     }
   },
   computed: {
+    aclNames() {
+      return {
+        read: this.$t('acl.types.0'),
+        edit: this.$t('acl.types.1'),
+        move: this.$t('acl.types.2'),
+        delete: this.$t('acl.types.3'),
+        create_thread: this.$t('acl.types.4'),
+        write_thread_comment: this.$t('acl.types.5'),
+        edit_request: this.$t('acl.types.6'),
+        acl: 'ACL'
+      }
+    },
     availableAclTypes() {
-      return this.aclCategory === 'thread' ? ['read', 'write_thread_comment'] : Object.keys(aclNames)
+      return this.aclCategory === 'thread' ? ['read', 'write_thread_comment'] : Object.keys(this.aclNames)
     },
     aclTypes() {
       return this.availableAclTypes.map(a => ({
         name: a,
-        title: aclNames[a],
+        title: this.aclNames[a],
         href: `#${this.aclCategory}.${a}`,
         active: this.aclType === a,
-        index: Object.keys(aclNames).indexOf(a)
+        index: Object.keys(this.aclNames).indexOf(a)
       }))
     },
     activeAclType() {

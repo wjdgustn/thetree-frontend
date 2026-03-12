@@ -16,21 +16,21 @@
 
     <div class="form-block">
       <select name="mode" v-model="mode">
-        <option value="ip">아이피</option>
-        <option value="username">사용자 이름</option>
+        <option value="ip">{{$t('views.aclgroup.mode.ip')}}</option>
+        <option value="username">{{$t('views.aclgroup.mode.username')}}</option>
       </select>
       <ShowError tag="mode"/>
       <input v-if="mode === 'ip'" type="text" name="ip" v-model="ip" placeholder="CIDR">
-      <input v-else type="text" name="username" v-model="username" placeholder="사용자 이름">
+      <input v-else type="text" name="username" v-model="username" :placeholder="$t('views.aclgroup.mode.username')">
       <ShowError :tag="mode"/>
     </div>
     <div class="form-block">
-      <label for="noteInput">메모 :</label>
+      <label for="noteInput">{{$t('views.aclgroup.note')}}</label>
       <input type="text" id="noteInput" name="note">
       <ShowError tag="note"/>
     </div>
     <div class="form-block">
-      <label>기간 :</label>
+      <label>{{$t('views.aclgroup.duration')}}</label>
       <DurationSelector name="duration"/>
       <ShowError tag="duration"/>
     </div>
@@ -39,7 +39,7 @@
       <input type="checkbox" id="hidelogInput" name="hidelog" value="Y">
       <ShowError tag="hidelog"/>
     </div>
-    <SeedButton :disabled="!data.addable" submit>추가</SeedButton>
+    <SeedButton :disabled="!data.addable" submit>{{$t('views.aclgroup.add')}}</SeedButton>
   </SeedForm>
 
   <template v-if="data.selectedGroup">
@@ -65,12 +65,12 @@
 
       <thead>
       <tr>
-        <th>ID</th>
-        <th>대상</th>
-        <th>메모</th>
-        <th>생성일</th>
-        <th>만료일</th>
-        <th>작업</th>
+        <th>{{$t('views.aclgroup.table.id')}}</th>
+        <th>{{$t('views.aclgroup.table.target')}}</th>
+        <th>{{$t('views.aclgroup.table.note')}}</th>
+        <th>{{$t('views.aclgroup.table.date')}}</th>
+        <th>{{$t('views.aclgroup.table.expiry')}}</th>
+        <th>{{$t('views.aclgroup.table.action')}}</th>
       </tr>
       </thead>
 
@@ -84,10 +84,10 @@
         </td>
         <td>
           <LocalDate v-if="item.expiresAt" :date="item.expiresAt"/>
-          <template v-else>영구</template>
+          <template v-else>{{$t('views.aclgroup.forever')}}</template>
         </td>
         <td>
-          <SeedButton :disabled="!data.removable" danger @click="openRemoveModal(item)">삭제</SeedButton>
+          <SeedButton :disabled="!data.removable" danger @click="openRemoveModal(item)">{{$t('views.aclgroup.delete')}}</SeedButton>
         </td>
       </tr>
       </tbody>
@@ -98,15 +98,15 @@
 
   <Modal v-model="showCreateModal" v-slot="props" class="aclgroup-modal">
     <SeedForm :beforeSubmit="goConfirm" :afterSubmit="closeModal" method="post" action="/aclgroup/group_add">
-      <h4>ACL그룹 생성</h4>
+      <h4>{{$t('views.aclgroup.group_add_modal.title')}}</h4>
       <div>
-        <p>그룹 이름:</p>
+        <p>{{$t('views.aclgroup.group_add_modal.group_name')}}</p>
         <input type="text" name="name">
         <ShowError tag="name"/>
       </div>
       <div class="button-block">
-        <SeedButton large submit>생성</SeedButton>
-        <SeedButton large type="button" @click="props.close">취소</SeedButton>
+        <SeedButton large submit>{{$t('views.aclgroup.group_add_modal.submit')}}</SeedButton>
+        <SeedButton large type="button" @click="props.close">{{$t('views.aclgroup.group_add_modal.cancel')}}</SeedButton>
       </div>
     </SeedForm>
   </Modal>
@@ -115,13 +115,13 @@
       <input type="hidden" name="uuid" :value="removeModal.uuid">
       <input type="hidden" name="group" :value="data.selectedGroup?.uuid">
 
-      <h4>ACL 요소 제거</h4>
+      <h4>{{$t('views.aclgroup.remove_modal.title')}}</h4>
       <div>
         <p>ID:</p>
         <span>{{removeModal.id}}</span>
       </div>
       <div>
-        <p>메모:</p>
+        <p>{{$t('views.aclgroup.remove_modal.note')}}</p>
         <input type="text" name="note">
         <ShowError tag="note"/>
       </div>
@@ -130,8 +130,8 @@
         <input type="checkbox" name="hidelog" value="Y">
       </div>
       <div class="button-block">
-        <SeedButton large submit>삭제</SeedButton>
-        <SeedButton large type="button" @click="props.close">취소</SeedButton>
+        <SeedButton large submit>{{$t('views.aclgroup.remove_modal.delete')}}</SeedButton>
+        <SeedButton large type="button" @click="props.close">{{$t('views.aclgroup.remove_modal.cancel')}}</SeedButton>
       </div>
     </SeedForm>
   </Modal>

@@ -1,17 +1,17 @@
 <template>
   <SeedForm flex box class="search-form">
     <SelectMenu name="target" :value="$route.query.target || 'text'">
-      <option value="text">내용</option>
-      <option value="author">실행자</option>
+      <option value="text">{{$t('views.block_history.target.text')}}</option>
+      <option value="author">{{$t('views.block_history.target.author')}}</option>
     </SelectMenu>
     <SelectMenu name="type" :value="$route.query.type || 'all'">
-      <option value="all">전체</option>
+      <option value="all">{{$t('views.block_history.type_all')}}</option>
       <option v-for="i of Object.values(AuditLogTypes)" :value="i">{{typeName(i)}}</option>
     </SelectMenu>
-    <InputField class="search-input" name="query" placeholder="검색" v-model="$route.query.query"/>
+    <InputField class="search-input" name="query" :placeholder="$t('views.block_history.search')" v-model="$route.query.query"/>
     <div class="button-block">
-      <GeneralButton type="submit" theme="primary" class="search-button">검색</GeneralButton>
-      <GeneralButton :whenClick="reset">초기화</GeneralButton>
+      <GeneralButton type="submit" theme="primary" class="search-button">{{$t('views.block_history.search')}}</GeneralButton>
+      <GeneralButton :whenClick="reset">{{$t('views.block_history.reset')}}</GeneralButton>
     </div>
   </SeedForm>
   <div class="top-page-block">
@@ -27,38 +27,89 @@
       </div>
       <div class="item content">
         <div>
-          <AuthorSpan :account="item.user"/>
-          사용자가
           <template v-if="item.action === AuditLogTypes.NamespaceACL">
-            <b>{{item.target}}</b> 이름공간 ACL을 편집함
+            <i18next :translation="$t('views.audit_log.messages.namespace_acl')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+              <template #target>
+                <b>{{item.target}}</b>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.action === AuditLogTypes.DeleteThread">
-            <b><NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}}</NuxtLink></b> 스레드를 삭제함
+            <i18next :translation="$t('views.audit_log.messages.delete_thread')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+              <template #link>
+                <b><NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}}</NuxtLink></b>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.action === AuditLogTypes.DevSupport">
-            엔진 개발자 권한을 사용함
+            <i18next :translation="$t('views.audit_log.messages.dev_support')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.action === AuditLogTypes.ACLGroupCreate">
-            <b>{{item.target}}</b> ACL 그룹을 생성함
+            <i18next :translation="$t('views.audit_log.messages.acl_group_create')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+              <template #target>
+                <b>{{item.target}}</b>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.action === AuditLogTypes.ACLGroupDelete">
-            <b>{{item.target}}</b> ACL 그룹을 삭제함
+            <i18next :translation="$t('views.audit_log.messages.acl_group_delete')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+              <template #target>
+                <b>{{item.target}}</b>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.action === AuditLogTypes.ManageAccount">
-            <AuthorSpan :account="item.targetUser"/> 계정을 관리함
+            <i18next :translation="$t('views.audit_log.messages.manage_account')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+              <template #targetUser>
+                <AuthorSpan :account="item.targetUser"/>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.action === AuditLogTypes.ModifyConfig">
-            <b>{{item.target}}</b> 설정을 수정함
+            <i18next :translation="$t('views.audit_log.messages.modify_config')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+              <template #target>
+                <b>{{item.target}}</b>
+              </template>
+            </i18next>
           </template>
           <template v-else-if="item.action === AuditLogTypes.ThreadACL">
-            <b><NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}}</NuxtLink></b> 토론 ACL을 편집함
+            <i18next :translation="$t('views.audit_log.messages.thread_acl')">
+              <template #user>
+                <AuthorSpan :account="item.user"/>
+              </template>
+              <template #link>
+                <b><NuxtLink :to="'/thread/' + item.thread.url">{{item.thread.topic}}</NuxtLink></b>
+              </template>
+            </i18next>
           </template>
         </div>
         <div v-if="item.content" class="text">
           {{item.content}}
         </div>
         <details v-if="item.hasDiff" @toggle="onDiffToggle(item)">
-          <summary>비교</summary>
+          <summary>{{$t('views.audit_log.diff')}}</summary>
           <Diff v-if="item.diffHtml" :diffHtml="item.diffHtml"/>
           <span v-else>Loading...</span>
         </details>
@@ -145,16 +196,7 @@ export default {
       })[type]
     },
     typeName(type) {
-      return ({
-        [AuditLogTypes.NamespaceACL]: '이름공간ACL 편집',
-        [AuditLogTypes.DeleteThread]: '스레드 삭제',
-        [AuditLogTypes.DevSupport]: '개발자 지원',
-        [AuditLogTypes.ACLGroupCreate]: 'ACL그룹 생성',
-        [AuditLogTypes.ACLGroupDelete]: 'ACL그룹 삭제',
-        [AuditLogTypes.ManageAccount]: '계정 관리',
-        [AuditLogTypes.ModifyConfig]: '설정 수정',
-        [AuditLogTypes.ThreadACL]: '토론 ACL 편집'
-      })[type]
+      return this.$t('views.audit_log.types.' + type)
     },
     async onDiffToggle(item) {
       if(!item.hasDiff || item.diffHtml) return

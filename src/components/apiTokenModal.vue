@@ -1,7 +1,7 @@
 <template>
   <Modal @closed="closed" v-slot="props">
     <div class="modal-block">
-      <div class="modal-title">API Token 발급</div>
+      <div class="modal-title">{{$t('components.api_token_modal.title')}}</div>
       <FormErrorAlert/>
       <SeedForm method="post" action="/member/generate_api_token" :class="[$style.form, $style['form--full']]">
         <template v-if="apiToken">
@@ -10,29 +10,29 @@
           </div>
           <div :class="$style.form__row">
             <ul :class="$style.list">
-              <li>발급된 토큰은 이 창을 닫으면 다시 확인할 수 없습니다.</li>
-              <li>토큰은 비밀번호와 같이 취급해주세요.</li>
+              <li>{{$t('components.api_token_modal.cant_see_again')}}</li>
+              <li>{{$t('components.api_token_modal.token_like_pw')}}</li>
             </ul>
           </div>
           <div :class="[$style.form__row, $style['form__row--buttons']]">
             <div :class="$style.form__buttons">
-              <GeneralButton :whenClick="copyToken">토큰 복사</GeneralButton>
-              <GeneralButton :class="$style.button" :whenClick="props.close">닫기</GeneralButton>
+              <GeneralButton :whenClick="copyToken">{{$t('components.api_token_modal.copy')}}</GeneralButton>
+              <GeneralButton :class="$style.button" :whenClick="props.close">{{$t('components.api_token_modal.close')}}</GeneralButton>
             </div>
           </div>
         </template>
         <template v-else>
           <div :class="$style.form__row">
-            <label for="passwordInput">비밀번호</label>
+            <label for="passwordInput">{{$t('components.api_token_modal.password')}}</label>
             <InputField type="password" id="passwordInput" name="password"/>
             <p :class="[$style.text, $style['text--help']]">
-              사용자 계정의 비밀번호를 입력하세요.
+              {{$t('components.api_token_modal.input_password')}}
             </p>
           </div>
           <div :class="[$style.form__row, $style['form__row--buttons']]">
             <div :class="$style.form__buttons">
-              <GeneralButton :class="$style.button" :whenClick="props.close">취소</GeneralButton>
-              <GeneralButton :class="$style.button" type="submit" theme="primary">발급</GeneralButton>
+              <GeneralButton :class="$style.button" :whenClick="props.close">{{$t('components.api_token_modal.cancel')}}</GeneralButton>
+              <GeneralButton :class="$style.button" type="submit" theme="primary">{{$t('components.api_token_modal.submit')}}</GeneralButton>
             </div>
           </div>
         </template>
@@ -74,7 +74,7 @@ export default {
     },
     copyToken() {
       navigator.clipboard.writeText(this.apiToken)
-      toast('API 토큰이 복사되었습니다.')
+      toast(this.$t('components.api_token_modal.copied_token'))
     }
   }
 }

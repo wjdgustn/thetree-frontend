@@ -5,7 +5,7 @@
   </div>
   <SeedForm :beforeSubmit="beforeDiff" :action="doc_action_link(data.document, 'diff')">
     <p>
-      <GeneralButton type="submit">선택 리비전 비교</GeneralButton>
+      <GeneralButton type="submit">{{$t('views.history.diff_selected_rev')}}</GeneralButton>
     </p>
     <ul>
       <li v-for="rev in data.revs" :class="{ troll: rev.troll }" :key="rev.uuid">
@@ -19,19 +19,19 @@
               v-if="action.admin"
               @click="adminAction(rev, action.action)"
               :rel="action.follow ? null : 'nofollow'">
-            {{action.text}}
+            {{$t('document.' + action.action)}}
           </a>
           <a
               v-else-if="action.post"
               @click="postAction(rev, action.action)"
               :rel="action.follow ? null : 'nofollow'">
-            {{action.text}}
+            {{$t('document.' + action.action)}}
           </a>
           <NuxtLink
               v-else
               :to="doc_action_link(data.document, action.action, { uuid: rev.uuid })"
               :rel="action.follow ? null : 'nofollow'">
-            {{action.text}}
+            {{$t('document.' + action.action)}}
           </NuxtLink>
           </template>)
         </span>
@@ -60,23 +60,31 @@
           (<DiffCount :count="rev.diffLength"/>)
         </span>
         <NuxtLink v-if="rev.editRequest" :to="'/edit_request/' + rev.editRequest.url">
-          <i>(편집 요청)</i>&nbsp;
+          <i>({{$t('views.history.edit_request_mark')}})</i>&nbsp;
         </NuxtLink>
         <AuthorSpan :account="rev.user" :pos="`${doc_fulltitle(data.document)} r${rev.rev}`"/>
 
         <template v-if="rev.troll">
-          [<AuthorSpan :account="rev.trollBy"/> 사용자에 의해 반달로 표시됨]
+          [<i18next :translation="$t('views.history.marked_troll')">
+            <template #trollBy>
+              <AuthorSpan :account="rev.trollBy"/>
+            </template>
+          </i18next>]
         </template>
         <template v-else-if="rev.log || rev.hideLog">
           <template v-if="rev.hideLog">
-            (<span class="log"><AuthorSpan :account="rev.hideLogBy"/> 사용자에 의해 편집 요약 숨겨짐</span>)
+            (<span class="log"><i18next :translation="$t('views.history.hidden_log')">
+            <template #hideLogBy>
+              <AuthorSpan :account="rev.hideLogBy"/>
+            </template>
+          </i18next></span>)
           </template>
 
           <template v-if="rev.hideLog && !rev.forceShowLog">
-            <GeneralButton v-if="data.permissions.hide" class="show-log-button" size="small" :whenClick="() => rev.forceShowLog = true">내용 보기</GeneralButton>
+            <GeneralButton v-if="data.permissions.hide" class="show-log-button" size="small" :whenClick="() => rev.forceShowLog = true">{{$t('views.history.force_show_log')}}</GeneralButton>
           </template>
           <template v-else>
-            (<span class="log"><template v-if="rev.hideLog">내용: </template>{{rev.log}}</span>)
+            (<span class="log"><template v-if="rev.hideLog">{{$t('views.history.force_show_log_prefix')}} </template>{{rev.log}}</span>)
           </template>
         </template>
       </li>
@@ -132,66 +140,53 @@ export default {
       const actions = [
         ...((rev.troll && !permissions.troll) ? [] : [{
           action: 'w',
-          text: '보기',
           follow: true
         }]),
         {
-          action: 'raw',
-          text: 'RAW'
+          action: 'raw'
         },
         {
-          action: 'blame',
-          text: 'Blame'
+          action: 'blame'
         },
         ...(rev.troll ? [] : [{
-          action: 'revert',
-          text: '이 리비전으로 되돌리기'
+          action: 'revert'
         }]),
         ...(rev.rev > 1 ? [{
-          action: 'diff',
-          text: '비교'
+          action: 'diff'
         }] : [])
       ]
 
       if(rev.transfer) actions.push({
         action: 'transfer_contribution',
-        text: '이 기여를 로그인 사용자로 이전하기',
         post: true
       })
 
       if(permissions.troll) actions.push(rev.troll ? {
         action: 'unmark_troll',
-        text: '[A]반달표시 해제',
         admin: true
       } : {
         action: 'mark_troll',
-        text: '[A]반달로 표시',
         admin: true
       })
 
       if(rev.log && permissions.log) actions.push(rev.hideLog ? {
         action: 'unhide_log',
-        text: '[A]편집요약 숨기기 해제',
         admin: true
       } : {
         action: 'hide_log',
-        text: '[A]편집요약 숨기기',
         admin: true
       })
 
       if(permissions.hide) actions.push(rev.hidden ? {
         action: 'unhide',
-        text: '[A]리비전 숨기기 해제',
         admin: true
       } : {
         action: 'hide',
-        text: '[A]리비전 숨기기',
         admin: true
       })
 
       if(permissions.config && (rev.fileKey || rev.videoFileKey)) actions.push({
         action: 'delete_file',
-        text: '[A]파일 삭제',
         admin: true
       })
 
@@ -199,7 +194,7 @@ export default {
     },
     copyUuid(rev) {
       navigator.clipboard.writeText(rev.uuid)
-      toast(`r${rev.rev}의 UUID가 복사되었습니다.`)
+      toast(this.$t('views.history.copied_uuid', { rev: rev.rev }))
     },
     async adminAction(rev, action) {
       await this.internalRequestAndProcess(this.doc_action_link(this.data.document, 'a/' + action, { uuid: rev.uuid }))

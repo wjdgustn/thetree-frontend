@@ -65,8 +65,8 @@
     </SeedFormBlock>
     <div :class="[$style.form__row, $style['form__row--buttons']]">
       <div :class="$style.form__buttons">
-        <GeneralButton theme="danger" type="button" :whenClick="deleteGroup">삭제</GeneralButton>
-        <GeneralButton :class="$style.button" theme="primary" type="submit">수정</GeneralButton>
+        <GeneralButton theme="danger" type="button" :whenClick="deleteGroup">{{$t('views.aclgroup_manage.delete')}}</GeneralButton>
+        <GeneralButton :class="$style.button" theme="primary" type="submit">{{$t('views.aclgroup_manage.submit')}}</GeneralButton>
       </div>
     </div>
   </SeedForm>
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     async deleteGroup() {
-      if(!confirm(`${this.group.name} 그룹을 삭제하겠습니까?`)) return
+      if(!confirm(this.$t('views.aclgroup_manage.delete_confirm', { name: this.group.name }))) return
 
       await this.internalRequestAndProcess('/aclgroup/group_remove', {
         method: 'POST',

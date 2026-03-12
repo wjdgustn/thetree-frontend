@@ -1,13 +1,13 @@
 <template>
-  <SettingItemSelect label="취소선" ckey="wiki.strike" default="show">
-    <option value="show">보이기</option>
-    <option value="remove">취소선 제거</option>
-    <option value="hide">숨기기</option>
+  <SettingItemSelect :label="$t('components.wiki_setting.strike.name')" ckey="wiki.strike" default="show">
+    <option value="show">{{$t('components.wiki_setting.strike.show')}}</option>
+    <option value="remove">{{$t('components.discuss_setting.strike.remove')}}</option>
+    <option value="hide">{{$t('components.wiki_setting.strike.hide')}}</option>
   </SettingItemSelect>
-  <SettingItemSelect label="굵음" ckey="wiki.bold" default="show">
-    <option value="show">보이기</option>
-    <option value="remove">취소선 제거</option>
-    <option value="hide">숨기기</option>
+  <SettingItemSelect :label="$t('components.discuss_setting.bold')" ckey="wiki.bold" default="show">
+    <option value="show">{{$t('components.wiki_setting.strike.show')}}</option>
+    <option value="remove">{{$t('components.discuss_setting.strike.remove')}}</option>
+    <option value="hide">{{$t('components.wiki_setting.strike.hide')}}</option>
   </SettingItemSelect>
 </template>
 <script>

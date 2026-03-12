@@ -1,15 +1,15 @@
 <template>
-  <h3>편집 요청</h3>
+  <h3>{{$t('views.discuss.edit_request')}}</h3>
   <ul>
     <li v-for="item in data.openEditRequests">
-      <NuxtLink :to="'/edit_request/' + item.url">편집 요청 {{item.url}}</NuxtLink>
+      <NuxtLink :to="'/edit_request/' + item.url">{{$t('views.user_contribution.edit_request_link', { slug: item.url })}}</NuxtLink>
     </li>
   </ul>
   <p>
-    <NuxtLink :to="doc_action_link(data.document, 'discuss', { state: 'closed_edit_requests' })">[닫힌 편집 요청 보기]</NuxtLink>
+    <NuxtLink :to="doc_action_link(data.document, 'discuss', { state: 'closed_edit_requests' })">[{{$t('views.discuss.see_closed_edit_request')}}]</NuxtLink>
   </p>
 
-  <h3>토론</h3>
+  <h3>{{$t('views.discuss.discuss')}}</h3>
   <ul>
     <li v-for="(item, index) in data.openThreads">
       <NuxtLink :to="'#s-' + index + 1">{{index + 1}}</NuxtLink>
@@ -18,12 +18,12 @@
     </li>
   </ul>
   <p>
-    <NuxtLink :to="doc_action_link(data.document, 'discuss', { state: 'close' })">[닫힌 토론 목록 보기]</NuxtLink>
+    <NuxtLink :to="doc_action_link(data.document, 'discuss', { state: 'close' })">[{{$t('views.discuss.see_closed_discuss')}}]</NuxtLink>
   </p>
 
   <div v-for="(item, index) in data.openThreads">
     <SeedForm :beforeSubmit="goConfirm" method="post" class="delete-thread-form" :action="'/admin/thread/' + item.url + '/delete'" noCaptcha>
-      <SeedButton v-if="data.permissions.delete" type="submit" danger>[ADMIN] 스레드 삭제</SeedButton>
+      <SeedButton v-if="data.permissions.delete" type="submit" danger>{{$t('views.thread.delete_thread')}}</SeedButton>
     </SeedForm>
     <h2>{{index + 1}}. <NuxtLink :to="'/thread/' + item.url" :id="'s-' + index">{{item.topic}}</NuxtLink></h2>
     <div class="preview-group">
@@ -39,23 +39,21 @@
     </div>
   </div>
 
-  <h3>새 주제 생성</h3>
+  <h3>{{$t('views.discuss.new_topic')}}</h3>
 
   <Alert v-if="doc_fulltitle(page.data.document) === config['wiki.front_page']">
-    <strong>[경고!]</strong>
-    이 토론은 {{doc_fulltitle(page.data.document)}} 문서의 토론입니다.
-    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 각 문서의 토론에서 진행해 주시기 바랍니다.
-    {{doc_fulltitle(page.data.document)}} 문서와 관련 없는 토론은 삭제될 수 있습니다.
+    <strong>[{{$t('views.thread.warn')}}]</strong>
+    {{$t('views.thread.front_page_warn', { document: doc_fulltitle(page.data.document) })}}
   </Alert>
 
   <FormErrorAlert/>
   <SeedForm method="post">
-    <SeedFormBlock label="주제 :" inputId="topicInput" name="topic">
+    <SeedFormBlock :label="$t('views.discuss.topic_label')" inputId="topicInput" name="topic">
       <input ref="topicInput" type="text" id="topicInput" name="topic">
     </SeedFormBlock>
     <CommentPreviewTab ref="commentPreviewTab"/>
     <IpWarn discuss/>
-    <SeedButton class="submit-button" submit>전송</SeedButton>
+    <SeedButton class="submit-button" submit>{{$t('views.discuss.submit')}}</SeedButton>
   </SeedForm>
 </template>
 <script>
@@ -92,7 +90,7 @@ export default {
     },
     beforeLeave() {
       if(this.$refs.topicInput?.value || this.$refs.commentPreviewTab.$refs.commentInput?.value)
-        return confirm('변경된 사항이 저장되지 않았습니다.')
+        return confirm(this.$t('views.edit.not_saved'))
       return true
     }
   }

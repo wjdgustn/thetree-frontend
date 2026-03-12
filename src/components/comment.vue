@@ -18,11 +18,11 @@
                 <FontAwesomeIcon icon="caret-down" />
               </GeneralButton>
               <template #menu>
-                <GeneralButton v-if="comment.type === 0" :whenClick="toggleRaw" v-text="showRaw ? '위키 보기' : '원문 보기'" v-close-popover/>
+                <GeneralButton v-if="comment.type === 0" :whenClick="toggleRaw" v-text="$t('components.comment.' + (showRaw ? 'wiki' : 'raw'))" v-close-popover/>
                 <template v-if="data.permissions.manage">
                   <hr v-if="comment.type === 0">
-                  <GeneralButton theme="danger" :whenClick="toggleHide" v-text="comment.hidden ? '[ADMIN] 숨기기 해제' : '[ADMIN] 숨기기'" v-close-popover/>
-                  <GeneralButton theme="danger" :whenClick="togglePin" v-text="comment.id === data.thread?.pinnedComment ? '[ADMIN] 댓글 고정 해제' : '[ADMIN] 댓글 고정'" v-close-popover/>
+                  <GeneralButton theme="danger" :whenClick="toggleHide" v-text="$t('components.comment.' + (comment.hidden ? 'unhide' : 'hide'))" v-close-popover/>
+                  <GeneralButton theme="danger" :whenClick="togglePin" v-text="$t('components.comment.' + (comment.id === data.thread?.pinnedComment ? 'unpin' : 'pin'))" v-close-popover/>
                 </template>
               </template>
             </ContextMenu>
@@ -40,8 +40,12 @@
           <SeedButton v-if="forceShow && comment.hidden" @click="forceShow = false" danger>[ADMIN] HIDE</SeedButton>
         </template>
         <template v-else>
-          [<AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>에 의해 숨겨진 글입니다.]
-          <SeedButton @click="forceShow = true" v-if="data.permissions.manage" danger>[ADMIN] SHOW</SeedButton>
+          [<i18next :translation="$t('components.comment.hidden_comment')">
+            <template #hideUser>
+              <AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>
+            </template>
+          </i18next>]
+          <SeedButton @click="forceShow = true" v-if="data.permissions.manage" danger>{{$t('components.comment.force_show')}}</SeedButton>
         </template>
       </div>
     </div>
@@ -124,7 +128,7 @@ export default {
       return this.comment.user
     },
     pos() {
-      return '토론 ' + this.slug + ' #' + this.comment.id
+      return this.$t('document.discuss') + ' ' + this.slug + ' #' + this.comment.id
     }
   },
   methods: {

@@ -1,12 +1,12 @@
 <template>
   <ul>
-    <li><button type="button" class="tab-button" :class="{ active: activeTab === 'raw' }" @click="activeTab = 'raw'">RAW 편집</button></li>
-    <li><button type="button" class="tab-button" :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">미리보기</button></li>
+    <li><button type="button" class="tab-button" :class="{ active: activeTab === 'raw' }" @click="activeTab = 'raw'">{{$t('components.comment_preview_tab.raw')}}</button></li>
+    <li><button type="button" class="tab-button" :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">{{$t('components.comment_preview_tab.preview')}}</button></li>
   </ul>
   <div class="tabs">
     <div :class="{ active: activeTab === 'raw' }">
       <textarea v-if="!data.thread || data.thread.status === 0" ref="commentInput" rows="5" name="text" @keydown.ctrl.enter="sendComment"/>
-      <textarea v-else rows="5" disabled v-text="['', 'pause 상태입니다.', '닫힌 토론입니다.'][data.thread.status]"/>
+      <textarea v-else rows="5" disabled v-text="['', $t('components.comment_preview_tab.pause'), $t('components.comment_preview_tab.close')][data.thread.status]"/>
     </div>
     <div class="preview-tab" :class="{ active: activeTab === 'preview' }">
       <Comment

@@ -1,6 +1,6 @@
 <template>
   <SeedForm method="post">
-    <SeedFormBlock label="변경할 문서 제목" id="titleInput" name="title">
+    <SeedFormBlock :label="$t('views.move.title')" id="titleInput" name="title">
       <input type="text" id="titleInput" name="title">
     </SeedFormBlock>
     <SeedFormBlock :label="logLabel" inputId="logInput" name="log">
@@ -8,11 +8,11 @@
     </SeedFormBlock>
     <label>
       <input type="checkbox" name="mode" value="swap">
-      문서를 서로 맞바꾸기
+      {{$t('views.move.swap')}}
     </label>
     <IpWarn/>
     <div class="button-block">
-      <SeedButton submit>이동</SeedButton>
+      <SeedButton submit>{{$t('views.move.submit')}}</SeedButton>
     </div>
   </SeedForm>
 </template>
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     logLabel() {
-      let result = '요약'
+      let result = this.$t('views.move.log_label')
       if(this.log)
         result += ` (${this.log.length}/255)`
       return result

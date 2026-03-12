@@ -2,39 +2,23 @@
   <span>
     <input v-model="model" type="hidden" :name="name"/>
     <select v-model="select" :disabled="disable">
-      <option v-if="unblock" value="-1">해제</option>
+      <option v-if="unblock" value="-1">{{$t('components.duration_selector.unblock')}}</option>
       <option v-for="(label, value) in TemplateDuration" :value="value">{{label}}</option>
-      <option value="raw">직접입력</option>
+      <option value="raw">{{$t('components.duration_selector.raw')}}</option>
     </select>
     <template v-if="select === 'raw'">
       <input v-model="rawNumber" ref="rawNumber" :class="{ invalid: rawNumber && isNaN(rawNumber) }" :disabled="disable"/>
       <select v-model="rawUnit" :disabled="disable">
-        <option value="1">초</option>
-        <option value="60">분</option>
-        <option value="3600">시간</option>
-        <option value="86400">일</option>
-        <option value="604800">주</option>
+        <option value="1">{{$t('duration.seconds')}}</option>
+        <option value="60">{{$t('duration.minutes')}}</option>
+        <option value="3600">{{$t('duration.hours')}}</option>
+        <option value="86400">{{$t('duration.days')}}</option>
+        <option value="604800">{{$t('duration.weeks')}}</option>
       </select>
     </template>
   </span>
 </template>
-<script>
-const TemplateDuration = {
-  0: '영구',
-  86400: '하루',
-  259200: '3일',
-  432000: '5일',
-  604800: '7일',
-  1209600: '2주',
-  1814400: '3주',
-  2419200: '4주',
-  4838400: '2개월',
-  7257600: '3개월',
-  14515200: '6개월',
-  29030400: '1년'
-}
-
-export default {
+<script>export default {
   inject: {
     submittingSeedForm: {
       default: false
@@ -54,13 +38,28 @@ export default {
       model: this.value,
       select: this.value,
       rawNumber: '',
-      rawUnit: '1',
-      TemplateDuration
+      rawUnit: '1'
     }
   },
   computed: {
     disable() {
       return this.disabled || this.submittingSeedForm
+    },
+    TemplateDuration() {
+      return Object.fromEntries([
+        0,
+        86400,
+        259200,
+        432000,
+        604800,
+        1209600,
+        1814400,
+        2419200,
+        4838400,
+        7257600,
+        14515200,
+        29030400
+      ].map(a => [a, this.$t('components.duration_selector.template.' + a)]))
     }
   },
   emits: ['change'],

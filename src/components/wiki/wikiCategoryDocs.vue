@@ -1,11 +1,11 @@
 <template>
   <div v-for="(category, name) in categories" :id="'category-' + name">
-    <h2 v-text="name === '분류' ? '하위 분류' : name"></h2>
+    <h2 v-text="name === '분류' ? $t('components.wiki_category_docs.sub_category') : $t('namespaces.' + name)"></h2>
 
     <PrevNextBtn flex v-if="category.prevItem || category.nextItem" v-bind="pageProps(name, category)"/>
 
     <div>
-      <div>전체 {{category.count}}개 문서</div>
+      <div>{{$t('components.wiki_category_docs.total', { count: category.count })}}</div>
       <div :class="{ 'many-wrapper': Object.keys(category.categoriesPerChar).length >= 3 }">
         <div v-for="(documents, char) in category.categoriesPerChar">
           <h3>{{char}}</h3>

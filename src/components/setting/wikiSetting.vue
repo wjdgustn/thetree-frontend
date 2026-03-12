@@ -1,6 +1,6 @@
 <template>
   <SettingItemSelect
-      label="언어 (Language)"
+      :label="$t('components.wiki_setting.language')"
       ckey="lang"
       :default="$i18next.language"
       @change="$i18next.changeLanguage($event.target.value)"
@@ -10,52 +10,52 @@
   </SettingItemSelect>
   <SettingItemSelect
       v-if="session.account.type !== 1"
-      label="스킨"
+      :label="$t('views.mypage.skin')"
       ckey="skin"
       :default="skinName"
       @change="skinChange"
       noSave
   >
-    <option value="default">기본 스킨</option>
+    <option value="default">{{$t('views.mypage.default_skin')}}</option>
     <option v-for="skin in config.skins">{{skin}}</option>
   </SettingItemSelect>
-  <SettingItemSelect label="테마" ckey="wiki.theme" default="auto">
-    <option value="auto">자동 (시스템 설정)</option>
-    <option value="light">라이트</option>
-    <option value="dark">다크</option>
+  <SettingItemSelect :label="$t('components.wiki_setting.theme.name')" ckey="wiki.theme" default="auto">
+    <option value="auto">{{$t('components.wiki_setting.theme.auto')}}</option>
+    <option value="light">{{$t('components.wiki_setting.theme.light')}}</option>
+    <option value="dark">{{$t('components.wiki_setting.theme.dark')}}</option>
   </SettingItemSelect>
-  <SettingItemCheckbox label="내용과 링크가 다른 링크 펼치기" ckey="wiki.unfold_wiki_link" />
-  <SettingItemCheckbox label="표 워드랩 사용 안 함" ckey="wiki.nowrap_wiki_table" />
-  <SettingItemCheckbox label="문단을 기본으로 접기" ckey="wiki.hide_heading_content" />
-  <SettingItemCheckbox label="접기 문법을 기본으로 펼치기" ckey="wiki.show_folding" />
-  <SettingItemSelect label="취소선" ckey="wiki.strike" default="show">
-    <option value="show">보이기</option>
-    <option value="remove">취소선 제거</option>
-    <option value="hide">숨기기</option>
+  <SettingItemCheckbox :label="$t('components.wiki_setting.unfold_wiki_link')" ckey="wiki.unfold_wiki_link" />
+  <SettingItemCheckbox :label="$t('components.wiki_setting.nowrap_wiki_table')" ckey="wiki.nowrap_wiki_table" />
+  <SettingItemCheckbox :label="$t('components.wiki_setting.hide_heading_content')" ckey="wiki.hide_heading_content" />
+  <SettingItemCheckbox :label="$t('components.wiki_setting.show_folding')" ckey="wiki.show_folding" />
+  <SettingItemSelect :label="$t('components.wiki_setting.strike.name')" ckey="wiki.strike" default="show">
+    <option value="show">{{$t('components.wiki_setting.strike.show')}}</option>
+    <option value="remove">{{$t('components.wiki_setting.strike.remove')}}</option>
+    <option value="hide">{{$t('components.wiki_setting.strike.hide')}}</option>
   </SettingItemSelect>
-  <SettingItemSelect label="각주 표시 형식" ckey="wiki.footnote_type" :default="footnoteType">
-    <option value="default">브라우저 기본</option>
-    <option value="popover">팝오버</option>
-    <option value="popup">팝업</option>
-    <option value="unfold">펼침</option>
+  <SettingItemSelect :label="$t('components.wiki_setting.footnote_type.name')" ckey="wiki.footnote_type" :default="footnoteType">
+    <option value="default">{{$t('components.wiki_setting.footnote_type.default')}}</option>
+    <option value="popover">{{$t('components.wiki_setting.footnote_type.popover')}}</option>
+    <option value="popup">{{$t('components.wiki_setting.footnote_type.popup')}}</option>
+    <option value="unfold">{{$t('components.wiki_setting.footnote_type.unfold')}}</option>
   </SettingItemSelect>
-  <SettingItemSelect label="파일" ckey="wiki.image_hide" default="show">
-    <option value="show">보이기</option>
-    <option value="hide">숨기기</option>
-    <option value="hide_1mb">1MB 이상 파일 숨기기</option>
+  <SettingItemSelect :label="$t('components.wiki_setting.image_hide.name')" ckey="wiki.image_hide" default="show">
+    <option value="show">{{$t('components.wiki_setting.image_hide.show')}}</option>
+    <option value="hide">{{$t('components.wiki_setting.image_hide.hide')}}</option>
+    <option value="hide_1mb">{{$t('components.wiki_setting.image_hide.hide_1mb')}}</option>
   </SettingItemSelect>
-  <SettingItemCheckbox label="파일 lazy load 비활성화" ckey="wiki.disable_image_lazy"/>
-  <SettingItemSelect label="분류 위치" ckey="wiki.category_position" default="top">
-    <option value="top">상단</option>
-    <option value="bottom">하단</option>
-    <option value="both">모두</option>
+  <SettingItemCheckbox :label="$t('components.wiki_setting.disable_image_lazy')" ckey="wiki.disable_image_lazy"/>
+  <SettingItemSelect :label="$t('components.wiki_setting.category_position.name')" ckey="wiki.category_position" default="top">
+    <option value="top">{{$t('components.wiki_setting.category_position.top')}}</option>
+    <option value="bottom">{{$t('components.wiki_setting.category_position.bottom')}}</option>
+    <option value="both">{{$t('components.wiki_setting.category_position.both')}}</option>
   </SettingItemSelect>
   <SettingItemSelect label="기본 편집 모드" ckey="wiki.default_edit_mode" :default="defaultEditMode">
     <template v-for="mode in editModes">
       <option :value="mode.name">{{mode.label}}</option>
     </template>
   </SettingItemSelect>
-  <SettingItemCheckbox label="상대 시간 표기를 사용하지 않음" ckey="wiki.no_relative_date" />
+  <SettingItemCheckbox :label="$t('components.wiki_setting.no_relative_date')" ckey="wiki.no_relative_date" />
 </template>
 <script>
 import Common from '@/mixins/common'

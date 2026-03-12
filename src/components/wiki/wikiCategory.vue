@@ -1,6 +1,6 @@
 <template>
   <div ref="el" class="category" :class="{ 'category-folded': isFold }">
-    <span>분류</span>
+    <span>{{$t('components.wiki_category.category')}}</span>
     <ul>
       <template v-for="c in categories">
         <li :class="{ blur: c.blur }">
@@ -9,7 +9,7 @@
       </template>
     </ul>
     <div v-if="showCurtain" class="curtain">
-      <GeneralButton class="curtain-button" :whenClick="onClickUnfoldButton">더 보기</GeneralButton>
+      <GeneralButton class="curtain-button" :whenClick="onClickUnfoldButton">{{$t('components.wiki_category.more')}}</GeneralButton>
     </div>
   </div>
 </template>

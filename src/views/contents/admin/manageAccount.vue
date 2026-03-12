@@ -7,12 +7,12 @@
     </SeedFormBlock>
     <SeedFormBlock :class="$style['form__row--buttons']">
       <div>
-        <GeneralButton theme="primary" type="submit">검색</GeneralButton>
+        <GeneralButton theme="primary" type="submit">{{$t('views.manage_account.search')}}</GeneralButton>
       </div>
     </SeedFormBlock>
 
     <div v-if="data.searchData">
-      <div>전체 {{data.searchData.total}}개</div>
+      <div>{{$t('views.manage_account.total', { count: data.searchData.total })}}</div>
       <PrevNextBtn flex :="data.searchData.pageProps"/>
       <ul>
         <li v-for="item in data.searchData.items" :key="item.uuid">
@@ -30,10 +30,10 @@
 
     <h3>{{data.targetUser.name}}</h3>
     <p v-if="data.verifyEnabled" class="phone-number-text">
-      전화번호:
+      {{$t('views.manage_account.phone')}}
       <span v-if="data.phoneNumber">{{data.phoneNumber}}</span>
-      <GeneralButton v-else-if="data.targetUser.mobileVerified" size="small" type="event" @click="accountAction('getPhoneNumber', false)">표시</GeneralButton>
-      <span v-else>없음</span>
+      <GeneralButton v-else-if="data.targetUser.mobileVerified" size="small" type="event" @click="accountAction('getPhoneNumber', false)">{{$t('views.manage_account.show')}}</GeneralButton>
+      <span v-else>{{$t('views.manage_account.no_phone')}}</span>
     </p>
     <SeedFormBlock name="name" label="name" inputId="nameInput" newStyle>
       <InputField name="name" id="nameInput" :value="data.targetUser.name" required/>
@@ -53,24 +53,24 @@
     </SeedFormBlock>
     <SeedFormBlock :class="$style['form__row--buttons']">
       <div>
-        <GeneralButton theme="primary" type="submit">적용</GeneralButton>
+        <GeneralButton theme="primary" type="submit">{{$t('views.manage_account.apply')}}</GeneralButton>
       </div>
     </SeedFormBlock>
 
-    <Heading title="도구" folded>
+    <Heading :title="$t('views.manage_account.tools.title')" folded>
       <SeedFormBlock newStyle>
-        <GeneralButton theme="danger" type="event" @click="accountAction('resetLastNameChange')">이름 변경 기간 제한 해제</GeneralButton>
-        <GeneralButton theme="danger" type="event" @click="accountAction('resetLastActivity')">탈퇴 미활동 제한 해제</GeneralButton>
-        <GeneralButton theme="danger" type="event" @click="accountAction('resetPasswordLink')">비밀번호 재설정 링크 생성</GeneralButton>
-        <GeneralButton :disabled="!data.targetUser.mobileVerified" theme="danger" type="event" @click="accountAction('removePhoneNumber')">모바일 인증 해제</GeneralButton>
-        <GeneralButton theme="danger" type="event" @click="accountAction('deleteAccount')">계정 삭제</GeneralButton>
+        <GeneralButton theme="danger" type="event" @click="accountAction('resetLastNameChange')">{{$t('views.manage_account.tools.reset_last_name_change')}}</GeneralButton>
+        <GeneralButton theme="danger" type="event" @click="accountAction('resetLastActivity')">{{$t('views.manage_account.tools.reset_last_activity')}}</GeneralButton>
+        <GeneralButton theme="danger" type="event" @click="accountAction('resetPasswordLink')">{{$t('views.manage_account.tools.reset_password_link')}}</GeneralButton>
+        <GeneralButton :disabled="!data.targetUser.mobileVerified" theme="danger" type="event" @click="accountAction('removePhoneNumber')">{{$t('views.manage_account.tools.remove_phone_number')}}</GeneralButton>
+        <GeneralButton theme="danger" type="event" @click="accountAction('deleteAccount')">{{$t('views.manage_account.tools.delete_account')}}</GeneralButton>
       </SeedFormBlock>
     </Heading>
 
-    <Heading v-if="data.externalProviders?.length" title="외부 계정 목록" folded>
+    <Heading v-if="data.externalProviders?.length" :title="$t('views.manage_account.external_account_list')" folded>
       <div :class="[$style.table, $style['table--bordered']]">
         <div :class="[$style.row, $style['row--head'], 'table-row']">
-          <div v-for="text in ['제공자', '이름', '이메일']" :class="[$style.column, 'table-column']">{{text}}</div>
+          <div v-for="text in ['provider', 'name', 'email'].map(a => $t('views.mypage.external_' + a))" :class="[$style.column, 'table-column']">{{text}}</div>
         </div>
         <div v-for="item in data.externalProviders" :class="[$style.row, 'table-row']">
           <div :class="[$style.column, 'table-column']">{{item.displayName}}</div>

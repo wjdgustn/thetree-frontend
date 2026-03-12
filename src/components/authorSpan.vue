@@ -19,22 +19,22 @@
       </div>
       <hr>
       <template v-if="isDeleted && !account.uuid">
-        <GeneralButton disabled>(없음)</GeneralButton>
+        <GeneralButton disabled>({{$t('components.author_span.deleted')}})</GeneralButton>
       </template>
       <template v-if="account.type === 1">
-        <GeneralButton :href="nameLink">사용자 문서</GeneralButton>
+        <GeneralButton :href="nameLink">{{$t('components.author_span.user_doc')}}</GeneralButton>
         <hr>
       </template>
       <template v-if="account.uuid">
-        <GeneralButton :href="contribution_link(account.uuid)">문서 기여 내역</GeneralButton>
-        <GeneralButton :href="contribution_link_discuss(account.uuid)">토론 기여 내역</GeneralButton>
+        <GeneralButton :href="contribution_link(account.uuid)">{{$t('components.author_span.document_contribution')}}</GeneralButton>
+        <GeneralButton :href="contribution_link_discuss(account.uuid)">{{$t('components.author_span.discuss_contribution')}}</GeneralButton>
         <template v-if="session.quick_block">
           <hr>
-          <GeneralButton v-close-popover :whenClick="copyUuid">UUID 복사</GeneralButton>
-          <GeneralButton :href="{ path: '/BlockHistory', query: { query: (account.type === 0 ? account.ip : account.uuid), target: 'text' } }">차단 내역 조회</GeneralButton>
+          <GeneralButton v-close-popover :whenClick="copyUuid">{{$t('components.author_span.copy_uuid')}}</GeneralButton>
+          <GeneralButton :href="{ path: '/BlockHistory', query: { query: (account.type === 0 ? account.ip : account.uuid), target: 'text' } }">{{$t('components.author_span.block_history')}}</GeneralButton>
           <template v-if="isBlockable">
             <hr>
-            <GeneralButton v-close-popover theme="danger" :whenClick="onBlockButtonClick">차단</GeneralButton>
+            <GeneralButton v-close-popover theme="danger" :whenClick="onBlockButtonClick">{{$t('components.author_span.block')}}</GeneralButton>
           </template>
         </template>
       </template>
@@ -70,7 +70,7 @@ export default {
   computed: {
     nameLink() {
       if(this.account.type === 1)
-        return this.doc_action_link(`사용자:${this.account.name}`, 'w')
+        return this.doc_action_link(`${this.$t('namespaces.사용자', { lng: this.config.lang || 'ko' })}:${this.account.name}`, 'w')
       else if(this.account.uuid)
         return this.contribution_link(this.account.uuid)
     },
@@ -85,25 +85,25 @@ export default {
       return this.account.type === 2
     },
     accountName() {
-      return this.isDeleted ? '(삭제된 사용자)' : (this.account.name || this.account.ip)
+      return this.isDeleted ? `(${this.$t('components.author_span.deleted_user')})` : (this.account.name || this.account.ip)
     },
     nameStyle() {
       if(!this.isDeleted) return this.account.userCSS
     },
     accountType() {
-      let str = this.account.type === 0 ? 'IP' : '사용자'
-      if(this.account.type === 2) str = '마이그레이션된 ' + str
+      let str = this.$t('components.author_span.' + (this.account.type === 0 ? 'ip' : 'user'))
+      if(this.account.type === 2) str = this.$t('components.author_span.migrated', { type: str })
 
       const admin = !!(this.account.flags & 1 << 5)
       const autoVerified = !!(this.account.flags & 1 << 1)
       const mobileVerified = !!(this.account.flags & 1 << 2)
 
-      if(autoVerified && mobileVerified) str = '모바일과 자동 인증된 ' + str
-      else if(autoVerified) str = '자동 인증된 ' + str
-      else if(mobileVerified) str = '모바일 인증된 ' + str
+      if(autoVerified && mobileVerified) str = this.$t('components.author_span.mobile_auto_verified', { type: str })
+      else if(autoVerified) str = this.$t('components.author_span.auto_verified', { type: str })
+      else if(mobileVerified) str = this.$t('components.author_span.mobile_verified', { type: str })
 
-      if(admin) str += ' (관리자)'
-      else if(this.discussAdmin) str += ' (전 관리자)'
+      if(admin) str += ` (${this.$t('components.author_span.admin')})`
+      else if(this.discussAdmin) str += ` (${this.$t('components.author_span.prev_admin')})`
 
       return str
     },
@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     onBlockButtonClick() {
-      const note = `${this.pos ? this.pos + ' ' : ''}긴급차단`
+      const note = this.$t('components.author_span.quick_block_note', { pos: this.pos || '' }).trim()
       this.openQuickACLGroup({
         ...(this.account.type === 0 ? {
           ip: this.account.ip
@@ -126,7 +126,7 @@ export default {
     copyUuid() {
       if(!this.account.uuid) return
       navigator.clipboard.writeText(this.account.uuid)
-      toast(`사용자 '${this.accountName}'의 UUID가 복사되었습니다.`)
+      toast(this.$t('components.author_span.copied_uuid', { accountName: this.accountName }))
     }
   }
 }

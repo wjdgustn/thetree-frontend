@@ -1,6 +1,6 @@
 <template>
   <Alert v-if="errorAlert" error class="error-alert">
-    <b>[오류!]</b>
+    <b>[{{$t('components.form_error_alert.error')}}]</b>
     &nbsp;<span v-html="errorAlert"/>
   </Alert>
 </template>

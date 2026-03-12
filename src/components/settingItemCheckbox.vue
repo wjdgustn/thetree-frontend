@@ -1,7 +1,7 @@
 <template>
   <SettingItem v-bind="$props">
     <div class="select-block">
-      <CheckBox class="setting-check" :id="ckey" v-model="value">사용</CheckBox>
+      <CheckBox class="setting-check" :id="ckey" v-model="value">{{$t('components.setting_item_checkbox.label')}}</CheckBox>
     </div>
   </SettingItem>
 </template>

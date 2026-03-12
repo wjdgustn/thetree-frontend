@@ -3,27 +3,27 @@
       class="link-tab"
       :items="[
           {
-            title: '전체',
+            title: $t('components.history_type_tab.all'),
             href: '?logtype=all',
             active: !$route.query.logtype || $route.query.logtype === 'all'
           },
           {
-            title: '새 문서',
+            title: $t('components.history_type_tab.create'),
             href: '?logtype=create',
             active: $route.query.logtype === 'create'
           },
           {
-            title: '삭제',
+            title: $t('components.history_type_tab.delete'),
             href: '?logtype=delete',
             active: $route.query.logtype === 'delete'
           },
           {
-            title: '이동',
+            title: $t('components.history_type_tab.move'),
             href: '?logtype=move',
             active: $route.query.logtype === 'move'
           },
           {
-            title: '되돌림',
+            title: $t('components.history_type_tab.revert'),
             href: '?logtype=revert',
             active: $route.query.logtype === 'revert'
           }

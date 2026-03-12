@@ -1,12 +1,16 @@
 <template>
-  <p>편집된 지 오래된 문서의 목록입니다. (리다이렉트 제외)</p>
+  <p>{{$t('views.old_pages.description')}}</p>
   <PrevNextBtn flex :="data.pageProps"/>
   <ul>
     <li v-for="item in data.items">
       <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')">
         {{doc_fulltitle(item.document.parsedName)}}
       </NuxtLink>
-      (수정 시각: <LocalDate :date="item.createdAt"/>)
+      (<i18next :translation="$t('views.old_pages.edit_date')">
+        <template #date>
+          <LocalDate :date="item.createdAt"/>
+        </template>
+      </i18next>)
     </li>
   </ul>
   <PrevNextBtn flex :="data.pageProps"/>

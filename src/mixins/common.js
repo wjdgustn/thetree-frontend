@@ -18,7 +18,7 @@ export default {
             else return document;
         },
         user_doc(str) {
-            return `사용자:${str}`;
+            return `${this.$t('namespaces.사용자', { lng: this.config.lang || 'ko' })}:${str}`;
         },
         contribution_link(uuid) {
             return `/contribution/${uuid}/document`;
@@ -60,22 +60,22 @@ export default {
         },
         getTitleDescription(page) {
             const text = {
-                edit_edit_request: '편집 요청',
-                edit_request: '편집 요청',
-                edit: '편집',
-                history: '역사',
-                backlinks: '역링크',
-                move: '이동',
-                delete: '삭제',
-                acl: 'ACL',
-                thread: '토론',
-                thread_list: '토론 목록',
-                thread_list_close: '닫힌 토론',
-                edit_request_close: '닫힌 편집 요청',
-                diff: '비교',
-                revert: `r${page.data.rev}로 되돌리기`,
-                raw: `r${page.data.rev} RAW`,
-                blame: `r${page.data.rev} Blame`,
+                edit_edit_request: this.$t('title_description.edit_request'),
+                edit_request: this.$t('title_description.edit_request'),
+                edit: this.$t('title_description.edit'),
+                history: this.$t('title_description.history'),
+                backlinks: this.$t('title_description.backlinks'),
+                move: this.$t('title_description.move'),
+                delete: this.$t('title_description.delete'),
+                acl: this.$t('title_description.acl'),
+                thread: this.$t('title_description.thread'),
+                thread_list: this.$t('title_description.thread_list'),
+                thread_list_close: this.$t('title_description.thread_list_close'),
+                edit_request_close: this.$t('title_description.edit_request_close'),
+                diff: this.$t('title_description.diff'),
+                revert: this.$t('title_description.revert', { rev: page.data.rev }),
+                raw: this.$t('title_description.raw', { rev: page.data.rev }),
+                blame: this.$t('title_description.blame', { rev: page.data.rev }),
                 wiki: page.data.rev ? `r${page.data.rev}` : '',
             }[page.viewName];
 
@@ -96,7 +96,7 @@ export default {
                 duration -= week;
                 weeks++;
             }
-            if(weeks) strs.push(`${weeks}주`);
+            if(weeks) strs.push(`${weeks}${this.$t('duration.weeks')}`);
 
             let days = 0;
             const day = 1000 * 60 * 60 * 24;
@@ -104,7 +104,7 @@ export default {
                 duration -= day;
                 days++;
             }
-            if(days) strs.push(`${days}일`);
+            if(days) strs.push(`${days}${this.$t('duration.days')}`);
 
             let hours = 0;
             const hour = 1000 * 60 * 60;
@@ -112,7 +112,7 @@ export default {
                 duration -= hour;
                 hours++;
             }
-            if(hours) strs.push(`${hours}시간`);
+            if(hours) strs.push(`${hours}${this.$t('duration.hours')}`);
 
             let minutes = 0;
             const minute = 1000 * 60;
@@ -120,7 +120,7 @@ export default {
                 duration -= minute;
                 minutes++;
             }
-            if(minutes) strs.push(`${minutes}분`);
+            if(minutes) strs.push(`${minutes}${this.$t('duration.minutes')}`);
 
             let seconds = 0;
             const second = 1000;
@@ -128,7 +128,7 @@ export default {
                 duration -= second;
                 seconds++;
             }
-            if(seconds) strs.push(`${seconds}초`);
+            if(seconds) strs.push(`${seconds}${this.$t('duration.seconds')}`);
 
             return strs.join(' ');
         },
@@ -185,8 +185,8 @@ export default {
 
             if(res.status !== 200) {
                 if(!this.$store.state.page.contentHtml && !this.$store.state.page.contentName) {
-                    this.$store.state.page.title = '오류'
-                    this.$store.state.page.contentHtml = `API 요청 실패: ${res.status}`
+                    this.$store.state.page.title = this.$t('titles.error')
+                    this.$store.state.page.contentHtml = `${this.$t('errors.api_request_failed')}: ${res.status}`
                     await this.$store.state.updateView()
                 }
                 else {

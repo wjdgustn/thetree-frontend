@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="item in data.editRequests">
-      <NuxtLink :to="'/edit_request/' + item.url">편집 요청 {{item.url}}</NuxtLink>
+      <NuxtLink :to="'/edit_request/' + item.url">{{$t('views.user_contribution.edit_request_link', { slug: item.url })}}</NuxtLink>
     </li>
   </ul>
 </template>

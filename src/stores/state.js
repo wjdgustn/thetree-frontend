@@ -32,7 +32,7 @@ export const useStateStore = defineStore('state', {
     parseResponse(json) {
       const statePatches = {}
       if(json.page) {
-        const publicData = { ...json.data.publicData }
+        const publicData = JSON.parse(JSON.stringify(json.data.publicData))
         if(publicData.document) {
           const i18next = this.components.mainView.$i18next
           publicData.document.namespace = i18next.t(`namespaces.${publicData.document.namespace}`, {
@@ -105,7 +105,8 @@ export const useStateStore = defineStore('state', {
         this.page.contentHtml = null
       }
       else {
-        this.page.title = '오류'
+        const i18next = this.components.mainView.$i18next
+        this.page.title = i18next.t('titles.error')
         this.page.contentHtml = `missing view ${contentName}`
       }
       this.isReady = true

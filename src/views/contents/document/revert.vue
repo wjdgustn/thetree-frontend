@@ -3,11 +3,11 @@
     <input type="hidden" name="uuid" :value="data.uuid">
     <WikiContent :content="data.contentHtml"/>
     <textarea readonly :value="data.content"/>
-    <SeedFormBlock label="요약" inputId="logInput" name="log">
+    <SeedFormBlock :label="$t('views.revert.log_label')" inputId="logInput" name="log">
       <input type="text" id="logInput" name="log">
     </SeedFormBlock>
     <div class="button-block">
-      <SeedButton submit>되돌리기</SeedButton>
+      <SeedButton submit>{{$t('views.revert.submit')}}</SeedButton>
     </div>
   </SeedForm>
 </template>

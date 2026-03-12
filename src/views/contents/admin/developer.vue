@@ -1,28 +1,28 @@
 <template>
   <Heading
-      title="업데이트"
+      :title="$t('views.developer.update')"
       :folded="!data.checkUpdate && !hasUpdate">
-    <p v-if="data.versionInfo.branch !== 'master'">브랜치: {{data.versionInfo.branch}}</p>
-    <p>현재 버전: {{data.versionInfo.versionData.version}}</p>
+    <p v-if="data.versionInfo.branch !== 'master'">{{$t('views.developer.branch')}}: {{data.versionInfo.branch}}</p>
+    <p>{{$t('views.developer.current_version')}}: {{data.versionInfo.versionData.version}}</p>
     <ul>
       <li>Backend: {{data.versionInfo.commitId.slice(0, 7)}}(<LocalDate :date="data.versionInfo.commitDate"/>)</li>
       <li>Frontend: {{data.versionInfo.feCommitId.slice(0, 7)}}(<LocalDate :date="data.versionInfo.feCommitDate"/>)</li>
     </ul>
-    <p>새 버전: {{data.newVersionInfo.versionData.version}}</p>
+    <p>{{$t('views.developer.new_version')}}: {{data.newVersionInfo.versionData.version}}</p>
     <ul>
       <li>Backend: {{data.newVersionInfo.commitId.slice(0, 7)}}(<LocalDate :date="data.newVersionInfo.commitDate"/>)</li>
       <li>Frontend: {{data.newVersionInfo.feCommitId.slice(0, 7)}}(<LocalDate :date="data.newVersionInfo.feCommitDate"/>)</li>
     </ul>
     <p>
-      마지막 업데이트 확인:
+      {{$t('views.developer.last_update_check')}}:
       <template v-if="data.newVersionInfo.lastUpdateCheck">
         <LocalDate :date="data.newVersionInfo.lastUpdateCheck"/> (<LocalDate :date="data.newVersionInfo.lastUpdateCheck" forceRelative/>)
       </template>
       <template v-else>
-        없음
+        {{$t('views.developer.no_update_check')}}
       </template>
       <template v-if="hasBEUpdate">
-        <p>Backend 업데이트 내역</p>
+        <p>{{$t('views.developer.backend_update_log')}}</p>
         <ul>
           <li v-for="item in data.newCommits">
             <a :href="item.html_url" target="_blank">{{item.sha.slice(0, 7)}}</a>
@@ -31,7 +31,7 @@
         </ul>
       </template>
       <template v-if="hasFEUpdate">
-        <p>Frontend 업데이트 내역</p>
+        <p>{{$t('views.developer.front_update_log')}}</p>
         <ul>
           <li v-for="item in data.newFECommits">
             <a :href="item.html_url" target="_blank">{{item.sha.slice(0, 7)}}</a>
@@ -40,91 +40,91 @@
         </ul>
       </template>
     </p>
-    <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/checkupdate')">업데이트 확인</GeneralButton>
-    <GeneralButton :disabled="!hasUpdate" theme="danger" type="event" @click="internalGet('/admin/config/tools/update')">업데이트</GeneralButton>
+    <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/checkupdate')">{{$t('views.developer.check_update')}}</GeneralButton>
+    <GeneralButton :disabled="!hasUpdate" theme="danger" type="event" @click="internalGet('/admin/config/tools/update')">{{$t('views.developer.do_update')}}</GeneralButton>
   </Heading>
-  <Heading title="스킨">
+  <Heading :title="$t('views.developer.skin')">
     <SeedForm method="post" action="/admin/developer/skin/add">
       <input name="name" placeholder="name" required>
       <input name="url" placeholder="URL" required style="width:40%">
-      <GeneralButton theme="primary" type="submit">추가</GeneralButton>
+      <GeneralButton theme="primary" type="submit">{{$t('views.developer.add')}}</GeneralButton>
     </SeedForm>
-    <GeneralButton theme="primary" type="event" @click="buildAllSkin">모두 빌드</GeneralButton>
+    <GeneralButton theme="primary" type="event" @click="buildAllSkin">{{$t('views.developer.build_all')}}</GeneralButton>
     <Heading v-for="(commitId, name) in data.skinCommitIds" :title="name" :level="3" :folded="name === 'plain'" :key="name">
       <template v-if="data.skinInfos[name]">
-        <p>빌드 정보</p>
+        <p>{{$t('views.developer.build_info')}}</p>
         <ul>
           <li>
             Frontend: {{data.skinInfos[name].commitIds.frontend}}(<LocalDate :date="data.skinInfos[name].commitDates?.frontend ?? 0"/>)
             <template v-if="data.skinInfos[name].commitIds.frontend !== data.versionInfo.feCommitId.slice(0, 7)">
-              (업데이트 필요)
+              ({{$t('views.developer.need_update')}})
             </template>
           </li>
           <li>
             Skin: {{data.skinInfos[name].commitIds.skin}}(<LocalDate :date="data.skinInfos[name].commitDates?.skin ?? 0"/>)
             <template v-if="commitId !== data.skinInfos[name].commitIds.skin">
-              (업데이트 필요)
+              ({{$t('views.developer.need_update')}})
             </template>
           </li>
         </ul>
       </template>
       <template v-else>
-        <p>빌드 없음</p>
+        <p>{{$t('views.developer.no_build')}}</p>
       </template>
-      <GeneralButton theme="primary" type="event" @click="internalPost('/admin/developer/skin/build', { name })">빌드</GeneralButton>
-      <p>설치된 스킨: {{commitId}}</p>
-      <GeneralButton theme="primary" type="event" @click="internalPost('/admin/developer/skin/update', { name })">업데이트</GeneralButton>
-      <GeneralButton theme="danger" type="event" @click="internalPost('/admin/developer/skin/delete', { name })" :disabled="name === 'plain'">삭제</GeneralButton>
+      <GeneralButton theme="primary" type="event" @click="internalPost('/admin/developer/skin/build', { name })">{{$t('views.developer.build')}}</GeneralButton>
+      <p>{{$t('views.developer.installed_skin')}}: {{commitId}}</p>
+      <GeneralButton theme="primary" type="event" @click="internalPost('/admin/developer/skin/update', { name })">{{$t('views.developer.do_update')}}</GeneralButton>
+      <GeneralButton theme="danger" type="event" @click="internalPost('/admin/developer/skin/delete', { name })" :disabled="name === 'plain'">{{$t('views.developer.delete')}}</GeneralButton>
     </Heading>
   </Heading>
-  <Heading title="도구">
-    <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/migrateopennamu')">openNAMU 데이터 마이그레이션</GeneralButton>
-    <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/mailtest')">이메일 전송 테스트</GeneralButton>
+  <Heading :title="$t('views.developer.tools.title')">
+    <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/migrateopennamu')">{{$t('views.developer.tools.migrateopennamu')}}</GeneralButton>
+    <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/mailtest')">{{$t('views.developer.tools.mailtest')}}</GeneralButton>
     <br><br>
-    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generateblame')">blame 없는 기록 blame 생성</GeneralButton>
-    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generatebacklink')">역링크/검색 문서 재생성</GeneralButton>
-    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generatebacklink_backlinkonly')">역링크만 재생성</GeneralButton>
-    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generatebacklink_searchonly')">검색 문서만 재생성</GeneralButton>
-    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/resetsearchindex')">MeiliSearch 인덱스 재생성</GeneralButton>
+    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generateblame')">{{$t('views.developer.tools.generateblame')}}</GeneralButton>
+    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generatebacklink')">{{$t('views.developer.tools.generatebacklink')}}</GeneralButton>
+    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generatebacklink_backlinkonly')">{{$t('views.developer.tools.generatebacklink_backlinkonly')}}</GeneralButton>
+    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/generatebacklink_searchonly')">{{$t('views.developer.tools.generatebacklink_searchonly')}}</GeneralButton>
+    <GeneralButton theme="danger" type="event" @click="internalGet('/admin/config/tools/resetsearchindex')">{{$t('views.developer.tools.resetsearchindex')}}</GeneralButton>
   </Heading>
   <Heading title="Eval">
     <pre class="eval-output-parent"><code v-html="data.evalOutput"/></pre>
     <SeedForm ref="evalForm" method="post" action="/admin/developer/eval">
       <textarea rows="5" name="code" @keydown="evalKeydown"/>
-      <GeneralButton theme="primary" type="submit">실행</GeneralButton>
+      <GeneralButton theme="primary" type="submit">{{$t('views.developer.execute')}}</GeneralButton>
     </SeedForm>
   </Heading>
-  <Heading title="설정">
+  <Heading :title="$t('views.config.config')">
     <Heading v-for="item in data.jsonConfigs" :level="3" :title="item.name" folded>
       <SeedForm method="post" action="/admin/config/configjson">
         <input type="hidden" name="config" :value="item.name">
         <textarea name="content" rows="15" :value="item.content"/>
-        <GeneralButton theme="primary" type="submit">적용</GeneralButton>
+        <GeneralButton theme="primary" type="submit">{{$t('views.config.apply')}}</GeneralButton>
       </SeedForm>
     </Heading>
   </Heading>
-  <Heading title="계정 만들기">
+  <Heading :title="$t('views.developer.signup')">
     <SeedForm method="post" action="/admin/developer/signup">
-      <SeedFormBlock label="이메일" inputId="emailInput" name="email">
+      <SeedFormBlock :label="$t('views.developer.email')" inputId="emailInput" name="email">
         <InputField id="emailInput" name="email" required/>
       </SeedFormBlock>
-      <SeedFormBlock label="이름" inputId="nameInput" name="name">
+      <SeedFormBlock :label="$t('views.developer.username')" inputId="nameInput" name="name">
         <InputField id="nameInput" name="name"/>
       </SeedFormBlock>
-      <GeneralButton theme="primary" type="submit">URL 생성</GeneralButton>
+      <GeneralButton theme="primary" type="submit">{{$t('views.developer.generate_url')}}</GeneralButton>
     </SeedForm>
   </Heading>
-  <Heading title="정적 파일">
+  <Heading :title="$t('views.developer.static_file')">
     <p v-for="item in data.customStaticFiles" class="static-file">
       <a :href="item" target="_blank">{{item}}</a>
-      <SeedButton danger @click="internalGet('/admin/config/tools/deletestaticfile?path=' + encodeURIComponent(item))">삭제</SeedButton>
+      <SeedButton danger @click="internalGet('/admin/config/tools/deletestaticfile?path=' + encodeURIComponent(item))">{{$t('views.developer.delete')}}</SeedButton>
     </p>
     <hr>
     <SeedForm method="post" action="/admin/developer/staticfile" enctype="multipart/form-data">
-      <input name="path" placeholder="경로" value="/" required>
-      <input name="filename" placeholder="파일 이름">
+      <input name="path" :placeholder="$t('views.developer.path')" value="/" required>
+      <input name="filename" :placeholder="$t('views.developer.filename')">
       <input type="file" name="file" required>
-      <GeneralButton theme="primary" type="submit">업로드</GeneralButton>
+      <GeneralButton theme="primary" type="submit">{{$t('views.developer.upload')}}</GeneralButton>
     </SeedForm>
   </Heading>
 </template>

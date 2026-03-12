@@ -1,13 +1,13 @@
 <template>
   <NamespaceSelector/>
-  <p>역 링크는 존재하나 아직 작성이 되지 않은 문서 목록입니다.</p>
-  <p>이 페이지는 하루에 한번 업데이트 됩니다.</p>
-  <GeneralButton v-if="data.permissions.dev" theme="danger" :whenClick="update">업데이트</GeneralButton>
+  <p>{{$t('views.needed_pages.backlink_but_no_document')}}</p>
+  <p>{{$t('views.needed_pages.updated_per_day')}}</p>
+  <GeneralButton v-if="data.permissions.dev" theme="danger" :whenClick="update">{{$t('views.needed_pages.update')}}</GeneralButton>
   <PrevNextBtn flex :="pageProps"/>
   <ul>
     <li v-for="item in data.items">
       <NuxtLink :to="doc_action_link(item, 'w')">{{doc_fulltitle(item)}}</NuxtLink>
-      &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[역링크]</NuxtLink>
+      &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[{{$t('views.needed_pages.backlink')}}]</NuxtLink>
     </li>
   </ul>
   <PrevNextBtn flex :="pageProps"/>

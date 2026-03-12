@@ -1,11 +1,15 @@
 <template>
   <Alert v-if="legacySkin && session.notifications.length && !hideNotificationAlert" theme="primary" closable @close="hideNotificationAlert = true">
-    확인하지 않은 알림이 {{session.notifications.length}}개<template v-if="session.notifications.length >= 5"> 이상</template> 있습니다. <NuxtLink to="/member/notifications">여기를 눌러</NuxtLink> 확인하세요.
+    <i18next :translation="$t('components.nuxt.unchecked_notification' + (session.notifications.length >= 5 ? '_many' : ''), { count: session.notifications.length })">
+      <template #link>
+        <NuxtLink to="/member/notifications">{{$t('components.nuxt.unchecked_notification_link_text')}}</NuxtLink>
+      </template>
+    </i18next>
   </Alert>
   <template v-if="$store.state.page.contentHtml">
     <div v-html="$store.state.page.contentHtml" @click="onDynamicContentClick"></div>
-    <p v-if="page.title === '오류' && data.document">
-      <GeneralButton :href="doc_action_link(data.document, 'w')">문서로 돌아가기</GeneralButton>
+    <p v-if="page.title === $t('titles.error') && data.document">
+      <GeneralButton :href="doc_action_link(data.document, 'w')">{{$t('components.nuxt.go_back_to_document')}}</GeneralButton>
     </p>
   </template>
   <component v-else :is="$store.state.viewData.viewComponent"></component>

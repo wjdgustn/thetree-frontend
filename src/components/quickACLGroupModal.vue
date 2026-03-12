@@ -1,10 +1,10 @@
 <template>
   <Modal @beforeOpen="beforeOpen" v-slot="props">
     <SeedForm :afterSubmit="afterSubmit" method="post" action="/aclgroup">
-      <h4>빠른 ACLGroup</h4>
+      <h4>{{$t('components.quick_acl_group_modal.title')}}</h4>
       <FormErrorAlert/>
       <div>
-        <p>그룹:</p>
+        <p>{{$t('components.quick_acl_group_modal.group')}}</p>
         <select v-if="groups.length" name="group">
           <option v-for="item in groups" :value="item.uuid">{{item.name}}</option>
         </select>
@@ -12,10 +12,10 @@
         <ShowError tag="group"/>
       </div>
       <div>
-        <p>대상:</p>
+        <p>{{$t('components.quick_acl_group_modal.mode')}}</p>
         <select name="mode" v-model="mode">
-          <option value="ip">아이피</option>
-          <option value="username">사용자 이름</option>
+          <option value="ip">{{$t('views.aclgroup.mode.ip')}}</option>
+          <option value="username">{{$t('views.aclgroup.mode.username')}}</option>
         </select>
         <ShowError tag="mode"/>
         <input v-if="mode === 'ip'" type="text" name="ip" v-model="ip">
@@ -23,18 +23,18 @@
         <ShowError :tag="mode"/>
       </div>
       <div>
-        <p>사유:</p>
+        <p>{{$t('components.quick_acl_group_modal.note')}}</p>
         <input type="text" name="note" v-model="note">
         <ShowError tag="note"/>
       </div>
       <div>
-        <p>차단 기간:</p>
+        <p>{{$t('components.quick_acl_group_modal.duration')}}</p>
         <DurationSelector name="duration"/>
         <ShowError tag="duration"/>
       </div>
       <div class="button-block">
-        <SeedButton type="submit" large danger>추가</SeedButton>
-        <SeedButton type="button" large @click="props.close">취소</SeedButton>
+        <SeedButton type="submit" large danger>{{$t('components.quick_acl_group_modal.add')}}</SeedButton>
+        <SeedButton type="button" large @click="props.close">{{$t('components.quick_acl_group_modal.cancel')}}</SeedButton>
       </div>
     </SeedForm>
   </Modal>

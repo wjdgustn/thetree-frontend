@@ -1,16 +1,18 @@
 <template>
   <p>
-    다음은 [[<NuxtLink :to="doc_action_link('분류:분류', 'w')">분류:분류</NuxtLink>]]에서
-    분류로 도달할 수 없는 분류로,
-    역링크가 없거나 자기네들끼리만 분류 되어 있는 경우입니다.
+    <i18next :translation="$t('views.orphaned_categories.description')">
+      <template #link>
+        <NuxtLink :to="doc_action_link('분류:분류', 'w')">{{$t('namespaces.분류')}}:{{$t('namespaces.분류')}}</NuxtLink>
+      </template>
+    </i18next>
   </p>
-  <p>이 페이지는 하루에 한번 업데이트 됩니다.</p>
-  <GeneralButton v-if="data.permissions.dev" theme="danger" :whenClick="update">업데이트</GeneralButton>
+  <p>{{$t('views.needed_pages.updated_per_day')}}</p>
+  <GeneralButton v-if="data.permissions.dev" theme="danger" :whenClick="update">{{$t('views.needed_pages.update')}}</GeneralButton>
   <PrevNextBtn flex :="pageProps"/>
   <ul>
     <li v-for="item in data.items">
       <NuxtLink :to="doc_action_link(item, 'w')">{{doc_fulltitle(item)}}</NuxtLink>
-      &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[역링크]</NuxtLink>
+      &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[{{$t('views.needed_pages.backlink')}}]</NuxtLink>
     </li>
   </ul>
   <PrevNextBtn flex :="pageProps"/>

@@ -1,32 +1,38 @@
 <template>
   <h3>
-    <AuthorSpan :account="editRequest.createdUser" :pos="pos"/>가
-    <LocalDate :date="editRequest.createdAt"/>에 요청
+    <i18next :translation="$t('views.edit_request.name_and_date')">
+      <template #createdUser>
+        <AuthorSpan :account="editRequest.createdUser" :pos="pos"/>
+      </template>
+      <template #createdAt>
+        <LocalDate :date="editRequest.createdAt"/>
+      </template>
+    </i18next>
   </h3>
   <hr>
   <div class="margin-block">
-    <label>기준 판</label>
+    <label>{{$t('views.edit_request.base_rev')}}</label>
     r{{data.baseRev.rev}}
     <DiffCount :count="editRequest.diffLength"/>
   </div>
   <div class="margin-block">
-    <label>편집 요약</label>
+    <label>{{$t('views.edit_request.log')}}</label>
     {{editRequest.log}}
   </div>
   <Modal v-if="editRequest.status === 0" v-model="showCloseModal" v-slot="props" classes="close-modal">
     <SeedForm method="post" :action="'/edit_request/' + editRequest.url + '/close'" :afterSubmit="afterCloseSubmit">
-      <h4>편집 요청 닫기</h4>
+      <h4>{{$t('views.edit_request.close_modal.title')}}</h4>
       <div>
-        <p>사유:</p>
+        <p>{{$t('views.edit_request.reason')}}:</p>
         <input type="text" name="close_reason">
       </div>
       <div v-if="data.permissions.status">
-        <p>이 편집 요청을 다시 열수 없게 잠금</p>
+        <p>{{$t('views.edit_request.close_modal.lock')}}</p>
         <input type="checkbox" name="lock" value="Y">
       </div>
       <div class="button-block">
-        <SeedButton submit large>닫기</SeedButton>
-        <SeedButton type="button" large @click="props.close">취소</SeedButton>
+        <SeedButton submit large>{{$t('views.edit_request.close_modal.close')}}</SeedButton>
+        <SeedButton type="button" large @click="props.close">{{$t('views.edit_request.close_modal.cancel')}}</SeedButton>
       </div>
     </SeedForm>
   </Modal>
@@ -35,9 +41,13 @@
 
   <div class="action-block">
     <div v-if="editRequest.status === 0">
-      <h4>이 편집 요청을...</h4>
+      <h4>{{$t('views.edit_request.this_edit_request')}}</h4>
       <div>
-        <LocalDate :date="editRequest.lastUpdatedAt"/>에 마지막으로 수정됨
+        <i18next :translation="$t('views.edit_request.edit_date')">
+          <template #lastUpdatedAt>
+            <LocalDate :date="editRequest.lastUpdatedAt"/>
+          </template>
+        </i18next>
       </div>
       <div class="button-block">
         <SeedForm method="post" :action="'/edit_request/' + editRequest.url + '/accept'">
@@ -48,29 +58,38 @@
       </div>
     </div>
     <div v-else-if="editRequest.status === 1">
-      <h4>편집 요청이 승인되었습니다.</h4>
+      <h4>{{$t('views.edit_request.accepted_title')}}</h4>
       <div>
-        <LocalDate :date="editRequest.lastUpdatedAt"/>에
-        <AuthorSpan :account="editRequest.lastUpdateUser" :pos="pos"/>가
-        r{{editRequest.acceptedRev.rev}}
-        <span class="history-action">
-          (<NuxtLink :to="doc_action_link(data.document, 'w', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">보기</NuxtLink>
-          | <NuxtLink :to="doc_action_link(data.document, 'raw', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">RAW</NuxtLink>
-          | <NuxtLink :to="doc_action_link(data.document, 'diff', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">비교</NuxtLink>)
+        <i18next :translation="$t('views.edit_request.accepted_description', { rev: editRequest.acceptedRev.rev })">
+          <template #lastUpdatedAt>
+            <LocalDate :date="editRequest.lastUpdatedAt"/>
+          </template>
+          <template #lastUpdateUser>
+            <AuthorSpan :account="editRequest.lastUpdateUser" :pos="pos"/>
+          </template>
+          <template #action>
+            <span class="history-action">
+          (<NuxtLink :to="doc_action_link(data.document, 'w', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">{{$t('document.w')}}</NuxtLink>
+          | <NuxtLink :to="doc_action_link(data.document, 'raw', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">{{$t('document.raw')}}</NuxtLink>
+          | <NuxtLink :to="doc_action_link(data.document, 'diff', { uuid: editRequest.acceptedRev.uuid })" rel="nofollow">{{$t('document.diff')}}</NuxtLink>)
         </span>
-        으로 승인함.
+          </template>
+        </i18next>
       </div>
     </div>
     <div v-else>
-      <h4>편집 요청이 닫혔습니다.</h4>
+      <h4>{{$t('views.edit_request.closed_title')}}</h4>
       <div>
-        <LocalDate :date="editRequest.lastUpdatedAt"/>에
-        <AuthorSpan :account="editRequest.lastUpdateUser" :pos="pos"/>가
-        편집 요청을
-        <template v-if="editRequest.status === 3">닫고 잠갔습니다.</template>
-        <template v-else>닫았습니다.</template>
+        <i18next :translation="$t(`views.edit_request.${editRequest.status === 3 ? 'locked' : 'closed'}_description`)">
+          <template #lastUpdatedAt>
+            <LocalDate :date="editRequest.lastUpdatedAt"/>
+          </template>
+          <template #lastUpdateUser>
+            <AuthorSpan :account="editRequest.lastUpdateUser" :pos="pos"/>
+          </template>
+        </i18next>
       </div>
-      <p v-if="editRequest.closedReason">사유: {{editRequest.closedReason}}</p>
+      <p v-if="editRequest.closedReason">{{$t('views.edit_request.reason')}}: {{editRequest.closedReason}}</p>
       <div class="button-block">
         <SeedForm method="post" :action="'/edit_request/' + editRequest.url + '/reopen'">
           <SeedButton green large :disabled="reopenInfo.disabled" v-tooltip="reopenInfo.tooltip">Reopen</SeedButton>
@@ -81,12 +100,12 @@
 
   <template v-if="data.showContent">
     <ul>
-      <li><button :class="{ active: activeTab === 'compare' }" @click="activeTab = 'compare'">비교</button></li>
-      <li><button :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">미리보기</button></li>
+      <li><button :class="{ active: activeTab === 'compare' }" @click="activeTab = 'compare'">{{$t('views.edit_request.compare')}}</button></li>
+      <li><button :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">{{$t('views.edit_request.preview')}}</button></li>
     </ul>
     <div class="tabs">
       <div :class="{ active: activeTab === 'compare' }">
-        <Diff :title="`편집 요청 ${editRequest.url}`" :diffHtml="data.diff.diffHtml"/>
+        <Diff :title="$t('views.user_contribution.edit_request_link', { slug: editRequest.url })" :diffHtml="data.diff.diffHtml"/>
       </div>
       <div class="preview-tab" :class="{ active: activeTab === 'preview', loading: !preview.content }">
         <WikiContent v-if="preview.content" :content="preview.content" :categories="preview.categories"/>
@@ -145,39 +164,39 @@ export default {
       return this.data.editRequest
     },
     pos() {
-      return '편집 요청' + this.editRequest.url
+      return this.$t('document.edit_request') + this.editRequest.url
     },
     acceptTooltip() {
       return this.data.conflict
-          ? '이 편집 요청은 충돌된 상태입니다. 요청자가 수정해야 합니다.'
-          : (this.data.editable ? '이 편집 요청을 문서에 적용합니다.' : '이 문서를 편집할 수 있는 권한이 없습니다.')
+          ? this.$t('views.edit_request.accept_tooltip_conflict')
+          : (this.data.editable ? this.$t('views.edit_request.accept_tooltip') : this.$t('views.edit_request.accept_tooltip_missing_perm'))
     },
     closeTooltip() {
       return this.data.selfCreated || this.data.editable
-          ? '이 편집 요청을 닫습니다.'
-          : '편집 요청을 닫기 위해서는 요청자 본인이거나 문서를 편집할 수 있는 권한이 있어야 합니다.'
+          ? this.$t('views.edit_request.close_tooltip')
+          : this.$t('views.edit_request.close_tooltip_missing_perm')
     },
     editTooltip() {
       return this.data.selfCreated
-          ? '편집 요청을 수정합니다.'
-          : '요청자 본인만 수정할 수 있습니다.'
+          ? this.$t('views.edit_request.edit_tooltip')
+          : this.$t('views.edit_request.edit_tooltip_not_self')
     },
     reopenInfo() {
       let disabled = false
-      let tooltip = '이 편집 요청을 다시 엽니다.'
+      let tooltip = this.$t('views.edit_request.reopen_tooltip')
 
       const updateThreadStatusPerm = this.data.permissions.status
 
       if(this.editRequest.status === 3) {
         if(!updateThreadStatusPerm) {
           disabled = true
-          tooltip = '이 편집 요청은 잠겨있어서 다시 열 수 없습니다.'
+          tooltip = this.$t('views.edit_request.reopen_tooltip_locked')
         }
       }
       else {
         if(!this.data.selfCreated && !updateThreadStatusPerm) {
           disabled = true
-          tooltip = '편집 요청을 다시 열기 위해서는 요청자 본인이거나 권한이 있어야 합니다.'
+          tooltip = this.$t('views.edit_request.reopen_tooltip_missing_perm')
         }
       }
 

@@ -1,6 +1,6 @@
 <template>
-  <p>마지막 로그인 UA : {{data.userAgent}}</p>
-  <p>이메일 : {{data.targetUser?.email}}</p>
+  <p>{{$t('views.login_history_result.last_ua', { userAgent: data.userAgent })}}</p>
+  <p>{{$t('views.login_history_result.email', { email: data.targetUser?.email })}}</p>
   <PrevNextBtn flex v-bind="pageProps"/>
   <div>
     <table>

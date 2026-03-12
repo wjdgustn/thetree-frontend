@@ -1,10 +1,10 @@
 <template>
-  <p>{{page.title}} (문서 이름공간, 리다이렉트 제외)</p>
+  <p>{{page.title}} ({{$t('views.content_length.document_without_redirect')}})</p>
   <PrevNextBtn flex :="data.pageProps"/>
   <ul>
     <li v-for="item in data.items">
       <NuxtLink :to="doc_action_link(item.document.parsedName, 'w')">{{doc_fulltitle(item.document.parsedName)}}</NuxtLink>
-      ({{item.contentLength}}글자)
+      ({{$t('views.content_length.char_count', { count: item.contentLength })}})
     </li>
   </ul>
   <PrevNextBtn flex :="data.pageProps"/>

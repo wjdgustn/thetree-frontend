@@ -1,17 +1,19 @@
 <template>
   <NamespaceSelector/>
   <p>
-    다음은 [[<NuxtLink :to="doc_action_link(frontPage, 'w')">{{frontPage}}</NuxtLink>]]에서
-    링크로 도달할 수 없는 문서로,
-    역링크가 없거나 자기네들끼리만 링크가 되어 있는 경우입니다.
+    <i18next :translation="$t('views.orphaned_pages.description')">
+      <template #link>
+        <NuxtLink :to="doc_action_link(frontPage, 'w')">{{frontPage}}</NuxtLink>
+      </template>
+    </i18next>
   </p>
-  <p>이 페이지는 하루에 한번 업데이트 됩니다.</p>
-  <GeneralButton v-if="data.permissions.dev" theme="danger" :whenClick="update">업데이트</GeneralButton>
+  <p>{{$t('views.needed_pages.updated_per_day')}}</p>
+  <GeneralButton v-if="data.permissions.dev" theme="danger" :whenClick="update">{{$t('views.needed_pages.update')}}</GeneralButton>
   <PrevNextBtn flex :="pageProps"/>
   <ul>
     <li v-for="item in data.items">
       <NuxtLink :to="doc_action_link(item, 'w')">{{doc_fulltitle(item)}}</NuxtLink>
-      &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[역링크]</NuxtLink>
+      &nbsp;<NuxtLink :to="doc_action_link(item, 'backlink')">[{{$t('views.needed_pages.backlink')}}]</NuxtLink>
     </li>
   </ul>
   <PrevNextBtn flex :="pageProps"/>

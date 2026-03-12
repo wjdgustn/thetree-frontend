@@ -8,7 +8,7 @@
       <input type="checkbox" name="hidelog" value="Y">
     </label>
     <div class="button-block">
-      <SeedButton submit>확인</SeedButton>
+      <SeedButton submit>{{$t('views.login_history.submit')}}</SeedButton>
     </div>
   </SeedForm>
 </template>

@@ -1,32 +1,32 @@
 <template>
-  <Heading title="설정">
+  <Heading :title="$t('views.config.config')">
     <Heading v-for="item in data.jsonConfigs" :level="3" :title="item.name">
       <SeedForm method="post" action="/admin/config/configjson">
         <input type="hidden" name="config" :value="item.name">
         <textarea name="content" rows="15" :value="item.content"/>
-        <GeneralButton theme="primary" type="submit">적용</GeneralButton>
+        <GeneralButton theme="primary" type="submit">{{$t('views.config.apply')}}</GeneralButton>
       </SeedForm>
     </Heading>
 
-    <Heading :level="3" title="텍스트" folded>
+    <Heading :level="3" :title="$t('views.config.text')" folded>
       <SeedForm method="post" action="/admin/config/stringconfig/add">
         <input name="key" placeholder="key" required>
-        <GeneralButton theme="primary" type="submit">추가</GeneralButton>
-        <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/fixstringconfig')">stringConfig.example.json 필드 추가</GeneralButton>
+        <GeneralButton theme="primary" type="submit">{{$t('views.config.add')}}</GeneralButton>
+        <GeneralButton theme="primary" type="event" @click="internalGet('/admin/config/tools/fixstringconfig')">{{$t('views.config.add_string_field')}}</GeneralButton>
       </SeedForm>
 
       <SeedForm v-for="(value, key) in data.stringConfig" :key="key" method="post" action="/admin/config/stringconfig">
         <input type="hidden" name="key" :value="key">
         <Heading :title="key" :level="4" folded>
           <textarea name="value" rows="10" :value="value"/>
-          <GeneralButton theme="primary" type="submit">적용</GeneralButton>
-          <GeneralButton theme="danger" type="event" @click="internalGet(`/admin/config/tools/removestringconfig?key=${encodeURIComponent(key)}`)">삭제</GeneralButton>
+          <GeneralButton theme="primary" type="submit">{{$t('views.config.apply')}}</GeneralButton>
+          <GeneralButton theme="danger" type="event" @click="internalGet(`/admin/config/tools/removestringconfig?key=${encodeURIComponent(key)}`)">{{$t('views.config.delete')}}</GeneralButton>
         </Heading>
       </SeedForm>
     </Heading>
   </Heading>
 
-  <Heading title="기능 비활성화">
+  <Heading :title="$t('views.config.disable_feature')">
     <div class="wiki-content">
       <div class="wiki-table-wrap">
         <table class="wiki-table">
@@ -47,7 +47,7 @@
             <td style="min-width: 120px;">{{item.messageType}}</td>
             <td style="min-width: 100px;">{{item.message}}</td>
             <td>
-              <SeedButton danger @click="internalGet(`/admin/config/tools/deletedisabledfeature?index=${index}`)">삭제</SeedButton>
+              <SeedButton danger @click="internalGet(`/admin/config/tools/deletedisabledfeature?index=${index}`)">{{$t('views.config.delete')}}</SeedButton>
             </td>
           </tr>
           </tbody>
@@ -77,15 +77,15 @@
         <option>plaintext</option>
       </select>
       <input name="message" placeholder="message" v-model="disabledFeature.message">
-      <GeneralButton theme="primary" type="submit">추가</GeneralButton>
+      <GeneralButton theme="primary" type="submit">{{$t('views.config.add')}}</GeneralButton>
     </SeedForm>
   </Heading>
 
-  <Heading title="openNAMU 기여 이동" folded>
+  <Heading :title="$t('views.config.move_opennamu_contributions')" folded>
     <SeedForm method="post" action="/admin/config/migratecontribution">
-      <input name="from" placeholder="openNAMU 기여자 이름(O: 포함)" required>
-      <input name="to" placeholder="새 기여자 이름" required>
-      <GeneralButton theme="primary" type="submit">이동</GeneralButton>
+      <input name="from" :placeholder="$t('views.config.move_opennamu_from')" required>
+      <input name="to" :placeholder="$t('views.config.move_opennamu_to')" required>
+      <GeneralButton theme="primary" type="submit">{{$t('views.config.move_opennamu_submit')}}</GeneralButton>
     </SeedForm>
   </Heading>
 </template>

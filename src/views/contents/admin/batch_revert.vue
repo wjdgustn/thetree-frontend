@@ -11,44 +11,44 @@
     </SeedFormBlock>
     <SeedFormBlock name="closeEditRequests">
       <input type="checkbox" id="close_editrequestsInput" name="closeEditRequests" value="Y" checked>
-      <label for="close_editrequestsInput">편집 요청 닫기</label>
+      <label for="close_editrequestsInput">{{$t('views.batch_revert.close_edit_requests')}}</label>
     </SeedFormBlock>
     <SeedFormBlock name="hideThreadComments">
       <input type="checkbox" id="hide_threadInput" name="hideThreadComments" value="Y" checked>
-      <label for="hide_threadInput">토론 댓글 숨기기</label>
+      <label for="hide_threadInput">{{$t('views.batch_revert.hide_thread_comments')}}</label>
     </SeedFormBlock>
     <SeedFormBlock name="revertContributions">
       <input type="checkbox" id="revert_documentInput" name="revertContributions" value="Y" checked>
-      <label for="revert_documentInput">편집 되돌리기</label>
+      <label for="revert_documentInput">{{$t('views.batch_revert.revert_contributions')}}</label>
     </SeedFormBlock>
     <SeedFormBlock name="revertEditRequests">
       <input type="checkbox" id="revert_editrequestInput" name="revertEditRequests" value="Y" checked>
-      <label for="revert_editrequestInput">편집 요청 되돌리기</label>
+      <label for="revert_editrequestInput">{{$t('views.batch_revert.revert_edit_requests')}}</label>
     </SeedFormBlock>
     <SeedFormBlock v-if="data.hidelogPerm" name="revertContributions">
       <input type="checkbox" id="hidelogInput" name="hidelog" value="Y">
       <label for="hidelogInput">hidelog</label>
     </SeedFormBlock>
     <div class="button-block">
-      <SeedButton submit>실행</SeedButton>
+      <SeedButton submit>{{$t('views.batch_revert.submit')}}</SeedButton>
     </div>
   </SeedForm>
 
   <div v-if="data.result">
-    <p>작업 결과</p>
+    <p>{{$t('views.batch_revert.result')}}</p>
     <ul>
       <li v-for="item in data.result.resultText" v-html="item"></li>
     </ul>
 
     <template v-if="data.result.failResultText.length">
-      <p>실패 작업 목록</p>
+      <p>{{$t('views.batch_revert.failed_list')}}</p>
       <ul style="color: red">
         <li v-for="item in data.result.failResultText" v-html="item"></li>
       </ul>
     </template>
 
     <div>
-      <SeedButton @click="data.result = null">확인</SeedButton>
+      <SeedButton @click="data.result = null">{{$t('views.batch_revert.ok')}}</SeedButton>
     </div>
   </div>
 </template>
