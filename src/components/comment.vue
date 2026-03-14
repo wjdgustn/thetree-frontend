@@ -42,7 +42,7 @@
         <template v-else>
           [<i18next :translation="$t('components.comment.hidden_comment')">
             <template #hideUser>
-              <AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="comment.hideUser.admin"/>
+              <AuthorSpan :account="comment.hideUser" :pos="pos" discuss :discussAdmin="!!(comment.hideUser.flags & 1 << 5)"/>
             </template>
           </i18next>]
           <SeedButton @click="forceShow = true" v-if="data.permissions.manage" danger>{{$t('components.comment.force_show')}}</SeedButton>
