@@ -5,7 +5,7 @@
     {{$t('components.wiki_content.admin')}}
   </div>
   <div v-if="userbox.blocked" class="user-box banned-box">
-    {{$t('components.wiki_content.admin', { group: userbox.blocked.name, id: userbox.blocked.id })}}<br><br>
+    {{$t('components.wiki_content.blocked', { group: userbox.blocked.name, id: userbox.blocked.id })}}<br><br>
 
     <i18next :translation="$t('components.wiki_content.blocked_' + (userbox.blocked.expiresAt ? 'duration' : 'forever'), { group: userbox.blocked.name })">
       <template #createdAt>
