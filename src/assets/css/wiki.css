@@ -493,10 +493,6 @@
         display: none;
     }
 
-    .wiki-macro-toc details summary:before {
-        content: "목차";
-    }
-
     .wiki-macro-toc details[open] {
         padding-bottom: 4px;
     }
