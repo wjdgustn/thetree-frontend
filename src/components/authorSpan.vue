@@ -21,8 +21,8 @@
       <template v-if="isDeleted && !account.uuid">
         <GeneralButton disabled>({{$t('components.author_span.deleted')}})</GeneralButton>
       </template>
-      <template v-if="account.type === 1">
-        <GeneralButton :href="nameLink">{{$t('components.author_span.user_doc')}}</GeneralButton>
+      <template v-if="account.type === 1 || account.type === 0">
+        <GeneralButton :href="doc_action_link(user_doc(accountName, account.type), account.type ? 'w' : 'discuss')">{{$t('components.author_span.user_doc')}}</GeneralButton>
         <hr>
       </template>
       <template v-if="account.uuid">

@@ -17,8 +17,8 @@ export default {
             }
             else return document;
         },
-        user_doc(str) {
-            return `${this.$t('namespaces.사용자', { lng: this.config.lang || 'ko' })}:${str}`;
+        user_doc(str, type) {
+            return `${this.$t(`namespaces.${type ? '사용자' : '아이피사용자'}`, { lng: this.config.lang || 'ko' })}:${str}`;
         },
         contribution_link(uuid) {
             return `/contribution/${uuid}/document`;

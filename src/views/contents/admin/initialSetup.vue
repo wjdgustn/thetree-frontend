@@ -270,6 +270,8 @@ export default {
 
       for(let namespace of this.data.namespaces) {
         for(let aclType of aclTypes) {
+          if(namespace === '아이피사용자' && !['Read', 'CreateThread', 'WriteThreadComment'].includes(aclType)) continue
+
           if(namespace === '사용자' && aclType === 'Edit') {
             await addRule(namespace, aclType, {
               conditionType: 'Perm',
