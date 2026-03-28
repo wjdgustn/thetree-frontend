@@ -28,6 +28,7 @@
   <SettingItemCheckbox :label="$t('components.wiki_setting.nowrap_wiki_table')" ckey="wiki.nowrap_wiki_table" />
   <SettingItemCheckbox :label="$t('components.wiki_setting.hide_heading_content')" ckey="wiki.hide_heading_content" />
   <SettingItemCheckbox :label="$t('components.wiki_setting.show_folding')" ckey="wiki.show_folding" />
+  <SettingItemCheckbox :label="$t('components.wiki_setting.disable_folding_animation')" ckey="wiki.disable_folding_animation" />
   <SettingItemSelect :label="$t('components.wiki_setting.strike.name')" ckey="wiki.strike" default="show">
     <option value="show">{{$t('components.wiki_setting.strike.show')}}</option>
     <option value="remove">{{$t('components.wiki_setting.strike.remove')}}</option>
