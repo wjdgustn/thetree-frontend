@@ -6,7 +6,7 @@
       <header>
         <ul>
           <template v-for="tab in tabs">
-            <li :class="{ 'selected-tab': selectedTab === tab }" @click="selectTab(tab)">{{tab.label}}</li>
+            <li :class="{ 'selected-tab': selectedTab === tab }" @click="selectTab(tab)">{{$t('components.setting.tabs.' + tab.name)}}</li>
           </template>
         </ul>
       </header>
@@ -38,17 +38,14 @@ export default {
       tabs: [
         {
           name: 'wiki',
-          label: this.$t('components.setting.tabs.wiki'),
           component: markRaw(WikiSetting)
         },
         {
           name: 'discuss',
-          label: this.$t('components.setting.tabs.discuss'),
           component: markRaw(DiscussSetting)
         },
         {
           name: 'skin',
-          label: this.$t('components.setting.tabs.skin'),
           component: this.$slots.default
         }
       ],
