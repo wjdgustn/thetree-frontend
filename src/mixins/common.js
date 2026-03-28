@@ -76,7 +76,7 @@ export default {
                 revert: this.$t('title_description.revert', { rev: page.data.rev }),
                 raw: this.$t('title_description.raw', { rev: page.data.rev }),
                 blame: this.$t('title_description.blame', { rev: page.data.rev }),
-                wiki: page.data.rev ? `r${page.data.rev}` : '',
+                wiki: page.data.rev ? this.$t('title_description.w', { rev: page.data.rev }) : '',
             }[page.viewName];
 
             let additionalText;

@@ -28,8 +28,10 @@ router.isReady().then(async () => {
         .init({
             supportedLngs: ['ko', 'en'],
             fallbackLng: 'ko',
+            ns: ['engine', `skin_${__THETREE_SKIN_NAME__}`],
+            defaultNS: 'engine',
             backend: {
-                loadPath: '/locale/{{lng}}.json'
+                loadPath: '/locale/{{ns}}/{{lng}}'
             },
             detection: {
                 order: ['cookie', 'configDetector', 'navigator'],

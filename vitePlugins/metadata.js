@@ -6,6 +6,10 @@ export default function metadata(data, metadataPath) {
         name: 'thetree-metadata',
         closeBundle() {
             fs.writeFileSync(path.join(metadataPath, 'metadata.json'), JSON.stringify(data, null, 2))
+
+            const localePath = path.join('./skins', data.name, 'locale')
+            if(fs.existsSync(localePath))
+                fs.cpSync(localePath, path.join(metadataPath, 'locale'), { recursive: true })
         }
     }
 }
