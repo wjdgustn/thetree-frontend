@@ -1,6 +1,8 @@
 <template>
   <div v-for="(category, name) in categories" :id="'category-' + name">
-    <h2 v-text="name === '분류' ? $t('components.wiki_category_docs.sub_category') : $t('namespaces.' + name, { defaultValue: name })"></h2>
+    <h2 v-text="name === '분류'
+    ? $t('components.wiki_category_docs.sub_category')
+    : $t('components.wiki_category_docs.namespace', { namespace: $t('namespaces.' + name, { defaultValue: name }) })"></h2>
 
     <PrevNextBtn flex v-if="category.prevItem || category.nextItem" v-bind="pageProps(name, category)"/>
 
