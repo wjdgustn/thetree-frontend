@@ -2,7 +2,7 @@
   <FormErrorAlert/>
   <SeedForm method="post">
     <FlexFormBlock>
-      <pre class="signup-terms" v-html="terms"></pre>
+      <Terms/>
     </FlexFormBlock>
     <FlexFormBlock name="agree">
       <CheckBox name="agree">{{agreeText}}</CheckBox>
@@ -28,9 +28,11 @@ import GeneralButton from '@/components/generalButton'
 import FlexFormBlock from '@/components/form/flexFormBlock'
 import CheckBox from '@/components/form/checkBox'
 import EmailWhitelist from '@/components/emailWhitelist'
+import Terms from '@/components/terms'
 
 export default {
   components: {
+    Terms,
     SeedForm,
     FormErrorAlert,
     FlexFormBlock,
@@ -48,31 +50,5 @@ export default {
 form {
   margin: 0 auto;
   max-width: 40rem;
-}
-
-.signup-terms {
-  --input-color: var(--light-text-color, var(--text-color, #212529));
-  --input-background-color: #fcfcfb;
-  --input-border-color: #dfe1e2;
-  appearance: none;
-  background-color: var(--input-background-color);
-  border: 1px solid var(--input-border-color);
-  border-radius: 4px;
-  color: var(--input-color);
-  display: block;
-  font-size: .9rem;
-  line-height: 1.5;
-  padding: .3rem .75rem;
-  height: 30rem;
-  scrollbar-width: thin;
-  white-space: break-spaces;
-  resize: vertical;
-  margin: 0;
-}
-
-.theseed-dark-mode .signup-terms {
-  --input-color: var(--dark-text-color, var(--text-color, #e0e0e0));
-  --input-background-color: #2d2e2f;
-  --input-border-color: #5c5c5c;
 }
 </style>
