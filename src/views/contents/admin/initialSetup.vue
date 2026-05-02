@@ -33,11 +33,11 @@
   <Heading
       :title="$t('views.initial_setup.generate_default_aclgroup')"
       :folded="data.hasAclGroup">
-    <p>$t('views.initial_setup.generate_group_list')</p>
+    <p>{{$t('views.initial_setup.generate_group_list')}}</p>
     <ul>
       <li v-for="item in recommandedGroupList">{{item}}</li>
     </ul>
-    <GeneralButton theme="primary" :whenClick="addAclGroup" :disabled="data.hasAclGroup">$t('views.initial_setup.generate_default_aclgroup')</GeneralButton>
+    <GeneralButton theme="primary" :whenClick="addAclGroup" :disabled="data.hasAclGroup">{{$t('views.initial_setup.generate_default_aclgroup')}}</GeneralButton>
   </Heading>
   <Heading
     :title="$t('views.initial_setup.setup_nsacl')"
