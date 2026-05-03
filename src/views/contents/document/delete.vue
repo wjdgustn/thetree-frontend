@@ -8,14 +8,7 @@
       {{$t('views.delete.agree')}}
     </label>
     <p>
-      <b>
-        <i18next :translation="$t('views.delete.notify')">
-          <template #nbsp>
-            &nbsp;
-          </template>
-        </i18next>
-      </b>
-      <i18next :translation="$t('views.delete.notify_content')">
+      <b>[{{$t('views.delete.notify')}}]</b>&nbsp;<i18next :translation="$t('views.delete.notify_content')">
         <template #moveLink>
           <NuxtLink :to="doc_action_link(data.document, 'move')">{{$t('views.delete.move_link_text')}}</NuxtLink>
         </template>
