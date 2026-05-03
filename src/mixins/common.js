@@ -96,7 +96,7 @@ export default {
                 duration -= week;
                 weeks++;
             }
-            if(weeks) strs.push(`${weeks}${this.$t('duration.weeks')}`);
+            if(weeks) strs.push(`${weeks}${this.$t('duration.weeks', { count: weeks })}`);
 
             let days = 0;
             const day = 1000 * 60 * 60 * 24;
@@ -104,7 +104,7 @@ export default {
                 duration -= day;
                 days++;
             }
-            if(days) strs.push(`${days}${this.$t('duration.days')}`);
+            if(days) strs.push(`${days}${this.$t('duration.days', { count: days })}`);
 
             let hours = 0;
             const hour = 1000 * 60 * 60;
@@ -112,7 +112,7 @@ export default {
                 duration -= hour;
                 hours++;
             }
-            if(hours) strs.push(`${hours}${this.$t('duration.hours')}`);
+            if(hours) strs.push(`${hours}${this.$t('duration.hours', { count: hours })}`);
 
             let minutes = 0;
             const minute = 1000 * 60;
@@ -120,7 +120,7 @@ export default {
                 duration -= minute;
                 minutes++;
             }
-            if(minutes) strs.push(`${minutes}${this.$t('duration.minutes')}`);
+            if(minutes) strs.push(`${minutes}${this.$t('duration.minutes', { count: minutes })}`);
 
             let seconds = 0;
             const second = 1000;
@@ -128,7 +128,7 @@ export default {
                 duration -= second;
                 seconds++;
             }
-            if(seconds) strs.push(`${seconds}${this.$t('duration.seconds')}`);
+            if(seconds) strs.push(`${seconds}${this.$t('duration.seconds', { count: seconds })}`);
 
             return strs.join(' ');
         },
