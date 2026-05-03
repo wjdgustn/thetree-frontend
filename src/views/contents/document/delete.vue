@@ -20,6 +20,7 @@
           <NuxtLink :to="doc_action_link(data.document, 'move')">{{$t('views.delete.move_link_text')}}</NuxtLink>
         </template>
       </i18next>
+      <span v-html="config['wiki.delete_document_text'] || ''"/>
     </p>
     <IpWarn/>
     <div class="button-block">
