@@ -53,7 +53,7 @@
         <SeedForm method="post" :action="'/edit_request/' + editRequest.url + '/accept'">
           <SeedButton green large :disabled="data.conflict || !data.editable" v-tooltip="acceptTooltip">Accept</SeedButton>
         </SeedForm>
-        <SeedButton @click="showCloseModal = true" large :disabled="!data.editable && !data.selfCreated" v-tooltip="closeTooltip">Close</SeedButton>
+        <SeedButton @click="showCloseModal = true" large :disabled="!data.editable && !data.selfCreated && !data.permissions.status" v-tooltip="closeTooltip">Close</SeedButton>
         <SeedLinkButton info large :to="'/edit_request/' + editRequest.url + '/edit'" :disabled="!data.selfCreated" v-tooltip="editTooltip">Edit</SeedLinkButton>
       </div>
     </div>
@@ -172,7 +172,7 @@ export default {
           : (this.data.editable ? this.$t('views.edit_request.accept_tooltip') : this.$t('views.edit_request.accept_tooltip_missing_perm'))
     },
     closeTooltip() {
-      return this.data.selfCreated || this.data.editable
+      return this.data.selfCreated || this.data.editable || this.data.permissions.status
           ? this.$t('views.edit_request.close_tooltip')
           : this.$t('views.edit_request.close_tooltip_missing_perm')
     },
