@@ -464,27 +464,27 @@ export default {
 
       const onClicks = [...element.querySelectorAll('[data-onclick]')]
       for(let onClick of onClicks) {
-        const onClickStr = onClick.dataset.onclick
-        const onClickParams = onClickStr.split(',').filter(a => a)
+        const fullOnclickStr = onClick.dataset.onclick
+        const onclickList = fullOnclickStr.split(';').map(a => a.split(','))
         const clickHandler = e => {
           e.preventDefault()
-          switch(onClickParams[0]) {
+          for(let onclickParams of onclickList) switch(onclickParams[0]) {
             case 'toggle-class': {
-              const target = [...document.getElementsByClassName(onClickParams[1])]
+              const target = [...document.getElementsByClassName(onclickParams[1])]
               for(let el of target)
-                el.classList.toggle(onClickParams[2])
+                el.classList.toggle(onclickParams[2])
               break
             }
             case 'add-class': {
-              const target = [...document.getElementsByClassName(onClickParams[1])]
+              const target = [...document.getElementsByClassName(onclickParams[1])]
               for(let el of target)
-                el.classList.add(onClickParams[2])
+                el.classList.add(onclickParams[2])
               break
             }
             case 'remove-class': {
-              const target = [...document.getElementsByClassName(onClickParams[1])]
+              const target = [...document.getElementsByClassName(onclickParams[1])]
               for(let el of target)
-                el.classList.remove(onClickParams[2])
+                el.classList.remove(onclickParams[2])
               break
             }
           }
