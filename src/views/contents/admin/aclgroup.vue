@@ -75,7 +75,7 @@
       </thead>
 
       <tbody>
-      <tr v-for="item in data.groupItems">
+      <tr v-if="data.groupItems.length" v-for="item in data.groupItems">
         <td>{{item.id}}</td>
         <td>{{item.user?.name || item.ip || item.user?.uuid}}</td>
         <td>{{item.note}}</td>
@@ -89,6 +89,9 @@
         <td>
           <SeedButton :disabled="!data.removable" danger @click="openRemoveModal(item)">{{$t('views.aclgroup.delete')}}</SeedButton>
         </td>
+      </tr>
+      <tr v-else>
+        <td colspan="5">{{$t('views.aclgroup.table.empty')}}</td>
       </tr>
       </tbody>
     </table>
