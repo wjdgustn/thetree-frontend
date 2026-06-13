@@ -462,6 +462,39 @@ export default {
         }
       }
 
+      const onClicks = [...element.querySelectorAll('[data-onclick]')]
+      for(let onClick of onClicks) {
+        const onClickStr = onClick.dataset.onclick
+        const onClickParams = onClickStr.split(',').filter(a => a)
+        const clickHandler = e => {
+          e.preventDefault()
+          switch(onClickParams[0]) {
+            case 'toggle-class': {
+              const target = [...document.getElementsByClassName(onClickParams[1])]
+              for(let el of target)
+                el.classList.toggle(onClickParams[2])
+              break
+            }
+            case 'add-class': {
+              const target = [...document.getElementsByClassName(onClickParams[1])]
+              for(let el of target)
+                el.classList.add(onClickParams[2])
+              break
+            }
+            case 'remove-class': {
+              const target = [...document.getElementsByClassName(onClickParams[1])]
+              for(let el of target)
+                el.classList.remove(onClickParams[2])
+              break
+            }
+          }
+        }
+        onClick.addEventListener('click', clickHandler)
+        this.cleanupFunctions.push(() => {
+          onClick.removeEventListener('click', clickHandler)
+        })
+      }
+
       if(!this.discuss) {
         const anchorElem = document.getElementById(location.hash.slice(1))
         anchorElem?.scrollIntoView()
