@@ -52,11 +52,8 @@ export default {
     if(this.data.docScript) this.$nextTick(() => (0, eval)(this.data.docScript))
   },
   watch: {
-    async 'data.docScript'(newValue) {
-      if(newValue) {
-        await this.$nextTick()
-        (0, eval)(newValue)
-      }
+    'data.docScript'(newValue) {
+      if(newValue) this.$nextTick(() => (0, eval)(newValue))
     }
   },
   computed: {
