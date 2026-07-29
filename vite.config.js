@@ -116,6 +116,11 @@ export default defineConfig(async ({ mode, isSsrBuild }) => {
     },
     ssr: {
       noExternal: true
+    },
+    css: {
+      lightningcss: {
+        errorRecovery: true
+      }
     }
   })
 })
