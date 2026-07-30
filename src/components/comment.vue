@@ -7,7 +7,7 @@
     <div class="comment-inside" :class="{ 'tooltip-mode': tooltipMode }">
       <div class="user-block" :class="{ 'user-starter': !previewMode && (comment.user && comment.user?.uuid === data.thread?.createdUser) }">
         <span class="num-text">
-          <a :id="comment.id">#{{comment.id}}</a>
+          <a :id="comment.id" :href="'#' + comment.id">#{{comment.id}}</a>
         </span>
         <template v-if="fetched">
           <AuthorSpan :account="comment.user" :pos="pos" discuss :discussAdmin="comment.admin"/>
