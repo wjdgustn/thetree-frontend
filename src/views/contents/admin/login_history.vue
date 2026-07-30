@@ -1,5 +1,6 @@
 <template>
   <SeedForm :beforeSubmit="goConfirm" method="post">
+    <FormErrorAlert/>
     <SeedFormBlock label="Username" for="usernameInput" name="username">
       <SeedFormInput id="usernameInput" name="username" required/>
     </SeedFormBlock>
@@ -17,9 +18,11 @@ import SeedFormBlock from '@/components/form/seedFormBlock'
 import SeedButton from '@/components/seedButton'
 import SeedForm from '@/components/form/seedForm'
 import SeedFormInput from '@/components/form/seedFormInput'
+import FormErrorAlert from '@/components/form/formErrorAlert'
 
 export default {
   components: {
+    FormErrorAlert,
     SeedFormInput,
     SeedForm,
     SeedButton,
