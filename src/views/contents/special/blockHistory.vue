@@ -68,6 +68,9 @@
                 <AuthorSpan v-if="item.targetUser" :account="item.targetUser"/>
                 <template v-else>{{item.targetContent}}</template>
               </template>
+              <template #aclGroup>
+                <span class="bold">{{item.aclGroup?.name || item.aclGroupName || item.aclGroup}}</span>
+              </template>
             </i18next> <span class="block-id">#{{item.aclGroupId}}</span>
           </template>
           <template v-else-if="item.type === BlockHistoryTypes.Grant">
