@@ -47,5 +47,7 @@ export const unescapeHtml = text => (text?.toString() ?? '')
 export const sha256 = async str => {
     const arr = new TextEncoder().encode(str);
     const buf = await window.crypto.subtle.digest('SHA-256', arr);
-    return new Uint8Array(buf).toHex();
+    return Array.from(new Uint8Array(buf))
+        .map(a => a.toString(16).padStart(2, '0'))
+        .join('');
 }
