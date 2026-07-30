@@ -1,5 +1,6 @@
 <template>
   <SeedForm>
+    <FormErrorAlert/>
     <SeedFormBlock name="username">
       Username
       <SeedFormInput name="username" required/>
@@ -38,9 +39,11 @@ import SeedForm from '@/components/form/seedForm'
 import SeedFormBlock from '@/components/form/seedFormBlock'
 import SeedFormInput from '@/components/form/seedFormInput'
 import SeedButton from '@/components/seedButton'
+import FormErrorAlert from '@/components/form/formErrorAlert'
 
 export default {
   components: {
+    FormErrorAlert,
     SeedButton,
     SeedFormInput,
     SeedFormBlock,
