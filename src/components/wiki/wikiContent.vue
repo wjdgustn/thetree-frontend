@@ -122,7 +122,7 @@ export default {
       }
     })
 
-    this.setupWikiContent()
+    this.$nextTick(() => this.setupWikiContent())
     if(!import.meta.env.SSR) import('@justinribeiro/lite-youtube')
   },
   beforeUnmount() {
