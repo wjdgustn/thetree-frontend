@@ -51,7 +51,7 @@ export default {
     },
     relativeDate() {
       const diff = this.currDate - this.dateObject
-      const relative = new Intl.RelativeTimeFormat('ko')
+      const relative = new Intl.RelativeTimeFormat(this.$i18next.language.slice(0, 2))
 
       let text
       if(diff < 1000 * 10) text = this.$t('components.local_date.recent')
