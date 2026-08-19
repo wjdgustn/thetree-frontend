@@ -12,7 +12,7 @@
         <NuxtLink to="/member/recover_password">{{$t('views.login.forgot_password')}}</NuxtLink>
       </FlexFormBlock>
       <FlexFormBlock buttons padding>
-        <CheckBox name="autologin" value="Y" v-model="autologin">{{$t('views.login.auto_login')}}</CheckBox>
+        <CheckBox v-if="!data.noAutoLogin" name="autologin" value="Y" v-model="autologin">{{$t('views.login.auto_login')}}</CheckBox>
         <template #buttons>
           <GeneralButton v-if="!data.disableSignup" href="/member/signup">{{$t('views.login.signup')}}</GeneralButton>
           <GeneralButton type="submit" theme="primary">{{$t('views.login.submit')}}</GeneralButton>
