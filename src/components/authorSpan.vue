@@ -22,7 +22,7 @@
         <GeneralButton disabled>({{$t('components.author_span.deleted')}})</GeneralButton>
       </template>
       <template v-if="account.type === 1 || account.type === 0">
-        <GeneralButton :href="doc_action_link(user_doc(accountName, account.type), account.type ? 'w' : 'discuss')">{{$t('components.author_span.user_doc')}}</GeneralButton>
+        <GeneralButton :href="doc_action_link(user_doc(accountName, account.type), account.type ? 'w' : 'discuss')">{{$t('components.author_span.' + account.type ? 'user_doc' : 'user_discuss')}}</GeneralButton>
         <hr>
       </template>
       <template v-if="account.uuid">
